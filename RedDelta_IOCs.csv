@@ -1,12 +1,13 @@
 ﻿PE files,,,
-path on C&C,file name,link to Intezer Analyze,md5
-http://update.flach.cn/download.php?raw=1,raw_cc.exe,https://analyze.intezer.com/files/b3fd750484fca838813e814db7d6491fea36abe889787fb7cf3fb29d9d9f5429,3ce32a576d51a4a78206d237770e35ea
-http://update.flach.cn/download.php?api=40,DotNetLoader40.exe,https://analyze.intezer.com/files/7ea7c6406c5a80d3c15511c4d97ec1e45813e9c58431f386710d0486c4898b98,aea7750c03fd6d0f8f03317e524fea7e
-http://update.flach.cn/download.php?api=20,DotNetLoader20.exe,https://analyze.intezer.com/files/480a8c883006232361c5812af85de9799b1182f1b52145ccfced4fa21b6daafa,778f19c67bbdd120e217ba15b1f92c2c
-http://update.flach.com.cn:8000/download.php?raw=1,raw_cc.exe,https://analyze.intezer.com/files/260ebbf392498d00d767a5c5ba695e1a124057c1c01fff2ae76db7853fe4255b,1ec914ef8443a1fb259c79b038e64ebf
-http://159.138.84.217:81/c0c00c0c/AddTaskPlanDllVerson.dll,AddTaskPlanDllVerson.dll,https://analyze.intezer.com/files/740992d40b84b10aa9640214a4a490e989ea7b869cea27dbbdef544bb33b1048,029349d7b378245e1cdc964e21130789
-http://update.flach.com.cn:8000/download.php?api=20,DotNetLoader20.exe,https://analyze.intezer.com/files/30b2bbce0ca4cb066721c94a64e2c37b7825dd72fc19c20eb0ab156bea0f8efc,0d116785dcf6032d202cfaf3764a294c
-http://update.flach.com.cn:8000/download.php?api=40,DotNetLoader40.exe,https://analyze.intezer.com/files/42ed73b1d5cc49e09136ec05befabe0860002c97eb94e9bad145e4ea5b8be2e2,67e0e65ff14c03a0745291fce10b4d25
+md5,path on C&C,file name,link to Intezer Analyze
+3ce32a576d51a4a78206d237770e35ea,http://update.flach.cn/download.php?raw=1,raw_cc.exe,https://analyze.intezer.com/files/b3fd750484fca838813e814db7d6491fea36abe889787fb7cf3fb29d9d9f5429
+aea7750c03fd6d0f8f03317e524fea7e,http://update.flach.cn/download.php?api=40,DotNetLoader40.exe,https://analyze.intezer.com/files/7ea7c6406c5a80d3c15511c4d97ec1e45813e9c58431f386710d0486c4898b98
+778f19c67bbdd120e217ba15b1f92c2c,http://update.flach.cn/download.php?api=20,DotNetLoader20.exe,https://analyze.intezer.com/files/480a8c883006232361c5812af85de9799b1182f1b52145ccfced4fa21b6daafa
+1ec914ef8443a1fb259c79b038e64ebf,http://update.flach.com.cn:8000/download.php?raw=1,raw_cc.exe,https://analyze.intezer.com/files/260ebbf392498d00d767a5c5ba695e1a124057c1c01fff2ae76db7853fe4255b
+0d116785dcf6032d202cfaf3764a294c,http://update.flach.com.cn:8000/download.php?api=20,DotNetLoader20.exe,https://analyze.intezer.com/files/30b2bbce0ca4cb066721c94a64e2c37b7825dd72fc19c20eb0ab156bea0f8efc
+67e0e65ff14c03a0745291fce10b4d25,http://update.flach.com.cn:8000/download.php?api=40,DotNetLoader40.exe,https://analyze.intezer.com/files/42ed73b1d5cc49e09136ec05befabe0860002c97eb94e9bad145e4ea5b8be2e2
+029349d7b378245e1cdc964e21130789,http://159.138.84.217:81/c0c00c0c/AddTaskPlanDllVerson.dll,AddTaskPlanDllVerson.dll,https://analyze.intezer.com/files/740992d40b84b10aa9640214a4a490e989ea7b869cea27dbbdef544bb33b1048
+,,,
 ,,,
 Other,,,
 www[.]flach[.]cn/flach.php,CobaltStrike beacon,,
