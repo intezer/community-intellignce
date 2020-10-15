@@ -7,6 +7,7 @@ aea7750c03fd6d0f8f03317e524fea7e,http://update.flach.cn/download.php?api=40,DotN
 0d116785dcf6032d202cfaf3764a294c,http://update.flach.com.cn:8000/download.php?api=20,DotNetLoader20.exe,https://analyze.intezer.com/files/30b2bbce0ca4cb066721c94a64e2c37b7825dd72fc19c20eb0ab156bea0f8efc
 67e0e65ff14c03a0745291fce10b4d25,http://update.flach.com.cn:8000/download.php?api=40,DotNetLoader40.exe,https://analyze.intezer.com/files/42ed73b1d5cc49e09136ec05befabe0860002c97eb94e9bad145e4ea5b8be2e2
 029349d7b378245e1cdc964e21130789,http://159.138.84.217:81/c0c00c0c/AddTaskPlanDllVerson.dll,AddTaskPlanDllVerson.dll,https://analyze.intezer.com/files/740992d40b84b10aa9640214a4a490e989ea7b869cea27dbbdef544bb33b1048
+a41843d3f65a0381392dad90affa7893,http://update1.jscachecdn.com:81/rand1r/AddTaskPlanDllVerson.dll,AddTaskPlanDllVerson.dll,https://analyze.intezer.com/files/2779937398506e8ad207f5b291ae53d8af82b9f2739b0508ae3e0cfc40ced092
 ,,,
 Other,,,
 http://www.flach.cn/flach.php,CobaltStrike beacon,,
@@ -18,3 +19,4 @@ update.flach.cn,,,
 update.flach.com.cn,,,
 159.138.84.217,,,
 update.careerhuawei.net,,,
+update1.jscachecdn.com,,,
