@@ -1,0 +1,348 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Xlls</title><link>https://intezer.github.io/community-intelligence/tags/xlls/</link><description>Recent content in Xlls on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 19 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/xlls/index.xml" rel="self" type="application/rss+xml"/><item><title>Tracing a Paper Werewolf Campaign Through Ai Generated Decoys and Excel Xlls</title><link>https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</link><pubDate>Fri, 19 Dec 2025 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</guid><description>
+&lt;p&gt;An XLL is a native Windows DLL that Excel loads as an add-in, allowing it to
+execute arbitrary code through exported functions like xlAutoOpen. Since at
+least mid-2017, threat actors began abusing Microsoft Excel add-ins via the
+.XLL format, the earliest
+&lt;a href="https://blog.talosintelligence.com/xlling-in-excel-malicious-add-ins/#:~:text=APT10%20%28menuPass%2C%20Chessmaster%2C%20Potassium"target="_blank" rel="noopener"&gt;documented&lt;/a&gt;
+misuse is by the threat group APT10 (aka Stone Panda / Potassium) injecting
+backdoor payloads via XLLs.&lt;/p&gt;
+&lt;p&gt;Since 2021, a growing number of commodity malware families and cyber-crime
+actors have added XLL-based delivery to their arsenals. Notable examples
+include
+&lt;a href="https://unit42.paloaltonetworks.com/excel-add-ins-malicious-xll-files-agent-tesla/"target="_blank" rel="noopener"&gt;Agent Tesla&lt;/a&gt;
+and
+&lt;a href="https://unit42.paloaltonetworks.com/excel-add-ins-dridex-infection-chain/"target="_blank" rel="noopener"&gt;Dridex&lt;/a&gt;,
+researchers observed
+&lt;a href="https://threatresearch.ext.hp.com/hp-wolf-security-threat-insights-report-q4-2021/"target="_blank" rel="noopener"&gt;an increase&lt;/a&gt;
+of these malware being dropped via malicious XLL add-ins.&lt;/p&gt;
+&lt;p&gt;Attackers typically embed their malicious code in the standard add-in export
+functions, such as xlAutoOpen. When a user enables the add-in in Excel, the
+malicious payload executes automatically, dropping or downloading a malicious
+payload. Some malware families use legitimate frameworks to create XLL (Excel
+Add-in) files. One common example is &lt;a href="https://excel-dna.github.io/"target="_blank" rel="noopener"&gt;Excel-DNA&lt;/a&gt;,
+a popular open-source framework.&lt;/p&gt;
+&lt;p&gt;These frameworks make it easier for attackers to build and load malicious XLLs.
+In some cases, they also allow threat actors to pack and execute additional
+payloads directly in memory.&lt;/p&gt;
+&lt;p&gt;In late October 2025, a 64-bit DLL compiled as an XLL add-in was submitted to
+VirusTotal from two different countries. The first submission came from Ukraine
+on October 26, followed by three separate submissions from Russia beginning on
+October 27. The Russian-submitted samples were named Плановые цели
+противника.xll (“enemy’s planned targets”) and Плановые цели противника НЕ
+ЗАПУСКАТЬ.xll, which depending on context can mean either “Do NOT release the
+enemy’s planned targets” or “Do NOT activate the enemy’s scheduled targets.”&lt;/p&gt;
+&lt;p&gt;This DLL contains an embedded second-stage payload, a backdoor we named
+EchoGather. Once launched, the backdoor collects system information,
+communicates with a hardcoded command-and-control (C2) server, and supports
+command execution and file transfer operations. While it uses the XLL format
+for delivery, its execution chain and payload behavior differ from previously
+documented threats abusing Excel add-ins. Through pivoting on infrastructure
+and TTPs we were able to link this campaign to Paper Werewolf (aka GOFFEE), a
+group that has been targeting Russian organizations.&lt;/p&gt;
+&lt;h2&gt;Technical analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let’s dive in deeper.&lt;/p&gt;
+&lt;h3&gt;What is an XLL?&lt;span class="hx:absolute hx:-mt-20" id="what-is-an-xll"&gt;&lt;/span&gt;
+&lt;a href="#what-is-an-xll" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;An XLL is an Excel add-in implemented as a DLL that Excel loads directly,
+usually with the .xll extension. Microsoft explicitly describes XLL files as a
+DLL-style add-in that extends Excel with custom functions.&lt;/p&gt;
+&lt;p&gt;When a user double clicks the file with the .xll extension, Excel is launched,
+loads the DLL and calls its exported functions such as xlAutoOpen,
+initialization code, or xlAutoClose, when unloading. Often malicious XLLs embed
+their payload inside xlAutoOpen or through a secondary loader, so that code
+runs immediately once Excel imports the DLL.&lt;/p&gt;
+&lt;p&gt;Excel XLL add-ins and macros differ mainly in how they execute and the level of
+control they provide an attacker. Macros, VBA or legacy XLM, run as scripts
+inside Excel’s macro engine and are constrained by Microsoft’s security model,
+which now includes blocking macros from the internet, signature requirements,
+and multiple user-facing warnings. XLLs, on the other hand, are compiled DLLs
+that Excel loads directly into its own process using LoadLibrary(), giving them
+the full power of native code without going through macro security checks.
+While macros rely on interpreted scripting and COM interactions, XLLs can call
+any Windows API, inject into other processes, or act as full-featured malware
+loaders. This makes XLLs far more capable and harder to analyze, and it may
+explain why some threat actors chose XLL-based delivery methods rather than
+macro-based.&lt;/p&gt;
+&lt;h3&gt;Loader behavior&lt;span class="hx:absolute hx:-mt-20" id="loader-behavior"&gt;&lt;/span&gt;
+&lt;a href="#loader-behavior" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The DLL exports two functions, xlAutoOpen and xlAutoClose, both of which return
+zero. This behavior differs from that of legitimate XLL add-ins as well as from
+previously documented threats abusing the XLL format, such as those described
+in the most recent &lt;a href="https://cert.gov.ua/article/6285549"target="_blank" rel="noopener"&gt;CERT-UA&lt;/a&gt; publication.
+In this case, the malicious logic is not tied to the typical export functions
+but instead is triggered through dllmain. The main function of the loader is
+called when fdwReason &amp;gt; 2 meaning that dllmain_dispatch was called with
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/dlls/dllmain"target="_blank" rel="noopener"&gt;DLL_THREAD_DETACH&lt;/a&gt;
+(=3). Essentially the main function will be called when any thread in Excel
+that previously called into the XLL (even Excel’s own threads) exits.&lt;/p&gt;
+&lt;p&gt;Triggering the malicious payload during DLL_THREAD_DETACH helps the malware
+evade detection by delaying execution until a thread exits. This bypasses
+typical behavior-based detection, which focuses on early-stage activity like
+PROCESS_ATTACH, making the execution appear benign at first and allowing the
+second-stage payload to activate covertly after the sandbox times out or AV
+heuristics complete.&lt;/p&gt;
+&lt;p&gt;SHA-256: &lt;code&gt;0506a6fcee0d4bf731f1825484582180978995a8f9b84fc59b6e631f720915da&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig1.png" title="A call to the function that loads and executes the backdoor." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;A call to the function that loads and executes the backdoor.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The embedded file is dropped as mswp.exe in &lt;code&gt;%APPDATA%\Microsoft\Windows&lt;/code&gt;, then
+executed as a hidden process using CreateProcessW with CREATE_NO_WINDOW.
+Standard Output and Error is captured and redirected via anonymous pipes. If
+process creation succeeds, the function returns true otherwise, it cleans up
+and returns false.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h3&gt;The backdoor: EchoGather&lt;span class="hx:absolute hx:-mt-20" id="the-backdoor-echogather"&gt;&lt;/span&gt;
+&lt;a href="#the-backdoor-echogather" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We refer to this backdoor as EchoGather due to its focus on system
+reconnaissance and repeated beaconing behavior.&lt;/p&gt;
+&lt;p&gt;SHA-256: &lt;code&gt;74fab6adc77307ef9767e710d97c885352763e68518b2109d860bb45e9d0a8eb&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The dropped payload is a 64-bit backdoor with hardcoded configuration and C2
+address. It collects system information and communicates with the C2 over
+HTTP(S) using the WinHTTP API.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig3.png" title="Main function of EchoGather." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Main function of EchoGather.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The data collected by EchoGather consists of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IPv4 addresses&lt;/li&gt;
+&lt;li&gt;OS type (“Windows”)&lt;/li&gt;
+&lt;li&gt;Architecture&lt;/li&gt;
+&lt;li&gt;NetBIOS name&lt;/li&gt;
+&lt;li&gt;Username&lt;/li&gt;
+&lt;li&gt;Workstation domain&lt;/li&gt;
+&lt;li&gt;Process ID&lt;/li&gt;
+&lt;li&gt;Executable path&lt;/li&gt;
+&lt;li&gt;Static version string: 1.1.1.1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Next, EchoGather encodes that data using Base64 and sends it to the C2 using
+POST method. The C2 address is constructed from hardcoded strings. In the
+analyzed sample the C2 address was:
+&lt;code&gt;https://fast-eda[.]my:443/dostavka/lavka/kategorii/zakuski/sushi/sety/skidki/regiony/msk/birylievo&lt;/code&gt;
+This transmission occurs in an infinite loop with randomized sleep intervals
+between 300–360 seconds.&lt;/p&gt;
+&lt;p&gt;In all of its C2 communications, EchoGather uses the WinHTTP API. It supports
+various proxy configurations and is designed to ignore SSL/TLS certificate
+validation errors, allowing it to operate in environments with custom or
+misconfigured proxy and certificate settings.&lt;/p&gt;
+&lt;h4&gt;Supported commands&lt;span class="hx:absolute hx:-mt-20" id="supported-commands"&gt;&lt;/span&gt;
+&lt;a href="#supported-commands" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;EchoGather supports four commands.&lt;/p&gt;
+&lt;p&gt;All outgoing communication with the C2 is encoded using standard Base64. When a
+command is received from the C2 the first 36 bytes contain the request ID, it’s
+a unique identifier that is being used when the backdoor needs to send the
+information is several packages.&lt;/p&gt;
+&lt;h5&gt;0x54 Remote Command Execution&lt;span class="hx:absolute hx:-mt-20" id="0x54-remote-command-execution"&gt;&lt;/span&gt;
+&lt;a href="#0x54-remote-command-execution" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;EchoGather first extracts the request ID, followed by the command that needs to
+be executed. It then decrypts the string cmd.exe /C %s using a hardcoded XOR
+key (0xCA), which serves as a template for command execution. Using this
+template, it executes the specified command via cmd.exe. The output of the
+command is captured through a pipe and sent back to the C2 server, with the
+request ID prepended to the response.&lt;/p&gt;
+&lt;h5&gt;0x45 Return Configuration&lt;span class="hx:absolute hx:-mt-20" id="0x45-return-configuration"&gt;&lt;/span&gt;
+&lt;a href="#0x45-return-configuration" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;Sends the embedded configuration structure to the C2.&lt;/p&gt;
+&lt;h5&gt;0x56 File Exfiltration&lt;span class="hx:absolute hx:-mt-20" id="0x56-file-exfiltration"&gt;&lt;/span&gt;
+&lt;a href="#0x56-file-exfiltration" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;The backdoor begins by extracting a request ID and the name of the file to be
+exfiltrated. It opens the specified file, determines its total size, and
+calculates how many 512 KB chunks are required for transmission. A transfer
+header containing metadata about the chunk count and size is then sent to the
+C2 server. In response, the backdoor receives the request ID used to identify
+the session. The file is read and transmitted in chunks, with each chunk
+containing the request ID, chunk index, file tag, data length, and raw file
+data.&lt;/p&gt;
+&lt;h5&gt;0x57 Remote File Write&lt;span class="hx:absolute hx:-mt-20" id="0x57-remote-file-write"&gt;&lt;/span&gt;
+&lt;a href="#0x57-remote-file-write" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;EchoGather receives a filename from the C2 and writes the incoming data chunks
+to the system, reconstructing the file as the chunks arrive.&lt;/p&gt;
+&lt;h4&gt;Infrastructure analysis&lt;span class="hx:absolute hx:-mt-20" id="infrastructure-analysis"&gt;&lt;/span&gt;
+&lt;a href="#infrastructure-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;During our research we found two domains that were used by the threat actors.&lt;/p&gt;
+&lt;h5&gt;IP Resolutions for fast-eda.my:&lt;span class="hx:absolute hx:-mt-20" id="ip-resolutions-for-fast-edamy"&gt;&lt;/span&gt;
+&lt;a href="#ip-resolutions-for-fast-edamy" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;The domain was registered on September 12, 2025.&lt;/li&gt;
+&lt;li&gt;The very first resolution was between September 12th and 14th, the domain was
+resolved to 199.59.243[.]228.&lt;/li&gt;
+&lt;li&gt;After that and until November 26th all of the resolutions were on Cloudflare
+instances.&lt;/li&gt;
+&lt;li&gt;From September 18th to November 24th the domain was resolved to 172.64.80[.]1&lt;/li&gt;
+&lt;li&gt;On November 27th it was resolved to 94.103.3[.]82 the address is connected to
+Russia based on &lt;a href="https://db-ip.com/94.103.3.82"target="_blank" rel="noopener"&gt;geolocation&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When we looked up the related files to this domain on VirusTotal, we found 7
+files. Two of them are powershell scripts that load the backdoor: mswt.ps1 and
+the second one wasn’t submitted with a name.&lt;/p&gt;
+&lt;p&gt;The two scripts are identical, including their execution flow. Both first
+decode two Base64-encoded files: a PDF document and the EchoGather payload. The
+PDF is opened, while the payload is executed in the background. The document
+appears to be an invitation, written in Russian, to a concert for high-ranking
+officers. However, the PDF is AI-generated and contains several noticeable
+inconsistencies. For instance, the stamp in the lower right corner appears to
+be an AI-generated attempt at recreating Russia’s national emblem, the
+double-headed eagle, but the result resembles a distorted or bird-like figure
+rather than the intended symbol. The text also includes several errors. Some
+Cyrillic letters are incorrect, for example, the letter Д is used in place of Л
+in multiple instances, and the word праздиика is a misspelled version of
+праздника. Additionally, the phrase «с глубоким уважением приглашает»
+(translated as “with deep respect invites (you)”) is unnatural and not
+idiomatic in the context of formal Russian invitations.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig4.png" title="Decoy document, and invite to a concert." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decoy document, and invite to a concert.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h5&gt;IP Resolutions for ruzede.com&lt;span class="hx:absolute hx:-mt-20" id="ip-resolutions-for-ruzedecom"&gt;&lt;/span&gt;
+&lt;a href="#ip-resolutions-for-ruzedecom" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;First seen on 2025-05-21, resolved to 162.255.119[.]43 and later to
+5.45.85[.]43 until October 2nd.&lt;/li&gt;
+&lt;li&gt;On October 2nd it was resolved to IP addresses in Cloudflare.&lt;/li&gt;
+&lt;li&gt;From October 4th to November 26th the domain was resolved to the same address
+seen in the previous domain: 172.64.80[.]1&lt;/li&gt;
+&lt;li&gt;On November 26th it was resolved to 193.233.18[.]137 in Russia based on
+geolocation.&lt;/li&gt;
+&lt;li&gt;The ip address is
+&lt;a href="https://pilot.validin.com/detail?find=193.233.18.137&amp;amp;type=ip4&amp;amp;ref_id=fb75e539457#tab=resolutions"target="_blank" rel="noopener"&gt;linked&lt;/a&gt;
+to different malicious domains.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Using VirusTotal, we pivoted on the domain ruzede[.]com, and we identified a
+RAR archive that exploits a known vulnerability,
+&lt;a href="https://nvd.nist.gov/vuln/detail/CVE-2025-8088"target="_blank" rel="noopener"&gt;CVE-2025-8088&lt;/a&gt;, a
+vulnerability in WinRAR that involves the abuse of NTFS alternate data streams
+(ADSes) in combination with path traversal. This flaw allows attackers to embed
+malicious content within seemingly harmless filenames by appending ADSes that
+include relative path traversal sequences.&lt;/p&gt;
+&lt;p&gt;The archive contains a file named
+Вх.письмо_Мипромторг.lnk:..&lt;em&gt;..&lt;/em&gt;..&lt;em&gt;..&lt;/em&gt;.._Roaming_Microsoft_Windows_run.bat&lt;/p&gt;
+&lt;p&gt;When the archive is opened, WinRAR fails to properly sanitize these ADS paths
+and extracts the hidden data streams, placing them in unintended or sensitive
+locations such as %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig5.png" title="Connected file to the domain ruzede[.]com" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Connected file to the domain ruzede[.]com&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The phrase “письмо Мипромторг” is misspelled; the correct form is “письмо
+Минпромторга.” This term refers to an official letter or communication issued
+by the Ministry of Industry and Trade of the Russian Federation (Минпромторг
+России). The same misspelling error is in the archive file name:
+Вх.письмо_Мипромторг.rar.&lt;/p&gt;
+&lt;p&gt;Essentially the file in the archive is a batch script that launches a hidden
+PowerShell process. This process navigates to a user-specific AppData
+directory, then downloads a PowerShell script named docc1.ps1 from a remote URL
+(https://2k-linep[.]com/upload/docc1.ps1) and saves it to the current working
+directory. The script is then executed via a new PowerShell instance with
+execution policy restrictions bypassed.&lt;/p&gt;
+&lt;p&gt;The downloaded script (docc1.ps1) extracts both a PDF file and an EchoGather
+payload, using a technique similar to the one described previously. However, in
+this instance, the embedded PDF differs from earlier samples. This document is
+allegedly sent from the deputy of the Ministry of Industry and Trade of the
+Russian Federation, asking for price justification documentation under the
+state defense order, focusing on violations of deadlines and reporting on
+pricing approval processes.&lt;/p&gt;
+&lt;p&gt;The companies listed with their emails on the top right side of the first page
+(Almaz-Antey, Shvabe, and the United Instrument-Making Corporation) are major
+Russian defense-industry and high-technology enterprises, and they might be the
+intended recipients of this decoy document.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig6.png" title="Page 1" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Page 1&lt;/figcaption&gt;
+&lt;/figure&gt; &lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig7.png" title="Page 2" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Page 2&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig8.png" title="Page 3" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Page 3&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The same vulnerability was used by several threat actors including
+&lt;a href="https://www.malwarebytes.com/blog/news/2025/08/winrar-vulnerability-exploited-by-two-different-groups"target="_blank" rel="noopener"&gt;RomCom&lt;/a&gt;
+(Russia-aligned) and Paper Werewolf, a cyberespionage group targeting Russian
+organizations and active since 2022. In early August, BI.ZONE Threat
+Intelligence published a
+&lt;a href="https://bi.zone/expertise/blog/paper-werewolf-atakuet-rossiyu-s-ispolzovaniem-uyazvimosti-nulevogo-dnya-v-winrar/"target="_blank" rel="noopener"&gt;report&lt;/a&gt;
+about an ongoing campaign of Paper Werewolf that exploits CVE-2025-6218,
+affects WinRAR versions up to and including 7.11 and enables directory
+traversal attacks that allow malicious archives to extract files outside their
+intended directories. A second zero-day, at the time, vulnerability that abuses
+ADSs for path traversal. The report doesn’t mention CVE-2025-8088, but based on
+the description we assume that is the same vulnerability.&lt;/p&gt;
+&lt;p&gt;The interesting part is that we can see similarities between the decoy
+documents from the report to the document above. First, the filename of the
+decoy document in the report is запрос Минпромторга РФ.pdf (Request of the
+Ministry of Industry and Trade of the Russian Federation.pdf) no misspellings
+in the filename. It refers to the same office. The document asks to assess the
+impact of a specific government resolution on production capacities of subsidy
+recipients. Next, both documents share the same template and structure: red
+stamp on the left side, followed by the same information about the office, the
+date and the request id. Both documents contain a request for information to be
+submitted to a government-affiliated organization.&lt;/p&gt;
+&lt;h2&gt;Attribution&lt;span class="hx:absolute hx:-mt-20" id="attribution"&gt;&lt;/span&gt;
+&lt;a href="#attribution" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Based on the shared infrastructure, such as the ruzede[.]com domain, as well as
+notable similarities in decoy document construction and the exploitation of the
+WINRAR vulnerability that leverages ADSs, we attribute this campaign to the
+Paper Werewolf (aka GOFFEE) threat group. The recent use of XLL files suggests
+that the group is experimenting with new delivery methods while continuing to
+rely on established infrastructure, possibly in an attempt to evade detection.
+In addition, the use of a new, yet simple, backdoor may indicate an effort to
+improve and evolve their toolset.&lt;/p&gt;
+&lt;h2&gt;Summary&lt;span class="hx:absolute hx:-mt-20" id="summary"&gt;&lt;/span&gt;
+&lt;a href="#summary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It’s less common to see public reporting on threats targeting Russian
+organizations, which makes this campaign worth highlighting. The threat actor
+appears to be actively exploring new methods to evade detection, including the
+use of XLL-based delivery techniques and newly developed payloads. These
+changes suggest an effort to enhance their capabilities. However, there are
+still clear gaps in both technical execution and linguistic accuracy,
+indicating that their tradecraft is still developing.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;XLL Loader&lt;span class="hx:absolute hx:-mt-20" id="xll-loader"&gt;&lt;/span&gt;
+&lt;a href="#xll-loader" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;0506a6fcee0d4bf731f1825484582180978995a8f9b84fc59b6e631f720915da&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;EchoGather Hashes and C2 Infrastructure&lt;span class="hx:absolute hx:-mt-20" id="echogather-hashes-and-c2-infrastructure"&gt;&lt;/span&gt;
+&lt;a href="#echogather-hashes-and-c2-infrastructure" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Variant 1&lt;span class="hx:absolute hx:-mt-20" id="variant-1"&gt;&lt;/span&gt;
+&lt;a href="#variant-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;C2:
+&lt;code&gt;https://ruzede[.]com/blogs/drafts/publish/schedule/seosso/login/mfa/verify/token/refresh/ips/blocklist/whitelist&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Files:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;c3e04bb4f4d51bb1ae8e67ce72aff1c3abeca84523ea7137379f06eb347e1669&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0d1dd7a62f3ea0d0fbeea905a48ae8794f49319ee0c34f15a3a871899404bf05&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Variant 2&lt;span class="hx:absolute hx:-mt-20" id="variant-2"&gt;&lt;/span&gt;
+&lt;a href="#variant-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;C2:
+&lt;code&gt;https://fast-eda.my/dostavka/lavka/kategorii/zakuski/sushi/sety/skidki/regiony/msk/birylievo&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Files:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;b2419afcfc24955b4439100706858d7e7fc9fdf8af0bb03b70e13d8eed52935c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;23d917781e288a6fa9a1296404682e6cf47f11f2a09b7e4f340501bf92d68514&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dd5a16d0132eb38f64293b8419bab3a3a80f48dc050129a8752989539a5c97bf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;74fab6adc77307ef9767e710d97c885352763e68518b2109d860bb45e9d0a8eb&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Other Files&lt;span class="hx:absolute hx:-mt-20" id="other-files"&gt;&lt;/span&gt;
+&lt;a href="#other-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;sha256&lt;/th&gt;
+&lt;th&gt;File name (based on VirusTotal)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;b6914d702969bc92e8716ece92287c0f52fc129c6fb4796676a738b103a6e039&lt;/td&gt;
+&lt;td&gt;mswt.ps1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;29101c580b33b77b51a6afe389955b151a4d0913716b253672cc0c0a41e5ccc8&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;cdc3355ae57cc371c6c0918c0b5451b9298fc7d7c7035fa4b24d0cd08af4122c&lt;/td&gt;
+&lt;td&gt;C:\Users\user\AppData\Roaming\Microsoft\Windows\docc1.ps1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;dc2df351c306a314569b1eeaccf5046ce5a64df487fa51c907cb065e968bba80&lt;/td&gt;
+&lt;td&gt;Вх.письмо_Мипромторг.lnk:..&lt;em&gt;..&lt;/em&gt;..&lt;em&gt;..&lt;/em&gt;.._Roaming_Microsoft_Windows_run.bat&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;76e4d344b3ec52d3f1a81de235022ad2b983eb868b001b93e56deee54ae593c5&lt;/td&gt;
+&lt;td&gt;Вх.письмо_Мипромторг.rar&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6a00b1ed5afcd63758b9be4bd1c870dbfe880a1a3d4e852bb05c92418d33e6da&lt;/td&gt;
+&lt;td&gt;invite.pdf&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2abb9e7c155beaa3dcfa38682633dcbea42f07740385cac463e4ca5c6598b438&lt;/td&gt;
+&lt;td&gt;(pdf document)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</description></item></channel></rss>
