@@ -1,0 +1,80 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Intezer Research – Windows</title>
+    <link>http://localhost:1313/community-intelligence/tags/windows/</link>
+    <description>Recent content in Windows on Intezer Research</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 May 2025 00:00:00 +0000</lastBuildDate>
+    
+	  <atom:link href="http://localhost:1313/community-intelligence/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Fire in the Woods – A New Variant of FireWood</title>
+      <link>http://localhost:1313/community-intelligence/blog/2025/08/threat-bulletin-firewood/</link>
+      <pubDate>Thu, 22 May 2025 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/community-intelligence/blog/2025/08/threat-bulletin-firewood/</guid>
+      <description>
+        
+        
+        &lt;p&gt;&lt;em&gt;A new and low-detected variant of the FireWood backdoor was discovered by
+Intezer’s Research Team, with some changes in the implementation and the
+configuration of the backdoor.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;FireWood is a Linux backdoor
+&lt;a href=&#34;https://www.welivesecurity.com/en/eset-research/unveiling-wolfsbane-gelsemiums-linux-counterpart-to-gelsevirine/&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;discovered&lt;/a&gt;
+by ESET’s research team. They linked it to the long‑running &amp;ldquo;Project Wood&amp;rdquo;
+malware lineage, which dates back to at least 2005 and includes usage in the
+earlier Operation TooHash campaign. It functions as a remote access trojan
+(RAT) on Linux systems, employing kernel‑level rootkit modules (e.g.,
+usbdev.ko) and TEA‑based encryption to hide its presence, maintain persistence,
+and communicate covertly with its command‑and‑control infrastructure. Once
+deployed, likely via web shells left on compromised Linux desktops, it enables
+attackers to execute commands, exfiltrate sensitive data such as system
+information and credentials, and operate stealthily over prolonged espionage
+operations. The backdoor has low confidence connections to the China-aligned
+Gelsemium APT group, as the overlaps may be coincidental or reflect shared
+tools across multiple groups.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;We found a new and low-detected variant of the FireWood backdoor&lt;/strong&gt;. The core
+functionality of the backdoor remains the same but we did notice some changes
+in the implementation and the configuration of the backdoor. It is unclear if
+the kernel module was also updated as we were not able to collect it.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+    &lt;img src=&#34;images/fig1.png&#34; title=&#34;Code analysis of the new version in Intezer.&#34; alt=&#34;&#34;  loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;Code analysis of the new version in Intezer.&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+    &lt;img src=&#34;images/fig2.png&#34; title=&#34;SHA256: 898a5bd86c5d99eb70088a90f1d8f90b03bd38c15a232200538d0601c888acb6&#34; alt=&#34;&#34;  loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;SHA256: 898a5bd86c5d99eb70088a90f1d8f90b03bd38c15a232200538d0601c888acb6&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Technical Analysis of New Firewood Variant&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;technical-analysis-of-new-firewood-variant&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#technical-analysis-of-new-firewood-variant&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the older variant, execution began with an explicit permission gate, calling
+&lt;code&gt;CUser::IsSuc()&lt;/code&gt;, and the process would exit if this check failed. In the newer
+build, that early check is removed entirely. The new version defers any
+root‑or‑kernel gating until after it daemonizes and saves its PID. To achieve
+this, the code splits the former &lt;code&gt;SavePidAndCheckKernel()&lt;/code&gt; helper into two
+discrete steps: an early &lt;code&gt;SavePid(pid)&lt;/code&gt;, followed later by
+&lt;code&gt;CModuleControl::AutoLoad()&lt;/code&gt; and &lt;code&gt;CheckLkmLoad()&lt;/code&gt;. This separation clarifies
+the startup sequence and enhances the hide‑via‑kernel‑module logic.
+Additionally, rather than simply sending a stripped‑down identifier, the
+updated version builds a larger buffer containing the process name,
+hex‑formatted port, PID, a hardcoded “kde‑tra” process name, and a configurable
+flag (or the literal “nothing”). That extra metadata is passed through
+&lt;code&gt;CHideProcess::NetLinkInit()&lt;/code&gt;,
+&lt;code&gt;CHideProcess::SendProcessName(&amp;amp;CHideProcess::mInstance)&lt;/code&gt;, and
+&lt;code&gt;CHideProcess::Destroy()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Note the typo in the method name &amp;ldquo;Destroy&amp;rdquo;, this error also appears in the
+older Firewood variant. Another typo persists in both versions in the following
+error message: &amp;ldquo;Get Memory Faile&amp;rdquo;.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

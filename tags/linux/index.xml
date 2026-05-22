@@ -1042,4 +1042,142 @@ multiple unrelated actor groups.&lt;/p&gt;
 &lt;td&gt;-&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item></channel></rss>
+&lt;/table&gt;</description></item><item><title>Fire in the Woods – A New Variant of FireWood</title><link>https://intezer.github.io/community-intelligence/blog/2025/08/threat-bulletin-firewood/</link><pubDate>Wed, 13 Aug 2025 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2025/08/threat-bulletin-firewood/</guid><description>
+&lt;p&gt;&lt;em&gt;A new and low-detected variant of the FireWood backdoor was discovered by
+Intezer’s Research Team, with some changes in the implementation and the
+configuration of the backdoor.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;FireWood is a Linux backdoor
+&lt;a href="https://www.welivesecurity.com/en/eset-research/unveiling-wolfsbane-gelsemiums-linux-counterpart-to-gelsevirine/"target="_blank" rel="noopener"&gt;discovered&lt;/a&gt;
+by ESET’s research team. They linked it to the long‑running &amp;ldquo;Project Wood&amp;rdquo;
+malware lineage, which dates back to at least 2005 and includes usage in the
+earlier Operation TooHash campaign. It functions as a remote access trojan
+(RAT) on Linux systems, employing kernel‑level rootkit modules (e.g.,
+usbdev.ko) and TEA‑based encryption to hide its presence, maintain persistence,
+and communicate covertly with its command‑and‑control infrastructure. Once
+deployed, likely via web shells left on compromised Linux desktops, it enables
+attackers to execute commands, exfiltrate sensitive data such as system
+information and credentials, and operate stealthily over prolonged espionage
+operations. The backdoor has low confidence connections to the China-aligned
+Gelsemium APT group, as the overlaps may be coincidental or reflect shared
+tools across multiple groups.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;We found a new and low-detected variant of the FireWood backdoor&lt;/strong&gt;. The core
+functionality of the backdoor remains the same but we did notice some changes
+in the implementation and the configuration of the backdoor. It is unclear if
+the kernel module was also updated as we were not able to collect it.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/08/threat-bulletin-firewood/images/fig1.png" title="Code analysis of the new version in Intezer." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code analysis of the new version in Intezer.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/08/threat-bulletin-firewood/images/fig2.png" title="SHA256: 898a5bd86c5d99eb70088a90f1d8f90b03bd38c15a232200538d0601c888acb6" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;SHA256: 898a5bd86c5d99eb70088a90f1d8f90b03bd38c15a232200538d0601c888acb6&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Technical Analysis of New Firewood Variant&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis-of-new-firewood-variant"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis-of-new-firewood-variant" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the older variant, execution began with an explicit permission gate, calling
+&lt;code&gt;CUser::IsSuc()&lt;/code&gt;, and the process would exit if this check failed. In the newer
+build, that early check is removed entirely. The new version defers any
+root‑or‑kernel gating until after it daemonizes and saves its PID. To achieve
+this, the code splits the former &lt;code&gt;SavePidAndCheckKernel()&lt;/code&gt; helper into two
+discrete steps: an early &lt;code&gt;SavePid(pid)&lt;/code&gt;, followed later by
+&lt;code&gt;CModuleControl::AutoLoad()&lt;/code&gt; and &lt;code&gt;CheckLkmLoad()&lt;/code&gt;. This separation clarifies
+the startup sequence and enhances the hide‑via‑kernel‑module logic.
+Additionally, rather than simply sending a stripped‑down identifier, the
+updated version builds a larger buffer containing the process name,
+hex‑formatted port, PID, a hardcoded “kde‑tra” process name, and a configurable
+flag (or the literal “nothing”). That extra metadata is passed through
+&lt;code&gt;CHideProcess::NetLinkInit()&lt;/code&gt;,
+&lt;code&gt;CHideProcess::SendProcessName(&amp;amp;CHideProcess::mInstance)&lt;/code&gt;, and
+&lt;code&gt;CHideProcess::Destroy()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Note the typo in the method name &amp;ldquo;Destroy&amp;rdquo;, this error also appears in the
+older Firewood variant. Another typo persists in both versions in the following
+error message: &amp;ldquo;Get Memory Faile&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/08/threat-bulletin-firewood/images/fig3.png" title="New evasion implementation and comparison of main functions" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;New evasion implementation and comparison of main functions&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;On the networking side, the older version read configuration settings that
+defined both the number of days between beaconing and a &lt;code&gt;delayTime&lt;/code&gt; specifying
+the interval between packets. It also used a randomized time‑window algorithm
+to stagger connections. The new build collapses all of this into a
+straightforward &lt;code&gt;while (true)&lt;/code&gt; loop. After waiting for the configured startup
+delay, it continuously calls &lt;code&gt;ConnectToSvr()&lt;/code&gt;, sleeping briefly on failure,
+until success or until the overall timer expires, then cleans up and exits. By
+removing the multi‑stage scheduling and random timing logic, the connection
+routine becomes more predictable and maintainable, trading temporal obfuscation
+for reliable C2 reachability.&lt;/p&gt;
+&lt;p&gt;Overall, the communication protocol and C2 setup remain the same; the only
+significant change is that the new version no longer relies on timeouts from
+the configuration.&lt;/p&gt;
+&lt;p&gt;Both Firewood versions collect information about the user and the infected
+machine. The new variant adds a fallback for OS detection: whereas the older
+version reads distribution data from &lt;code&gt;/etc/issue&lt;/code&gt;, the new version falls back
+to &lt;code&gt;/etc/issue.ne&lt;/code&gt;t if &lt;code&gt;/etc/issue&lt;/code&gt; is unavailable, parsing the data in the
+same way.&lt;/p&gt;
+&lt;p&gt;The backdoor defines file paths used by both itself and its kernel module. The
+new variant sets paths for root users as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/usr/lib/.kde-root/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/usr/lib/.kde-root/lib/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/usr/lib/.kde-root/data/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/usr/lib/.kde-root/kdeinit&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/usr/lib/.kde-root/pid&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/init.d/rc.local&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For non-root users, it uses:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;$HOME/.kde-root/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$HOME/.kde-root/lib/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$HOME/.kde-root/data/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$HOME/.kde-root/kdeinit&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$HOME/.kde-root/pid&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$HOME/.bashrc&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;By contrast, the older variant for root users used:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/etc/init.d/rc.local&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/rc.d/rc.local&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/init.d/boot.local&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And for non-root users:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;$HOME/.bashrc&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The FireWood backdoor supports a number of commands documented by ESET. The new
+variant removes some commands and adds others. It drops commands for changing
+beacon intervals and delay times (command IDs &lt;code&gt;0x111&lt;/code&gt;, &lt;code&gt;0x113&lt;/code&gt;, &lt;code&gt;0x114&lt;/code&gt;), as these
+settings are no longer used. It also removes the file-read command (ID &lt;code&gt;0x201&lt;/code&gt;).
+The process‑hiding command has moved to ID &lt;code&gt;0x202&lt;/code&gt; (from &lt;code&gt;0x112&lt;/code&gt;), and the
+&lt;code&gt;HideModule&lt;/code&gt; function was removed. A new command (&lt;code&gt;SetAutoKillEl&lt;/code&gt;, ID &lt;code&gt;0x160&lt;/code&gt;)
+toggles or sets an “auto‑kill” feature in the agent.&lt;/p&gt;
+&lt;p&gt;Besides these commands, there are also three commands that appear in both
+versions and were not previously documented:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Command id &lt;code&gt;0x109&lt;/code&gt;: A command that indicates a change in the connection
+configuration.&lt;/li&gt;
+&lt;li&gt;Command id &lt;code&gt;0x192&lt;/code&gt;: Gets a file from the C2 and execute it using the system
+function. Unlike the previously documented command id &lt;code&gt;0x185&lt;/code&gt;, this command
+calls first &lt;code&gt;CFileControl::FileUp&lt;/code&gt; to receive the file from the C2.&lt;/li&gt;
+&lt;li&gt;Command id &lt;code&gt;0x195&lt;/code&gt;: Exfiltration of files with the following extensions: &lt;code&gt;.v2&lt;/code&gt;,
+&lt;code&gt;.k2&lt;/code&gt;, &lt;code&gt;.W2&lt;/code&gt;, and &lt;code&gt;drive.C2&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We also located an older sample submitted to VirusTotal from Iran on February
+5, 2025:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;4c293309a7541edb89e3ec99c4074584328a21309e75a46d0ddb4373652ee0d6&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Additionally, we found a sample from the Philippines submitted on May 7, 2022;
+its code is identical to the one we analyzed:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;d7be3494b3e1722eb28f317f3b85ee68bf7ea5508aa2d5782392619e078b78af&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;New Firewood Version&lt;span class="hx:absolute hx:-mt-20" id="new-firewood-version"&gt;&lt;/span&gt;
+&lt;a href="#new-firewood-version" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;898a5bd86c5d99eb70088a90f1d8f90b03bd38c15a232200538d0601c888acb6&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;d7be3494b3e1722eb28f317f3b85ee68bf7ea5508aa2d5782392619e078b78af&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Old Firewood Version&lt;span class="hx:absolute hx:-mt-20" id="old-firewood-version"&gt;&lt;/span&gt;
+&lt;a href="#old-firewood-version" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cff20753e36a4c942dc4dab5a91fd621a42330e17a89185a5b7262280bcd9263&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;4c293309a7541edb89e3ec99c4074584328a21309e75a46d0ddb4373652ee0d6&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
