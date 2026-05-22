@@ -1718,4 +1718,378 @@ its code is identical to the one we analyzed:&lt;/p&gt;
 &lt;a href="#old-firewood-version" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;cff20753e36a4c942dc4dab5a91fd621a42330e17a89185a5b7262280bcd9263&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;4c293309a7541edb89e3ec99c4074584328a21309e75a46d0ddb4373652ee0d6&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item></channel></rss>
+&lt;/ul&gt;</description></item><item><title>Emerging Phishing Techniques New Threats and Attack Vectors</title><link>https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</link><pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</guid><description>
+&lt;p&gt;Phishing remains
+&lt;a href="https://www.crowdstrike.com/en-us/cybersecurity-101/cyberattacks/common-cyberattacks/"target="_blank" rel="noopener"&gt;one of the most prevalent&lt;/a&gt;
+and successful attack vectors used by cybercriminals today. It exploits human
+psychology, leveraging deception to trick users into revealing sensitive
+information or executing malicious actions. Attackers continuously evolve
+tactics to bypass modern email and endpoint security solutions, making
+detecting and mitigating phishing attempts increasingly difficult. And despite
+advancements in cybersecurity tools, many phishing campaigns still successfully
+reach users’ inboxes.&lt;/p&gt;
+&lt;p&gt;At Intezer, we
+&lt;a href="https://intezer.com/blog/alert-triage/2024-ai-soc-review-for-security-operations/"target="_blank" rel="noopener"&gt;triage millions of alerts&lt;/a&gt;
+for enterprises around the globe and have implemented a rigorous quality
+assurance process to ensure that our verdicts are the most accurate and
+up-to-date. From this extensive dataset, the Intezer research team is able to
+pinpoint emerging trends in the phishing and malware ecosystems. That said, our
+team has observed four phishing threats and techniques gaining traction, all of
+which successfully bypassed email protections and reached the intended victims.
+These methods demonstrate the increasing sophistication of threat actors and
+highlight the need for improved detection mechanisms.&lt;/p&gt;
+&lt;p&gt;Here are some impactful phishing threats and techniques that Intezer has
+observed in 2025 so far.&lt;/p&gt;
+&lt;h2&gt;1. Script in the Shadows: Base64 JavaScript Lurking in SVG Files&lt;span class="hx:absolute hx:-mt-20" id="1-script-in-the-shadows-base64-javascript-lurking-in-svg-files"&gt;&lt;/span&gt;
+&lt;a href="#1-script-in-the-shadows-base64-javascript-lurking-in-svg-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Attackers continue to abuse SVG files by embedding Base64-encoded JavaScript
+inside them. Once decoded, this JavaScript reveals an obfuscated script that
+redirects users to a phishing site. The attackers delivered the SVG file as an
+email attachment, successfully evading detection mechanisms.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h3&gt;How SVG Files Work&lt;span class="hx:absolute hx:-mt-20" id="how-svg-files-work"&gt;&lt;/span&gt;
+&lt;a href="#how-svg-files-work" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Scalable Vector Graphics (SVG) is an XML-based format for rendering
+two-dimensional graphics. Unlike other image formats, SVG files can contain
+scripts, hyperlinks, and interactive elements, making them a potential attack
+vector. Attackers abuse this flexibility by embedding JavaScript inside
+&lt;code&gt;&amp;lt;foreignObject&amp;gt;&lt;/code&gt; or &lt;code&gt;&amp;lt;iframe&amp;gt;&lt;/code&gt; tags, often using Base64 encoding to conceal
+malicious scripts.&lt;/p&gt;
+&lt;h3&gt;What is Encoding?&lt;span class="hx:absolute hx:-mt-20" id="what-is-encoding"&gt;&lt;/span&gt;
+&lt;a href="#what-is-encoding" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Encoding is the process of transforming data into a different format, typically
+for safe transmission or storage. In phishing campaigns, threat actors use
+encoding (such as Base64 or hexadecimal) to disguise the true intent of
+malicious scripts.&lt;/p&gt;
+&lt;p&gt;By encoding the payload, the script avoids detection by security scanners that
+rely on static signatures or pattern matching. To analyze these files properly,
+we must first decode the data to reveal its original structure.&lt;/p&gt;
+&lt;h3&gt;Analysis&lt;span class="hx:absolute hx:-mt-20" id="analysis"&gt;&lt;/span&gt;
+&lt;a href="#analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;IOC: &lt;code&gt;b5a7406d5b4ef47a62b8dd1e4bec7f1812162433955e3a5b750cc471cbfad93e&lt;/code&gt;
+(&lt;a href="https://www.virustotal.com/gui/file/de0b9021204beb8cb3acc2e339b16a64bfe8084447d1cdca28dc5bdb2203e139/detection"target="_blank" rel="noopener"&gt;VirusTotal link&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Upon inspecting the SVG file, we found an embedded &lt;code&gt;&amp;lt;iframe&amp;gt;&lt;/code&gt; tag containing
+Base64-encoded data.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Decoding the Base64 data exposed an obfuscated JavaScript payload.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This script, when deobfuscated, revealed a malicious URL that redirected users
+to a phishing page designed to harvest credentials.&lt;/p&gt;
+&lt;p&gt;The script we extracted followed a multi-step obfuscation pattern:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Reversal of the string: The encoded string is reversed to make static
+detection harder.&lt;/li&gt;
+&lt;li&gt;Junk character removal: Specific characters (like x, q, z, etc.) are inserted
+randomly to confuse regular expression-based scanners. These are removed
+programmatically before decoding.&lt;/li&gt;
+&lt;li&gt;Hexadecimal to ASCII conversion: The payload is split by delimiters (e.g.,
+-), and each segment is converted from hex, then transformed to ASCII through
+a mathematical formula.&lt;/li&gt;
+&lt;li&gt;Final URL reconstruction: Once decoded, the script builds a phishing URL and
+assigns it to &lt;code&gt;window.location.href&lt;/code&gt;, redirecting the victim to a
+credential-harvesting page.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This multi-layered obfuscation allowed the payload to bypass most static
+analysis engines.&lt;/p&gt;
+&lt;p&gt;For this analysis, the Intezer research team developed a custom tool to analyze
+this technique in SVG files.&lt;/p&gt;
+&lt;h3&gt;Findings&lt;span class="hx:absolute hx:-mt-20" id="findings"&gt;&lt;/span&gt;
+&lt;a href="#findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When using the tool, we found that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The attacker leveraged an SVG file to embed a hidden payload.&lt;/li&gt;
+&lt;li&gt;The JavaScript within the Base64-encoded data was obfuscated to avoid static
+detection.&lt;/li&gt;
+&lt;li&gt;VirusTotal initially marked the SVG file as trusted with zero detections.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This technique highlights the effectiveness of unconventional file formats in
+phishing attacks. SVG files are commonly used for legitimate purposes, making
+them an ideal candidate for evading security filters. Additionally, many
+security solutions do not deeply inspect SVG files for embedded JavaScript,
+allowing these attacks to slip through undetected.&lt;/p&gt;
+&lt;h2&gt;2. Annotated with Bad Intent: Malicious URLs in PDFs&lt;span class="hx:absolute hx:-mt-20" id="2-annotated-with-bad-intent-malicious-urls-in-pdfs"&gt;&lt;/span&gt;
+&lt;a href="#2-annotated-with-bad-intent-malicious-urls-in-pdfs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Attackers are leveraging PDF files as a covert phishing delivery mechanism by
+embedding malicious URLs inside PDF annotations. Unlike traditional phishing
+attacks, where links are visible within the document, these links are hidden in
+metadata, allowing them to bypass email security tools and remain undetected by
+most scanning solutions. The phishing emails delivering these PDFs successfully
+passed through multiple email security filters, reaching users’ inboxes without
+any warnings.&lt;/p&gt;
+&lt;h3&gt;How the PDF Format Works&lt;span class="hx:absolute hx:-mt-20" id="how-the-pdf-format-works"&gt;&lt;/span&gt;
+&lt;a href="#how-the-pdf-format-works" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The PDF format is built on a [structured and modular
+architecture],(&lt;a href="https://intezer.com/blog/incident-response/analyze-malicious-pdf-files/"target="_blank" rel="noopener"&gt;https://intezer.com/blog/incident-response/analyze-malicious-pdf-files/&lt;/a&gt;)
+making it flexible for both rendering content and embedding interactive
+features. Each PDF file consists of a collection of objects, including text,
+images, fonts, scripts, annotations, and more organized in a hierarchical
+structure.&lt;/p&gt;
+&lt;p&gt;These objects are referenced through an internal table known as the
+cross-reference table, which helps PDF readers locate and render content
+efficiently. Not everything in a PDF is visible on the page; much of the
+content, such as form fields, metadata, or actions triggered by user
+interaction, resides in non-rendered object streams.&lt;/p&gt;
+&lt;p&gt;Because of this complexity, attackers can hide malicious content inside
+less-inspected parts of the file, especially in elements that are not rendered
+visually or immediately accessible by the document viewer.&lt;/p&gt;
+&lt;h3&gt;What Are PDF Annotations?&lt;span class="hx:absolute hx:-mt-20" id="what-are-pdf-annotations"&gt;&lt;/span&gt;
+&lt;a href="#what-are-pdf-annotations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Attackers commonly abuse PDF annotations. These are structured elements
+typically used to define interactive elements such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hyperlinks&lt;/li&gt;
+&lt;li&gt;Comments and notes&lt;/li&gt;
+&lt;li&gt;Embedded multimedia&lt;/li&gt;
+&lt;li&gt;Buttons or form actions&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Annotations are stored within specific objects, often referenced via the
+&lt;code&gt;/Annots&lt;/code&gt; array. Each annotation object can include an &lt;code&gt;/A&lt;/code&gt; (action) dictionary
+with a &lt;code&gt;/URI&lt;/code&gt; value pointing to an external website. Here’s a simplified
+example:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-postscript" data-lang="postscript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;&amp;lt;&amp;lt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;/Type&lt;/span&gt; &lt;span class="nv"&gt;/Annot&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;/Subtype&lt;/span&gt; &lt;span class="nv"&gt;/Link&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;/A&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&amp;lt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;/S&lt;/span&gt; &lt;span class="nv"&gt;/URI&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;/URI&lt;/span&gt; &lt;span class="s"&gt;(http://malicious-site.com)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Because this data is stored in the metadata layer and not the visible text
+content, scanners and email security solutions that rely on surface-level or
+optical text parsing frequently miss it.&lt;/p&gt;
+&lt;p&gt;For a deeper technical dive into how to inspect these structures and extract
+hidden links, see our blog:
+&lt;a href="https://intezer.com/blog/incident-response/analyze-malicious-pdf-files/"target="_blank" rel="noopener"&gt;How to Analyze Malicious PDF Files&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Many security scanners and link extraction tools rely on traditional parsing
+methods that target visible content or standard URL placements. Embedding a URL
+inside a metadata field, such as an annotation, disrupts this process. This
+evasion technique isn’t about hiding from the human eye; it’s about bypassing
+automated tools not designed to extract URLs from non-standard locations in a
+PDF.&lt;/p&gt;
+&lt;h3&gt;Analysis&lt;span class="hx:absolute hx:-mt-20" id="analysis-1"&gt;&lt;/span&gt;
+&lt;a href="#analysis-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;IOC: 252422de154885806f491d602af3bb2eda10563308c65fa5ba8272a9b59f7f41
+(VirusTotal)&lt;/p&gt;
+&lt;p&gt;Upon analyzing the malicious PDF file, we discovered that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The phishing URL was stored inside an annotation object within the /Annots
+array.&lt;/li&gt;
+&lt;li&gt;The URL was not present in the readable text layer of the PDF, making it
+invisible to users unless they inspected the metadata.&lt;/li&gt;
+&lt;li&gt;The file successfully bypassed multiple email security gateways, allowing it
+to be delivered directly to users.&lt;/li&gt;
+&lt;li&gt;VirusTotal’s initial scan returned zero detections for 15 days, meaning no
+security vendor flagged it as malicious, and the malicious PDF bypassed
+security vendors and went straight to the victim’s mailbox.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;To extract the hidden URL, we performed the following steps using a custom PDF
+URL analyzer built by the Intezer research team:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Parsed the PDF structure: We examined the internal objects and metadata to
+identify the /Annots array.&lt;/li&gt;
+&lt;li&gt;Extracted annotation contents: We located any /URI fields inside annotation
+objects that contained hyperlinks.&lt;/li&gt;
+&lt;li&gt;Decoded the phishing URL: The extracted URL was checked against known
+malicious indicators and phishing databases using a custom tool we built and
+Intezer’s platform.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h3&gt;Findings&lt;span class="hx:absolute hx:-mt-20" id="findings-1"&gt;&lt;/span&gt;
+&lt;a href="#findings-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In the analysis we conducted, we found that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The attacker embedded a phishing URL inside a hidden annotation field, making
+it invisible to common link extraction mechanisms.&lt;/li&gt;
+&lt;li&gt;The file was uploaded to VirusTotal, and at the time of analysis, &lt;strong&gt;none of
+the security vendors flagged it as malicious&lt;/strong&gt;, allowing the malicious PDF to
+reach user inboxes undetected.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This technique shows how attackers exploit the flexibility of PDF structure to
+hide phishing payloads in unexpected places. By embedding URLs in metadata
+fields like annotations, adversaries can bypass traditional detection
+mechanisms that aren’t built to interpret the full object graph of a PDF.&lt;/p&gt;
+&lt;p&gt;Because the link is neither visible nor clickable in the traditional sense, it
+evades superficial scanning yet remains functional when opened to certain
+viewers. This highlights the importance of deeper inspection of file structures
+and improved context-aware parsing in email and document security tools.&lt;/p&gt;
+&lt;h2&gt;3. When Sharing Turns Sinister: Malicious URLs in OneDrive Links&lt;span class="hx:absolute hx:-mt-20" id="3-when-sharing-turns-sinister-malicious-urls-in-onedrive-links"&gt;&lt;/span&gt;
+&lt;a href="#3-when-sharing-turns-sinister-malicious-urls-in-onedrive-links" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;OneDrive is a widely used file-sharing service that allows users to store and
+share documents online. Threat actors leverage OneDrive’s trusted reputation to
+host phishing content, making detection more challenging. Instead of directly
+sending a phishing URL, attackers share a read-only OneDrive link that appears
+benign but contains an embedded malicious URL that executes dynamically within
+JavaScript when loaded.&lt;/p&gt;
+&lt;h3&gt;Why This Attack is Difficult to Detect&lt;span class="hx:absolute hx:-mt-20" id="why-this-attack-is-difficult-to-detect"&gt;&lt;/span&gt;
+&lt;a href="#why-this-attack-is-difficult-to-detect" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This attack is challenging to detect due to how OneDrive renders shared
+documents:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Read-only restriction: When accessing a shared OneDrive file, the document is
+in read-only mode, preventing users from easily extracting or modifying its
+contents.&lt;/li&gt;
+&lt;li&gt;Dynamic execution: The malicious URL is not statically present in the
+document’s body or metadata but is instead dynamically loaded through
+JavaScript at runtime.&lt;/li&gt;
+&lt;li&gt;Failure of static analysis: Many security scanners and email security tools
+rely on static link extraction methods. Traditional scanners fail to identify
+the threat since the phishing URL does not exist in the initial DOM
+structure.&lt;/li&gt;
+&lt;li&gt;Bypassing email security filters: The email containing the OneDrive link
+passed through multiple email security solutions undetected, making it
+directly accessible to users.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Analysis&lt;span class="hx:absolute hx:-mt-20" id="analysis-2"&gt;&lt;/span&gt;
+&lt;a href="#analysis-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;IOCs:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;https://1drv[.]ms/o/c/1ba8fd2bd98c98a8/EqF44YiGOwBIpBplYeDLr_8BcMUtVTMm6dwmUK9E0dXA_A?e=ZrI61x&lt;/code&gt;
+(&lt;a href="https://www.virustotal.com/gui/url/04e39e4c023e96739a0e1e9c4fe1aa60ce1c75de1947467e9acfa3bbe126135e/detection"target="_blank" rel="noopener"&gt;VirusTotal&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;https://login.rocklongdays[.]shop/NXayublq&lt;/code&gt;
+(&lt;a href="https://www.virustotal.com/gui/url/6532f8eaeda4b1e1d9c4bc80d9b57fc138c3c297b7f519be7f6e8d0a3d2fa9ad"target="_blank" rel="noopener"&gt;VirusTotal&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To investigate this technique, we attempted various standard approaches:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Direct static extraction: Parsing the OneDrive document’s HTML and inspecting
+its DOM elements yielded no phishing URLs.&lt;/li&gt;
+&lt;li&gt;Network traffic inspection: Capturing the network requests while loading the
+document showed delayed URL loading, indicating dynamic content injection.&lt;/li&gt;
+&lt;li&gt;Manual analysis in browser dev tools: The URL was only visible within
+developer tools after JavaScript execution.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Findings&lt;span class="hx:absolute hx:-mt-20" id="findings-2"&gt;&lt;/span&gt;
+&lt;a href="#findings-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;After conducting the analysis, we concluded that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The phishing URL was dynamically inserted via JavaScript and was not present
+in the initial document structure.&lt;/li&gt;
+&lt;li&gt;Static analysis methods, including traditional email security scanners,
+failed to detect the malicious URL.&lt;/li&gt;
+&lt;li&gt;VirusTotal initially marked the OneDrive-hosted document as clean, further
+proving that standard detection techniques are insufficient.&lt;/li&gt;
+&lt;li&gt;The technique required a multi-step forensic approach. Saving the OneDrive
+document as a PDF exposed the hidden phishing URL within the metadata.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This attack highlights how attackers abuse trusted cloud-based platforms to
+evade security controls. Since many organizations allow OneDrive links in
+corporate environments, phishing actors exploit this trust to deliver
+credential-harvesting campaigns. The fact that email security tools failed to
+detect this attack further emphasizes the need for advanced inspection
+mechanisms.&lt;/p&gt;
+&lt;p&gt;By leveraging read-only document sharing and dynamic execution, threat actors
+increase their chances of success while reducing the likelihood of detection
+through traditional security measures.&lt;/p&gt;
+&lt;h2&gt;4. Buried Deep: MHT Files Nesting in OpenXML Documents&lt;span class="hx:absolute hx:-mt-20" id="4-buried-deep-mht-files-nesting-in-openxml-documents"&gt;&lt;/span&gt;
+&lt;a href="#4-buried-deep-mht-files-nesting-in-openxml-documents" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Phishers increasingly use &lt;em&gt;MHT&lt;/em&gt; (MIME HTML) files embedded within OpenXML
+documents (e.g., &lt;code&gt;.docx&lt;/code&gt;) to deliver phishing payloads. MHT files are used to
+archive web content and can store complete HTML documents, including images,
+links, and scripts. This makes them ideal for hiding phishing lures inside
+seemingly harmless Office files.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The phishing emails delivering these &lt;code&gt;.docx&lt;/code&gt; files successfully bypassed
+multiple email security filters and landed in user inboxes undetected.&lt;/p&gt;
+&lt;h3&gt;How OpenXML Documents Work&lt;span class="hx:absolute hx:-mt-20" id="how-openxml-documents-work"&gt;&lt;/span&gt;
+&lt;a href="#how-openxml-documents-work" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Modern Microsoft Office documents are based on the OpenXML standard, which
+structures the document’s content in a ZIP-based format containing multiple
+files and directories (e.g., &lt;code&gt;word/document.xml&lt;/code&gt;, &lt;code&gt;media/&lt;/code&gt;, &lt;code&gt;embeddings/&lt;/code&gt;).
+Threat actors abuse this format by embedding MHT files inside the document,
+making it possible to deliver archived web lures that won’t be rendered or
+scanned unless explicitly unpacked and inspected.&lt;/p&gt;
+&lt;h3&gt;Analysis&lt;span class="hx:absolute hx:-mt-20" id="analysis-3"&gt;&lt;/span&gt;
+&lt;a href="#analysis-3" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;IOCs:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;07565bc74159ddbebb8dadbd6f20871f4236883653dc7fdd1d30ecd0460167e5&lt;/code&gt;
+(&lt;a href="https://www.virustotal.com/gui/file/07565bc74159ddbebb8dadbd6f20871f4236883653dc7fdd1d30ecd0460167e5"target="_blank" rel="noopener"&gt;VirusTotal&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;https://elitesglassandmetal[.]com/NXttfWmEqWJrJQ&lt;/code&gt;
+(&lt;a href="https://www.virustotal.com/gui/url/b4a8ce87815416df014b1d692f60a5cbc13692009f82ab59a14c29e5e902d4a0"target="_blank" rel="noopener"&gt;VirusTotal&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;A malicious .docx sample contained an embedded MHT file delivering a
+sophisticated QR-based phishing attack (also known as quishing). The attack
+used multiple layers of deception:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Malicious QR Code: The MHT file embedded two images: image0.png and
+image1.png. The second image contained a QR code which, when decoded,
+resolved to:&lt;/li&gt;
+&lt;li&gt;https://elitesglassandmetal[.]com/NXttfWmEqWJrJQ&lt;/li&gt;
+&lt;li&gt;The domain appears legitimate but is likely compromised and hosting a
+phishing page.&lt;/li&gt;
+&lt;li&gt;Brand Impersonation: The phishing content impersonated both Microsoft
+Office365 and ROLEX, including brand imagery and a 2025 copyright notice.&lt;/li&gt;
+&lt;li&gt;Social Engineering &amp;amp; Urgency: Language in the MHT warned that the recipient’s
+account would be “suspended from sending and receiving messages” within 24
+hours, pressuring users into action. Words and phrases such as “2FA,”
+“message encryption,” and “authentication” were used to imply a legitimate
+security notification.&lt;/li&gt;
+&lt;li&gt;Quishing Evasion Technique: By embedding the phishing URL within a QR code
+image rather than plain text or hyperlinks, the attacker successfully
+bypassed traditional email scanners and static link analysis tools.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We’ve conducted this analysis using a custom tool we developed. It extracts all
+the MHT files inside and decodes the QR code. The image below shows the output:&lt;/p&gt;
+&lt;h3&gt;Findings&lt;span class="hx:absolute hx:-mt-20" id="findings-3"&gt;&lt;/span&gt;
+&lt;a href="#findings-3" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;After using the tool we developed to conduct our analysis, we found that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The phishing URL was embedded as a QR code within an image inside an MHT
+file, buried deep within the &lt;code&gt;.docx&lt;/code&gt; structure.&lt;/li&gt;
+&lt;li&gt;Static scanners and email security solutions did not extract or analyze the
+MHT file, allowing the payload to slip through.&lt;/li&gt;
+&lt;li&gt;The phishing campaign used common social engineering tactics, including
+urgency, impersonation, and trusted branding.&lt;/li&gt;
+&lt;li&gt;VirusTotal showed zero detections for this sample at the time of analysis,
+indicating a widespread blind spot across vendors.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This case highlights the growing abuse of document structure to conceal
+phishing payloads. The combination of MHT embedding, QR code redirection, and
+brand impersonation makes this technique difficult to detect using traditional
+rule-based systems.&lt;/p&gt;
+&lt;p&gt;Organizations should consider implementing:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Deep inspection of OpenXML document internals&lt;/li&gt;
+&lt;li&gt;QR code analysis pipelines for document attachments&lt;/li&gt;
+&lt;li&gt;Behavioral analysis to catch malicious redirection patterns that static tools
+overlook&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As threat actors continue to innovate around delivery methods, defenders must
+match that sophistication with context-aware analysis and layered defenses.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The techniques uncovered in this research underscore a clear evolution in
+phishing tactics that leverage non-traditional file formats, cloud-hosted trust
+abuse, and structural evasion to bypass modern defenses. These are not random,
+opportunistic tricks; they are calculated methods designed to defeat static
+analysis, signature-based detection, and even behavioral filtering at the email
+gateway and endpoint level.&lt;/p&gt;
+&lt;p&gt;We’ve observed phishing payloads hidden in places most tools don’t look:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Encoded JavaScript in SVG images, bypassing visual and content-based
+scanning.&lt;/li&gt;
+&lt;li&gt;Hyperlinks embedded in PDF annotation objects, never visible in the main text
+layer.&lt;/li&gt;
+&lt;li&gt;Dynamic phishing URLs are rendered at runtime inside OneDrive-hosted files,
+invisible to static crawlers.&lt;/li&gt;
+&lt;li&gt;Archived MHT payloads are hidden deep inside OpenXML structures, escaping
+inspection in document-level scanning.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;A shift toward structural and contextual obfuscation ties all of these
+techniques together, where the malicious content only becomes apparent when
+rendered, executed, or deeply unpacked. And in every case we documented, the
+payloads successfully bypassed email security solutions, reaching end users in
+real-world attacks. In multiple samples, no vendors on VirusTotal flagged the
+files as malicious at the time of analysis.&lt;/p&gt;
+&lt;p&gt;As phishing continues to evolve, defenders must adapt. Traditional rules-based
+detection and regex-driven link scanning are no longer enough. Analysts and
+security researchers need to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Perform deep, format-aware inspection of complex file types like SVG, PDF,
+DOCX, and MHT.&lt;/li&gt;
+&lt;li&gt;Combine static and dynamic analysis, especially for cloud-based or
+runtime-resolved payloads.&lt;/li&gt;
+&lt;li&gt;Stay informed of obfuscation patterns and structural abuses that go beyond
+signature detection.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;At Intezer, our visibility into millions of alerts enables us to identify and
+track these shifts in real time. We encourage the community to remain
+proactive. These are not theoretical techniques; they are actively used in the
+wild, and we expect their adoption to increase.&lt;/p&gt;
+&lt;p&gt;Phishing isn’t going away, but with the right tools, analysis depth, and
+research collaboration, we can stay ahead of threats designed to go unnoticed.&lt;/p&gt;</description></item></channel></rss>
