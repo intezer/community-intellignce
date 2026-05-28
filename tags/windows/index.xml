@@ -1,80 +1,338 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Intezer Research – Windows</title>
-    <link>http://localhost:1313/community-intelligence/tags/windows/</link>
-    <description>Recent content in Windows on Intezer Research</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 22 May 2025 00:00:00 +0000</lastBuildDate>
-    
-	  <atom:link href="http://localhost:1313/community-intelligence/tags/windows/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-      
-        
-      
-    
-    
-    <item>
-      <title>Fire in the Woods – A New Variant of FireWood</title>
-      <link>http://localhost:1313/community-intelligence/blog/2025/08/threat-bulletin-firewood/</link>
-      <pubDate>Thu, 22 May 2025 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/community-intelligence/blog/2025/08/threat-bulletin-firewood/</guid>
-      <description>
-        
-        
-        &lt;p&gt;&lt;em&gt;A new and low-detected variant of the FireWood backdoor was discovered by
-Intezer’s Research Team, with some changes in the implementation and the
-configuration of the backdoor.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;FireWood is a Linux backdoor
-&lt;a href=&#34;https://www.welivesecurity.com/en/eset-research/unveiling-wolfsbane-gelsemiums-linux-counterpart-to-gelsevirine/&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;discovered&lt;/a&gt;
-by ESET’s research team. They linked it to the long‑running &amp;ldquo;Project Wood&amp;rdquo;
-malware lineage, which dates back to at least 2005 and includes usage in the
-earlier Operation TooHash campaign. It functions as a remote access trojan
-(RAT) on Linux systems, employing kernel‑level rootkit modules (e.g.,
-usbdev.ko) and TEA‑based encryption to hide its presence, maintain persistence,
-and communicate covertly with its command‑and‑control infrastructure. Once
-deployed, likely via web shells left on compromised Linux desktops, it enables
-attackers to execute commands, exfiltrate sensitive data such as system
-information and credentials, and operate stealthily over prolonged espionage
-operations. The backdoor has low confidence connections to the China-aligned
-Gelsemium APT group, as the overlaps may be coincidental or reflect shared
-tools across multiple groups.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;We found a new and low-detected variant of the FireWood backdoor&lt;/strong&gt;. The core
-functionality of the backdoor remains the same but we did notice some changes
-in the implementation and the configuration of the backdoor. It is unclear if
-the kernel module was also updated as we were not able to collect it.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-    &lt;img src=&#34;images/fig1.png&#34; title=&#34;Code analysis of the new version in Intezer.&#34; alt=&#34;&#34;  loading=&#34;lazy&#34; /&gt;
-    &lt;figcaption&gt;Code analysis of the new version in Intezer.&lt;/figcaption&gt;
-  &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-    &lt;img src=&#34;images/fig2.png&#34; title=&#34;SHA256: 898a5bd86c5d99eb70088a90f1d8f90b03bd38c15a232200538d0601c888acb6&#34; alt=&#34;&#34;  loading=&#34;lazy&#34; /&gt;
-    &lt;figcaption&gt;SHA256: 898a5bd86c5d99eb70088a90f1d8f90b03bd38c15a232200538d0601c888acb6&lt;/figcaption&gt;
-  &lt;/figure&gt;&lt;/p&gt;
-&lt;h2&gt;Technical Analysis of New Firewood Variant&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;technical-analysis-of-new-firewood-variant&#34;&gt;&lt;/span&gt;
-    &lt;a href=&#34;#technical-analysis-of-new-firewood-variant&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the older variant, execution began with an explicit permission gate, calling
-&lt;code&gt;CUser::IsSuc()&lt;/code&gt;, and the process would exit if this check failed. In the newer
-build, that early check is removed entirely. The new version defers any
-root‑or‑kernel gating until after it daemonizes and saves its PID. To achieve
-this, the code splits the former &lt;code&gt;SavePidAndCheckKernel()&lt;/code&gt; helper into two
-discrete steps: an early &lt;code&gt;SavePid(pid)&lt;/code&gt;, followed later by
-&lt;code&gt;CModuleControl::AutoLoad()&lt;/code&gt; and &lt;code&gt;CheckLkmLoad()&lt;/code&gt;. This separation clarifies
-the startup sequence and enhances the hide‑via‑kernel‑module logic.
-Additionally, rather than simply sending a stripped‑down identifier, the
-updated version builds a larger buffer containing the process name,
-hex‑formatted port, PID, a hardcoded “kde‑tra” process name, and a configurable
-flag (or the literal “nothing”). That extra metadata is passed through
-&lt;code&gt;CHideProcess::NetLinkInit()&lt;/code&gt;,
-&lt;code&gt;CHideProcess::SendProcessName(&amp;amp;CHideProcess::mInstance)&lt;/code&gt;, and
-&lt;code&gt;CHideProcess::Destroy()&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Note the typo in the method name &amp;ldquo;Destroy&amp;rdquo;, this error also appears in the
-older Firewood variant. Another typo persists in both versions in the following
-error message: &amp;ldquo;Get Memory Faile&amp;rdquo;.&lt;/p&gt;
-
-      </description>
-    </item>
-    
-  </channel>
-</rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Windows</title><link>https://intezer.github.io/community-intelligence/tags/windows/</link><description>Recent content in Windows on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 18 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/windows/index.xml" rel="self" type="application/rss+xml"/><item><title>How Hackers Use Binary Padding to Outsmart Sandboxes and Infiltrate Your Systems</title><link>https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/</link><pubDate>Thu, 18 May 2023 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/</guid><description>
+&lt;p&gt;Binary padding is the process of adding extra or junk data to a portable
+executable (PE) file that, while not changing the behavior of the binary,
+changes certain characteristics that can help with either obfuscating relevant
+code or defeating sandboxing solutions and detections.&lt;/p&gt;
+&lt;p&gt;This technique is not novel. It has been employed in various forms for several
+years to achieve different effects, all of which are related to evading defense
+mechanisms. So why are we talking about it now? We have noticed recently a lot
+of phishing campaigns using binary padding while targeting victims, for example
+&lt;a href="https://www.trendmicro.com/en_us/research/23/c/emotet-returns-now-adopts-binary-padding-for-evasion.html"target="_blank" rel="noopener"&gt;Emotet&lt;/a&gt;
+and
+&lt;a href="https://research.checkpoint.com/2020/exploring-qbots-latest-attack-methods/"target="_blank" rel="noopener"&gt;QBot&lt;/a&gt;.
+(&lt;a href="#pufferphishing-binary-padding-combined-with-compression"&gt;Skip down to read more about this “PufferPhishing” technique.&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;This blog will take a look into the what, the why, and the who when it comes to
+binary padding as an evasive technique for cyberattacks.&lt;/p&gt;
+&lt;h2&gt;Why Would Attackers Use Binary Padding?&lt;span class="hx:absolute hx:-mt-20" id="why-would-attackers-use-binary-padding"&gt;&lt;/span&gt;
+&lt;a href="#why-would-attackers-use-binary-padding" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Historically, malware was small in size. A lot of logic for malware can be
+programmed into a very small executable. A small size for malware was a
+requirement not long ago, as computers had slower internet and not a huge
+amount of RAM. Large binaries used to be limited to files like installers or
+games, as these contain a large amount of resources such as extra files, images
+and libraries in order to function. Over 10 years ago, if a file was very
+large, for example over 5 MB in size, it would have been an indicator of
+non-maliciousness.&lt;/p&gt;
+&lt;p&gt;These days not so much. As computers today have magnitudes more memory and disk
+space compared to twenty years ago, file size of a binary became less of an
+issue. This has allowed new compilers and programming languages to optimize
+differently without considering the final binary size. New programming
+languages such as Rust and Go default to statically link libraries to the final
+binary which helps improve performance, but results in a larger final binary.
+For example, a “Hello, World”
+&lt;a href="../../../2021/12/all-your-go-binaries-are-belong-to-us/"&gt;Go binary&lt;/a&gt; has a size
+in the megabytes.&lt;/p&gt;
+&lt;p&gt;Binary padding comes with many benefits for malware authors, let’s discuss a
+few of them and the pros and cons for each.&lt;/p&gt;
+&lt;h3&gt;Binary Padding Can Defeat Sandboxes with Size Limits&lt;span class="hx:absolute hx:-mt-20" id="binary-padding-can-defeat-sandboxes-with-size-limits"&gt;&lt;/span&gt;
+&lt;a href="#binary-padding-can-defeat-sandboxes-with-size-limits" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;One of the most simple reasons for binary padding is to simply make the file
+bigger! This attempts to avoid analysis from automated malware analysis tools,
+such as
+&lt;a href="https://intezer.com/blog/alert-triage/the-evolution-of-sandboxing/"target="_blank" rel="noopener"&gt;traditional sandboxes&lt;/a&gt;,
+since most have an upper limit on the size of files being submitted. It also
+hinders analysis of the file as someone trying to submit the file might not be
+able to upload such a large file in reasonable time limits, since the upload
+requires network transfer to the sandbox. This simple but effective technique
+allows malware to avoid being analyzed by virtue of being &lt;em&gt;too big to fit in
+the front door&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;For security vendors, the solution is simple: raise the limit of file size.
+This arms race comes with added costs for security vendors, but also adds cost
+to the malware author, the larger they need to make their malware to usurp the
+limits also makes the malware much bulkier and harder to transport to the
+victim. (There is an easy method that malware authors are able to use to make
+their inflated files easier to transport that we will talk about
+&lt;a href="#pufferphishing-binary-padding-combined-with-compression"&gt;later in this blog&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig1.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Exceeding Sandbox Size Limits with Binary Padding&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Pros for the attacker&lt;/th&gt;
+&lt;th&gt;Cons for the attacker&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Simple to implement for the malware author&lt;/td&gt;
+&lt;td&gt;Easy for cybersecurity tools to detect&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Effectively defeats most sandbox solutions&lt;/td&gt;
+&lt;td&gt;Malware with binary padding can be reversed&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Multiple ways to achieve&lt;/td&gt;
+&lt;td&gt;Hard to transport files&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;Does not defeat tools with no size limit&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Using Binary Padding to Change the Hash&lt;span class="hx:absolute hx:-mt-20" id="using-binary-padding-to-change-the-hash"&gt;&lt;/span&gt;
+&lt;a href="#using-binary-padding-to-change-the-hash" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;“I’m not like other executables.” Binary padding can also be used to
+&lt;a href="../../../2022/05/threat-hunting-sigma-detection-rules/#:~:text=a%20file%E2%80%99s%20hash%20is%20the%20easiest%20indicator%20to%20find%20and%20to%20detect%20but%20it%20is%20also%20trivial%20for%20threat%20actors%20to%20modify%20it%20simply%20by%20changing%20one%20bit%20in%20a%20file."&gt;change the hash for a malware&lt;/a&gt;.
+This technique can be effective to avoid hash-based detections, but not systems
+with genetic-based detection. The technique is achieved by a malware creating a
+copy of itself and inserting random data into it, thus ensuring that a
+cryptographic hash, for example MD5 or SHA, of the file will be unique for
+each. It is easy to achieve as only one bit is needed to be changed to change
+the hash.&lt;/p&gt;
+&lt;p&gt;The reason why this works is due to a concept in cryptography called
+&lt;a href="https://en.wikipedia.org/wiki/Confusion_and_diffusion"target="_blank" rel="noopener"&gt;diffusion&lt;/a&gt;. Diffusion
+means that if one bit of an input into a cryptographic hashing function is
+changed, then much of the output (digest) is also changed. This means that
+similar inputs do not produce similar outputs, hiding any relationship between
+the digest and the plaintext. This has the effect of avoiding hash-based
+detections, as we can see it is trivial to change the hash. This is less of an
+effective technique as most modern malware detection solutions have
+&lt;a href="http://detect-respond.blogspot.com/2013/03/the-pyramid-of-pain.html"target="_blank" rel="noopener"&gt;moved beyond&lt;/a&gt;
+hash-based and use genetic, signature, or behavior-based detections.&lt;/p&gt;
+&lt;p&gt;An example with the string diffusion:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;String&lt;/th&gt;
+&lt;th&gt;MD5 Hash Digest&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Diffusion&lt;/td&gt;
+&lt;td&gt;c9fc4714730359980e89007f327c5b7d&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Diffuzion&lt;/td&gt;
+&lt;td&gt;2e24821ec7e23fe19d8ec494a801928a&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Notice how changing one letter completely changes the above hash digest?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Binary Padding to Create Unique Hashes&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Pros for the attacker&lt;/th&gt;
+&lt;th&gt;Cons for the attacker&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Easy to achieve for the malware author&lt;/td&gt;
+&lt;td&gt;Slightly antiquated, it does not defeat more modern malware detection methods such as signatures or genetic detection&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Defeats hash-based detections&lt;/td&gt;
+&lt;td&gt;Often requires the malware to create a copy of itself to modify, which can be suspicious behavior to detect in itself&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Multiple ways to achieve&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;An example of this technique being used is by the Orangeworm group with their
+&lt;a href="https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/orangeworm-targets-healthcare-us-europe-asia"target="_blank" rel="noopener"&gt;Kwampirs backdoor&lt;/a&gt;;
+it achieves it by inserting a randomly generated string into the middle of the
+binary.&lt;/p&gt;
+&lt;h3&gt;Binary Padding for Obfuscation&lt;span class="hx:absolute hx:-mt-20" id="binary-padding-for-obfuscation"&gt;&lt;/span&gt;
+&lt;a href="#binary-padding-for-obfuscation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Padding, such as junk code, can be added to an executable solely for the
+purpose of creating so much junk and noise that it bogs down analysts when
+looking at the file, that it has the effect of obfuscating the relevant
+malicious code. Many would be familiar with the technique used in legislation
+of a &lt;a href="https://en.wikipedia.org/wiki/Rider_%28legislation%29"target="_blank" rel="noopener"&gt;rider&lt;/a&gt;; an extra
+provision added to a bill, hiding behind the main body of text hoping to fly
+under the radar in order not to be noticed. It is a similar concept with junk
+code obfuscation. Junk code has the effect of hindering manual analysis by a
+reverse engineer that does not have the tools or skills to avoid falling into
+the trap. While this is effective at hindering manual analysis, it does not
+always have the ability to pass automated analysis tools as they can analyze
+code at volumes that cannot be performed by a human. The presence of junk code
+in itself can be a suspicious indicator of maliciousness; what can be less
+discreet than a malware containing the works of Shakespeare inside it?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Binary Padding for Obfuscation&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Pros for the attacker&lt;/th&gt;
+&lt;th&gt;Cons for the attacker&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Can confuse malware analysts&lt;/td&gt;
+&lt;td&gt;Can be a suspicious indicator in itself&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Hinders debugging&lt;/td&gt;
+&lt;td&gt;Can cause more resource consumption, hindering the performance of the malware&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Has some of the same positive effects of inflating the binary size&lt;/td&gt;
+&lt;td&gt;Limited effectiveness on skilled analysts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Can cause false negatives&lt;/td&gt;
+&lt;td&gt;Has the same negative effects of inflating the binary size&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Can cause decompilers and disassemblers to take a very long time to open the file – Less likely to defeat automated analysis techniques&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Problem for Threat Actors&lt;span class="hx:absolute hx:-mt-20" id="problem-for-threat-actors"&gt;&lt;/span&gt;
+&lt;a href="#problem-for-threat-actors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The main problem for threat actors is that with binary padding, the increased
+file size can be hard to distribute. Threat actors want a file that is huge on
+disk, but does not take ages to deliver. Not everyone has an extremely fast
+internet, and therefore it would be inconvenient to a threat actor wishing to
+distribute malware to make it take hours to download.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig2.jpg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;What is their solution to this? The malware author can use a downloader that
+dynamically pads a binary after downloading it. An example of this is the
+threat group BRONZE BUTLER. BRONZE BUTLER
+&lt;a href="https://www.secureworks.com/research/bronze-butler-targets-japanese-businesses"target="_blank" rel="noopener"&gt;targeted Japanese businesses&lt;/a&gt;
+with malware using padding. This was achieved by using a downloader that would
+download a payload and then insert the character ‘0’ at the end of the file to
+inflate the size to 50-100 MB.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This comes with extra baggage that the malware author might not wish to have.
+Firstly the downloader itself might be detected, which can defeat the purpose
+of using binary padding to avoid detection. Next is also that it creates more
+network traffic that might be detected. The C2 might already be known to
+distribute malware, and it can be blocked or detected at this point. The use of
+a C2 can add an extra single point of failure in the chain where something
+might break. Also the payload that is fetched might be detected in memory or
+over the network before the padding is performed, so it might be analyzed
+before the padding has a chance to take effect.&lt;/p&gt;
+&lt;p&gt;There is another way to achieve padding without the same baggage that comes
+from using downloaders and C2 servers, &lt;strong&gt;exploiting compression&lt;/strong&gt;. We will talk
+about this technique below, which we are calling “&lt;strong&gt;PufferPhishing&lt;/strong&gt;” due to
+its active use in malicious phishing attachments. This is not a new technique,
+but is ever more being exploited by threat actors in phishing campaigns.&lt;/p&gt;
+&lt;h2&gt;PufferPhishing: Binary Padding Combined with Compression&lt;span class="hx:absolute hx:-mt-20" id="pufferphishing-binary-padding-combined-with-compression"&gt;&lt;/span&gt;
+&lt;a href="#pufferphishing-binary-padding-combined-with-compression" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Recently we have noticed an uptick in the use of binary padding to evade
+analysis size limits… but with a smart technique to ensure that the files are
+still deliverable, by exploiting the efficiency of compression algorithms.
+Malware authors are creating padding that uses resources and overlays in order
+to create malware that is hundreds of MBs in size, but is able to compress to
+over 90% of its original bulk due to its efficiency in compression. This means
+that malware can be created to circumvent sandbox size limits but also solve
+the file transport problem that comes with that technique. It is the binary
+padding equivalent of having your cake and eating it too!&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h3&gt;How Does the PufferPhishing Technique Work?&lt;span class="hx:absolute hx:-mt-20" id="how-does-the-pufferphishing-technique-work"&gt;&lt;/span&gt;
+&lt;a href="#how-does-the-pufferphishing-technique-work" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The technique works by using repeating sequences of bytes padded inside
+binaries to inflate the size of the binary. But the nature of the repeating
+bytes used allows it to be compressed to over 90% of its original size,
+commonly in the
+&lt;a href="https://en.wikipedia.org/wiki/ZIP_%28file_format%29#:~:text=ZIP%20is%20an%20archive%20file,DEFLATE%20is%20the%20most%20common."target="_blank" rel="noopener"&gt;ZIP file format&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;ZIP archive file format most commonly uses the
+&lt;a href="https://www.zlib.net/feldspar.html"target="_blank" rel="noopener"&gt;DEFLATE compression&lt;/a&gt; format, incorporating
+LZ77 and Huffman coding. It is very good at compressing sequences of repeating
+data. DEFLATE compression works so well on repeating bytes that it’s worth
+showing an example:&lt;/p&gt;
+&lt;p&gt;Creating a file of size 5 KB, with the repeating character a will compress to
+22 bytes with DEFLATE. A 99.56% decrease in size. Whereas a file with the
+string below will only compress to 45 bytes:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;This is a 13.46% decrease in size. Through DEFLATE, the file with the repeating
+bytes will be smaller than the file with less repeating bytes even though the
+former file was around 100x bigger decompressed! This shows how the use of
+repeating data (or a very low
+&lt;a href="https://en.wikipedia.org/wiki/Entropy_%28information_theory%29"target="_blank" rel="noopener"&gt;entropy&lt;/a&gt;) can be
+exploited to make very large malware files that are easy to transport. The
+following CyberChef recipes have been created to help demonstrate:&lt;/p&gt;
+&lt;p&gt;File 1 (Repeating Bytes/Large File):
+&lt;a href="https://gchq.github.io/CyberChef/#recipe=Raw_Deflate%28%27Dynamic%20Huffman%20Coding%27%29&amp;amp;input=YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWE"target="_blank" rel="noopener"&gt;Compression&lt;/a&gt;,
+&lt;a href="https://gchq.github.io/CyberChef/#recipe=Entropy%28%27Shannon%20scale%27%29&amp;amp;input=YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWE"target="_blank" rel="noopener"&gt;Entropy&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;File 2 (More Entropy/Smaller File):
+&lt;a href="https://gchq.github.io/CyberChef/#recipe=Raw_Deflate%28%27Dynamic%20Huffman%20Coding%27%29&amp;amp;input=YWFiYmNjZGRlZWZmZ2doaGlpampra2xsbW1ubm9vcHBxcXJyc3N0dHV1dnZ3d3h4eXl6eg"target="_blank" rel="noopener"&gt;Compression&lt;/a&gt;,
+&lt;a href="https://gchq.github.io/CyberChef/#recipe=Entropy%28%27Shannon%20scale%27%29&amp;amp;input=YWFiYmNjZGRlZWZmZ2doaGlpampra2xsbW1ubm9vcHBxcXJyc3N0dHV1dnZ3d3h4eXl6eg"target="_blank" rel="noopener"&gt;Entropy&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Compression likes lower entropy. Entropy is a measure of how random the data
+inside a file is. Since compression algorithms work by finding patterns to
+encode in a smaller format, a smaller entropy of data in a file will lead to
+better compression ratios.&lt;/p&gt;
+&lt;p&gt;What does this look like incorporated into malware?&lt;/p&gt;
+&lt;h3&gt;Examples of Malware with Binary Padding&lt;span class="hx:absolute hx:-mt-20" id="examples-of-malware-with-binary-padding"&gt;&lt;/span&gt;
+&lt;a href="#examples-of-malware-with-binary-padding" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Overlay&lt;span class="hx:absolute hx:-mt-20" id="overlay"&gt;&lt;/span&gt;
+&lt;a href="#overlay" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;In March 2023, a Trend Micro
+&lt;a href="https://www.trendmicro.com/en_us/research/23/c/emotet-returns-now-adopts-binary-padding-for-evasion.html"target="_blank" rel="noopener"&gt;blog&lt;/a&gt;
+noted Emotet using binary padding in the overlay in order to inflate the file
+size. Using 00-byte padding allowed the PE file to be compressed from a sizes
+of over 500 MB to ZIP files less than 1 MB:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://analyze.intezer.com/files/61bb1c8adaaffc629e60db7e4a171538c5d625a6d79d225e03310c684efd7581"target="_blank" rel="noopener"&gt;61bb1c8adaaffc629e60db7e4a171538c5d625a6d79d225e03310c684efd7581&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This file contains a very large DLL inside with padding in the overlay. The
+sections end at the file end at &lt;code&gt;0x9a200&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Junk data is appended past the defined end of the PE. Most of it being the null
+byte.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;99.9% of the file is padding. The padding in the overlay is not loaded to
+memory when the PE is executed. This allows it to take up less space in memory
+than it does on disk.&lt;/p&gt;
+&lt;h4&gt;Resources&lt;span class="hx:absolute hx:-mt-20" id="resources"&gt;&lt;/span&gt;
+&lt;a href="#resources" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The resource section of a PE is used for many items that are used as resources
+by the binary, this can be things such as images, audio, icons, and videos, but
+it can be abused. Very commonly the padding is placed in the resource section
+of malware. An example of this being used is in phishing emails, sending ZIP
+files that contain a Windows Installer (MSI) file:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://analyze.intezer.com/files/34bcf0a864b6c7f4ecca92f1216ed58da4018c719552cfb62fee940924a91154"target="_blank" rel="noopener"&gt;34bcf0a864b6c7f4ecca92f1216ed58da4018c719552cfb62fee940924a91154&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The MSI file is in Composite Document File V2 Document (CDF) format with an
+embedded DLL file that is padded using the resource section. The use of the CDF
+format also adds another layer of defense evasion that might bypass security
+detections that only work on PE files. The DLL is padded in the resource
+section with a stream of repeating bytes.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The MSI file is almost 500 MB but is able to be compressed to a size of around
+2 MB, a huge reduction in size.&lt;/p&gt;
+&lt;h4&gt;Space Between Sections&lt;span class="hx:absolute hx:-mt-20" id="space-between-sections"&gt;&lt;/span&gt;
+&lt;a href="#space-between-sections" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Similar to the overlay, malware authors can also play with the space between
+sections. Data can be inserted in between the sections of a PE to inflate the
+size.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This technique has
+&lt;a href="https://github.com/adeilsonsilva/malware-injection"target="_blank" rel="noopener"&gt;been used by researchers&lt;/a&gt;
+in order to deceive malware classification.&lt;/p&gt;
+&lt;h4&gt;Giant Variable&lt;span class="hx:absolute hx:-mt-20" id="giant-variable"&gt;&lt;/span&gt;
+&lt;a href="#giant-variable" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Malware authors can also use really large strings in order to pad malware in
+the data section. This technique is not often used as it can be easily
+detected, through looking for large strings. This technique involves simply
+creating extremely large strings in the code of the malware that are not used
+specifically for the functionality of the malware itself. An example can be
+easily shown with a simple C program printing out very large strings.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;These strings are stored in the data section of the PE. Since they are just
+sequences of repeating characters, they have very little entropy, and can help
+with compression. The graph below shows the drop in entropy of where these
+strings are stored. One issue that a threat actor might stumble into with this
+technique is that depending on the compiler, there can be a limit on the
+&lt;a href="https://learn.microsoft.com/en-us/cpp/cpp/string-and-character-literals-cpp?redirectedfrom=MSDN&amp;amp;view=msvc-170#size-of-string-literals"target="_blank" rel="noopener"&gt;maximum length&lt;/a&gt;
+of a string literal. This could force the threat actor to use many smaller
+strings instead of one massive string for padding.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Compressing this file in ZIP format will lead to a 64% deflation size.&lt;/p&gt;
+&lt;h3&gt;How Intezer Fights Binary Padding&lt;span class="hx:absolute hx:-mt-20" id="how-intezer-fights-binary-padding"&gt;&lt;/span&gt;
+&lt;a href="#how-intezer-fights-binary-padding" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Binary padding can be a simple and effective way to bypass security defenses,
+it is one technique out of many that are in a malware authors arsenal. This
+technique combined with other techniques, such as compression, can be chained
+to create innovative payloads that hinder analysis and detection.&lt;/p&gt;
+&lt;p&gt;Intezer is able to remove padding from samples to make it much more manageable
+to analyze. Take for example this
+&lt;a href="https://www.virustotal.com/gui/file/d5e5621de806e1bbe724ddd9791e6e4d1a0a68b6194cdafa18aeaf6b09fd9237/detection"target="_blank" rel="noopener"&gt;Laplas Clipper&lt;/a&gt;
+sample. It is padded to over 600 MB through using the overlay technique!
+Intezer is able to
+&lt;a href="https://analyze.intezer.com/files/dee4b71196dd36a2f350c1aaaea795d2242372bda7157f3bc37d76c17d7cc407"target="_blank" rel="noopener"&gt;unpack the sample&lt;/a&gt;
+from the ZIP file and remove the overlay. Give it a go yourself with padded
+samples. Submit the parent ZIP and Intezer will do the rest.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;</description></item></channel></rss>
