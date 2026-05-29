@@ -158,7 +158,7 @@ commonly in the
 <a href=https://www.zlib.net/feldspar.html target=_blank rel=noopener>DEFLATE compression</a> format, incorporating
 LZ77 and Huffman coding. It is very good at compressing sequences of repeating
 data. DEFLATE compression works so well on repeating bytes that it’s worth
-showing an example:</p><p>Creating a file of size 5 KB, with the repeating character a will compress to
+showing an example:</p><p>Creating a file of size 5 KB, with the repeating character <code>a</code> will compress to
 22 bytes with DEFLATE. A 99.56% decrease in size. Whereas a file with the
 string below will only compress to 45 bytes:</p><p><code>aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz</code></p><p>This is a 13.46% decrease in size. Through DEFLATE, the file with the repeating
 bytes will be smaller than the file with less repeating bytes even though the
