@@ -1,0 +1,60 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Wiper</title><link>https://intezer.github.io/community-intelligence/tags/wiper/</link><description>Recent content in Wiper on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 25 Oct 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/wiper/index.xml" rel="self" type="application/rss+xml"/><item><title>NotPetya Returns as Bad Rabbit</title><link>https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/</link><pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/</guid><description>
+&lt;p&gt;Large scale cyber attacks seem to be happening once a month these days.
+Originally discovered by
+&lt;a href="https://www.welivesecurity.com/2017/10/24/kiev-metro-hit-new-variant-infamous-diskcoder-ransomware/"target="_blank" rel="noopener"&gt;ESET&lt;/a&gt;,
+Ukrainian and Russian organizations have been hit with the latest ransomware
+attack named Bad Rabbit. At the time of writing this post, the ransomware has
+believed to have originated from compromised webpages with a fake popup for
+updating Adobe Flash Player. It has been reported that much of the behavior of
+Bad Rabbit has been similar to a previous ransomware known as NotPetya.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig1.png" title="Screenshot from ESET report, after ransomware has infected a computer" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Screenshot from ESET report, after ransomware has infected a computer&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Using Intezer Analyze™, we have found code reuse from NotPetya throughout
+different binaries of Bad Rabbit.&lt;/p&gt;
+&lt;p&gt;The Bad Rabbit loader, with the original name (install_flash_player.exe) and
+metadata (Adobe Systems Incorporated as the company and Adobe Flash Player
+Installer/Uninstaller), was made to look like the Adobe Flash Player installer.
+You can see in the screenshot below that according to our analysis, the binary
+did not contain any code from any Adobe product but does contain code from
+NotPetya. In fact, we find that 27% of the code in the loader has been seen in
+only NotPetya samples. Find the public report
+&lt;a href="https://analyze.intezer.com/#/analyses/6ba279af-8ce2-46c6-8b86-5fa65a5ed42a"target="_blank" rel="noopener"&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Below is a direct comparison of function (&lt;code&gt;0x1000C244&lt;/code&gt;) of NotPetya
+(&lt;code&gt;027cc450ef5f8c5f653329641ec1fed91f694e0d229928963b30f6b0d7d3a745&lt;/code&gt;) and
+function (&lt;code&gt;0x4033B4&lt;/code&gt;) of the Bad Rabbit loader
+(&lt;code&gt;630325cac09ac3fab908f903e3b00d0dadd5fdaa0875ed8496fcbb97a558d0da&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Another example of code reuse in the loader from a function that seems to
+initialize some type of struct.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;#BadRabbit (#NotPetya v2) unpacked DLL: infpub.dat : &lt;a href="https://t.co/Ey5Yffsn74"target="_blank" rel="noopener"&gt;https://t.co/Ey5Yffsn74&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;— hasherezade (@hasherezade)
+&lt;a href="https://x.com/hasherezade/status/922867095997681664?ref_src=twsrc%5Etfw"target="_blank" rel="noopener"&gt;October 24, 2017&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The final module that gets loaded and is responsible for encrypting the files
+on disk (&lt;code&gt;579fd8a0385482fb4c789561a30b09f25671e86422f40ef5cca2036b28f99648&lt;/code&gt;)
+also has a code connection with NotPetya samples. According to our technology,
+we can see that 13% of the code has been reused. You can find the public report
+&lt;a href="https://analyze.intezer.com/#/analyses/d41e8a98-a106-4b4f-9b7c-fd9e2c80ca7d"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;#badrabbit found to have 13% code reuse of #notpetya #petya here&amp;rsquo;s a public
+report with the unpacked sample: &lt;a href="https://t.co/NOIul4yLVT"target="_blank" rel="noopener"&gt;https://t.co/NOIul4yLVT&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;— Jay Rosenberg (@jaytezer)
+&lt;a href="https://x.com/jaytezer/status/922875751174758400?ref_src=twsrc%5Etfw"target="_blank" rel="noopener"&gt;October 24, 2017&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Below is a screenshot comparing a function (&lt;code&gt;0x1000777B&lt;/code&gt;) of NotPetya (&lt;code&gt;027cc450ef5f8c5f653329641ec1fed91f694e0d229928963b30f6b0d7d3a745&lt;/code&gt;) and a function (&lt;code&gt;0x1000733&lt;/code&gt;C) of the encryptor module of Bad Rabbit (&lt;code&gt;579fd8a0385482fb4c789561a30b09f25671e86422f40ef5cca2036b28f99648&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The next screenshot is of another matching function between the two samples.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;As you can see in this attack, and in many other cases, malware authors constantly reuse their code. By recognizing code reuse, you force malware authors to rewrite code and come up with new techniques to avoid detection. This changes the playing field and makes it far less cost effective for malware authors and cyber crime organizations.&lt;/p&gt;
+&lt;p&gt;IOCs:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;630325cac09ac3fab908f903e3b00d0dadd5fdaa0875ed8496fcbb97a558d0da&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;8ebc97e05c8e1073bda2efb6f4d00ad7e789260afa2c276f0c72740b838a0a93&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;579fd8a0385482fb4c789561a30b09f25671e86422f40ef5cca2036b28f99648&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

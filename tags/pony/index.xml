@@ -1,0 +1,79 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Pony</title><link>https://intezer.github.io/community-intelligence/tags/pony/</link><description>Recent content in Pony on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 13 Nov 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/pony/index.xml" rel="self" type="application/rss+xml"/><item><title>IcedID Banking Trojan Shares Code with Pony 2.0 Trojan</title><link>https://intezer.github.io/community-intelligence/blog/2017/11/icedid-banking-trojan-shares-code-pony-2-0-trojan/</link><pubDate>Mon, 13 Nov 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/11/icedid-banking-trojan-shares-code-pony-2-0-trojan/</guid><description>
+&lt;p&gt;IBM X-Force recently released an excellent
+&lt;a href="https://securityintelligence.com/new-banking-trojan-icedid-discovered-by-ibm-x-force-research/"target="_blank" rel="noopener"&gt;report&lt;/a&gt;
+on a new banking trojan named IcedID that is being distributed using computers
+already infected with Emotet. We took the MD5 of one of the droppers from the
+IBM report and extracted the payload. After extracting the payload from one of
+the droppers listed in the report, using Intezer Analyze™, we have found code
+reuse from another malware named Pony, written about in a
+&lt;a href="https://www.proofpoint.com/us/threat-insight/post/hancitor-ruckguv-reappear"target="_blank" rel="noopener"&gt;report&lt;/a&gt;
+by Proofpoint.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;#IcedID banking trojan payload – code overlap with #pony more details soon
+&lt;a href="https://t.co/baS1fciJHX@malwrhunterteam"target="_blank" rel="noopener"&gt;https://t.co/baS1fciJHX@malwrhunterteam&lt;/a&gt; @campuscod&amp;gt;&lt;/p&gt;
+&lt;p&gt;— Jay Rosenberg (@jaytezer)
+&lt;a href="https://x.com/jaytezer/status/930054725290078213?ref_src=twsrc%5Etfw"target="_blank" rel="noopener"&gt;November 13, 2017&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Pony is a trojan that was being distributed via the Hancitor downloader,
+distributed through Microsoft Word documents. The version of Pony used in the
+reports is believed to be the same threat actor as Vawtrak. It was also sold
+via underground forums until the source code was leaked online.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/11/icedid-banking-trojan-shares-code-pony-2-0-trojan/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Using the dive-in feature with the related Pony samples, we can see the
+following:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/11/icedid-banking-trojan-shares-code-pony-2-0-trojan/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;With this information alone, it will be hard to attribute this sample to a
+certain threat actor due to the public availability of the source code of Pony.&lt;/p&gt;
+&lt;p&gt;Let’s take a look at some of the matching functions.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/11/icedid-banking-trojan-shares-code-pony-2-0-trojan/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;As we can see here, the function in these two samples is a 1:1 match. The
+function above is called GrabOutlook in the Pony source code and is responsible
+for stealing passwords from Outlook. (You may notice a difference because the
+strings appear decrypted in the sample on the left as it looks like Proofpoint
+dumped the sample with the strings already decrypted before uploading to
+VirusTotal.)&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/11/icedid-banking-trojan-shares-code-pony-2-0-trojan/images/fig4.png" title="GrabOutlook function from Pony 2.0 source code" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;GrabOutlook function from Pony 2.0 source code&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;More specifically, we can tell the threat actor used code from version 2.0 of
+Pony because in the Pony 1.9 source code, we do not see calls to DecipherList
+which is responsible for decrypting the strings.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/11/icedid-banking-trojan-shares-code-pony-2-0-trojan/images/fig5.png" title="GrabOutlook function from Pony 1.9 source code" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;GrabOutlook function from Pony 1.9 source code&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Other shared functions from Pony:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;OutlookExport&lt;/li&gt;
+&lt;li&gt;OutlookReadPSItemValue&lt;/li&gt;
+&lt;li&gt;OutlookScanPasswords&lt;/li&gt;
+&lt;li&gt;OutlookScanProfiles&lt;/li&gt;
+&lt;li&gt;PocomailScanReg&lt;/li&gt;
+&lt;li&gt;IncrediMailScanReg&lt;/li&gt;
+&lt;li&gt;CRC32Update&lt;/li&gt;
+&lt;li&gt;CommonCryptUnprotectData&lt;/li&gt;
+&lt;li&gt;MapFile&lt;/li&gt;
+&lt;li&gt;PonyStrCat&lt;/li&gt;
+&lt;li&gt;PonyStrCatFreeArg1&lt;/li&gt;
+&lt;li&gt;DecipherList&lt;/li&gt;
+&lt;li&gt;UnicodeToAnsiLen&lt;/li&gt;
+&lt;li&gt;FileExists&lt;/li&gt;
+&lt;li&gt;StreamUpdateModuleLen&lt;/li&gt;
+&lt;li&gt;StreamWriteModuleHeader&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There may be other functions from Pony, but we can see that the shared code is
+mostly related to stealing e-mail credentials.&lt;/p&gt;
+&lt;p&gt;Time and time again, we see threat actors reusing the same code. If we look at
+reused code, it makes it easier to detect malware. Such small code reuse makes
+it very difficult to get these kinds of conclusions by manually reverse
+engineering a file. The ability to automate the finding of code reuse makes our
+job as malware analysts easier.&lt;/p&gt;
+&lt;p&gt;Report Samples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IcedID Dropper:
+&lt;code&gt;29f7469f8dc88820f72a9bdcb02badc1a40aa41b3f4b7f8caaa30409b3842aea&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;IcedID Payload:
+&lt;code&gt;a6531184ea84bb5388d7c76557ff618d59f951c393a797950b2eb3e1d6307013&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Pony: &lt;code&gt;b19ec186f59b1f72c768ed2fcd8344d75821e527870b71e8123db96f683f1b68&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

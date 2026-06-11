@@ -1,0 +1,434 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Apt_dprk</title><link>https://intezer.github.io/community-intelligence/tags/apt_dprk/</link><description>Recent content in Apt_dprk on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 31 Oct 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/apt_dprk/index.xml" rel="self" type="application/rss+xml"/><item><title>Paleontology: The Unknown Origins of Lazarus Malware</title><link>https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/</link><pubDate>Wed, 31 Oct 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/</guid><description>
+&lt;p&gt;As seen by security researchers across the world and proven in a joint research
+by McAfee and Intezer, Lazarus, one of the groups operating from North Korea,
+has consistently reused code in their malware toolset. There is a common
+pattern among the code of the malware that researchers and reverse engineers
+alike find during their analysis. It has already been known that they have used
+open source projects, like one from CodeProject we documented in
+&lt;a href="https://intezer.com/blog/research/north-korea-iran-use-codeproject-develop-malware/"target="_blank" rel="noopener"&gt;another blog&lt;/a&gt;
+post, or open source RATs like Gh0st RAT.&lt;/p&gt;
+&lt;p&gt;This code, as described, has always been thought to be created originally by
+the DPRK since the time they are thought to have started being active in 2007
+until the present. We recently found some samples via our Vaccine feature (Yara
+signatures) on VirusTotal with very low detections dating back to 2016 which
+led us to find the origins of their toolset – an open source RAT called
+CasperPhpTrojan, available on a Chinese website for open source projects.&lt;/p&gt;
+&lt;h2&gt;CASPERTROY Malware&lt;span class="hx:absolute hx:-mt-20" id="caspertroy-malware"&gt;&lt;/span&gt;
+&lt;a href="#caspertroy-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Originally, the sample that we found in the wild, hit a Lazarus signature and
+only had 3/65 detections in VirusTotal. After checking it in Intezer Analyze,
+we saw code reuse shared with Red Gambler, as originally reported by
+&lt;a href="https://global.ahnlab.com/global/upload/download/asecreport/ASEC%20REPORT_vol.91_ENG.pdf"target="_blank" rel="noopener"&gt;AhnLab&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig1.png" title="Malware sample first compiled in 2016, with RedGambler code genes as analyzed in Intezer." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Malware sample first compiled in 2016, with RedGambler code genes as analyzed in Intezer.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We can also see on the trojan that the internal name for this module is called
+“DllTroy.dll” which is known to be associated with Lazarus.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The string reuse is where the interesting finding comes from and will soon
+reveal where we got the name CasperTroy from. The reused strings are in general
+Lazarus samples used throughout different cyber campaigns, Operation Troy, a
+Lazarus cyber campaign beginning in 2011, and Prioxer, another tool in their
+arsenal.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;We see the same overlap of strings and decided to search &lt;code&gt;7d414e351603fa&lt;/code&gt; on
+Google, resulting in only 7 results, which will bring us to the next topic of
+this research – where did DPRK’s malware toolset originate?&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;The Origins: CasperPHPTrojan&lt;span class="hx:absolute hx:-mt-20" id="the-origins-casperphptrojan"&gt;&lt;/span&gt;
+&lt;a href="#the-origins-casperphptrojan" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The source code to this open source trojan, CasperPhpTrojan, was originally
+posted on a Chinese open source project website pudn[.]com. We downloaded the
+source code, read through it, compiled it, and recognized similar occurrences
+in Lazarus malware. We would like to show you some of the evidence we have
+gathered by comparing the original code to the disassembly of different Lazarus
+binaries. Also, much of this evidence has been documented in a previous blog
+&lt;a href="../../../2017/12/blockbusted-lazarus-blockbuster-north-korea/"&gt;post&lt;/a&gt; where we
+spoke about strange occurrences in the code and the same code being reused
+again and again — even when the code was believed to be a mistake, like the
+third example below.&lt;/p&gt;
+&lt;p&gt;HTTP Header (various campaigns &amp;amp; malware)&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig5.png" title="CASPER.CPP" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;CASPER.CPP&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig6.png" title="Disassembly of multiple different Lazarus samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Disassembly of multiple different Lazarus samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;TrojUploader Function&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig7.png" title="casper_trojan.cpp" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;casper_trojan.cpp&lt;/figcaption&gt;
+&lt;/figure&gt; &lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig8.png" title="TDrop Sample" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;TDrop Sample&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;GetProcAddress(LoadLibrary(“Kernel32.dll”), “GetProcAddress”);&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig9.png" title="CASPER.CPP" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;CASPER.CPP&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig10.png" title="Lazarus samples from 2014 and 2017" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Lazarus samples from 2014 and 2017&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;API Resolution&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig11.png" title="casper_inject.cpp" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;casper_inject.cpp&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig12.png" title="Various Lazarus samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Various Lazarus samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Conslusion&lt;span class="hx:absolute hx:-mt-20" id="conslusion"&gt;&lt;/span&gt;
+&lt;a href="#conslusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Although there are many modifications Lazarus made to CasperPhpTrojan, the base
+is primarily the same and we believe that when the source code is compiled
+under the correct environment with the correct flags, we can find even more
+correlations between the compiled code and Lazarus binaries. It looks like it
+is the base of their toolset and may strengthen the reason why we found so many
+code connections between Lazarus malware in our comprehensive research with
+McAfee about the DPRK.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;CasperTroy (2016) Droppers:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;458ffcc41959599f8dab1fd4366c9a50efefa376e42971c4a436aa7fd697a396
+d1cf03fbcb6471d44b914c2720821582fb3dd81cb543f325b2780a5e95046395&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;CasperTroy (2016) RATs:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;ec73fe2ecc2e0425e4aeb1f01581b50c5b1f8e85475c20ea409de798e6469608
+c62ec66e45098d2c41bfd7a674a5f76248cf4954225c2d3a2cfcd023daa93522
+926a2e8c2baa90d504d48c0d50ca73e0f400d565ee6e07ad6dafdd0d7b948b0e&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;CasperTroy C&amp;amp;Cs:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;http://ready-jetkorea[.]com/data/file/pop/write_ok.php
+http://plsong[.]com/xe/addons/counter/conf/write_ok.php&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Shared Code Examples:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;TDrop f4b7b36e9c940937748d5bba3beb82b7c3636f084e5e913c7a5ad3ad623ffbc5
+MYDOOM 1b6a1320fba00dd2e56e35cf6f11f941deabcb6e4dba7ea773ded7e3d648ec54
+KoreDos 068b89e2ec5655d006f2788ea328e5f12bd57ba761ee03c4de2fb0aa01c92c7f
+DarkSeoul 4915f53221dc7786710a7a82a9cb00cf8468e0d1155a1355c9eb17e8cddfd265
+Blockbuster 6724c041fe0df61a619006bf1df4a759f4f22a65e2afda32501760ebc9ebe25d&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>APT37: Final1stspy Reaping the FreeMilk</title><link>https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</link><pubDate>Wed, 03 Oct 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</guid><description>
+&lt;p&gt;Researchers at Palo Alto Networks recently published a report regarding the
+&lt;a href="https://researchcenter.paloaltonetworks.com/2018/09/unit42-new-konni-malware-attacking-eurasia-southeast-asia/"target="_blank" rel="noopener"&gt;NOKKI&lt;/a&gt;
+malware, which has shared code with KONNI and, although not in the report by
+Palo Alto,
+&lt;a href="https://malware.lu/assets/files/articles/RAP003_KimJongRAT-Stealer_Analysis.1.0.pdf"target="_blank" rel="noopener"&gt;KimJongRAT&lt;/a&gt;
+(discovered by &lt;a href="https://twitter.com/r00tbsd"target="_blank" rel="noopener"&gt;Paul Rascagnères&lt;/a&gt; of Cisco Talos
+in 2013), and another report on how there is evidence of the
+&lt;a href="https://researchcenter.paloaltonetworks.com/2018/10/unit42-nokki-almost-ties-the-knot-with-dogcall-reaper-group-uses-new-malware-to-deploy-rat/"target="_blank" rel="noopener"&gt;NOKKI malware connecting to the North Korean threat actor&lt;/a&gt;
+known as APT37, Reaper, or Group123.&lt;/p&gt;
+&lt;p&gt;The malicious document related to NOKKI, using VBScript, downloads a newly
+discovered malware named Final1stspy, due to the PDB string inside. As noted by
+Palo Alto Networks, Final1stspy comes in 2 components, the EXE named &amp;ldquo;LoadDll&amp;rdquo;
+with the sole purpose of loading up a DLL payload, internally named
+&amp;ldquo;hadowexecute.&amp;rdquo; After collecting information about the infected computer, the
+end result is that the DOGCALL malware, also known as ROKRAT, is downloaded as
+the final payload, thus being one of the links between NOKKI and APT37.&lt;/p&gt;
+&lt;h2&gt;Links Through Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="links-through-code-reuse"&gt;&lt;/span&gt;
+&lt;a href="#links-through-code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The DLL payload component under the hash that was listed in the report was not
+available on VirusTotal. We created some YARA signatures from the code of
+“LoadDll” and did a hunt via VirusTotal. Since the EXE component shares code
+with the DLL, the YARA hunt led us to find an earlier version of the DLL
+component of Final1stspy with 2/67 detections, compilation timestamp of May 21,
+2018, and first upload to VirusTotal date of July 11, 2018. This is an earlier
+version than described in the Palo Alto report. After obtaining the
+hadowexecute DLL component, we checked to see if there was any code reuse in
+the Intezer Analyze™ system.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;We see that there is some code shared between the EXE component of Final1stspy
+and other code that has been seen before in the FreeMilk campaign which
+utilized ROKRAT.&lt;/p&gt;
+&lt;p&gt;Let’s see the shared code between ROKRAT and Final1stspy by doing comparison of
+these functions in IDA. If you take a look, there is an identical match between
+them.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/images/fig2.png" title="ROKRAT &amp;amp; Final1stspy hadowexecute function comparison" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;ROKRAT &amp;amp; Final1stspy hadowexecute function comparison&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This function is unique code that has only been seen before in Group123’s
+ROKRAT and the DLL component of Final1stspy. The identical function gathers
+information about the operating system and stores it in the same format.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The evidence in Group123 being the threat actor involved here does not only lie
+in the final delivered payload, but in the code itself. This code reuse
+provides more evidence towards the relationship of KimJongRAT, KONNI, NOKKI,
+Final1stspy, ROKRAT, and APT37.&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Final1stspy&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;2011b9aa61d280ca9397398434af94ec26ddb6ab51f5db269f1799b46cf65a76 (DLL)
+0669c71740134323793429d10518576b42941f9eee0def6057ed9a4ba87a3a9a (DLL)
+fb94a5e30de7afd1d9072ccedd90a249374f687f16170e1986d6fd43c143fb3a (EXE)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Group 123 (FreeMilk / ROKRAT Samples)&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;99c1b4887d96cb94f32b280c1039b3a7e39ad996859ffa6dd011cf3cca4f1ba5
+01045aeea5198cbc893066d7e496f1362c56a154f093d1a8107cecad8d4e4df2
+26ad5f8889d10dc45dcf1d3c626416eb604f5fe4a7268e044f17a3ab6ff14e53
+65ec544841dbe666d20de086495158128ddffb8b076ddb801a3f2dc250481135
+7f35521cdbaa4e86143656ff9c52cef8d1e5e5f8245860c205364138f82c54df
+ef40f7ddff404d1193e025081780e32f88883fa4dd496f4189084d772a435cb2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Yet Another Distraction? A New Version of North Korean Ransomware Hermes Has Emerged</title><link>https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</link><pubDate>Thu, 08 Feb 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</guid><description>
+&lt;h2&gt;Detecting Reused Ransomware&lt;span class="hx:absolute hx:-mt-20" id="detecting-reused-ransomware"&gt;&lt;/span&gt;
+&lt;a href="#detecting-reused-ransomware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Whether we’re dealing with a criminal threat actor looking to steal money from
+their victims using ransomware or malware sponsored by a nation state, we can
+consistently see the reuse of code. In this specific case, we have observed a
+variant of a well-known ransomware, via a new version of Hermes from what may
+have originated from a nation state threat actor.&lt;/p&gt;
+&lt;p&gt;According to reports by researchers at
+&lt;a href="https://securingtomorrow.mcafee.com/mcafee-labs/taiwan-bank-heist-role-pseudo-ransomware/"target="_blank" rel="noopener"&gt;McAfee&lt;/a&gt;
+and
+&lt;a href="http://baesystemsai.blogspot.com/2017/10/taiwan-heist-lazarus-tools.html"target="_blank" rel="noopener"&gt;BAE Systems&lt;/a&gt;,
+a ransomware named Hermes was used as a diversion in an attack involving a bank
+heist in Taiwan. The ransomware is thought to have originated from the Lazarus
+group, a threat actor known to be affiliated with North Korea.
+(&lt;a href="../../../2017/12/blockbusted-lazarus-blockbuster-north-korea/"&gt;You can be read about them in this blog post about the Blockbuster campaign.&lt;/a&gt;).
+Security researcher
+&lt;a href="https://twitter.com/demonslay335/status/960590594707017729"target="_blank" rel="noopener"&gt;@demonslay335&lt;/a&gt;
+tweeted about the existence of a new sample Hermes 2.1, so our team decided to
+take a deeper look.&lt;/p&gt;
+&lt;h2&gt;Code Reuse Analysis of Hermes 2.1&lt;span class="hx:absolute hx:-mt-20" id="code-reuse-analysis-of-hermes-21"&gt;&lt;/span&gt;
+&lt;a href="#code-reuse-analysis-of-hermes-21" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When examining new binaries, the first step we take in our research is to take
+the binary and upload it to our Intezer Analyze™ system in order to identify
+code reuse.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig1.jpg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Here we can see some code reuse between the Hermes samples that were originally
+discovered as well as the latest sample. Since the sample came out mostly
+unique — indicating that much of the binary has changed — we were still able to
+catch some key parts that clearly reuse code.&lt;/p&gt;
+&lt;p&gt;Intezer Analyze™ caught these fragments, and with a deeper look into IDA Pro,
+we find an exact function-for-function match:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In other places, although the code is not exactly the same, we can see very
+similar code to the original Hermes and techniques known to be used by Lazarus.&lt;/p&gt;
+&lt;h2&gt;An Evolving Threat&lt;span class="hx:absolute hx:-mt-20" id="an-evolving-threat"&gt;&lt;/span&gt;
+&lt;a href="#an-evolving-threat" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The last time this ransomware appeared there was a bank heist affiliated with
+it, and now it is possible that this new sample was used in an attack where the
+infected target was unaware of the intended result. It may have been used to
+cover up intellectual property theft, bank fraud, or something even more
+nefarious. At this moment in time, there is not enough information to make
+definitive conclusions about the specific intent of the Lazarus group; however,
+with the reappearance of Hermes, we can be confident that this likely won’t be
+the last time this code will be used in an attack.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;bcb96251c3e747c0deabadfecc4e0ca4f56ca30f8985cae807ca2ff29099d818 New Sample
+851032eb03bc8ee05c381f7614a0cbf13b9a13293dfe5e4d4b7cd230970105e3 Related Sample&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>BLOCKBUSTED: Lazarus, Blockbuster, and North Korea</title><link>https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/</link><pubDate>Tue, 12 Dec 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/</guid><description>
+&lt;p&gt;As we have proven in previous research blog posts, malware authors often reuse
+the same code. This evolution of code and code reuse is seen all throughout the
+well known Blockbuster campaign and connections between other malware
+attributed to the Lazarus group, a cyber threat organization attributed to
+North Korea. You can read about excellent research on Lazarus and the
+Blockbuster campaign by looking at reports by
+&lt;a href="https://www.operationblockbuster.com//srv/htdocs/wp-content/uploads/2016/02/Operation-Blockbuster-Report.pdf"target="_blank" rel="noopener"&gt;Novetta&lt;/a&gt;,
+&lt;a href="https://securelist.com/operation-blockbuster-revealed/73914/"target="_blank" rel="noopener"&gt;Kaspersky&lt;/a&gt;, and
+&lt;a href="https://researchcenter.paloaltonetworks.com/2017/11/unit42-operation-blockbuster-goes-mobile/"target="_blank" rel="noopener"&gt;Palo Alto&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The Lazarus group has been responsible for different campaigns and variations
+of RATs, Trojans, backdoors, and malware in general. Some of the names given to
+malware created by Lazarus are FALLCHILL, Destover, Hangman, Volgmer, and
+Manuscrypt, among others. For someone who has not personally analyzed these
+different malware families, a lot of the samples associated with each malware
+could appear to be completely different, but if you examine them at the code
+level, you can see that these attacks are most likely different components of
+the same framework that has been pieced together or upgraded.&lt;/p&gt;
+&lt;h2&gt;Intezer Analyze™ Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="intezer-analyze-code-reuse"&gt;&lt;/span&gt;
+&lt;a href="#intezer-analyze-code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After uploading the different samples to Intezer Analyze™, the system shows
+that there are code overlaps between a number of samples dating from 2014 to
+2017. These are malware from different periods of time and binaries attributed
+to different attacks.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig1.png" title="https://analyze.intezer.com/#/analyses/7b059705-9d55-4fd9-a70b-9b4401aeecae" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;https://analyze.intezer.com/#/analyses/7b059705-9d55-4fd9-a70b-9b4401aeecae&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig2.png" title="https://analyze.intezer.com/#/analyses/d204da0f-a2a1-4f0e-9033-fe1e3b2105cc" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;https://analyze.intezer.com/#/analyses/d204da0f-a2a1-4f0e-9033-fe1e3b2105cc&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The analyzed samples were uncovered after uploading them to our Analyze system, generating YARA signatures from some of the unique code found in Lazarus group samples, and searching these signatures across a few malware databases. (Note: we found more samples than are being used for this report.)&lt;/p&gt;
+&lt;h2&gt;C&amp;amp;Cs &amp;amp; Command Handler&lt;span class="hx:absolute hx:-mt-20" id="ccs--command-handler"&gt;&lt;/span&gt;
+&lt;a href="#ccs--command-handler" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Throughout the years the Lazarus group has been active, not only have there been overlaps in the C&amp;amp;C infrastructure, the components of the C&amp;amp;C command handler have had pretty much the same functionality and code. Below is a comparison of two binaries from the Lazarus group, with shared code between the handler and functions included in the handler.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig3.png" title="C&amp;amp;C Command Handler 1d195c40169cbdb0f50eca40ebda62321aa05a54137635c7ebb2960690eb1d82" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;C&amp;amp;C Command Handler 1d195c40169cbdb0f50eca40ebda62321aa05a54137635c7ebb2960690eb1d82&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig4.png" title="C&amp;amp;C Command Handler 2de5e99315a6cf42a46c8286ac4ea0bc842f6d78995833d2cab7de1cdad7dd8d" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;C&amp;amp;C Command Handler 2de5e99315a6cf42a46c8286ac4ea0bc842f6d78995833d2cab7de1cdad7dd8d&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The only visible differences are the control codes to execute certain functions; if you dive deeper, the functions themselves do not vary much. The first screenshot is of a binary with C&amp;amp;C commands 21687 to 21707 with a compilation date from February 5, 2014, and the second screenshot with C&amp;amp;C commands 32768 to 32835 is dated with the compilation date October 12, 2017. Not much has changed in three years. Interestingly enough, however, in reviewing more Blockbuster samples, the control code ranges appear to vary with the compilation date. Samples in the same range of compilation dates have the same control code sets. Also, we see the control codes remain the same regardless of whether the sample was compiled as an EXE or DLL.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig5.png" title="A few of the collected samples, compilation date, C&amp;amp;C commands, and type being EXE or DLL" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;A few of the collected samples, compilation date, C&amp;amp;C commands, and type being EXE or DLL&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Infection Vectors &amp;amp; Targets&lt;span class="hx:absolute hx:-mt-20" id="infection-vectors--targets"&gt;&lt;/span&gt;
+&lt;a href="#infection-vectors--targets" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Lazarus group has targeted a variety of victims — from individuals to corporations — and used multiple platforms like traditional PCs and more recently, Android devices. The group does not seem to engage in specific targeting as they look to be targeting everyone and anyone they can infect using different infection vectors over the years. Their C&amp;amp;Cs seem to consist of hijacked domains and servers.&lt;/p&gt;
+&lt;p&gt;Most recently, it looks like they have tried to spearfish users by sending them an infected document. The latest samples we have incorporate a malicious visual basic macro embedded in a document with a fake job position.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig6.png" title="Malicious fake job position document" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Malicious fake job position document&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig7.png" title="Embedded macro" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Embedded macro&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;During our research, we found a C&amp;amp;C located in China that is linked to a domain posted on the comment section of the threat intel news website, Israel Defense. These spam links are not just posted on Israel Defense, but all over the internet.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig8.png" title="http://www.israeldefense.co.il/he/comment/112488 with link to lzruziniu[.]com" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;http://www.israeldefense.co.il/he/comment/112488 with link to lzruziniu[.]com&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;It appears that during the time of this post, the C&amp;amp;C (114.215.107.218) was also hosting another binary from Lazarus. It also seems to be an automated spam comment, as there are multiple others on the same page. The links seem specific enough as if they were supposed to get someone browsing the web to click the link, which would lead to a download for infection. They may also have been using some type of web browser exploits. It is hard to tell at this point because the comments are from a couple years ago.&lt;/p&gt;
+&lt;h2&gt;Control Flow &amp;amp; Legacy Code&lt;span class="hx:absolute hx:-mt-20" id="control-flow--legacy-code"&gt;&lt;/span&gt;
+&lt;a href="#control-flow--legacy-code" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After reverse engineering one of the binaries from the Lazarus group, the rest become easily recognizable by a quick glance in IDA. From the entry point (or the ServiceMain export if the binary is a DLL), the binary begins by resolving all its imports, including those unused, by calling GetProcAddress and manually storing them in pointers.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig9.png" title="2014 DLL vs 2017 EXE" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;2014 DLL vs 2017 EXE&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The string obfuscation code has changed throughout the binaries according to the time they were compiled as well. This is one of the updates the group did make to the code, but the most significant evidence here is that from the oldest binary to the newest, they use the GetProcAddress function with “GetProcAddress” as the parameter. This was obviously a coding error that has remained in all the binaries analyzed.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The next part of the execution flow of the binary varies, but consists mainly of the same code with different options used. There may be features like registering persistence, checking for sandboxes or virtual machines, and more. All of these options seem to be interchangeably used, and a binary could be created as simply as filling out a few textboxes and checkboxes for all the different features, establishing the binary with a “generate RAT” button.&lt;/p&gt;
+&lt;p&gt;After the various components of optional code are executed, the malware creates a thread to bind and ‘listen’ to a specified port, waiting for a command from the C&amp;amp;C as discussed in the previous section of this post.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Evidently, the Lazarus group is still active. Because the compilation dates seem to be an accurate measure of a timeline, that puts the latest sample at two months ago from the date of this report. Consistent code reuse throughout the samples shows that well-funded nation states are reusing code time and time again. As stated in the beginning, if you examine them at the code level, you can see that these attacks are most likely different components of the same framework that has been pieced together or upgraded.&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
+&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;a4a2e47161bbf5f6c1d5b1b3fba26a19dbfcdcf4eb575b56bde05c674089ae95
+ee3ecf100fc2042cfadeb0509ae4f49647daa1afcee2bd3098912247e155a1e7
+16eaa0298c66e0de40cc42568879fab9513f4d533c0fa1f5366346b4d70df50d
+dbae68e4cab678f2678da7c48d579868e35100f3596bf3fa792ee000c952c0ed
+9f177a6fb4ea5af876ef8a0bf954e37544917d9aaba04680a29303f24ca5c72c
+80b5cc9feb10fac41ee2958ab0f751bf807126e34dcb5435d2869ef1cf7abc41
+8edb59694ff239c90f33cdbb17bc67ebbd08ec77df5000c6616d7844040796b4
+db1f4abd2a8d3b17c14e8f31cb1da3a273cf51ed194ad0e4520346ed95708dad
+7429a6b6e8518a1ec1d1c37a8786359885f2fd4abde560adaef331ca9deaeefd
+4e8c10a7fa51a3ab089b284e86a7daaca779ed82ba1750607fc3bfa91681f9b1
+e79bbb45421320be05211a94ed507430cc9f6cf80d607d61a317af255733fcf2
+4481e31d42499d084317b79a3a6250e50302aa00603dacdd2dff3a8e3b911404
+9607ab45451bb6c52eeec8cf0669d1dd37c917baecef2d63564c7cec110932c0
+a606716355035d4a1ea0b15f3bee30aad41a2c32df28c2d468eafd18361d60d6
+0b4959764331ddbe7da71e6f8515d0be8f494b4107c2718bda9e0a85d8247488
+9fa326adbd71e58aeb7ea404b6b8d6be5742c547c525286b2e95444ab099ef9e
+8ba791b9611d5d6dfd40e08e43ad851675faea24c2f5bc4f541e475871999ad3
+2de5e99315a6cf42a46c8286ac4ea0bc842f6d78995833d2cab7de1cdad7dd8d
+4a84452752cf8e493ae820871096044edd9f6453366842927148e7d8e218dc87
+76e0eec565f4e50b57d74fb1a09ea9e356da0709cba3d5dab9b3702ba19d662c
+f09fb9a79bab6a927297e536594027016da7d7ab13e124c76a05889ec107ad02
+6dcd635875625426298a1d7b4ab346ee318b3afa2e6440677ab935e473bf782d
+959eb014a2d8ca8158d1f6a198205d331e0ebfb3ced5fd9004b8dcab4547987f
+3d481d166f27b48f103db39fda3845dfc962addd44e92e3187e0ddd1ee01c741
+1d195c40169cbdb0f50eca40ebda62321aa05a54137635c7ebb2960690eb1d82
+de13155f4a4cb1af04539883545151905ad4496ea6ef34cb22e50831f7caa38a&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
+&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;41.131.29.59
+176.35.250.93
+64.86.34.24
+58.6.21.11
+114.215.107.218
+118.140.97.6
+190.216.219.247
+201.26.209.137
+14.161.14.196
+220.132.191.110
+92.42.54.184
+182.180.143.39
+193.251.27.90&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>

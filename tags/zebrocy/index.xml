@@ -1,0 +1,274 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Zebrocy</title><link>https://intezer.github.io/community-intelligence/tags/zebrocy/</link><description>Recent content in Zebrocy on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 09 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/zebrocy/index.xml" rel="self" type="application/rss+xml"/><item><title>A Zebra in Gopher’s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy</title><link>https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</link><pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</guid><description>
+&lt;h2&gt;Summary&lt;span class="hx:absolute hx:-mt-20" id="summary"&gt;&lt;/span&gt;
+&lt;a href="#summary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In November, we uncovered COVID-19 phishing lures that were used to deliver the
+Go version of
+&lt;a href="https://analyze.intezer.com/families/2196bcb4-94b0-4773-beb6-87900b338521"target="_blank" rel="noopener"&gt;Zebrocy&lt;/a&gt;.
+Zebrocy is mainly used against governments and commercial organizations engaged
+in foreign affairs. The lures consisted of documents about Sinopharm
+International Corporation—a pharmaceutical company that COVID-19 vaccine is
+currently going through phase three clinical trials—and an impersonated
+evacuation letter from Directorate General of Civil Aviation.&lt;/p&gt;
+&lt;p&gt;The lure was delivered as part of a Virtual Hard Drive (VHD) file that requires
+victims to use Windows 10 to access the files. While the malware samples were
+heavily obfuscated, it was possible to attribute them to the
+&lt;a href="https://analyze.intezer.com/families/4b0df7b0-b079-4a21-a72d-a35efabef6d8"target="_blank" rel="noopener"&gt;Sofacy&lt;/a&gt;
+threat actor since they shared genomes with samples used in previous campaigns.&lt;/p&gt;
+&lt;p&gt;It appears that the threat actor switched from delivering VHD files with the
+Delphi version of Zebrocy, to the Go version in the middle of November. Given
+that many COVID-19 vaccines are about to be approved for clinical use, it’s
+likely that APTs (Advanced Persistent Threat) and financially motivated threat
+actors will use this malware in their attacks.&lt;/p&gt;
+&lt;h2&gt;Zebrocy Evolution&lt;span class="hx:absolute hx:-mt-20" id="zebrocy-evolution"&gt;&lt;/span&gt;
+&lt;a href="#zebrocy-evolution" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Zebrocy is a malware used by the threat group Sofacy, also known as Sednit,
+APT28, Fancy Bear, and STRONTIUM. Sofacy was one of the groups
+&lt;a href="https://www.justice.gov/opa/pr/grand-jury-indicts-12-russian-intelligence-officers-hacking-offenses-related-2016-election"target="_blank" rel="noopener"&gt;indicted&lt;/a&gt;
+by the Department of Justice (DOJ) for the compromise of the Democratic
+National Committee (DNC). The Zebrocy toolset was first reported by Kaspersky
+Labs as part of their
+&lt;a href="https://securelist.com/apt-trends-report-q2-2017/79332/"target="_blank" rel="noopener"&gt;APT Trends report&lt;/a&gt; in
+2017. The malware was first used in
+&lt;a href="https://securelist.com/zebrocys-multilanguage-malware-salad/90680/"target="_blank" rel="noopener"&gt;2015&lt;/a&gt; and
+overlapped with known Sofacy infrastructure at the time. Zebrocy operates as a
+downloader and collects information about the infected host that is uploaded to
+the command and control (C&amp;amp;C) server before downloading and executing the next
+stage.&lt;/p&gt;
+&lt;p&gt;The first version of the downloader was written in Delphi and was based on a
+&lt;a href="https://securelist.com/zebrocys-multilanguage-malware-salad/90680/"target="_blank" rel="noopener"&gt;previous malware&lt;/a&gt;
+used by Sofacy. One unique aspect of the operators behind Zebrocy is their
+choice of evolving the malware. Instead of improving their codebase to add new
+functionalities and increase their chance of staying undetected, the group has
+opted to keep the malware simple by implementing new versions in different
+programming languages. Zebrocy samples written in AutoIT, C++, C#, Delphi, Go,
+and VB.NET have been
+&lt;a href="https://unit42.paloaltonetworks.com/unit42-sofacy-groups-parallel-attacks/"target="_blank" rel="noopener"&gt;discovered&lt;/a&gt;
+by the
+&lt;a href="https://unit42.paloaltonetworks.com/sofacy-creates-new-go-variant-of-zebrocy-tool/"target="_blank" rel="noopener"&gt;research&lt;/a&gt;
+community.&lt;/p&gt;
+&lt;p&gt;While Zebrocy is known to be used by a subset of the Sofacy threat group,
+Kaspersky Labs reported in
+&lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;January 2019&lt;/a&gt;
+that they had discovered infrastructure used both by Zebrocy and GreyEnergy.
+GreyEnergy was discovered by ESET and reported on in
+&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2018/10/ESET_GreyEnergy.pdf"target="_blank" rel="noopener"&gt;October 2018&lt;/a&gt;.
+The group is believed to be the successor of BlackEnergy, also known as
+Sandworm. Sandworm was recently attributed to Russia’s GRU by the United States
+government in an
+&lt;a href="https://www.justice.gov/opa/pr/six-russian-gru-officers-charged-connection-worldwide-deployment-destructive-malware-and"target="_blank" rel="noopener"&gt;indictment&lt;/a&gt;
+for the NotPetya and Olympic Destroyer campaigns. Generally speaking, Sofacy
+and BlackEnergy have diverging goals and have been known to go after different
+targets. In this case, the common infrastructure and targets between the Sofacy
+subgroup using Zebrocy and GreyEnergy suggests a relationship between the
+groups.&lt;/p&gt;
+&lt;p&gt;Zebrocy is mainly used against
+&lt;a href="https://securelist.com/masha-and-these-bears/84311/"target="_blank" rel="noopener"&gt;governments and commercial organizations&lt;/a&gt;
+engaged in
+&lt;a href="https://unit42.paloaltonetworks.com/unit42-sofacy-groups-parallel-attacks"target="_blank" rel="noopener"&gt;foreign affairs&lt;/a&gt;.
+Victims have been located
+&lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;in&lt;/a&gt;:
+&amp;ldquo;Afghanistan, Azerbaijan, Bosnia and Herzegovina, China, Egypt, Georgia, Iran,
+Japan, Kazakhstan, Korea, Kyrgyzstan, Mongolia, Russia, Saudi Arabia, Serbia,
+Switzerland, Tajikistan, Turkey, Turkmenistan, Ukraine, Uruguay, and Zimbabwe.&amp;rdquo;
+The delivery of Zebrocy is usually via a spear-phishing
+&lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;email&lt;/a&gt;.
+The email has contained Microsoft Office documents or archive files.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;At the end of November, we discovered a Virtual Hard Drive (VHD) file
+(&lt;code&gt;a7b446d79d3fc05a7e1881d6d4abaf55&lt;/code&gt;) named &lt;code&gt;30-22-243.vhd &lt;/code&gt;that was uploaded
+from Azerbaijan to VirusTotal. VHD is the native file format for virtual hard
+drives used by Microsoft’s hypervisor, Hyper-V. Windows 10 has native support
+for the file format and allows the user to mount the file and access its
+content. Figure 1 shows what the user would see if they downloaded the file to
+their desktop. According to timestamps stored in the file, the disk was created
+on November 20, 2020, 10 days before it was uploaded to VirusTotal.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig1.png" title="Figure 1: VHD phishing lure." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: VHD phishing lure.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;If the user double-clicks on the file, Windows will mount the drive and it
+appears as an external hard drive. Figure 2 shows the content of the VHD.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig2.png" title="Figure 2: Content of the VHD file. It contains two files: A PDF file and an executable that is masquerading as a Microsoft Word document." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: Content of the VHD file. It contains two files: A PDF file and an executable that is masquerading as a Microsoft Word document.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The VHD file includes two files, a PDF document and an executable that is
+masquerading as a Microsoft Word document. The PDF file consists of
+presentation slides about Sinopharm International Corporation. Figure 3
+displays a screenshot of the first slide.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig3.png" title="Figure 3: PDF of presentation slides used as part of the lure." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: PDF of presentation slides used as part of the lure.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Sinopharm International Corporation is a China-based
+&lt;a href="https://www.bloomberg.com/profile/company/1383184D:CH"target="_blank" rel="noopener"&gt;manufacturer of pharmaceutical products&lt;/a&gt;.
+It is one of the companies in China that is currently working on a vaccine for
+COVID-19. Their vaccine is currently undergoing
+&lt;a href="https://www.bloomberg.com/features/2020-coronavirus-drug-vaccine-status/"target="_blank" rel="noopener"&gt;phase three&lt;/a&gt;
+clinical trials but it has already been
+&lt;a href="https://uk.reuters.com/article/uk-health-coronavirus-vaccine-sinopharm/china-sinopharms-coronavirus-vaccine-taken-by-about-a-million-people-in-emergency-use-idUKKBN27Z0PS"target="_blank" rel="noopener"&gt;given to nearly one million people&lt;/a&gt;.
+It may not come as a surprise that the threat group behind Zebrocy is using
+COVID-19-themed related lures when many vaccines are about to get approved for
+use. The group is known to use
+&lt;a href="https://www.accenture.com/us-en/blogs/cyber-defense/snakemackerel-delivers-zekapab-malware"target="_blank" rel="noopener"&gt;current events as part of their phishing lures&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The second file is the malware. By default, Windows hides known file extensions
+and the user can be easily tricked into believing that it’s a Word document.
+The scan results of the executable from VirusTotal is shown in Figure 4 and
+&lt;a href="https://analyze.intezer.com/"target="_blank" rel="noopener"&gt;Intezer Analyze&lt;/a&gt; in Figure 5. Only nine of the
+70 antivirus engines detected the file as generic malware while Analyze
+detected the file as malware associated with Sofacy.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig4.png" title="Figure 4: VirusTotal scan results of the binary file with generic detection." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: VirusTotal scan results of the binary file with generic detection.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig5.png" title="Figure 5: Intezer Analyze detects the file as genetically similar to malware used by Sofacy one year ago." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: Intezer Analyze detects the file as genetically similar to malware used by Sofacy one year ago.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The malware is a new sample of Zebrocy written in Go. Earlier this year,
+&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;QuoIntelligence&lt;/a&gt;
+detected an ongoing campaign by Sofacy, assessing with medium-high confidence
+that the group was targeting Azerbaijan. In that campaign, the Delphi version
+was used. It appears that the threat group has now switched from delivering the
+Delphi downloader to the Go downloader.&lt;/p&gt;
+&lt;p&gt;The downloader is similar to the original downloader reported by
+&lt;a href="https://unit42.paloaltonetworks.com/sofacy-creates-new-go-variant-of-zebrocy-tool/"target="_blank" rel="noopener"&gt;Palo Alto Networks Unit 42&lt;/a&gt;.
+The sample has been obfuscated with
+&lt;a href="https://github.com/unixpickle/gobfuscate"target="_blank" rel="noopener"&gt;gobfuscator&lt;/a&gt;, the same tool used by
+the Blackrota malware. The sample doesn’t collect the same amount of
+information about the infected machine (i.e., running processes, local disk
+information, and system information from “systeminfo”) as in previous
+campaigns. Instead, it collects the hostname and the path to the user’s &lt;code&gt;TEMP&lt;/code&gt;
+folder. This information is used to generate an identifier by hashing the
+values with MD5. The screenshot functionality is not performed by an imported
+third-party library. Rather, the malware author has included the screenshot
+code from the library directly in the main codebase. The malware has some
+anti-debugging checks. In Figure 6, it can be seen how the malware calls the
+Windows API function &lt;code&gt;IsDebuggerPresent&lt;/code&gt;. If true is returned, it enters an
+infinite sleeping loop.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig6.png" title="Figure 6: Logic that checks if the process is being debugged. If true, it enters a sleeping loop." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: Logic that checks if the process is being debugged. If true, it enters a sleeping loop.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The screenshot is uploaded to the C&amp;amp;C located at the URL:
+&lt;code&gt;hxxps://support-cloud[.]life/managment/cb-secure/technology.php&lt;/code&gt;. If the C&amp;amp;C
+returns a second stage, the file is written to the disk and executed. The URL
+scheme for the C&amp;amp;C is similar to the URL scheme used in the original
+&lt;a href="https://unit42.paloaltonetworks.com/sofacy-creates-new-go-variant-of-zebrocy-tool/"target="_blank" rel="noopener"&gt;Go version&lt;/a&gt;
+(&lt;code&gt;hxxp://89.37.226[.]148/technet-support/library/online-service-description.php&lt;/code&gt;).
+The domain name was registered with NameCheap on October 20, 2020, and uses a
+certificate issued by Let’s Encrypt. The certificate was issued on November 2,
+2020. The infrastructure is hosted on &lt;code&gt;80.90.39.24&lt;/code&gt; which is owned by the
+Luxembourg-based hosting company, Visual Online. The infrastructure appears to
+be new.&lt;/p&gt;
+&lt;h2&gt;Earlier Campaigns&lt;span class="hx:absolute hx:-mt-20" id="earlier-campaigns"&gt;&lt;/span&gt;
+&lt;a href="#earlier-campaigns" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Using the icon resource from the original phishing lure, we found another
+phishing lure (&lt;code&gt;395e166af5197967503f45c3ac134ff7&lt;/code&gt;) that was uploaded to
+VirusTotal from Kazakhstan on November 12. This VHD file was named
+&lt;code&gt;No.243.CB3-EVACUATION LETTER.vhd&lt;/code&gt;. The content of the file is shown in Figure
+7.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig7.png" title="Figure 7: Content of No.243.CB3-EVACUATION LETTER.vhd. The disk file includes an executable file and a PDF file." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 7: Content of No.243.CB3-EVACUATION LETTER.vhd. The disk file includes an executable file and a PDF file.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The executable is another Go version of Zebrocy. It uses the same C&amp;amp;C URL. The
+sample is obfuscated using the same technique the group has used for their
+prior versions. The function names have been mangled and the strings have been
+obfuscated. In this version, the strings are obfuscated by rotating the
+characters in the string one step. For example, &lt;code&gt;A&lt;/code&gt; has been rotated to &lt;code&gt;B&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The PDF file is corrupted. This is not the first time the group is using
+&lt;a href="https://www.welivesecurity.com/2018/11/20/sednit-whats-going-zebrocy/"target="_blank" rel="noopener"&gt;corrupt files&lt;/a&gt;
+as part of its lures. Corrupt
+&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;Microsoft Excel files were used&lt;/a&gt;
+in the campaign uncovered by QuoIntelligence earlier this year. The technique
+is likely used to trick the user into executing the application rather than
+just viewing the lure.&lt;/p&gt;
+&lt;p&gt;Based on the file name, one theory we have is a message from India’s
+Directorate General of Civil Aviation is being impersonated. It was announced
+&lt;a href="https://www.outlookindia.com/newsscroll/will-develop-flight-network-to-russia-central-asian-countries-in-next-few-months-indigo-official/1920413"target="_blank" rel="noopener"&gt;in August&lt;/a&gt;
+that a flight network between India, Russia, and other Central Asian countries
+was being developed. While India has suspended international flights due to the
+pandemic, some airlines have operated charter flights to “Russia, Uzbekistan,
+Ukraine, Kazakhstan and Kyrgyzstan.”&lt;/p&gt;
+&lt;p&gt;It turns out the same VHD file was uploaded in October to VirusTotal with
+different content (&lt;code&gt;855005fee45e71c36a466527c7fad62f&lt;/code&gt;); both samples share the
+same disk ID. The content of this sample is shown in Figure 8. As with the
+other VHD files, this also has a PDF file and an executable masquerading as a
+Microsoft Word Document. Instead of delivering the Go version of Zebrocy, the
+Delphi loader was used.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig8.png" title="Figure 8: Content of VHD uploaded to VirusTotal in October." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 8: Content of VHD uploaded to VirusTotal in October.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The PDF lure is written in Russian. The title is, according to Google
+Translate: &amp;ldquo;NATIONAL LIST INDIVIDUALS AND LEGAL ENTITIES INVOLVED IN TERRORIST
+AND EXTREMIST ACTIVITIES OR THE DISTRIBUTION OF WEAPONS OF MASS DESTRUCTION.&amp;rdquo;
+The content of the first page is shown in Figure 9.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig9.jpg" title="Figure 9: Redacted screenshot of PDF lure written in Russian." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 9: Redacted screenshot of PDF lure written in Russian.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;According to timestamps, the VHD was created on October 21, the day after the
+domain (&lt;code&gt;support-cloud[.]life&lt;/code&gt;) was registered. The domain was used in a
+spear-phishing attack against a Kazakhstan government ministry the same day.
+The VHD file was uploaded to VirusTotal the next day. On November 11, the same
+VHD file was reused but the lure and payload were changed. This version of the
+VHD was uploaded to VirusTotal the next day. By applying this logic to the VHD
+file used to deliver the Sinopharm-based lure, we can estimate that it was used
+around November 20.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Zebrocy is a malware toolset used by the Sofacy threat group. While the group
+keeps changing obfuscation and delivery techniques, code reuse allowed Intezer
+to detect and correctly classify this malware. With these recent phishing
+lures, it’s clear that COVID-19 themed attacks are still a threat and we might
+see more as vaccines become available to the general public.&lt;/p&gt;
+&lt;p&gt;It’s important that companies use defense-in-depth strategies to protect
+against threats. Employers should also ensure employees are trained on
+detecting and reacting to phishing attempts. Phishing attempts do not always
+originate from an external email address; they can also come from a compromised
+account within the enterprise.&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
+&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;hxxps://support-cloud[.]life/managment/cb-secure/technology.php&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;VHD files&lt;span class="hx:absolute hx:-mt-20" id="vhd-files"&gt;&lt;/span&gt;
+&lt;a href="#vhd-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;d5d9210ef49c6780016536b0863cc50f6de03f73e70c2af46cc3cff0e2bf9353 30-1868.vhd
+43c65d87d690aea7c515fe84317af40b7e64b350304b0fc958a51d62826feade 30-22-243.vhd
+d444fde5885ec1241041d04b3001be17162523d2058ab1a7f88aac50a6059bc0 No.243.CB3-EVACUATION LETTER.vhd&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Zebrocy&lt;span class="hx:absolute hx:-mt-20" id="zebrocy"&gt;&lt;/span&gt;
+&lt;a href="#zebrocy" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;f36a0ee7f4ec23765bb28fbfa734e402042278864e246a54b8c4db6f58275662 243_BIO_SINOPHARM.exe
+61c2e524dcc25a59d7f2fe7eff269865a3ed14d6b40e4fea33b3cd3f58c14f19 243.CB3.EVACUATION LETTER.exe
+6449d0cb1396d6feba7fb9e25fb20e9a0a5ef3e8623332844458d73057cf04a1 30-1868 20.10.2020.exe&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>

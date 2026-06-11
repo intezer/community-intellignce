@@ -1,0 +1,202 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Supply_chain_attack</title><link>https://intezer.github.io/community-intelligence/tags/supply_chain_attack/</link><description>Recent content in Supply_chain_attack on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 02 Oct 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/supply_chain_attack/index.xml" rel="self" type="application/rss+xml"/><item><title>Evidence Aurora Operation Still Active Part 2: More Ties Uncovered Between CCleaner Hack &amp; Chinese Hackers</title><link>https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/</link><pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/</guid><description>
+&lt;p&gt;Since my
+&lt;a href="../../../2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/"&gt;last post&lt;/a&gt;,
+we have found new evidence in the next stage payloads of the CCleaner supply
+chain attack that provide a stronger link between this attack and the Axiom
+group.&lt;/p&gt;
+&lt;p&gt;First of all, our researchers would like to thank the entire team at Cisco
+Talos for their excellent work on this attack (their post regarding stage 2 can
+be found
+&lt;a href="http://blog.talosintelligence.com/2017/09/ccleaner-c2-concern.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;) as
+well as their cooperation by allowing us access to the stage 2 payload. Also,
+we would like to give a special thanks to Kaspersky Labs for their
+collaboration.&lt;/p&gt;
+&lt;h2&gt;The Next Connection&lt;span class="hx:absolute hx:-mt-20" id="the-next-connection"&gt;&lt;/span&gt;
+&lt;a href="#the-next-connection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Starting from the stage 2 payload, I reverse engineered the module, extracting
+other hidden shellcode and binaries within. After uploading the different
+binaries to Intezer Analyze™, the final payload (that I have access to) had a
+match with a binary relating to the Axiom group.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;At first glance, I believed it was going to be the same custom base64 function
+as mentioned in my
+&lt;a href="../../../2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/"&gt;previous blog post&lt;/a&gt;.
+A deeper look in the shared code proved otherwise.&lt;/p&gt;
+&lt;p&gt;Binary in screenshot:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;f0d1f88c59a005312faad902528d60acbf9cd5a7b36093db8ca811f763e1292a&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Related APT17 samples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;07f93e49c7015b68e2542fc591ad2b4a1bc01349f79d48db67c53938ad4b525d&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0375b4216334c85a4b29441a3d37e61d7797c2e1cb94b14cf6292449fb25c7b2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;20cd49fd0f244944a8f5ba1d7656af3026e67d170133c1b3546c8b2de38d4f27&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ee362a8161bd442073775363bf5fa1305abac2ce39b903d63df0d7121ba60550&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig2.jpg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Not only did the first payload have shared code between the Axiom group and
+CCBkdr, but the second did as well. The above photo shows the same function
+between two binaries. Let me put this into better context for you: out of all
+the billions and billions of pieces of code (both trusted and malicious)
+contained in the Intezer Code Genome Database, we found this code in only these
+APTs. It is also worth noting that this isn’t a standard method one would use
+to call an API. The attacker used the simple technique of employing an array to
+hide a string from being in clear sight of those analyzing the binary (although
+to those who are more experienced, it is obvious) and remain undetected from
+antivirus signatures. The author probably copied and pasted the code, which is
+what often happens to avoid duplicative efforts: rewriting the same code for
+the same functionality twice.&lt;/p&gt;
+&lt;p&gt;Due to the uniqueness of the shared code, we strongly concluded that the code
+was written by the same attacker.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The stage two payload that was analyzed in this report (dc9b5e8aa6ec86db8af0a7aa897ca61db3e5f3d2e0942e319074db1aaccfdc83), after launching the infected version of CCleaner, was dropped to only a selective group of targets, as reported by Talos. Although there is an x64 version, the following analysis will only include the x86 version because they are nearly identical. I will not be going too far in depth as full comprehension of the technical analysis will require an understanding of reverse engineering.&lt;/p&gt;
+&lt;p&gt;Instead of using the typical API (VirtualAlloc) to allocate memory, the attackers allocated memory on the heap using LocalAlloc, and then copied a compressed payload to the allocated memory.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;It looks like the attackers used version 1.1.4 of zlib to decompress the payload into this allocated memory region.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Depending on if you’re running x86 or x64 Windows, it will drop a different module. (32-bit &lt;code&gt;07fb252d2e853a9b1b32f30ede411f2efbb9f01e4a7782db5eacf3f55cf34902&lt;/code&gt;, 64-bit &lt;code&gt;128aca58be325174f0220bd7ca6030e4e206b4378796e82da460055733bb6f4f&lt;/code&gt;) Both modules are actually legitimate software with additional code and a modified execution flow.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The last modified time on the modules is changed to match that of the msvcrt.dll that is located in your system32 folder–a technique to stay under the radar by not being able to check last modified files.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Some shellcode and another module are written to the registry.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After the module is successfully dropped, a service is created under the name Spooler or SessionEnv, depending upon your environment, which then loads the newly dropped module.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig9.png" alt="" loading="lazy" /&gt;
+The new module being run by the service allocates memory, reads the registry where the other payload is located, and then copies it to memory
+&lt;img src="images/fig10.png" alt="" loading="lazy" /&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The next payload is executed, which decrypts another module and loads it. If we look at the memory of the next decrypted payload, we can see something that looks like a PE header without the MZ signature. From here, it is as simple as modifying the first two bytes to represent MZ and we have a valid PE file. (&lt;code&gt;f0d1f88c59a005312faad902528d60acbf9cd5a7b36093db8ca811f763e1292a&lt;/code&gt;)&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The next module is a essentially another backdoor that connects to a few domains; before revealing the true IP, it will connect to for the next stage payload.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;It starts by ensuring it receives the correct response from &lt;a href="https://www.microsoft.com"target="_blank" rel="noopener"&gt;https://www.microsoft.com&lt;/a&gt; and &lt;a href="https://update.microsoft.com"target="_blank" rel="noopener"&gt;https://update.microsoft.com&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The malware proceeds to decrypt two more URLs.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig15.png" alt="" loading="lazy" /&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The malware authors used steganography to store the IP address in a ptoken field of the HTML.&lt;/p&gt;
+&lt;p&gt;Here you can see the GitHub page with the ptoken field.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The value is then XOR decrypted by &lt;code&gt;0x31415926&lt;/code&gt; which gives you &lt;code&gt;0x5A093B0D&lt;/code&gt; or the IP address: &lt;code&gt;13.59.9.90&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The complexity and quality of this particular attack has led our team to conclude that it was most likely state-sponsored. Considering this new evidence, the malware can be attributed to the Axiom group due to both the nature of the attack itself and the specific code reuse throughout that our technology was able to uncover.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Stage 2 Payload: dc9b5e8aa6ec86db8af0a7aa897ca61db3e5f3d2e0942e319074db1aaccfdc83
+x86 Trojanized Binary: 07fb252d2e853a9b1b32f30ede411f2efbb9f01e4a7782db5eacf3f55cf34902
+x86 Registry Payload: f0d1f88c59a005312faad902528d60acbf9cd5a7b36093db8ca811f763e1292a
+x64 Trojanized Binary: 128aca58be325174f0220bd7ca6030e4e206b4378796e82da460055733bb6f4f
+x64 Registry Payload: 75eaa1889dbc93f11544cf3e40e3b9342b81b1678af5d83026496ee6a1b2ef79
+Registry Keys:
+HKLM\Software\Microsoft\Windows NT\CurrentVersion\Wbem\Perf\�01
+HKLM\Software\Microsoft\Windows NT\CurrentVersion\Wbem\Perf\�02
+HKLM\Software\Microsoft\Windows NT\CurrentVersion\Wbem\Perf\�03
+HKLM\Software\Microsoft\Windows NT\CurrentVersion\Wbem\Perf\�04
+HKLM\Software\Microsoft\Windows NT\CurrentVersion\Wbem\Perf\HBP&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Evidence Aurora Operation Still Active: Supply Chain Attack Through CCleaner</title><link>https://intezer.github.io/community-intelligence/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/</link><pubDate>Wed, 20 Sep 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/</guid><description>
+&lt;p&gt;Recently, there have been a few attacks with a supply chain infection, such as
+&lt;a href="https://securelist.com/shadowpad-in-corporate-networks/81432/"target="_blank" rel="noopener"&gt;Shadowpad&lt;/a&gt;
+being implanted in many of Netsarang’s products, affecting millions of people.
+You may have the most up to date cyber security software, but when the software
+you are trusting to keep you protected gets infected there is a problem. A
+backdoor, inserted into legitimate code by a third party with malicious intent,
+leads to millions of people being hacked and their information stolen.&lt;/p&gt;
+&lt;p&gt;Avast’s CCleaner software had a backdoor encoded into it by someone who had
+access to the supply chain. Through somewhere that had access to the source
+code of CCleaner, the main executable in v5.33.6162 had been modified to
+include a backdoor. The official statement from Avast can be found
+&lt;a href="https://blog.avast.com/update-to-the-ccleaner-5.33.6162-security-incident"target="_blank" rel="noopener"&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;The Big Connection&lt;span class="hx:absolute hx:-mt-20" id="the-big-connection"&gt;&lt;/span&gt;
+&lt;a href="#the-big-connection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Costin Raiu, director of Global Research and Analysis Team at Kaspersky Lab,
+was the first to find a code connection between APT17 and the backdoor in the
+infected CCleaner:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The malware injected into #CCleaner has shared code with several tools used
+by one of the APT groups from the #Axiom APT &amp;lsquo;umbrella&amp;rsquo;.&lt;/p&gt;
+&lt;p&gt;— Costin Raiu (@craiu)
+&lt;a href="https://x.com/craiu/status/910059453948579840?ref_src=twsrc%5Etfw"target="_blank" rel="noopener"&gt;September 19, 2017&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Using Intezer Analyze™, we were able to verify the shared code between the
+backdoor implanted in CCleaner and earlier APT17 samples. The photo below is
+the result of uploading the CCBkdr module to Intezer Analyze™, where the
+results show there is an overlap in code. With our technology, we can compare
+code to a huge database of malicious and trusted software — that’s how we can
+prove that this code has never been seen before in any other software.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;A deeper analysis leads us to the functions shown below. The code in question
+is a unique implementation of base64 only previously seen in APT17 and not in
+any public repository, which makes a strong case about attribution to the same
+threat actor.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig2.jpg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This code connection is huge news. APT17, also known as
+&lt;a href="../../../2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/"&gt;Operation Aurora&lt;/a&gt;,
+is one of the most sophisticated cyber attacks ever conducted and they
+specialize in supply chain attacks. In this case, they probably were able to
+hack CCleaner’s build server in order to plant this malware. Operation Aurora
+started in 2009 and to see the same threat actor still active in 2017 could
+possibly mean there are many other supply chain attacks by the same group that
+we are not aware of. The previous attacks are attributed to a Chinese group
+called PLA Unit 61398.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The infected CCleaner file that begins the analysis is from
+&lt;code&gt;6f7840c77f99049d788155c1351e1560b62b8ad18ad0e9adda8218b9f432f0a9&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;A technical analysis was posted by Talos
+&lt;a href="http://blog.talosintelligence.com/2017/09/avast-distributes-malware.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The flow-graph of the malicious CCleaner is as follows (taken from the Talos
+report):&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Infected function:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Load and execute the payload code:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After the embedded code is decrypted and executed, the next step is a PE
+(portable executable) file loader. A PE file loader basically emulates the
+process of what happens when you load an executable file on Windows. Data is
+read from the PE header, from a module created by the malware author.&lt;/p&gt;
+&lt;p&gt;The PE loader first begins by resolving the addresses of imports commonly used
+by loaders and calling them. GetProcAddress to get the addresses of external
+necessary functions, LoadLibraryA to load necessary modules into memory and get
+the address of the location of the module in memory, VirtualAlloc to create
+memory for somewhere to copy the memory, and in some cases, when not
+implemented, and memcpy to copy the buffer to the newly allocated memory
+region.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After the module is copied to memory, to load it properly, the proper loading
+procedure is executed. The relocation table is read to adjust the module to the
+base address of the allocated memory region, the import table is read, the
+necessary libraries are loaded, and the import address table is filled with the
+correct addresses of the imports. Next, the entire PE header is overwritten
+with 0’s, a mechanism to destroy the PE header tricking security software into
+not realizing this module is malicious, and after the malicious code begins
+execution.&lt;/p&gt;
+&lt;p&gt;The main module does the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Tries an anti-debug technique using time and IcmpSendEcho to wait&lt;/li&gt;
+&lt;li&gt;Collect data about the computer (Operating system, computer name, DNS
+domain, running processes, etc)&lt;/li&gt;
+&lt;li&gt;Allocates memory for payload to retrieve from C&amp;amp;C server&lt;/li&gt;
+&lt;li&gt;Contacts C&amp;amp;C server at IP address &lt;code&gt;216.126.225.148&lt;/code&gt;. If this IP address is
+unreachable, uses a domain generation algorithm and uses a different domain
+depending on the month and year&lt;/li&gt;
+&lt;li&gt;Executes code sent by C&amp;amp;C&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;By the time of the analysis, we were unable to get our hands on the code sent
+by the C&amp;amp;Cs.&lt;/p&gt;
+&lt;p&gt;If you would like to analyze the malware yourself, you may refer to my tweet.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;#ccleaner malware DLL w/ IAT fix &lt;a href="https://t.co/FprmtmkV64"target="_blank" rel="noopener"&gt;https://t.co/FprmtmkV64&lt;/a&gt;
+&lt;a href="https://t.co/dgWiQVd31k"target="_blank" rel="noopener"&gt;https://t.co/dgWiQVd31k&lt;/a&gt; @TalosSecurity @malwrhunterteam
+pic.twitter.com/TxsbveFoHJ&amp;gt;&lt;/p&gt;
+&lt;p&gt;— Jay Rosenberg (@jaytezer) September 18, 2017&lt;/p&gt;
+&lt;/blockquote&gt;</description></item></channel></rss>

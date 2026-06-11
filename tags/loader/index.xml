@@ -532,4 +532,223 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Prince of Persia the Sands of Foudre</title><link>https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/</link><pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the past couple years, Palo Alto Networks reported on the &amp;ldquo;Prince of Persia&amp;rdquo;
+malware campaign which is believed to be of Iranian origin and ongoing for more
+than 10 years. The original research, published in 2016, called the malware
+&lt;a href="https://researchcenter.paloaltonetworks.com/2016/05/prince-of-persia-infy-malware-active-in-decade-of-targeted-attacks/"target="_blank" rel="noopener"&gt;Infy&lt;/a&gt;
+and their second report, published in 2017, named the upgraded malware Foudre.
+The name
+&amp;ldquo;&lt;a href="https://researchcenter.paloaltonetworks.com/2017/08/unit42-prince-persia-ride-lightning-infy-returns-foudre/"target="_blank" rel="noopener"&gt;Foudre&lt;/a&gt;&amp;rdquo;
+comes from a string in the binary used to check if the computer is already
+infected. At the time of their blog post, Palo Alto Networks stated the version
+of Foudre they observed were versions 1 and 2. We have found new evidence of
+the Prince of Persia campaign active by finding a new version of the Foudre
+malware, version 8.&lt;/p&gt;
+&lt;p&gt;In this blog post, we are only going to focus on the new, unique, interesting
+features of the new version of Foudre, and its related campaign&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig1.png" title="Internal version name of Foudre v8" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Internal version name of Foudre v8&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;No to The Forced Hijab&lt;span class="hx:absolute hx:-mt-20" id="no-to-the-forced-hijab"&gt;&lt;/span&gt;
+&lt;a href="#no-to-the-forced-hijab" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Similarly to the samples noted in previous reports, this new malware also comes
+packaged in a WinRAR SFX archive including multiple malicious binaries and a
+media file. The media file in this case is a video in the MP4 format showing a
+woman in Iran walking around and at the end pulling off her hijab. In the
+video, there is text written in Farsi with a hashtag, بنه به حجاب اجباری#,
+literally translating to &amp;ldquo;no to the forced hijab.&amp;rdquo; This hashtag is in reference
+to protesters in Iran who are protesting the mandatory use of the hijab for
+women and the video is meant to distract the victim while the Foudre malware
+gets installed in the background.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig2.png" title="Screenshot from the video bundled in the malware" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Screenshot from the video bundled in the malware&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Foudre is a remote access tool and has the ability to remotely execute
+commands, steal information about the infected target (such as keystrokes,
+process information, etc), and auto-update itself. Most of the code and
+functionality from the previous versions of Foudre and Infy was reused and can
+be read about in the reports linked above, so we are only going to focus on the
+new, unique, interesting features and the linkage of code reuse from previous
+versions.&lt;/p&gt;
+&lt;h2&gt;Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="code-reuse"&gt;&lt;/span&gt;
+&lt;a href="#code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After uploading the WinRAR SFX to Intezer Analyze™, the files inside were
+statically extracted which reveals 3 binaries, a lockbox3 signature, and the
+video mentioned above.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Using our new Show Code feature, we can see code overlapping with Foudre and
+Infy.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig4.png" title="Code overlap with Foudre" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code overlap with Foudre&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig5.png" title="Code overlap with Infy" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code overlap with Infy&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;New Features/Changes&lt;span class="hx:absolute hx:-mt-20" id="new-featureschanges"&gt;&lt;/span&gt;
+&lt;a href="#new-featureschanges" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;First of all, the main binary of the upgraded Foudre malware is mostly
+undetected on
+&lt;a href="https://www.virustotal.com/#/file/c7279a32329ebb1ab5c1cdbfbddb5a167e1505340c3ca72e837a222ff92665a6/detection"target="_blank" rel="noopener"&gt;VirusTotal&lt;/a&gt;
+with only 3/67 detections.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In the latest version of Foudre, there are 2 modules. One of the modules
+(i7234.dll) has the export &amp;ldquo;D1&amp;rdquo; and the other module (d388) exports &amp;ldquo;D2&amp;rdquo; as a
+function. We are going to refer to the different binaries based on their
+exports, D1 and D2. The third binary never gets launched and is still under
+investigation. We will release more details about it on a further date. The
+WinRAR SFX and D1 module only get executed once. The following features/changes
+are spread across the WinRAR SFX, D1, and D2:&lt;/p&gt;
+&lt;p&gt;WinRAR SFX Dropper:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;WinRAR SFX has icon of girl with hijab from video&lt;/li&gt;
+&lt;li&gt;Extracts files&lt;/li&gt;
+&lt;li&gt;Launches D1 (&lt;code&gt;i7234.dll&lt;/code&gt;) with rundll32 and executes export D1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;D1:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;D1 executes the mp4 file&lt;/li&gt;
+&lt;li&gt;Checks if finds a window &amp;ldquo;TNRRDPKE2&amp;rdquo; means it’s already running&lt;/li&gt;
+&lt;li&gt;Copies D2 and key to &lt;code&gt;%APPDATA%&lt;/code&gt; with filenames a.n and p.k and creates a
+shortcut in the folder named &amp;ldquo;an.lnk&amp;rdquo;
+&lt;code&gt;C:\WINDOWS\system32\rundll32.exe a.n D2 838238125&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Deletes these files from TEMP folder&lt;/li&gt;
+&lt;li&gt;Stores name of D2 (a.n) in &lt;code&gt;HKEY_CURRENT_USER\Software\temp&lt;/code&gt; in key called
+&amp;ldquo;ran2&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Checks &lt;code&gt;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt; for
+SnailDriver&lt;/li&gt;
+&lt;li&gt;Creates autorun for an.lnk&lt;/li&gt;
+&lt;li&gt;Checks for &lt;code&gt;%PROGRAMFILES%\Kaspersky Lab&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Launches D2 with rundll32 &lt;code&gt;C:\WINDOWS\system32\rundll32.exe a.n D2 838238125&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;D2 has mostly the same features as reported in the older versions of Foudre but
+this table shows the main changes:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Foudre&lt;/th&gt;
+&lt;th&gt;Version 2&lt;/th&gt;
+&lt;th&gt;Version 8&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Browser Stealer Support&lt;/td&gt;
+&lt;td&gt;Microsoft Edge, Internet Explorer, Mozilla Firefox and, Google Chrome&lt;/td&gt;
+&lt;td&gt;Opera, Microsoft Edge, Internet Explorer, Mozilla Firefox and, Google Chrome&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Domain Generation Algorithm&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes, different (see below)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;VirusTotal Detections&lt;/td&gt;
+&lt;td&gt;41/66&lt;/td&gt;
+&lt;td&gt;3/67&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;String Encryption&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Already Running Detection String&lt;/td&gt;
+&lt;td&gt;TNRRDPKE&lt;/td&gt;
+&lt;td&gt;TNRRDPKE2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;Domain Generation Algorithm (DGA)&lt;span class="hx:absolute hx:-mt-20" id="domain-generation-algorithm-dga"&gt;&lt;/span&gt;
+&lt;a href="#domain-generation-algorithm-dga" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The DGA used by version 8 of Foudre has only changed slightly from the previous
+versions.&lt;/p&gt;
+&lt;p&gt;In the previous versions, the DGA algorithm was calculated by the following
+algorithm (credit to &lt;a href="https://twitter.com/xedi25"target="_blank" rel="noopener"&gt;Esmid Idrizovic&lt;/a&gt;):&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;ToHex(CRC32(“NRV1” &amp;#43; year &amp;#43; month &amp;#43; week_number)) &amp;#43; (“.space”|”.net”|”.top”)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;There are two minor differences now when calculating the C2. NRV1 was replaced
+with NRTV1 and .dynu.net was added as suffix to the domain making the algorithm
+now:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;ToHex(CRC32(“NRTV1” &amp;#43; year &amp;#43; month &amp;#43; week_number)) &amp;#43; (“.space”|”.net”|”.top”|”.dynu.net”)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;A few of the calculated domains were added to the bottom of the report in the
+IoCs section. The domains up to week of September 9, 2018 (week 35) have been
+registered in Panama and resolve to the same IP address &lt;code&gt;185[.]61[.]154[.]26&lt;/code&gt;.
+The oldest domain using this algorithm we could find that was registered was
+registered for the week of November 5, 2017.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Due to the content of the video and the information from the reports on
+previous versions of Foudre, we believe the targets are mostly Iranian
+citizens. We have registered some of the future generated domains to prevent
+the attack, and will update the post with information in regards to the
+infected victims.&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
+&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;WinRAR SFX c38533b85e4750e6f649cc407a50031de0984a8f3d5b90600824915433a5e218
+D1 DLL a02ce6768662ef250d248c158f26129dd4dfab30845d07962fbfe7aa19b16db9
+D2 DLL c7279a32329ebb1ab5c1cdbfbddb5a167e1505340c3ca72e837a222ff92665a6
+Unknown Binary cef161a220e019acc9ae79924a477c64aac2d6cc04126bb3f4a9f8452515f40f
+MP4 dbed2ca2e9c53dd72c3ed3ce60e603c6c91c80152f924d97d8514781e6d9e26f
+lockbox3 signature d2645d16e869addd099727c3c58438c2f6935d92c00f9e4b237ef498de1dad87&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
+&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;185[.]61[.]154.26
+ns1[.]cf75d89b[.]space
+ns2[.]cf75d89b[.]space
+Week 32 (Aug 5) – fe19f97f[.]space
+Week 33 (Aug 12) – 891ec9e9[.]space
+Week 34 (Sept 2) – 177a5c4a[.]space
+Week 35 (Sept 9) – 607d6cdc[.]space
+Week 36 (Sept 16) – f8b65751[.]space
+Week 37 (Sept 23) – 8fb167c7[.]space
+Week 38 (Sept 30) – 1f0e7a56[.]space
+Week 39 (Oct 7) – 68094ac0[.]space
+Week 40 (Oct 14) – 1d8bfc20[.]space&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item></channel></rss>
