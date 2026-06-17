@@ -1,4 +1,326 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Ransomware</title><link>https://intezer.github.io/community-intelligence/tags/ransomware/</link><description>Recent content in Ransomware on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 08 Feb 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/ransomware/index.xml" rel="self" type="application/rss+xml"/><item><title>Yet Another Distraction? A New Version of North Korean Ransomware Hermes Has Emerged</title><link>https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</link><pubDate>Thu, 08 Feb 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Ransomware</title><link>https://intezer.github.io/community-intelligence/tags/ransomware/</link><description>Recent content in Ransomware on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 10 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/ransomware/index.xml" rel="self" type="application/rss+xml"/><item><title>How We Seized 15 Active Ransomware Campaigns Targeting Linux File Storage Servers</title><link>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</link><pubDate>Wed, 10 Jul 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It is rare to see ransomware being used to target the Linux operating system.
+However, cyber criminals seem to adapt to this emerging environment and use a
+variety of creative methods to gain profits from this landscape.&lt;/p&gt;
+&lt;p&gt;We at Intezer have detected and temporarily DoS’d the operation of a ransomware
+targeting Linux-based file storage systems (NAS servers).&lt;/p&gt;
+&lt;p&gt;We have named the ransomware QNAPCrypt, as this is the name the authors have
+appeared to label the malware. QNAP is a well-known vendor for selling NAS
+servers, which the malware was intended to infect and encrypt the containing
+files for ransom. NAS servers normally store large amounts of important data
+and files, which make them a valuable target for attackers and especially a
+viable target for ransomware campaigns.&lt;/p&gt;
+&lt;p&gt;This malware currently has very low detection rates in all major security
+solutions.&lt;/p&gt;
+&lt;p&gt;The first two sections of this blog post will explain in brief how QNAPCrypt
+operates and how we were able to take advantage of two design flaws in the
+ransomware infrastructure in order to temporarily stop the campaign—preventing
+the malware from infecting additional victims and forcing the authors behind
+this malware to deploy new instances. Lastly, we will present a detailed
+technical analysis of the malware and the investigation of the entire campaign.&lt;/p&gt;
+&lt;p&gt;For reference, here is the genetic analysis of the QNAPCrypt malware:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://analyze.intezer.com/#/files/3d7ebe73319a3435293838296fbb86c2e920fd0ccc9169285cc2c4d7fa3f120d"target="_blank" rel="noopener"&gt;ARM variant&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://analyze.intezer.com/#/files/076a6fa4e051c061e19b9e3e37da9c63a9bc7c1a99111ac13b32eb2f70b7fa5c"target="_blank" rel="noopener"&gt;x86 variant&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;How the Ransomware Works&lt;span class="hx:absolute hx:-mt-20" id="how-the-ransomware-works"&gt;&lt;/span&gt;
+&lt;a href="#how-the-ransomware-works" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The QNAPCrypt ransomware works similarly to other ransomware, including
+encrypting all files and delivering a ransom note. However, there are several
+important differences:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;The ransom note was included solely as a text file, without any message on
+the screen—naturally, because it is a server and not an endpoint.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Every victim is provided with a different, unique Bitcoin wallet—this could
+help the attackers avoid being traced.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Once a victim is compromised, the malware requests a wallet address and a
+public RSA key from the command and control server (C&amp;amp;C) before file
+encryption.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;How We Seized the Campaign&lt;span class="hx:absolute hx:-mt-20" id="how-we-seized-the-campaign"&gt;&lt;/span&gt;
+&lt;a href="#how-we-seized-the-campaign" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src="images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In order to further research the malware and its operation, we wrote a script
+to simulate infections on a wide scale to see how the wallet generation
+mechanism worked in the attackers’ back end.&lt;/p&gt;
+&lt;p&gt;After simulating the infections of hundreds of virtual “victims”, we discovered
+two major design flaws in the ransomware infrastructure which led us to seize
+the operation:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;The list of bitcoin wallets was created in advance and it was static.
+Therefore, it does not create a new wallet for each new victim in real time,
+but rather it pulls a wallet address from a fixed, predetermined list.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Once all of the wallets are allocated (or sent), the ransomware would not be
+able to continue its malicious operation in the victim’s machine.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;After simulating the infection of more than 1,091 victims from 15 different
+campaigns, we encountered that the attackers ran out of unique Bitcoin wallets
+to supply to their victims. As a result, any future infection will be
+unsuccessful and the authors behind this malware were forced to update their
+implants in order to circumvent this design flaw in their infrastructure to
+continue with their malicious operations.&lt;/p&gt;
+&lt;p&gt;After several days of continuously DoS&amp;rsquo;ing their infrastructure, we have
+observed a newer variant in the wild that
+&lt;a href="https://analyze.intezer.com/#/files/076a6fa4e051c061e19b9e3e37da9c63a9bc7c1a99111ac13b32eb2f70b7fa5c"target="_blank" rel="noopener"&gt;shares a significant amount of code&lt;/a&gt;
+with previous QNAPCrypt instances and Linux.Rex. This time, the newer variant
+uses an embedded static wallet and RSA public key in contrast to previous
+instances.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The initial implant we found came in the form of a statically linked Golang
+binary built with the Go linker for ARM architecture. Throughout our research,
+we were able to confirm that other variants exist for additional architectures
+such as x86 / x64.&lt;/p&gt;
+&lt;p&gt;Go binaries may seem difficult to analyze when they come stripped, since trying
+to make sense of stripped statically linked binaries is usually a more
+difficult task than analyzing stripped dynamically linked binaries.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;We can observe that this binary is indeed a Go executable by looking at the
+section names in its section header table.&lt;/p&gt;
+&lt;p&gt;If we know the location of these sections, in particular the .gopclntab
+section, we will be able to reconstruct symbol names and offsets. This
+methodology is illustrated in the following diagram:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;For further insights into populating function names in Go binaries we highly
+recommend to view Tim Strazzere’s presentation and scripts in GitHub which
+document this technique.&lt;/p&gt;
+&lt;p&gt;After retrieving Go function names, analyzing the binary becomes much less
+complex since we can highlight the relevant functions of the application. Let’s
+not forget that the binary is 4MB in size.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After several cryptography algorithm initializations and parsing of arguments
+for directory whitelisting and alike functionalities, the malware will send a
+GET request to the CNC as a means to communicate that a new victim has been
+compromised and that system locking is taking place:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After sending this GET request, the malware will attempt to retrieve victim
+keys configuration using a client for the SOCKS proxy protocol version 5.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This proxy will request to connect to an onion domain name. The following
+represents the relevant packets for this connection:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After successful connection through the proxy to the onion domain, an
+additional GET request to the ransomware REST API is completed in order to
+retrieve the RSA public key that will be used to encrypt the file system—a
+unique Bitcoin wallet and the ransom note specific to the victim. All of these
+artifacts seem to be retrieved based on a specific campaign ID.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The response from the server is the following:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After victim configuration has been retrieved, the malware will proceed to
+remove itself and then it will parse the retrieved RSA public key.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This RSA public key will be used to encrypt a random sequence of bytes that
+would be used to encrypt the file system later on. This encrypted key will be
+base64 encoded and it will be written at the end of the ransom note file called
+README_FOR_DECRYPT.txt. We also noted that the ransomware distributes a
+different Bitcoin wallet per each compromised system:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After this file is created, the malware will proceed to execute the locking
+mechanism by walking the file system encrypting files using AES CFB with the
+derived encrypted key, avoiding to encrypt the ransom note just created:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The malware will target files with the following extensions:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After encryption, the malware will rename the affected files so that they will
+be prefixed with &lt;code&gt;.encrypt&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig15.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In order for system decryption to take place the base64 encoded random sequence
+encrypted with the RSA public key will be needed to be sent to the ransomware
+operator via the onion domain site after paying the demanded ransom:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After system locking has taken place, the ransomware will communicate that it
+has finished with the victim once again to the CNC:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Looking Outside of the Binary&lt;span class="hx:absolute hx:-mt-20" id="looking-outside-of-the-binary"&gt;&lt;/span&gt;
+&lt;a href="#looking-outside-of-the-binary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;One of our intended goals that we wanted to achieve when analyzing QNAPCrypt
+was to assess the scale of victims the ransomware was dealing with.&lt;/p&gt;
+&lt;p&gt;We were able to find a
+&lt;a href="https://www.reddit.com/r/linux/comments/bucepu/linux_ransomware/"target="_blank" rel="noopener"&gt;Reddit thread&lt;/a&gt;
+in which we contacted some of the affected victims:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;While talking to some of the victims related to the various campaigns of this
+malware, we were able to identify the initial attack vector as SSH brute force
+attacks and that they were targeting mainly NAS server providers, which
+corresponds to how the attacker has chosen to label this malware:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig19.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After making these findings we studied their infrastructure to determine if
+there was anything we could do to interact with this threat actor’s operations.&lt;/p&gt;
+&lt;p&gt;While researching the ARM instance of the malware, we observed that there was a
+request through their REST API in order to retrieve new victim configuration
+keys as previously discussed. The following diagram is a high level overview of
+the ransomware operation:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig20.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The connection to the SOCKS5 proxy is completed without any authentication
+enforced, and anyone would have the capability to connect to it.&lt;/p&gt;
+&lt;p&gt;Therefore, we decided to interact with the ransomware infrastructure in order
+to retrieve configuration keys and potentially temporarily shut down the
+operation of the ransomware to prevent infection of future victims that were
+compromised by instances of the ransomware that followed the previous design
+architecture:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig21.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This idea simply abuses the fact that no authentication is enforced to connect
+to the SOCKS5 proxy as previously mentioned. Since the authors behind this
+ransomware were delivering one Bitcoin wallet per victim from a static pool of
+already generated wallets, we could replicate the infection packets to retrieve
+all of the wallets until they had no further wallets under their control.
+Therefore, when a genuine infection would occur, the ransom client would not be
+able to retrieve configuration artifacts.&lt;/p&gt;
+&lt;p&gt;We wrote the following script in order to implement the methodology described
+above:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;socket&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;hexdump&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;json&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;HOST&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;192.99.206.61&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;PORT&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;65000&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;BTC_WALLETS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AF_INET&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SOCK_STREAM&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;HOST&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;PORT&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x05x01x00&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;recv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1024&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;hexdump&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hexdump&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x05x01x00x03x16&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;sg3dwqfpnr4sl5hh.onionx00&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x50&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;recv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1024&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;hexdump&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hexdump&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;GET /api/GetAvailKeysByCampId/&lt;/span&gt;&lt;span class="si"&gt;%.2d&lt;/span&gt;&lt;span class="s1"&gt; HTTP/1.1x0dx0a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Host: sg3dwqfpnr4sl5hh.onionx0dx0a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;User-Agent: http/2x0dx0a&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Accept-Encoding: gzipx0ax0dx0a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;recv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1024&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;[+] Campaign id &lt;/span&gt;&lt;span class="si"&gt;%.2d&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;hexdump&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hexdump&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loads&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;):])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;BtcPublicKey&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;BtcPublicKey&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;BTC_WALLETS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;BTC_WALLETS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;BtcPublicKey&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="ne"&gt;ValueError&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;[+] CAMPAIN HAS NO WALLETS LEFT&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;wallets_&lt;/span&gt;&lt;span class="si"&gt;%0d&lt;/span&gt;&lt;span class="s2"&gt;.txt&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;w+&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;wallet&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;BTC_WALLETS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;wallet&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;break&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;We were able to collect a total of 1,091 unique wallets meant to be delivered
+to new victims distributed among 15 different campaigns.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig22.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Furthermore, by depleting the attacker’s stored Bitcoin wallets we were able to
+stop this malware from infecting new victims temporarily, since if there is a
+failure to parse the RSA public key the client will just exit:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig23.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The following screenshot shows the packets that the onion domain will retrieve
+after the entire static Bitcoin wallet pool was depleted:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig24.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The HTTP request returns a 200 but with a content length of 0, therefore
+failing to retrieve configuration, and thus the ransomware client stops
+execution. This implies that we were able to identify an easy method to prevent
+further infections of this ransomware by constantly depleting its static
+bitcoin wallet pool.&lt;/p&gt;
+&lt;h2&gt;Attribution and Attackers Reaction&lt;span class="hx:absolute hx:-mt-20" id="attribution-and-attackers-reaction"&gt;&lt;/span&gt;
+&lt;a href="#attribution-and-attackers-reaction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After several days of continuously DoS&amp;rsquo;ing QNAPCrypt clients, we encountered
+another QNAPCrypt sample—but this time targeting x86 systems.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig25.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Based on Genetic Malware Analysis, we observed that this specific implant
+reused a large portion of code with old instances of x86 Linux.Rex builds.
+Linux.Rex is known for deploying
+&lt;a href="http://news.softpedia.com/news/crooks-used-sql-injections-to-hack-drupal-sites-and-install-web-ransomware-504300.shtml"target="_blank" rel="noopener"&gt;exploits&lt;/a&gt;
+against Drupal servers in 2016, in order to conduct ransomware and DDoS
+operations.&lt;/p&gt;
+&lt;p&gt;The following represents some of the code similarities between Linux.Rex and
+newer QNAPCrypt variants:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig26.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Although both implants implement different functionality, it is noticeable that
+both were written in a similar manner.&lt;/p&gt;
+&lt;p&gt;Furthermore, we can observe similarities with the ARM instance of QNAPCrypt but
+with a major difference—the RSA public key, Bitcoin wallet and ransom note are
+hardcoded in the binary:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig27.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;We can also see that the hardcoded onion domain is exactly the same as in the
+ARM variant, and the site design to pay the ransom is also the same, although
+the demanded ransom in Bitcoin seems to be lower than in previous variants:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig28.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;We interpret the discovery of these newer instances with hardcoded
+configuration to be a response from the threat actors behind this campaign to
+attempt to circumvent the DoS that their non connectionless instances were
+suffering. This implied that they were forced to change their implants and to
+centralize their bitcoin wallets, making the tracking of their income via their
+ransomware campaigns more convenient.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have covered the operation of the QNAPCrypt ransomware, and how we were able
+to find design flaws to prevent the malware from running in newer victims’
+machines and forcing the attackers behind the malware to update their implants
+in order to circumvent these flaws.&lt;/p&gt;
+&lt;p&gt;Additionally, Golang malware seems to be on the rise, since it appears to be a
+very convenient language to create cross-platform malware.&lt;/p&gt;
+&lt;p&gt;Furthermore, we have discussed how Linux ransomware has slightly different
+targets than Windows ransomware, in this case targeting NAS servers rather than
+Linux endpoints.&lt;/p&gt;
+&lt;p&gt;Unfortunately detection rates of QNAPCrypt are low, and the ransomware could
+create significant monetary losses and economic damage in comparison to other
+types of Linux threats.&lt;/p&gt;
+&lt;p&gt;We have created a custom
+&lt;a href="https://github.com/intezer/yara-rules/blob/master/QNAPCrypt.yar"target="_blank" rel="noopener"&gt;YARA signature&lt;/a&gt;
+for detecting future variants of QNAPCrypt.&lt;/p&gt;
+&lt;h2&gt;Genetic Analysis&lt;span class="hx:absolute hx:-mt-20" id="genetic-analysis"&gt;&lt;/span&gt;
+&lt;a href="#genetic-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The QNAPCrypt malware variants are now indexed in Intezer&amp;rsquo;s genetic database.
+If you have a suspicious file that you suspect to be QNAPCrypt or other malware
+from the Rex group, you can upload it to Intezer Analyze to detect code reuse
+to this threat family and many others.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig29.png" title="Genetic Analysis of the QNAPCrypt ARM variant" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Genetic Analysis of the QNAPCrypt ARM variant&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;sg3dwqfpnr4sl5hh[.]onion
+192.99.206[.]61
+3d7ebe73319a3435293838296fbb86c2e920fd0ccc9169285cc2c4d7fa3f120d
+076a6fa4e051c061e19b9e3e37da9c63a9bc7c1a99111ac13b32eb2f70b7fa5c&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Yet Another Distraction? A New Version of North Korean Ransomware Hermes Has Emerged</title><link>https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</link><pubDate>Thu, 08 Feb 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</guid><description>
 &lt;h2&gt;Detecting Reused Ransomware&lt;span class="hx:absolute hx:-mt-20" id="detecting-reused-ransomware"&gt;&lt;/span&gt;
 &lt;a href="#detecting-reused-ransomware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Whether we’re dealing with a criminal threat actor looking to steal money from
 their victims using ransomware or malware sponsored by a nation state, we can

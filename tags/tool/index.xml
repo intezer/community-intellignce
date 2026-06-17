@@ -1,0 +1,24 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Tool</title><link>https://intezer.github.io/community-intelligence/tags/tool/</link><description>Recent content in Tool on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 14 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>MoP – "Master of Puppets" – Advanced malware tracking framework revealed at BlackHat Arsenal 2019</title><link>https://intezer.github.io/community-intelligence/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</link><pubDate>Wed, 14 Aug 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</guid><description>
+&lt;p&gt;At BlackHat Arsenal 2019 Intezer’s researcher, Omri Ben-Bassat, revealed
+open-source tool called MoP (“Master of Puppets”) which is a framework for
+reverse engineers who wish to create and operate trackers for new malware found
+in the wild for research purposes.&lt;/p&gt;
+&lt;p&gt;To make it simple – MoP framework takes care of all the generic malware tracker
+stuff so the reverse engineer is left with pure reverse engineering work, You
+only need to implement a simple plugin on top of MoP which describes the
+malware’s network protocol.&lt;/p&gt;
+&lt;p&gt;MoP ships with a variety of workstation simulation capabilities, such as: fake
+filesystem manager, fake process manager, multi-worker orchestration, TOR
+integration and more, all of which aim to deceive adversaries into interacting
+with our simulated environment and possibly drop new unique samples. Since
+everything is done in pure python, no virtual machines or Docker containers are
+needed and no actual malicious code is executed.&lt;/p&gt;
+&lt;p&gt;This enables you to scale up in a click of a button, connecting to potentially
+thousands of different malicious servers at once from a single instance running
+on a single laptop. MoP framework comes with a number of pre-built plugins for
+known RATs, such as NjRAT and Gh0stRAT. Find it on
+&lt;a href="https://github.com/intezer/MoP/"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/images/fig1.png" title="Real NjRAT server with fake victim connected from MoP instance" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Real NjRAT server with fake victim connected from MoP instance&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;</description></item></channel></rss>
