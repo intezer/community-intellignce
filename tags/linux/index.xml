@@ -1700,6 +1700,451 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>New SysJoker Backdoor Targets Windows, Linux, and macOS</title><link>https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/</link><pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/</guid><description>
+&lt;p&gt;Malware targeting multiple operating systems has become no exception in the
+malware threat landscape.
+&lt;a href="../../../2021/09/vermilionstrike-reimplementation-cobaltstrike"&gt;Vermilion Strike&lt;/a&gt;,
+which was documented just last September, is among the latest examples until
+now.&lt;/p&gt;
+&lt;p&gt;In December 2021, we discovered a new multi-platform backdoor that targets
+Windows, Mac, and Linux. The Linux and Mac versions are fully undetected in
+VirusTotal. We named this backdoor &lt;strong&gt;SysJoker&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;SysJoker was first discovered during an active attack on a Linux-based web
+server of a leading educational institution. After further investigation, we
+found that SysJoker also has Mach-O and Windows PE versions. Based on Command
+and Control (C2) domain registration and samples found in VirusTotal, we
+estimate that the SysJoker attack was initiated during the second half of 2021.&lt;/p&gt;
+&lt;p&gt;SysJoker masquerades as a system update and generates its C2 by decoding a
+string retrieved from a text file hosted on Google Drive. During our analysis
+the C2 changed three times, indicating the attacker is active and monitoring
+for infected machines. Based on victimology and malware&amp;rsquo;s behavior, we assess
+that SysJoker is after specific targets.&lt;/p&gt;
+&lt;p&gt;SysJoker was uploaded to VirusTotal with the suffix .ts which is used for
+&lt;a href="https://en.wikipedia.org/wiki/TypeScript"target="_blank" rel="noopener"&gt;TypeScript&lt;/a&gt; files. A possible attack
+vector for this malware is via an infected npm package.&lt;/p&gt;
+&lt;p&gt;Below we provide a technical analysis of this malware together with IoCs and
+detection and response mitigations.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis of SysJoker&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis-of-sysjoker"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis-of-sysjoker" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The malware is written in C++ and each sample is tailored for the specific
+operating system it targets. Both the macOS and Linux samples are fully
+undetected in VirusTotal.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig1.png" title="e06e06752509f9cd8bc85aa1aa24dba2 in VirusTotal targeting Mac M1 processor" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;e06e06752509f9cd8bc85aa1aa24dba2 in VirusTotal targeting Mac M1 processor&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Behavioral Analysis&lt;span class="hx:absolute hx:-mt-20" id="behavioral-analysis"&gt;&lt;/span&gt;
+&lt;a href="#behavioral-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;SysJoker&amp;rsquo;s behavior is similar for all three operating systems. We will analyze
+SysJoker&amp;rsquo;s behavior on Windows.&lt;/p&gt;
+&lt;p&gt;Unlike Mac and Linux samples, the Windows version contains a first-stage
+dropper. The dropper (&lt;code&gt;d71e1a6ee83221f1ac7ed870bc272f01&lt;/code&gt;) is a DLL that was
+uploaded to VirusTotal as &lt;code&gt;style-loader.ts&lt;/code&gt; and has only 6 detections at the
+time of this writing.&lt;/p&gt;
+&lt;p&gt;The Dropper drops a zipped SysJoker (&lt;code&gt;53f1bb23f670d331c9041748e7e8e396&lt;/code&gt;) from
+C2 &lt;code&gt;https[://]github[.]url-mini[.]com/msg.zip&lt;/code&gt;, copies it to
+&lt;code&gt;C:\ProgramData\Recovery\Systemrecovery\Windows.zip&lt;/code&gt;, unzips it and executes
+it. All of these actions are executed via PowerShell commands.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig2.png" title="Process tree showing PowerShell commands." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Process tree showing PowerShell commands.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Once SysJoker (&lt;code&gt;d90d0f4d6dad402b5d025987030cc87c&lt;/code&gt;) is executed it sleeps for a
+random duration between 90 to 120 seconds. Then, it will create the
+&lt;code&gt;C:\ProgramData\SystemData&lt;/code&gt; directory and copy itself under this directory,
+masquerading as &lt;code&gt;igfxCUIService.exe&lt;/code&gt; (igfxCUIService stands for Intel Graphics
+Common User Interface Service). Next, it will gather information about the
+machine using Living off the Land (LOtL) commands. SysJoker uses different
+temporary text files to log the results of the commands. These text files are
+deleted immediately, stored in a JSON object, and then encoded and written to a
+file named &lt;code&gt;microsoft_windows.dll&lt;/code&gt;. The figure below shows the JSON object
+built in memory by SysJoker.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig3.png" title="JSON object built in memory by SysJoker." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;JSON object built in memory by SysJoker.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;It will gather the MAC address, user name, physical media serial number, and IP
+address (see IoCs section for the full commands list). SysJoker will create
+persistence by adding an entry to the registry run key
+&lt;code&gt;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt;. Between each
+of the steps above, the malware sleeps for a random duration.&lt;/p&gt;
+&lt;p&gt;The following screenshot shows the processes tree and commands.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig4.png" title="Processes tree and commands." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Processes tree and commands.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Next, SysJoker will begin its C2 communication.&lt;/p&gt;
+&lt;h3&gt;Decoding/Encoding Scheme&lt;span class="hx:absolute hx:-mt-20" id="decodingencoding-scheme"&gt;&lt;/span&gt;
+&lt;a href="#decodingencoding-scheme" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;SysJoker holds within the binary a hardcoded XOR key which is used for decoding
+and encoding strings from within the binary and data sent and received from the
+C2. The XOR key is an RSA public key that is not used in the decoding scheme.
+The same XOR key exists in all versions of SysJoker:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDkfNl&amp;#43;Se7jm7sGSrSSUpV3HUl3vEwuh&amp;#43;xn4q
+BY6aRFL91x0HIgcH2AM2rOlLdoV8v1vtG1oPt9QpC1jSxShnFw8evGrYnqaou7gLsY5J2B06eq5UW7
+&amp;#43;OXgb77WNbU90vyUbZAucfzy0eF1HqtBNbkXiQ6SSbquuvFPUepqUEjUSQIDAQAB&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Resolving C2&lt;span class="hx:absolute hx:-mt-20" id="resolving-c2"&gt;&lt;/span&gt;
+&lt;a href="#resolving-c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;To get an available C2 and start communication, SysJoker first decodes a
+hardcoded Google Drive link.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig6.png" title="Decoding with CyberChef." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decoding with CyberChef.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The Google Drive link hosts a text file named domain.txt that holds an encoded
+C2. The text file&amp;rsquo;s content changes over time, depending on the current
+available C2. SysJoker will decode the C2 and send the collected user&amp;rsquo;s
+information to the C2&amp;rsquo;s &lt;code&gt;/api/attach&lt;/code&gt; directory as an initial handshake. The C2
+replies with a unique token which will be used as an identifier from now on
+when the malware communicates with the C2.&lt;/p&gt;
+&lt;h3&gt;C2 Instructions&lt;span class="hx:absolute hx:-mt-20" id="c2-instructions"&gt;&lt;/span&gt;
+&lt;a href="#c2-instructions" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;SysJoker runs a while(1) loop that sends a request to the C2&amp;rsquo;s /api/req
+directory with the unique token and will process the C2&amp;rsquo;s response which is
+built as JSON using functions from this library. This is how SysJoker pings the
+C2 for instructions (see step 2 in the image below):&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;If the server responds with data, SysJoker will parse the received payload (see
+step 3 in the image below). SysJoker can receive the following instruction from
+the C2: exe, cmd, remove_reg, and exit.&lt;/p&gt;
+&lt;p&gt;The following image shows the flow of SysJoker&amp;rsquo;s communication with the C2.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;remove_reg&lt;/code&gt; and &lt;code&gt;exit&lt;/code&gt; are not implemented in this current version. Based on
+the instruction names, we can assume that they are in charge of self-deletion
+of the malware. Let&amp;rsquo;s look into exe and cmd instructions:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;exe&lt;/code&gt; – This command is in charge of dropping and running an executable.
+SysJoker will receive a URL to a zip file, a directory for the path the file
+should be dropped to, and a filename that the malware should use on the
+extracted executable. It will download this file, unzip it and execute it.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig9.png" title="IDA code snippet of the parsing function, if exe part." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;IDA code snippet of the parsing function, if exe part.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After execution, the malware will reply to the C2&amp;rsquo;s &lt;code&gt;/api/req/res&lt;/code&gt; API with
+either &amp;ldquo;success&amp;rdquo; if the process went successful or &amp;ldquo;exception&amp;rdquo; if not (step 4
+in the image above).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig10.png" title="IDA code snippet of the parsing function, building response status." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;IDA code snippet of the parsing function, building response status.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;cmd&lt;/code&gt; – This instruction is in charge of running a command and uploading its
+response to the C2. SysJoker will decode the command, execute it and upload the
+command&amp;rsquo;s response to the C2 via &lt;code&gt;/api/req/res&lt;/code&gt; API (step 4 in the image
+above).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig11.png" title="IDA code snippet of the parsing function, building cmd command response." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;IDA code snippet of the parsing function, building cmd command response.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;During our analysis, the C2 hasn&amp;rsquo;t responded with a next stage instruction.&lt;/p&gt;
+&lt;h2&gt;Detection &amp;amp; Response&lt;span class="hx:absolute hx:-mt-20" id="detection--response"&gt;&lt;/span&gt;
+&lt;a href="#detection--response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;To detect if a machine in your organization has been compromised, we recommend
+taking the following steps:&lt;/p&gt;
+&lt;p&gt;Use memory scanners to detect SysJoker payload in memory.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;For Linux machines, use Intezer Protect to gain full runtime visibility over
+the code in your Linux-based systems and get alerted on any malicious or
+unauthorized code. We have a free community edition.&lt;/li&gt;
+&lt;li&gt;For Windows machines, use Intezer&amp;rsquo;s Endpoint Scanner. The Endpoint Scanner
+will provide you with visibility into the type and origin of all binary code
+that resides in your machine&amp;rsquo;s memory. The figure below shows an example of
+an endpoint infected with SysJoker:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Use detection content to search in your EDR or SIEM. We provided you with IoCs
+and a rich list of detection content for each operating system below. Use these
+with your EDR to hunt for infected machines. We will publish a dedicated blog
+soon discussing how to use detection content for detecting SysJoker.&lt;/p&gt;
+&lt;p&gt;If you have been compromised, take the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kill the processes related to SysJoker, delete the relevant persistence
+mechanism, and all files related to SysJoker (see detection content section
+below)&lt;/li&gt;
+&lt;li&gt;Make sure that the infected machine is clean by running a memory scanner&lt;/li&gt;
+&lt;li&gt;Investigate the initial entry point of the malware. If a server was infected
+with SysJoker, in the course of this investigation, check:
+&lt;ul&gt;
+&lt;li&gt;Configuration status and password complexity for publicly facing services&lt;/li&gt;
+&lt;li&gt;Used software versions and possible known exploits&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;SysJoker&amp;rsquo;s Linux and Windows versions are now indexed in Intezer Analyze.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Final Points&lt;span class="hx:absolute hx:-mt-20" id="final-points"&gt;&lt;/span&gt;
+&lt;a href="#final-points" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are indications that SysJoker attack is performed by an advanced threat
+actor:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The fact that the code was written from scratch and hasn&amp;rsquo;t been seen before
+in other attacks. On top of that, it is rare to find previously unseen Linux
+malware in a live attack.&lt;/li&gt;
+&lt;li&gt;The attacker registered at least 4 different domains and wrote from scratch
+the malware for three different operating systems.&lt;/li&gt;
+&lt;li&gt;During our analysis, we haven&amp;rsquo;t witnessed a second stage or command sent from
+the attacker. This suggests that the attack is specific which usually fits
+for an advanced actor.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Based on the malware&amp;rsquo;s capabilities we assess that the goal of the attack is
+espionage together with lateral movement which might also lead to a ransomware
+attack as one of the next stages.&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
+&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;ELF&lt;span class="hx:absolute hx:-mt-20" id="elf"&gt;&lt;/span&gt;
+&lt;a href="#elf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;bd0141e88a0d56b508bc52db4dab68a49b6027a486e4d9514ec0db006fe71eed
+d028e64bf4ec97dfd655ccd1157a5b96515d461a710231ac8a529d7bdb936ff3&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4&gt;Mac&lt;span class="hx:absolute hx:-mt-20" id="mac"&gt;&lt;/span&gt;
+&lt;a href="#mac" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;1a9a5c797777f37463b44de2b49a7f95abca786db3977dcdac0f79da739c08ac
+fe99db3268e058e1204aff679e0726dc77fd45d06757a5fda9eafc6a28cfb8df
+d0febda3a3d2d68b0374c26784198dc4309dbe4a8978e44bb7584fd832c325f0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4&gt;Windows&lt;span class="hx:absolute hx:-mt-20" id="windows"&gt;&lt;/span&gt;
+&lt;a href="#windows" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;61df74731fbe1eafb2eb987f20e5226962eeceef010164e41ea6c4494a4010fc
+1ffd6559d21470c40dcf9236da51e5823d7ad58c93502279871c3fe7718c901c
+d476ca89674c987ca399a97f2d635fe30a6ba81c95f93e8320a5f979a0563517
+36fed8ab1bf473714d6886b8dcfbcaa200a72997d50ea0225a90c28306b7670e&lt;/p&gt;
+&lt;h3&gt;C2&lt;span class="hx:absolute hx:-mt-20" id="c2"&gt;&lt;/span&gt;
+&lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;https[://]bookitlab[.]tech
+https[://]winaudio-tools[.]com
+https[://]graphic-updater[.]com
+https[://]github[.]url-mini[.]com
+https[://]office360-update[.]com
+https[://]drive[.]google[.]com/uc?export=download&amp;amp;id=1-NVty4YX0dPHdxkgMrbdCldQCpCaE-Hn
+https[://]drive[.]google[.]com/uc?export=download&amp;amp;id=1W64PQQxrwY3XjBnv_QAeBQu-ePr537eu&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Detection Content&lt;span class="hx:absolute hx:-mt-20" id="detection-content"&gt;&lt;/span&gt;
+&lt;a href="#detection-content" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Windows&lt;span class="hx:absolute hx:-mt-20" id="windows-1"&gt;&lt;/span&gt;
+&lt;a href="#windows-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Files and directories created on the machine&lt;span class="hx:absolute hx:-mt-20" id="files-and-directories-created-on-the-machine"&gt;&lt;/span&gt;
+&lt;a href="#files-and-directories-created-on-the-machine" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;C:\ProgramData\RecoverySystem
+C:\ProgramData\RecoverySystem\recoveryWindows.zip
+C:\ProgramData\RecoverySystem\msg.exe
+C:\ProgramData\SystemData\
+C:\ProgramData\SystemData\igfxCUIService.exe
+C:\ProgramData\SystemData\tempo1.txt
+C:\ProgramData\SystemData\tempo2.txt
+C:\ProgramData\SystemData\tempi1.txt
+C:\ProgramData\SystemData\tempi2.txt
+C:\ProgramData\SystemData\temps1.txt
+C:\ProgramData\SystemData\temps2.txt
+C:\ProgramData\SystemData\tempu.txt
+C:\ProgramData\SystemData\microsoft_Windows.dll
+C:\ProgramData\xAE Operating System\ServiceHub.exe&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4&gt;Persistence&lt;span class="hx:absolute hx:-mt-20" id="persistence"&gt;&lt;/span&gt;
+&lt;a href="#persistence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run
+Name: igfxCUIService
+Type: REG_SZ
+Data: &amp;#34;C:\ProgramData\SystemData\igfxCUIService.exe&amp;#34;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4&gt;Commands&lt;span class="hx:absolute hx:-mt-20" id="commands"&gt;&lt;/span&gt;
+&lt;a href="#commands" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-batch" data-lang="batch"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe&amp;#34;&lt;/span&gt; copy &amp;#39;C:\Users\&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;USER&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;\AppData\Local\Temp\1ffd6559d21470c40dcf9236.exe&amp;#39; &amp;#39;C:\ProgramData\SystemData\igfxCUIService.exe&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe&amp;#34;&lt;/span&gt; getmac &lt;span class="p"&gt;|&lt;/span&gt; Out-File -Encoding &amp;#39;Default&amp;#39; &amp;#39;C:\ProgramData\SystemData\temps1.txt&amp;#39; ; wmic path win32_physicalmedia get SerialNumber &lt;span class="p"&gt;|&lt;/span&gt; Out-File -Encoding &amp;#39;Default&amp;#39; &amp;#39;C:\ProgramData\SystemData\temps2.txt&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;C:\Windows\System32\Wbem\WMIC.exe&amp;#34;&lt;/span&gt; path win32_physicalmedia get SerialNumber
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;C:\Windows\system32\getmac.exe&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe&amp;#34;&lt;/span&gt; $env:username &lt;span class="p"&gt;|&lt;/span&gt; Out-File -Encoding &amp;#39;Default&amp;#39; &amp;#39;C:\ProgramData\SystemData\tempu.txt&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;C:\Windows\System32\cmd.exe&amp;#34;&lt;/span&gt; /c wmic OS get Caption, CSDVersion, OSArchitecture, Version / value &lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;C:\ProgramData\SystemData\tempo1.txt&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;type&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;C:\ProgramData\SystemData\tempo1.txt&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;C:\ProgramData\SystemData\tempo2.txt&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;wmic OS get Caption, CSDVersion, OSArchitecture, Version / value
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;C:\Windows\System32\cmd.exe&amp;#34;&lt;/span&gt; /c wmic nicconfig where &amp;#39;IPEnabled = True&amp;#39; get ipaddress &lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;C:\ProgramData\SystemData\tempi1.txt&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;type&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;C:\ProgramData\SystemData\tempi1.txt&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;C:\ProgramData\SystemData\tempi2.txt&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;wmic nicconfig where &amp;#39;IPEnabled = True&amp;#39; get ipaddress
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;C:\Windows\System32\cmd.exe&amp;#34;&lt;/span&gt; /c REG ADD HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /V igfxCUIService /t REG_SZ /D &lt;span class="s2"&gt;&amp;#34;C:\ProgramData\SystemData\igfxCUIService.exe&amp;#34;&lt;/span&gt; /F
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;REG ADD HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /V igfxCUIService /t REG_SZ /D &lt;span class="s2"&gt;&amp;#34;C:\ProgramData\SystemData\igfxCUIService.exe&amp;#34;&lt;/span&gt; /F&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Linux&lt;span class="hx:absolute hx:-mt-20" id="linux"&gt;&lt;/span&gt;
+&lt;a href="#linux" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Files and directories created on the machine&lt;span class="hx:absolute hx:-mt-20" id="files-and-directories-created-on-the-machine-1"&gt;&lt;/span&gt;
+&lt;a href="#files-and-directories-created-on-the-machine-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;/.Library/
+/.Library/SystemServices/updateSystem
+/.Library/SystemNetwork
+/.Library/log.txt&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4&gt;Persistence&lt;span class="hx:absolute hx:-mt-20" id="persistence-1"&gt;&lt;/span&gt;
+&lt;a href="#persistence-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Creates the cron job:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;@reboot (/.Library/SystemServices/updateSystem)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4&gt;Commands&lt;span class="hx:absolute hx:-mt-20" id="commands-1"&gt;&lt;/span&gt;
+&lt;a href="#commands-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;crontab -l &lt;span class="p"&gt;|&lt;/span&gt; egrep -v &lt;span class="s2"&gt;&amp;#34;^(#|&lt;/span&gt;$&lt;span class="s2"&gt;)&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; grep -e &lt;span class="s2"&gt;&amp;#34;@reboot
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;(/.Library/SystemServices/updateSystem)&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cp -rf &amp;lt;sample name&amp;gt; /.Library/SystemServices/updateSystem
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;nohup &lt;span class="s1"&gt;&amp;#39;/.Library/SystemServices/updateSystem&amp;#39;&lt;/span&gt; &amp;gt;/dev/null 2&amp;gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ifconfig &lt;span class="p"&gt;|&lt;/span&gt; grep -v 127.0.0.1 &lt;span class="p"&gt;|&lt;/span&gt; grep -E &lt;span class="s2"&gt;&amp;#34;inet
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;([0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3})&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; awk &lt;span class="s1"&gt;&amp;#39;{print $2}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ip address &lt;span class="p"&gt;|&lt;/span&gt; awk &lt;span class="s1"&gt;&amp;#39;/ether/{print $2}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;id -u
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;uname -mrs&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Mac&lt;span class="hx:absolute hx:-mt-20" id="mac-1"&gt;&lt;/span&gt;
+&lt;a href="#mac-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Files and directories created on the machine&lt;span class="hx:absolute hx:-mt-20" id="files-and-directories-created-on-the-machine-2"&gt;&lt;/span&gt;
+&lt;a href="#files-and-directories-created-on-the-machine-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;/Library/MacOsServices
+/Library/MacOsServices/updateMacOs
+/Library/SystemNetwork
+/Library/LaunchAgents/com.apple.update.plist&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4&gt;Persistence&lt;span class="hx:absolute hx:-mt-20" id="persistence-2"&gt;&lt;/span&gt;
+&lt;a href="#persistence-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Creates persistence via LaunchAgent under the path: &lt;code&gt;/Library/LaunchAgents/com.apple.update.plist&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Content:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;#34;1.0″ encoding=&amp;#34;UTF-8″?&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;!DOCTYPE plist PUBLIC &amp;#34;-//Apple//DTD PLIST 1.0//EN&amp;#34; &amp;#34;http://www.apple.com/DTDs/PropertyList-1.0.dtd&amp;#34;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;plist&lt;/span&gt; &lt;span class="na"&gt;version=&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;1.0″&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;dict&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;key&amp;gt;&lt;/span&gt;Label&lt;span class="nt"&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;com.apple.update&lt;span class="nt"&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;key&amp;gt;&lt;/span&gt;LimitLoadToSessionType&lt;span class="nt"&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;Aqua&lt;span class="nt"&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;key&amp;gt;&lt;/span&gt;ProgramArguments&lt;span class="nt"&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;array&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;/Library/MacOsServices/updateMacOs&lt;span class="nt"&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;/array&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;key&amp;gt;&lt;/span&gt;KeepAlive&lt;span class="nt"&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;dict&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;key&amp;gt;&lt;/span&gt;SuccessfulExit&lt;span class="nt"&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;true/&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;/dict&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;key&amp;gt;&lt;/span&gt;RunAtLoad&lt;span class="nt"&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;true/&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;/dict&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;/plist&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Early Bird Catches the Worm: New Golang Worm Drops XMRig Miner on Servers</title><link>https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/</link><pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/</guid><description>
 &lt;p&gt;In early December, we discovered a new, undetected worm written in Golang. This
 worm continues the popular
