@@ -1,4 +1,647 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Backdoor</title><link>https://intezer.github.io/community-intelligence/tags/backdoor/</link><description>Recent content in Backdoor on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 03 Oct 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/backdoor/index.xml" rel="self" type="application/rss+xml"/><item><title>APT37: Final1stspy Reaping the FreeMilk</title><link>https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</link><pubDate>Wed, 03 Oct 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Backdoor</title><link>https://intezer.github.io/community-intelligence/tags/backdoor/</link><description>Recent content in Backdoor on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 13 Dec 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/backdoor/index.xml" rel="self" type="application/rss+xml"/><item><title>ChinaZ Updates Toolkit by Introducing New, Undetected Malware</title><link>https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</link><pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;ChinaZ is a Chinese cybercrime group and the author of several
+&lt;a href="https://www.botconf.eu//srv/htdocs/wp-content/uploads/2014/12/2014-2.10-Chinese-Chicken-Multiplatform-DDoS-Botnets.pdf"target="_blank" rel="noopener"&gt;DDoS malware&lt;/a&gt;.
+We have profiled this group in a
+&lt;a href="../../../2019/01/chinaz-relations"&gt;previous article&lt;/a&gt; discussing connections
+between ChinaZ and other Chinese threat actors.&lt;/p&gt;
+&lt;p&gt;Recently, we have discovered new tools being utilized by ChinaZ which have low
+detection rates in comparison to the group’s other, more common malware.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig1.jpeg" title="VirusTotal detection rate of one of the discovered samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VirusTotal detection rate of one of the discovered samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Some of the components reported in this article have been present in the wild
+for at least one year, which implies the active state of this group. We have
+based this conclusion upon seeing that the first submission was made to
+VirusTotal one year ago:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig2.jpeg" title="VirusTotal analysis of an older, related sample" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VirusTotal analysis of an older, related sample&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We believe this may be an attempt by ChinaZ to retool its current toolset,
+using new malware with low detection rates to accomplish its operations, since
+the group has received more attention from the infosec community in recent
+years.&lt;/p&gt;
+&lt;p&gt;The new malware samples seem to implement a combination of backdoor and DDoS
+bot capabilities to mainly target Linux servers. However, we do not discount
+the possibility that Windows variants may exist, since this is a recurrent
+pattern we have observed from ChinaZ malware in the past.&lt;/p&gt;
+&lt;p&gt;In addition, we were able to retrieve a CNC binary from one of the samples,
+which has enabled us to learn more about the network protocol along with some
+of the malware’s capabilities.&lt;/p&gt;
+&lt;p&gt;In this post, we will present the technical findings of those tools, including
+a technical analysis of the files and network protocols.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We’ve received several hits of suspicious files from VirusTotal Intelligence
+that communicated with given subdomains under the domain l11l1.com. All of the
+identified subdomains were hosting several HttpFileServer panels, web servers
+specifically designed for publishing and sharing files. ChinaZ is known to have
+used these types of panels in the past.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig3.jpeg" title="HttpFileServer panel of one of the identified servers" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;HttpFileServer panel of one of the identified servers&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Based on VirusTotal passive DNS records, it appears that some Windows malware
+samples were also hosted on some of these subdomains:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig4.jpeg" title="VirusTotal Intelligence graph from one of the discovered samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VirusTotal Intelligence graph from one of the discovered samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After analyzing some of the Windows binaries we observed that based on code
+reuse analysis, the majority of these files seem to be variants of Gh0st or
+ServStart, modified Chinese RATs with DDoS capabilities known to be leveraged
+by ChinaZ in the past.&lt;/p&gt;
+&lt;p&gt;These
+&lt;a href="https://analyze.intezer.com/#/files/167c1036befcbd69c83666fd8125209aed5dd89be1068d0bb2ed1974fa6faf27"target="_blank" rel="noopener"&gt;samples&lt;/a&gt;
+are also infected by common PE file infectors such as Sality, Parite, and
+Virut. ChinaZ has a reputation for deploying infected malware compromised with
+these aforementioned file infectors:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig5.jpeg" title="Sality genes from one of the hosted Windows malware samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Sality genes from one of the hosted Windows malware samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;As seen in the screenshot above, a Gh0st RAT instance deployed by ChinaZ
+contains code from Sality. This implies that the subject Gh0st RAT is infected
+with Sality. We documented this same pattern in our
+&lt;a href="../../../2019/01/chinaz-relations"&gt;previous article&lt;/a&gt; on the subject matter.
+This finding may imply that these new malware samples may be operating from the
+same servers as other malware under the ChinaZ umbrella.&lt;/p&gt;
+&lt;p&gt;Furthermore, when we analyze the newly discovered samples using Genetic Malware
+Analysis, we observed that they all share the same ratio of genes across
+several malware families related to ChinaZ threat actors.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig6.jpeg" title="Malware Analysis across samples under the ChinaZ umbrella" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Malware Analysis across samples under the ChinaZ umbrella&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After analyzing these connections we observed that they all have been
+statically compiled with specific versions of some C++ libraries.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig7.jpeg" title="C&amp;#43;&amp;#43; function similarities between one of the identified samples and a XorDDoS instance" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;C&amp;#43;&amp;#43; function similarities between one of the identified samples and a XorDDoS instance&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;These code similarities are from C++ statically linked library code, which at
+first glance are often considered non-attributive. However, based on the high
+number of code connections between hundreds of other malware samples related to
+ChinaZ, we can interpret them as if the authors of these newly discovered
+samples will be using the same compiler version or toolchain to generate their
+implants as the one used by a large number of ChinaZ threat actors.&lt;/p&gt;
+&lt;p&gt;Among the different identified samples we were able to classify three variants
+with different functionalities. Each of these variants were found hosted
+together and often sharing the same CNC server. The following section includes
+an analysis of each of the new implants we discovered.&lt;/p&gt;
+&lt;h3&gt;NewManager&lt;span class="hx:absolute hx:-mt-20" id="newmanager"&gt;&lt;/span&gt;
+&lt;a href="#newmanager" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;NewManager is a minimalistic backdoor with arbitrary command execution and file
+upload capabilities. The functionality of the backdoor is fairly simple in
+logic. NewManager is intended to be executed as root, therefore we can assume
+the backdoor is used as a stager when a given target is compromised.&lt;/p&gt;
+&lt;p&gt;The backdoor will daemonize itself and set persistence mechanisms. These
+persistence mechanisms are primarily based on setting symbolic links to
+specific directories in which the presence of those symbolic links implies file
+execution on boot time. These mechanisms are predominant among all discovered
+samples.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig8.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;We have observed that across the discovered implants the name of the persistent
+binary will be set differently. The name used to label NewManager was &amp;rsquo;new
+manager&amp;rsquo;, therefore its name:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig9.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The malware will then execute a series of functions that will initialize the
+communication with the CNC to start receiving commands.&lt;/p&gt;
+&lt;p&gt;The client will collect interface information from &lt;code&gt;/proc/net/dev&lt;/code&gt; and cpu
+information from &lt;code&gt;/proc/stat&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig10.jpeg" title="Functions executed prior to CNC command handling" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Functions executed prior to CNC command handling&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This collected information serves to inform the operator of the network
+interface and cpu performance of the compromised machine.&lt;/p&gt;
+&lt;p&gt;After this information is collected, the client will craft the beaconing packet
+that will be sent periodically to send interface and cpu statistics to the CNC.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig11.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After analyzing the network protocol we observed that packets are crafted in a
+similar manner, although they will differ depending on the payload based on the
+command type sent. In order to show the packet&amp;rsquo;s structure, the following
+diagram shows the beaconing packet:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig12.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After this specific information is configured to be sent in intervals to the
+CNC, the backdoor will send its own handshake packet.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig13.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This packet transfers the kernel version to the backdoor operator. Once this
+command is sent, the operator will be able to see the compromised machine on
+its panel:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig14.jpeg" title="NewManager CNC panel" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;NewManager CNC panel&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;NewManager supports three commands. They are the following:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Command&lt;/th&gt;
+&lt;th&gt;ID&lt;/th&gt;
+&lt;th&gt;Specification&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Execute command&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;0x11000011&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Executes an arbitrary bash command&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Create file&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;0x11000002&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Creates a file on an arbitrary path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Read file&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;0x11000003&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Reads a file on an arbitrary path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The command ID after packet parsing is fairly straightforward on the backdoor’s
+side.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig15.jpeg" title="Command selection implementation in NewManager" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Command selection implementation in NewManager&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;AmpManager&lt;span class="hx:absolute hx:-mt-20" id="ampmanager"&gt;&lt;/span&gt;
+&lt;a href="#ampmanager" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The second piece of malware we were able to analyze is AmpManager.&lt;/p&gt;
+&lt;p&gt;The reason we named this malware AmpManager is due to its resemblance to
+NewManager, however, it appears that the spectrum of supported commands is
+wider, implementing more functionalities along with a range of DDoS attack
+methodologies.&lt;/p&gt;
+&lt;p&gt;Although AmpManager and NewManager share most of their code base and CNC
+communication protocol, there are more commands implemented in AmpManager and
+some command IDs do not match with the command IDs implemented by NewManager.&lt;/p&gt;
+&lt;p&gt;For that reason—although we see a high volume of code reuse—we consider
+AmpManager to be a different malware, although it’s clear that NewManager is
+AmpManager’s predecessor.&lt;/p&gt;
+&lt;p&gt;The name AmpManager chooses to persist in a given system is shown below:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig16.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The following is an overview of the command implementation code:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig17.jpeg" title="Command selection implementation in AmpManager" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Command selection implementation in AmpManager&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;As we can see, the command implementation code is broader than the one
+NewManager implements. One of the main differences between AmpManager and
+NewManager is AmpManager introduces DDoS attacks among other features.&lt;/p&gt;
+&lt;p&gt;There are three different DDoS attack methodologies implemented: SSDP, DNS, and
+NTP amplifications.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig18.jpeg" title="SSDP flood UDP header" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;SSDP flood UDP header&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;These floods have some configurations set under the &lt;code&gt;/etc/&lt;/code&gt; directory that will
+impact the number of iterations that each flood will run for.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig19.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The following table shows the supported commands implemented in AmpManager:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Command&lt;/th&gt;
+&lt;th&gt;ID&lt;/th&gt;
+&lt;th&gt;Specification&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;NTP amplification&lt;/td&gt;
+&lt;td&gt;0x11000002&lt;/td&gt;
+&lt;td&gt;Executes a NTP amplification flood against a target IP address&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Send flood configurations&lt;/td&gt;
+&lt;td&gt;0x11000003&lt;/td&gt;
+&lt;td&gt;Send the established configurations for each flood to the CNC&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SSDP amplification&lt;/td&gt;
+&lt;td&gt;0x11000006&lt;/td&gt;
+&lt;td&gt;Executes a SSDP amplification flood against a target IP address&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;All amplifications&lt;/td&gt;
+&lt;td&gt;0x11000007&lt;/td&gt;
+&lt;td&gt;Executes all implemented amplification floods against a target IP address&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DNS amplification&lt;/td&gt;
+&lt;td&gt;0x11000008&lt;/td&gt;
+&lt;td&gt;Executes a DNS amplification flood against a target IP address&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Download HTTP&lt;/td&gt;
+&lt;td&gt;0x11000009&lt;/td&gt;
+&lt;td&gt;Downloads a given file to a target path via HTTP GET&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Execute command&lt;/td&gt;
+&lt;td&gt;0x11000011&lt;/td&gt;
+&lt;td&gt;Executes a target bash command in the target machine&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Update current time&lt;/td&gt;
+&lt;td&gt;0x11000012&lt;/td&gt;
+&lt;td&gt;Saves the time via gettimeofday&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Apply flood configurations&lt;/td&gt;
+&lt;td&gt;0x11000023&lt;/td&gt;
+&lt;td&gt;Applies flood configurations for each respective DDoS methodology&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;DDoSManager&lt;span class="hx:absolute hx:-mt-20" id="ddosmanager"&gt;&lt;/span&gt;
+&lt;a href="#ddosmanager" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In contrast to the two previously reported malware samples, DDoSManager seems
+to be based on a completely different code base and network protocol.&lt;/p&gt;
+&lt;p&gt;Although its overall functionality is similar to AmpManager due to the fact
+that it’s also a DDoS bot, uses the same persistence mechanisms and overall
+preliminary functionality before CNC communication, it’s important to highlight
+that DDoSManager uses different DDoS attack methodologies than AmpManager.&lt;/p&gt;
+&lt;p&gt;In addition, we noticed that this sample contains known Elknot/BillGates
+artifacts, which are some of the most popular malware families leveraged by
+ChinaZ.&lt;/p&gt;
+&lt;p&gt;The following is a small write up from a
+&lt;a href="https://www.novetta.com//srv/htdocs/wp-content/uploads/2015/06/NTRG_ElasticBotnetReport_06102015.pdf"target="_blank" rel="noopener"&gt;report by Novetta&lt;/a&gt;
+covering in detail the internals of BillGates malware.&lt;/p&gt;
+&lt;p&gt;If we take a closer look, we can see that these two C++ classes are also used
+in DDoSManager:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig20.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This reinforces the connection between these malware samples and the developers
+of Elknot/BillGates, and with respect to the ChinaZ umbrella, in addition to
+the connections explained previously.&lt;/p&gt;
+&lt;p&gt;As is the case with the previous samples, DDoSManager commences by setting
+persistence mechanisms. The techniques applied are the same ones covered in
+NewManager and AmpManager as previously mentioned. DDoSManager will use the
+name SingTool to masquerade itself:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig21.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Interface and performance information will be collected as with the previous
+samples. However, an additional thread will be launched.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig22.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This thread is in charge of listening for packets to then decode and parse them
+for CNC communication.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig23.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;When we intercepted the network traffic we noticed that the traffic was
+encoded:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig24.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After analysis we observed that packets were encoded and decoded with a simple
+sub/xor algorithm. This algorithm is the following:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig25.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;After applying this algorithm to each given packet, we can retrieve their plain
+text version. The following is the structure of each packet after decoding:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig26.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Furthermore, the command ID will be extracted from each packet in order to
+execute the desired task.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig27.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;DDoSManager supports a total of seven commands. These are the following:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Command&lt;/th&gt;
+&lt;th&gt;ID&lt;/th&gt;
+&lt;th&gt;Specification&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Read configuration&lt;/td&gt;
+&lt;td&gt;0x64&lt;/td&gt;
+&lt;td&gt;Configuration is retrieved to the&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;CNC Write configuration entry&lt;/td&gt;
+&lt;td&gt;0x65&lt;/td&gt;
+&lt;td&gt;Entry is added to the configuration file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HeartBeat&lt;/td&gt;
+&lt;td&gt;0x66&lt;/td&gt;
+&lt;td&gt;Beaconing command&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Not implemented&lt;/td&gt;
+&lt;td&gt;0x67&lt;/td&gt;
+&lt;td&gt;Not implemented&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Execute Manager Function&lt;/td&gt;
+&lt;td&gt;0x68&lt;/td&gt;
+&lt;td&gt;Invoke internal manager function&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Stop command&lt;/td&gt;
+&lt;td&gt;0x69&lt;/td&gt;
+&lt;td&gt;Stop an ongoing command&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Execute DDoS attack&lt;/td&gt;
+&lt;td&gt;0x6a, 0x6b, 0x6c&lt;/td&gt;
+&lt;td&gt;Execute a DDoS flood on a target IP address&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The malware sets a configuration file for the targets it will attempt to DDoS.
+This configuration file is located at /tmp/Cfg.9:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig28.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;When a DDoS command is executed, a series of fields will be provided from the
+CNC packet in order to execute the command. These fields are clearly shown on a
+debug message in the binary:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig29.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;There are three different DDoS amplification algorithms supported. These are
+SYN, UDP, and DNS amplifications. Interestingly, in the analyzed samples of
+DDoSManager we found that the DNS amplification algorithm was not implemented.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig30.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have analyzed three new malware variants in which we have named NewManager,
+AmpManager, and DDoSManager.&lt;/p&gt;
+&lt;p&gt;These three variants were found to be hosted together, sharing the same CNC
+address, and are nearly identical in terms of overall preliminary
+functionality.&lt;/p&gt;
+&lt;p&gt;Some of the servers where the malware is hosted are also serving Windows DDoS
+bots based on modified versions of Chinese RATs such as Gh0st and ServStart. It
+is well-known that ChinaZ has utilized these malware families in previous
+campaigns.&lt;/p&gt;
+&lt;p&gt;In addition, we presented evidence that the Windows implants were infected with
+common PE file infectors, also resembling a known pattern of ChinaZ Windows
+malware samples seen in the past.&lt;/p&gt;
+&lt;p&gt;Furthermore, we highlighted the use of a common compiler/toolchain used to
+generate the discovered binaries which seems to be shared across a high number
+of samples belonging to the ChinaZ umbrella. We also found artifact
+similarities between the BillGates malware and DDoSManager, specifically the
+name of two core C++ classes used by the malware.&lt;/p&gt;
+&lt;p&gt;A technical analysis of the overall functionality and network protocol for each
+of the discovered samples was provided explaining their main features and
+capabilities.&lt;/p&gt;
+&lt;p&gt;We believe these findings indicate the need by some ChinaZ threat actors to
+update their malware toolsets, since they have not conducted a major retooling
+process in years, and the majority of the older malware utilized by this group
+is largely detected by Anti-Virus engines.&lt;/p&gt;
+&lt;p&gt;The code from these samples are now indexed in Intezer Analyze so users can
+detect and classify NewManager, AmpManager, DDoSManager, and other threats that
+share code with these malware. We have also generated a
+&lt;a href="https://github.com/intezer/yara-rules/blob/master/ChinaZ_Managers.yar"target="_blank" rel="noopener"&gt;YARA rule&lt;/a&gt;
+which can be used by organizations to hunt for additional samples of these
+threats.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;syn.l11l1[.]com
+ccyk.l11l1[.]com
+yk.l11l1[.]com
+fd.l11l1[.]com
+1bfa8af4b51d9fc54d4baa49df27116f44ce269da9123625c1f2ba17289ea2cd
+625c57c7090e63472f2bd4d12bf5c821ac821327ee4274a728846fa0bb967b00
+F0a2b4c223d6c0c537d9e75b38a2d9b4031485bcfc0c03da96a2b49d7f91591e
+B79af4e394cbc8c19fc9b5410fa69b10325fd23f58bec330954caae135239a1f
+Dda419d145d4ec7f0eec74ee6cf14ab0b35f22a1af7f39ffbe914c66c445bdf5
+3be01b2b27a2cb7b7a852c6305f7a26f35d60fa80ab0050643d97486feaf09dd
+33d44642d47488ca0e9fba1935944433e618ec212c5a24969aed406e7b50c611
+E3e979d00006fb102279f1033d02bfb8d2ceb6b92c1377195ccb8daa36093c8b
+4f5cfb805feb7576e594f1bb3b773ba0ca80e09e49bfb7e3507f815f774ac62d
+8ad95b128ab477cc80cba9e4ddccc9d74d423415c17d2837d537c406e6ac81cd&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>ACBackdoor: Analysis of a New Multiplatform Backdoor</title><link>https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/</link><pubDate>Mon, 18 Nov 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have discovered an undetected Linux backdoor which does not have any known
+connections to other threat groups.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig1.png" title="VirusTotal detection rate of ACBackdoor Linux variant" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VirusTotal detection rate of ACBackdoor Linux variant&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;In addition, we have found Windows variants of the same malware. As is common
+with most Windows variants, this variant has a higher detection rate than its
+Linux counterpart.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig2.png" title="VirusTotal detection rate of ACBackdoor Windows variant" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VirusTotal detection rate of ACBackdoor Windows variant&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This malware seems to be unknown or at least undocumented to the infosec
+community, which may indicate retooling of a known threat group or the
+formation of a new one.&lt;/p&gt;
+&lt;p&gt;We have dubbed this malware &lt;strong&gt;ACBackdoor&lt;/strong&gt;. ACBackdoor provides arbitrary
+execution of shell commands, arbitrary binary execution, persistence, and
+update capabilities.&lt;/p&gt;
+&lt;p&gt;In this blog post we will explain the technical analysis of both ACBackdoor
+variants and highlight their differences in implementation. The findings we
+present strongly suggest the group behind this malware has previous experience
+targeting Linux systems, and is expanding its coverage by porting ACBackdoor to
+Windows.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Linux binary is a statically linked ELF file, while the Windows binary is a
+dynamically linked PE file.&lt;/p&gt;
+&lt;p&gt;Both instances of this malware are practically identical in terms of overall
+functionality, with minor implementation differences. However, if we pay close
+attention to each instance we can draw some conclusions regarding the nature of
+the authors.&lt;/p&gt;
+&lt;p&gt;Both malware instances share the same protocol to communicate with the same CNC
+server. However, these instances have different delivery vectors:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig3.png" title="VirusTotal intelligence graph depicting connections between the samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VirusTotal intelligence graph depicting connections between the samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Initially, we located the Linux instance in a Romanian-hosted server.
+Unfortunately, we do not have further insights regarding the delivery vector
+used to deploy the Linux variant.&lt;/p&gt;
+&lt;p&gt;We later discovered via
+&lt;a href="https://twitter.com/nao_sec/status/1193891281530830848"target="_blank" rel="noopener"&gt;@nao_sec&lt;/a&gt; that the
+Windows instance was delivered via Fallout Exploit Kit.&lt;/p&gt;
+&lt;p&gt;To understand more about the delivery system of Fallout Exploit Kit we highly
+recommend reading nao_sec&amp;rsquo;s comprehensive
+&lt;a href="https://nao-sec.org/2019/07/steady-evolution-of-fallout-v4.html"target="_blank" rel="noopener"&gt;article&lt;/a&gt; on
+the subject matter.&lt;/p&gt;
+&lt;p&gt;This finding suggests that the operators behind ACBackdoor had sufficient
+funding to purchase Fallout Exploit Kit and that they are currently using it to
+spread their Windows malware via malvertising campaigns.&lt;/p&gt;
+&lt;h3&gt;Backdoor Analysis&lt;span class="hx:absolute hx:-mt-20" id="backdoor-analysis"&gt;&lt;/span&gt;
+&lt;a href="#backdoor-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The Windows variant of this malware does not represent a complex threat in
+terms of Windows malware. Conversely, the Linux variant shows more
+sophistication in regards to the implementation details used to replicate the
+same functionality.&lt;/p&gt;
+&lt;p&gt;We first noticed the compiled Windows binary was generated using the MinGW
+compiler.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig4.png" title="MinGW strings identified in ACBackdoor Windows instance" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;MinGW strings identified in ACBackdoor Windows instance&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This indicates information regarding the malware authors’ development
+environment preference.&lt;/p&gt;
+&lt;p&gt;The main function is not obfuscated and appears to be straightforward in logic.
+In the Windows variant we can see how some strings are decoded in the beginning
+of the function.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig5.png" title="Windows instance main function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Windows instance main function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We can see Linux-specific strings among the decrypted strings, such as a kernel
+thread process name or a path belonging to a Linux file system.&lt;/p&gt;
+&lt;p&gt;These same strings are used in the Linux instance of this malware. In addition,
+these strings do not have any other cross-references among the binary, which
+may imply that the developers were too lazy to remove them when they were
+porting code from their Linux implementation onto their Windows version.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig6.png" title="ACBackdoor Linux instance main function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;ACBackdoor Linux instance main function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After initial string decoding the malware serializes the victim by collecting
+architecture, system, and MAC address information.&lt;/p&gt;
+&lt;p&gt;The way the Windows variant collects this information is by calling the
+correspondent Windows API functions in order to retrieve the subject
+information such as IsWow64Process; to determine the architecture of the
+operating system or GetAdaptersInfo to retrieve the system’s MAC address.&lt;/p&gt;
+&lt;p&gt;The Linux variant, on the other hand, uses a different technique that mainly
+relies on uname system call to retrieve architecture and system information, in
+addition to a combination of socket / ioctl system calls to retrieve the MAC
+address.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig7.png" title="Similarities in code structure between ACBackdoor Linux and Windows instances" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Similarities in code structure between ACBackdoor Linux and Windows instances&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After this information is collected, the malware will concatenate each of these
+fields, add the string ‘0.5’ likely denoting some kind of versioning ID, and
+will then MD5 hash the resulting string.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig8.png" title="Compromised host information collected from both ACBackdoor samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Compromised host information collected from both ACBackdoor samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After victim information has been serialized, the malware will apply some
+persistence mechanisms. The Windows instance will initialize a registry entry
+so that the malware will be executed on system start-up. The Linux instance
+will set up various symbolic links and add an initrd script for the malware to
+also run on system start-up. The Windows instance uses one of the most common
+registry entries used in Windows malware:
+&lt;code&gt;HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The use of this registry entry indicates this actor’s level of inexperience by
+using less conventional persistence techniques to write more complex Windows
+malware.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig9.png" title="Persistence implementations across ACBackdoor samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Persistence implementations across ACBackdoor samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Based on the names chosen to label the persistent instances of this malware, we
+can see that the Windows instance tries to masquerade itself as a Microsoft
+Anti Spyware utility (&lt;code&gt;MsMpEng.exe&lt;/code&gt;), while the Linux instance attempts to
+masquerade itself as the Ubuntu release update utility (&lt;code&gt;update-notifier&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;The Linux instance will then set an independent session via fork/setsid system
+calls in order to create an independent process. It will close unnecessary file
+descriptors using prlimit/close system calls to then rename its process name to
+that of a kernel thread, specifically &lt;code&gt;[kworker/u8:7-ev]&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If we run the ps command on a compromised Linux system we will see this process
+name among the listed processes:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig10.png" title="Process renaming performed by ACBackdoor Linux instance" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Process renaming performed by ACBackdoor Linux instance&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Command and Control Communication&lt;span class="hx:absolute hx:-mt-20" id="command-and-control-communication"&gt;&lt;/span&gt;
+&lt;a href="#command-and-control-communication" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware will proceed to communicate with the CNC. Both malware instances
+share the same CNC server and transport protocol, that being HTTPS.&lt;/p&gt;
+&lt;p&gt;The malware will send an initial packet to the CNC with the previously
+collected victim information. The client does not appear to verify the
+authenticity of the certificate on TLS handshake, therefore the communication
+is prone to MITM attacks.&lt;/p&gt;
+&lt;p&gt;The malware creates the headers for the HTTP request in which some custom
+headers are included which embed specific information for the server to
+collect. The following visual is an intercepted initial TLS stripped packet
+from a compromised Linux host which displays these headers:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig11.png" title="Intercepted TLS stripped HTTPS packet" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intercepted TLS stripped HTTPS packet&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Among the different headers we can highlight the &lt;code&gt;Access-Control&lt;/code&gt; and
+&lt;code&gt;X-Access&lt;/code&gt; headers which are unconventional HTTP headers.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Access-Control contains the base64 encoded string of the command type. In
+this case the type &lt;code&gt;info&lt;/code&gt;, which is the preliminary packet sent to the CNC.&lt;/li&gt;
+&lt;li&gt;X-Access contains an MD5 hash used as an integrity check for the contained
+payload. This MD5 hash was previously generated after victim information was
+collected as documented above.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The payload is base64 encoded and it contains the crafted string containing all
+of the compromised host’s collected information.&lt;/p&gt;
+&lt;p&gt;The malware then expects a response to this preliminary package in order to
+execute commands.&lt;/p&gt;
+&lt;p&gt;There is a total of four commands supported by ACBackdoor: these being info,
+run, execute, and update.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig12.png" title="Control flow graph similarities on command handling across samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Control flow graph similarities on command handling across samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;As previously mentioned, the info command is really the first point of contact
+between the client and the CNC.&lt;/p&gt;
+&lt;p&gt;The run command is intended to run arbitrary shell commands. The execute
+command is capable of executing a given binary in the compromised host, and the
+update command updates the client itself.&lt;/p&gt;
+&lt;p&gt;These commands vary in implementation between the different instances of this
+malware. However, an additional hint may indicate the authors behind this
+malware have more experience writing Linux malware. This can be found by
+examining the implementation of the execute command.&lt;/p&gt;
+&lt;p&gt;In the Windows instance, this command is implemented via CreateFile and
+CreateProcess Win32 API functions. In Linux, a combination of memfd_create,
+fork, and execveat system calls are used:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig13.png" title="Execute command implementation across ACBackdoor samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Execute command implementation across ACBackdoor samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;At first glance, the implementations of these execute commands may not seem to
+be much different from each other in terms of functionality. However, it’s
+important to highlight that the Linux instance implementation does provide a
+means to execute fileless code. This is not the case with the Windows
+implementation.&lt;/p&gt;
+&lt;p&gt;These specific details along with the analysis above have led us to conclude
+that the authors behind ACBackdoor are more comfortable operating in Linux
+systems, while they may currently be experimenting in Windows by porting their
+malware to this system.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have covered the technical analysis of this multi-platform malware which we
+have named ACBackdoor. After further analysis of the Windows instance we have
+gotten a sense that the authors behind ACBackdoor have a lack of experience in
+writing Windows malware.&lt;/p&gt;
+&lt;p&gt;In addition, we have identified some strings belonging to the Linux version
+which are also present in the Windows instance of ACBackdoor, implying that the
+Linux version was likely written before the Windows version.&lt;/p&gt;
+&lt;p&gt;Apart from having a lower detection rate, the Linux version is overall similar
+in logic to the Windows variant. The Linux implant has noticeably been written
+better than the Windows implant, highlighting the implementation of the
+persistence mechanism along with the different backdoor commands and additional
+features not seen in the Windows version such as independent process creation
+and process renaming.&lt;/p&gt;
+&lt;p&gt;We can assess with high confidence that this threat group has experience
+developing Linux-based malware. Because there is no attributable information
+documented on this backdoor, there is a possibility that some known Linux-based
+threat group is updating its toolset.&lt;/p&gt;
+&lt;p&gt;In addition, this is further evidence that Linux variants have consistently
+lower detection rates than Windows.&lt;/p&gt;
+&lt;p&gt;The binary code from both ACBackdoor implants have been indexed in Intezer
+Analyze. Users can now detect and classify Linux and Windows variants of this
+threat by uploading their suspicious file(s) or scanning the code running in
+their endpoint via &lt;a href="https://analyze.intezer.com/#/"target="_blank" rel="noopener"&gt;analyze.intezer.com&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;5d51dbf649d34cd6927efdb6ef082f27a6ccb25a92e892800c583a881bbf9415
+907e1dfde652b17338d307b6a13a5af7a8f6ced93a7a71f7f65d40123b93f2b8
+193[.]29[.]15[.]147
+185[.]198[.]56[.]53&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>APT37: Final1stspy Reaping the FreeMilk</title><link>https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</link><pubDate>Wed, 03 Oct 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</guid><description>
 &lt;p&gt;Researchers at Palo Alto Networks recently published a report regarding the
 &lt;a href="https://researchcenter.paloaltonetworks.com/2018/09/unit42-new-konni-malware-attacking-eurasia-southeast-asia/"target="_blank" rel="noopener"&gt;NOKKI&lt;/a&gt;
 malware, which has shared code with KONNI and, although not in the report by

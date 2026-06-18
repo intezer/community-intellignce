@@ -1500,7 +1500,427 @@ classify any variants that are genetically similar.&lt;/p&gt;
 &lt;h4&gt;JSP&lt;span class="hx:absolute hx:-mt-20" id="jsp"&gt;&lt;/span&gt;
 &lt;a href="#jsp" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;644f20b5a6e03aa054ba62d32f983adc&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>How We Seized 15 Active Ransomware Campaigns Targeting Linux File Storage Servers</title><link>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</link><pubDate>Wed, 10 Jul 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</guid><description>
+&lt;/ul&gt;</description></item><item><title>ACBackdoor: Analysis of a New Multiplatform Backdoor</title><link>https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/</link><pubDate>Mon, 18 Nov 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have discovered an undetected Linux backdoor which does not have any known
+connections to other threat groups.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig1.png" title="VirusTotal detection rate of ACBackdoor Linux variant" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VirusTotal detection rate of ACBackdoor Linux variant&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;In addition, we have found Windows variants of the same malware. As is common
+with most Windows variants, this variant has a higher detection rate than its
+Linux counterpart.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig2.png" title="VirusTotal detection rate of ACBackdoor Windows variant" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VirusTotal detection rate of ACBackdoor Windows variant&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This malware seems to be unknown or at least undocumented to the infosec
+community, which may indicate retooling of a known threat group or the
+formation of a new one.&lt;/p&gt;
+&lt;p&gt;We have dubbed this malware &lt;strong&gt;ACBackdoor&lt;/strong&gt;. ACBackdoor provides arbitrary
+execution of shell commands, arbitrary binary execution, persistence, and
+update capabilities.&lt;/p&gt;
+&lt;p&gt;In this blog post we will explain the technical analysis of both ACBackdoor
+variants and highlight their differences in implementation. The findings we
+present strongly suggest the group behind this malware has previous experience
+targeting Linux systems, and is expanding its coverage by porting ACBackdoor to
+Windows.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Linux binary is a statically linked ELF file, while the Windows binary is a
+dynamically linked PE file.&lt;/p&gt;
+&lt;p&gt;Both instances of this malware are practically identical in terms of overall
+functionality, with minor implementation differences. However, if we pay close
+attention to each instance we can draw some conclusions regarding the nature of
+the authors.&lt;/p&gt;
+&lt;p&gt;Both malware instances share the same protocol to communicate with the same CNC
+server. However, these instances have different delivery vectors:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig3.png" title="VirusTotal intelligence graph depicting connections between the samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VirusTotal intelligence graph depicting connections between the samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Initially, we located the Linux instance in a Romanian-hosted server.
+Unfortunately, we do not have further insights regarding the delivery vector
+used to deploy the Linux variant.&lt;/p&gt;
+&lt;p&gt;We later discovered via
+&lt;a href="https://twitter.com/nao_sec/status/1193891281530830848"target="_blank" rel="noopener"&gt;@nao_sec&lt;/a&gt; that the
+Windows instance was delivered via Fallout Exploit Kit.&lt;/p&gt;
+&lt;p&gt;To understand more about the delivery system of Fallout Exploit Kit we highly
+recommend reading nao_sec&amp;rsquo;s comprehensive
+&lt;a href="https://nao-sec.org/2019/07/steady-evolution-of-fallout-v4.html"target="_blank" rel="noopener"&gt;article&lt;/a&gt; on
+the subject matter.&lt;/p&gt;
+&lt;p&gt;This finding suggests that the operators behind ACBackdoor had sufficient
+funding to purchase Fallout Exploit Kit and that they are currently using it to
+spread their Windows malware via malvertising campaigns.&lt;/p&gt;
+&lt;h3&gt;Backdoor Analysis&lt;span class="hx:absolute hx:-mt-20" id="backdoor-analysis"&gt;&lt;/span&gt;
+&lt;a href="#backdoor-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The Windows variant of this malware does not represent a complex threat in
+terms of Windows malware. Conversely, the Linux variant shows more
+sophistication in regards to the implementation details used to replicate the
+same functionality.&lt;/p&gt;
+&lt;p&gt;We first noticed the compiled Windows binary was generated using the MinGW
+compiler.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig4.png" title="MinGW strings identified in ACBackdoor Windows instance" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;MinGW strings identified in ACBackdoor Windows instance&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This indicates information regarding the malware authors’ development
+environment preference.&lt;/p&gt;
+&lt;p&gt;The main function is not obfuscated and appears to be straightforward in logic.
+In the Windows variant we can see how some strings are decoded in the beginning
+of the function.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig5.png" title="Windows instance main function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Windows instance main function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We can see Linux-specific strings among the decrypted strings, such as a kernel
+thread process name or a path belonging to a Linux file system.&lt;/p&gt;
+&lt;p&gt;These same strings are used in the Linux instance of this malware. In addition,
+these strings do not have any other cross-references among the binary, which
+may imply that the developers were too lazy to remove them when they were
+porting code from their Linux implementation onto their Windows version.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig6.png" title="ACBackdoor Linux instance main function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;ACBackdoor Linux instance main function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After initial string decoding the malware serializes the victim by collecting
+architecture, system, and MAC address information.&lt;/p&gt;
+&lt;p&gt;The way the Windows variant collects this information is by calling the
+correspondent Windows API functions in order to retrieve the subject
+information such as IsWow64Process; to determine the architecture of the
+operating system or GetAdaptersInfo to retrieve the system’s MAC address.&lt;/p&gt;
+&lt;p&gt;The Linux variant, on the other hand, uses a different technique that mainly
+relies on uname system call to retrieve architecture and system information, in
+addition to a combination of socket / ioctl system calls to retrieve the MAC
+address.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig7.png" title="Similarities in code structure between ACBackdoor Linux and Windows instances" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Similarities in code structure between ACBackdoor Linux and Windows instances&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After this information is collected, the malware will concatenate each of these
+fields, add the string ‘0.5’ likely denoting some kind of versioning ID, and
+will then MD5 hash the resulting string.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig8.png" title="Compromised host information collected from both ACBackdoor samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Compromised host information collected from both ACBackdoor samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After victim information has been serialized, the malware will apply some
+persistence mechanisms. The Windows instance will initialize a registry entry
+so that the malware will be executed on system start-up. The Linux instance
+will set up various symbolic links and add an initrd script for the malware to
+also run on system start-up. The Windows instance uses one of the most common
+registry entries used in Windows malware:
+&lt;code&gt;HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The use of this registry entry indicates this actor’s level of inexperience by
+using less conventional persistence techniques to write more complex Windows
+malware.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig9.png" title="Persistence implementations across ACBackdoor samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Persistence implementations across ACBackdoor samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Based on the names chosen to label the persistent instances of this malware, we
+can see that the Windows instance tries to masquerade itself as a Microsoft
+Anti Spyware utility (&lt;code&gt;MsMpEng.exe&lt;/code&gt;), while the Linux instance attempts to
+masquerade itself as the Ubuntu release update utility (&lt;code&gt;update-notifier&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;The Linux instance will then set an independent session via fork/setsid system
+calls in order to create an independent process. It will close unnecessary file
+descriptors using prlimit/close system calls to then rename its process name to
+that of a kernel thread, specifically &lt;code&gt;[kworker/u8:7-ev]&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If we run the ps command on a compromised Linux system we will see this process
+name among the listed processes:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig10.png" title="Process renaming performed by ACBackdoor Linux instance" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Process renaming performed by ACBackdoor Linux instance&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Command and Control Communication&lt;span class="hx:absolute hx:-mt-20" id="command-and-control-communication"&gt;&lt;/span&gt;
+&lt;a href="#command-and-control-communication" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware will proceed to communicate with the CNC. Both malware instances
+share the same CNC server and transport protocol, that being HTTPS.&lt;/p&gt;
+&lt;p&gt;The malware will send an initial packet to the CNC with the previously
+collected victim information. The client does not appear to verify the
+authenticity of the certificate on TLS handshake, therefore the communication
+is prone to MITM attacks.&lt;/p&gt;
+&lt;p&gt;The malware creates the headers for the HTTP request in which some custom
+headers are included which embed specific information for the server to
+collect. The following visual is an intercepted initial TLS stripped packet
+from a compromised Linux host which displays these headers:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig11.png" title="Intercepted TLS stripped HTTPS packet" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intercepted TLS stripped HTTPS packet&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Among the different headers we can highlight the &lt;code&gt;Access-Control&lt;/code&gt; and
+&lt;code&gt;X-Access&lt;/code&gt; headers which are unconventional HTTP headers.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Access-Control contains the base64 encoded string of the command type. In
+this case the type &lt;code&gt;info&lt;/code&gt;, which is the preliminary packet sent to the CNC.&lt;/li&gt;
+&lt;li&gt;X-Access contains an MD5 hash used as an integrity check for the contained
+payload. This MD5 hash was previously generated after victim information was
+collected as documented above.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The payload is base64 encoded and it contains the crafted string containing all
+of the compromised host’s collected information.&lt;/p&gt;
+&lt;p&gt;The malware then expects a response to this preliminary package in order to
+execute commands.&lt;/p&gt;
+&lt;p&gt;There is a total of four commands supported by ACBackdoor: these being info,
+run, execute, and update.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig12.png" title="Control flow graph similarities on command handling across samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Control flow graph similarities on command handling across samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;As previously mentioned, the info command is really the first point of contact
+between the client and the CNC.&lt;/p&gt;
+&lt;p&gt;The run command is intended to run arbitrary shell commands. The execute
+command is capable of executing a given binary in the compromised host, and the
+update command updates the client itself.&lt;/p&gt;
+&lt;p&gt;These commands vary in implementation between the different instances of this
+malware. However, an additional hint may indicate the authors behind this
+malware have more experience writing Linux malware. This can be found by
+examining the implementation of the execute command.&lt;/p&gt;
+&lt;p&gt;In the Windows instance, this command is implemented via CreateFile and
+CreateProcess Win32 API functions. In Linux, a combination of memfd_create,
+fork, and execveat system calls are used:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/images/fig13.png" title="Execute command implementation across ACBackdoor samples" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Execute command implementation across ACBackdoor samples&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;At first glance, the implementations of these execute commands may not seem to
+be much different from each other in terms of functionality. However, it’s
+important to highlight that the Linux instance implementation does provide a
+means to execute fileless code. This is not the case with the Windows
+implementation.&lt;/p&gt;
+&lt;p&gt;These specific details along with the analysis above have led us to conclude
+that the authors behind ACBackdoor are more comfortable operating in Linux
+systems, while they may currently be experimenting in Windows by porting their
+malware to this system.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have covered the technical analysis of this multi-platform malware which we
+have named ACBackdoor. After further analysis of the Windows instance we have
+gotten a sense that the authors behind ACBackdoor have a lack of experience in
+writing Windows malware.&lt;/p&gt;
+&lt;p&gt;In addition, we have identified some strings belonging to the Linux version
+which are also present in the Windows instance of ACBackdoor, implying that the
+Linux version was likely written before the Windows version.&lt;/p&gt;
+&lt;p&gt;Apart from having a lower detection rate, the Linux version is overall similar
+in logic to the Windows variant. The Linux implant has noticeably been written
+better than the Windows implant, highlighting the implementation of the
+persistence mechanism along with the different backdoor commands and additional
+features not seen in the Windows version such as independent process creation
+and process renaming.&lt;/p&gt;
+&lt;p&gt;We can assess with high confidence that this threat group has experience
+developing Linux-based malware. Because there is no attributable information
+documented on this backdoor, there is a possibility that some known Linux-based
+threat group is updating its toolset.&lt;/p&gt;
+&lt;p&gt;In addition, this is further evidence that Linux variants have consistently
+lower detection rates than Windows.&lt;/p&gt;
+&lt;p&gt;The binary code from both ACBackdoor implants have been indexed in Intezer
+Analyze. Users can now detect and classify Linux and Windows variants of this
+threat by uploading their suspicious file(s) or scanning the code running in
+their endpoint via &lt;a href="https://analyze.intezer.com/#/"target="_blank" rel="noopener"&gt;analyze.intezer.com&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;5d51dbf649d34cd6927efdb6ef082f27a6ccb25a92e892800c583a881bbf9415
+907e1dfde652b17338d307b6a13a5af7a8f6ced93a7a71f7f65d40123b93f2b8
+193[.]29[.]15[.]147
+185[.]198[.]56[.]53&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>PureLocker: New Ransomware-as-a-Service Being Used in Targeted Attacks Against Servers</title><link>https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</link><pubDate>Tue, 12 Nov 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</guid><description>
+&lt;p&gt;&lt;em&gt;Analysis by Intezer and IBM X-Force points its origins to a
+Malware-as-a-Service (MaaS) provider utilized by the Cobalt Gang and FIN6
+attack groups&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;This is a mutual research between Intezer and IBM&amp;rsquo;s X-Force IRIS team&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;We have found a new and undetected ransomware threat that is being used for
+targeted attacks against production servers of enterprises. Using code reuse
+analysis, we discovered this threat is closely related to the &amp;ldquo;more_eggs&amp;rdquo;
+backdoor malware, which is sold on the dark web by a veteran
+&lt;a href="https://medium.com/@quoscient/golden-chickens-uncovering-a-malware-as-a-service-maas-provider-and-two-new-threat-actors-using-61cf0cb87648"target="_blank" rel="noopener"&gt;MaaS provider&lt;/a&gt;
+and has been used by the Cobalt Gang, FIN6, and other threat groups.&lt;/p&gt;
+&lt;p&gt;While the samples we analyzed are for the Windows platform, we have noticed
+that the group operating this ransomware is also employing a Linux variant in
+order to attack the Linux infrastructure of its targets.&lt;/p&gt;
+&lt;p&gt;We have named this ransomware PureLocker because it&amp;rsquo;s written in the PureBasic
+programming language. As part of our analysis, we have identified the evasion
+methods and design features that have allowed this ransomware to remain under
+the radar for several months. Below we present our findings through a technical
+analysis of the malware samples.&lt;/p&gt;
+&lt;h2&gt;Initial Analysis&lt;span class="hx:absolute hx:-mt-20" id="initial-analysis"&gt;&lt;/span&gt;
+&lt;a href="#initial-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Windows sample we analyzed is a 32-bit DLL, masquerading as a C++
+cryptography library called &lt;a href="https://www.cryptopp.com/"target="_blank" rel="noopener"&gt;Crypto++&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In viewing the exports section we quickly noticed that something was unusual,
+as the library supposedly contains functions related to music playback.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;When looking at anti-virus vendor scan results in VirusTotal, we observed that
+the file has been essentially undetected for more than three weeks now, which
+is quite rare for a malicious file:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Additionally, when we executed this file in several sandbox environments it
+didn&amp;rsquo;t exhibit any malicious or suspicious behaviors.&lt;/p&gt;
+&lt;p&gt;However, after genetically analyzing the file in Intezer Analyze we made three
+key observations:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;There is no Crypto++ code connection here, meaning the sample is not a
+Crypto++ library.&lt;/li&gt;
+&lt;li&gt;The file contains reused code from several malware families, mainly from
+Cobalt Gang binaries. This means the file is malicious and may have
+relations to Cobalt Gang.&lt;/li&gt;
+&lt;li&gt;The majority of the relevant code in this file is unique, indicating that
+it&amp;rsquo;s likely a new or highly modified malware. A Closer Look&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;A closer look reveals this file is a ransomware written in the
+&lt;a href="https://www.purebasic.com/"target="_blank" rel="noopener"&gt;PureBasic programming language&lt;/a&gt;, a rather uncommon
+programming language. This unusual choice poses advantages for the attacker. AV
+vendors have trouble generating reliable detection signatures for PureBasic
+binaries. In addition, PureBasic code is portable between Windows, Linux, and
+OS-X, making targeting different platforms easier.&lt;/p&gt;
+&lt;p&gt;The malware is designed to be executed as a COM server DLL by regsrv32.exe,
+which will invoke the DllRegisterServer export, where the malware&amp;rsquo;s code
+resides. All of the other, music related, exports have no functionality and are
+included in the ransomware for deception only.&lt;/p&gt;
+&lt;p&gt;The malware&amp;rsquo;s strings are encoded and stored as Unicode hex strings. Each
+string is decoded on demand by calling a string decoding function.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The malware&amp;rsquo;s code begins by checking if it was executed as intended by the
+attackers, and that it&amp;rsquo;s not being analyzed or debugged. If any of these checks
+fail, the malware will exit immediately, without deleting itself, likely as an
+anti-analysis method not to raise suspicion. The main function flow graph is
+presented below:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In case the malware&amp;rsquo;s payload is executed, the malware will delete itself
+immediately afterwards.&lt;/p&gt;
+&lt;h2&gt;Part of a Targeted Attack Chain&lt;span class="hx:absolute hx:-mt-20" id="part-of-a-targeted-attack-chain"&gt;&lt;/span&gt;
+&lt;a href="#part-of-a-targeted-attack-chain" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are several hints suggesting that this component is part of a targeted
+and multi-stage attack. The malware begins by checking whether it was executed
+with the &lt;code&gt;/s /i&lt;/code&gt; arguments, which instructs regsrv32.exe to install the DLL
+component without raising any dialogues (silent):&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Later on the malware verifies that it&amp;rsquo;s indeed executed by &lt;code&gt;regsrv32.exe&lt;/code&gt;, and
+that its file extension is either &lt;code&gt;.dll&lt;/code&gt; or &lt;code&gt;.ocx&lt;/code&gt;. It also verifies that the
+current year on the machine is 2019, and that it has administrator rights. As
+mentioned, if any of these checks fail, the malware will exit without
+performing any malicious activity, likely in an attempt to conceal its
+functionality.&lt;/p&gt;
+&lt;p&gt;This type of behavior is not common in ransomware, which typically prefer to
+infect as many victims as possible in the hopes of gaining as much profit as
+possible. Additionally, being a DLL file designed to be executed in a very
+specific manner reveals this ransomware is a later-stage component of a
+multi-stage attack.&lt;/p&gt;
+&lt;h2&gt;Evasion and Anti-Analysis Techniques&lt;span class="hx:absolute hx:-mt-20" id="evasion-and-anti-analysis-techniques"&gt;&lt;/span&gt;
+&lt;a href="#evasion-and-anti-analysis-techniques" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Uncharacteristically for a ransomware, the malware uses an anti-hooking
+technique by manually loading another copy of &amp;ldquo;ntdll.dll&amp;rdquo; and resolving API
+addresses manually from there. This is an attempt by the malware to evade
+user-mode hooking of ntdll functions. While it&amp;rsquo;s a known trick, it&amp;rsquo;s rarely
+used in ransomware.&lt;/p&gt;
+&lt;p&gt;The imports themselves are stored as 32bit hash values, and the ransomware uses
+the familiar resolve-by-hash method to obtain the function addresses.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s also worth noting that the
+&lt;a href="https://intezer.com/blog/research/acbackdoor-analysis-of-a-new-multiplatform-backdoor/"target="_blank" rel="noopener"&gt;malware uses low level Windows&lt;/a&gt;
+API functions in ntdll.dll for most of its functionality—with some exceptions
+from kernel32.dll and advapi32.dll—notably for file manipulation. The malware
+also does not use the Windows Crypto API functions, instead relying on the
+compiled-in purebasic crypto library for its encryption needs, with the
+exception of utilizing
+&lt;a href="https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-rtlgenrandom"target="_blank" rel="noopener"&gt;SystemFunction036 from advapi32.dll&lt;/a&gt;
+(RtlGenRandom) for pseudo-random number generation.&lt;/p&gt;
+&lt;h2&gt;Encryption and Ransom Note&lt;span class="hx:absolute hx:-mt-20" id="encryption-and-ransom-note"&gt;&lt;/span&gt;
+&lt;a href="#encryption-and-ransom-note" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the event that all anti-analysis and integrity tests performed by the
+malware are satisfied, it proceeds to encrypt the files on the victim&amp;rsquo;s machine
+with the standard AES+RSA combination, using a hard-coded RSA key. The
+ransomware adds the &lt;code&gt;.CR1&lt;/code&gt; extension for each encrypted file. It encrypts
+mostly data files, skipping encryption for executable files according to the
+particular file&amp;rsquo;s extension. The ransomware then secure-deletes the original
+files in order to prevent recovery. Once the malware has completed the
+encryption it leaves a ransom note file on the user&amp;rsquo;s desktop named
+&lt;code&gt;YOUR_FILES.txt&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s worth noting that the ransom note does not ask for the payment type or for
+the monetary amount inside of the note itself, instead instructing the victim
+to contact the attacker via email. The attackers use the anonymous and
+encrypted &lt;a href="https://protonmail.com/"target="_blank" rel="noopener"&gt;Proton email service&lt;/a&gt;. Each sample we
+analyzed contained a different email address, which might be how the attackers
+can link between different victims and their respective decryption keys (each
+email corresponds to a specific RSA key pair). This is further evidence that
+this threat is different from typical forms of ransomware.&lt;/p&gt;
+&lt;p&gt;Another element to note is the &lt;code&gt;CR1&lt;/code&gt; string, which appears in the attacker
+email addresses, the encrypted file extension, and ransom note. Since this is a
+RaaS, we believe this string is most likely the identifier of the group that is
+operating these specific samples.&lt;/p&gt;
+&lt;h2&gt;Code Connections and Origin&lt;span class="hx:absolute hx:-mt-20" id="code-connections-and-origin"&gt;&lt;/span&gt;
+&lt;a href="#code-connections-and-origin" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A deeper examination of the genetic analysis results reveals that the code
+reuse connections to Cobalt Gang are related to a specific component used by
+the group in its attack chain,
+&lt;a href="http://blog.morphisec.com/cobalt-gang-2.0"target="_blank" rel="noopener"&gt;described here by Morphisec&lt;/a&gt; as the
+Stage 3 Dropper DLL. More specifically, this component is the loader part of
+the &amp;ldquo;more_eggs&amp;rdquo; JScript backdoor, also known as &amp;ldquo;SpicyOmelette&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;Last year,
+&lt;a href="https://medium.com/@quoscient/golden-chickens-uncovering-a-malware-as-a-service-maas-provider-and-two-new-threat-actors-using-61cf0cb87648"target="_blank" rel="noopener"&gt;QuoScient uncovered&lt;/a&gt;
+that Cobalt Gang had been buying its malware kits from a malware-as-a-service
+(MaaS) provider on underground cybercrime forums. QuoScient also observed two
+additional threat groups using the same MaaS kits in their operations,
+including the &amp;ldquo;more_eggs&amp;rdquo; backdoor.&lt;/p&gt;
+&lt;p&gt;Most recently, IBM X-Force has
+&lt;a href="https://securityintelligence.com/posts/more_eggs-anyone-threat-actor-itg08-strikes-again/"target="_blank" rel="noopener"&gt;uncovered several campaigns by FIN6&lt;/a&gt;
+(also known as ITG08) where they observed heavy usage of the &amp;ldquo;more_eggs&amp;rdquo;
+malware kit.&lt;/p&gt;
+&lt;p&gt;A comparison between the PureLocker ransomware samples and recent more_eggs
+loader samples reveals it&amp;rsquo;s extremely likely that they were created by the same
+author. The lines of similarity are evident:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;COM Server DLL components written in PureBasic&lt;/li&gt;
+&lt;li&gt;Nearly identical pre-payload stage in both functionality and code, with
+identical evasion and anti-analysis methods&lt;/li&gt;
+&lt;li&gt;Identical string encoding and decoding methods&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;These findings strongly suggest that the MaaS provider of &amp;ldquo;more_eggs&amp;rdquo; has added
+a new malware kit to its offerings, by modifying the &amp;ldquo;more_eggs&amp;rdquo; loader&amp;rsquo;s
+payload from a JScript backdoor to a ransomware.&lt;/p&gt;
+&lt;p&gt;While we have a good sense regarding the malware&amp;rsquo;s origin, it&amp;rsquo;s unclear at this
+time whether the &amp;ldquo;CR1&amp;rdquo; group that&amp;rsquo;s using this ransomware for targeted attacks
+is a previous customer of the MaaS provider, such as Cobalt Gang and FIN6, or a
+new one.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;PureLocker is a rather unorthodox ransomware. Instead of trying to infect as
+many victims as possible, it was designed to conceal its intentions and
+functionalities unless executed in the intended manner. This approach has
+worked well for the attackers who have managed to successfully use it for
+targeted attacks, while remaining undetected for several months.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s interesting to note that the code of the evasion and anti-analysis
+functionalities described in this blog is directly copied from the &amp;ldquo;more_eggs&amp;rdquo;
+backdoor loader. Some of these duplicated features have allowed the ransomware
+to stay undetected by evading automated analysis systems. This provides an
+example of the importance of code reuse analysis for malware detection and
+classification. It twists the usage of any previously used code, even code for
+effective evasion and anti-analysis, into a reliable indicator for detection.&lt;/p&gt;
+&lt;p&gt;The PureLocker ransomware is now indexed in Intezer&amp;rsquo;s code genome database and
+the genetic analysis of its samples
+&lt;a href="https://analyze.intezer.com/#/files/c592c52381d43a6604b3fc657c5dc6bee61aa288bfa37e8fc54140841267338d"target="_blank" rel="noopener"&gt;can be viewed in Intezer Analyze&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Intezer would like to thank IBM&amp;rsquo;s X-Force IRIS team for its collaboration on
+this mutual research. For more information, check out
+&lt;a href="https://exchange.xforce.ibmcloud.com/collection/New-Ransomware-Available-for-Targeted-Attacks-99c7156cff70e1d8e1687ab7dadc8c0e"target="_blank" rel="noopener"&gt;IBM&amp;rsquo;s X-Force exchange collection related to this threat&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;1fd15c358e2df47f5dde9ca2102c30d5e26d202642169d3b2491b89c9acc0788
+c592c52381d43a6604b3fc657c5dc6bee61aa288bfa37e8fc54140841267338d&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>How We Seized 15 Active Ransomware Campaigns Targeting Linux File Storage Servers</title><link>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</link><pubDate>Wed, 10 Jul 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It is rare to see ransomware being used to target the Linux operating system.
 However, cyber criminals seem to adapt to this emerging environment and use a

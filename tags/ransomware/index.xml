@@ -1,4 +1,194 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Ransomware</title><link>https://intezer.github.io/community-intelligence/tags/ransomware/</link><description>Recent content in Ransomware on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 10 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/ransomware/index.xml" rel="self" type="application/rss+xml"/><item><title>How We Seized 15 Active Ransomware Campaigns Targeting Linux File Storage Servers</title><link>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</link><pubDate>Wed, 10 Jul 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Ransomware</title><link>https://intezer.github.io/community-intelligence/tags/ransomware/</link><description>Recent content in Ransomware on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 12 Nov 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/ransomware/index.xml" rel="self" type="application/rss+xml"/><item><title>PureLocker: New Ransomware-as-a-Service Being Used in Targeted Attacks Against Servers</title><link>https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</link><pubDate>Tue, 12 Nov 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</guid><description>
+&lt;p&gt;&lt;em&gt;Analysis by Intezer and IBM X-Force points its origins to a
+Malware-as-a-Service (MaaS) provider utilized by the Cobalt Gang and FIN6
+attack groups&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;This is a mutual research between Intezer and IBM&amp;rsquo;s X-Force IRIS team&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;We have found a new and undetected ransomware threat that is being used for
+targeted attacks against production servers of enterprises. Using code reuse
+analysis, we discovered this threat is closely related to the &amp;ldquo;more_eggs&amp;rdquo;
+backdoor malware, which is sold on the dark web by a veteran
+&lt;a href="https://medium.com/@quoscient/golden-chickens-uncovering-a-malware-as-a-service-maas-provider-and-two-new-threat-actors-using-61cf0cb87648"target="_blank" rel="noopener"&gt;MaaS provider&lt;/a&gt;
+and has been used by the Cobalt Gang, FIN6, and other threat groups.&lt;/p&gt;
+&lt;p&gt;While the samples we analyzed are for the Windows platform, we have noticed
+that the group operating this ransomware is also employing a Linux variant in
+order to attack the Linux infrastructure of its targets.&lt;/p&gt;
+&lt;p&gt;We have named this ransomware PureLocker because it&amp;rsquo;s written in the PureBasic
+programming language. As part of our analysis, we have identified the evasion
+methods and design features that have allowed this ransomware to remain under
+the radar for several months. Below we present our findings through a technical
+analysis of the malware samples.&lt;/p&gt;
+&lt;h2&gt;Initial Analysis&lt;span class="hx:absolute hx:-mt-20" id="initial-analysis"&gt;&lt;/span&gt;
+&lt;a href="#initial-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Windows sample we analyzed is a 32-bit DLL, masquerading as a C++
+cryptography library called &lt;a href="https://www.cryptopp.com/"target="_blank" rel="noopener"&gt;Crypto++&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In viewing the exports section we quickly noticed that something was unusual,
+as the library supposedly contains functions related to music playback.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;When looking at anti-virus vendor scan results in VirusTotal, we observed that
+the file has been essentially undetected for more than three weeks now, which
+is quite rare for a malicious file:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Additionally, when we executed this file in several sandbox environments it
+didn&amp;rsquo;t exhibit any malicious or suspicious behaviors.&lt;/p&gt;
+&lt;p&gt;However, after genetically analyzing the file in Intezer Analyze we made three
+key observations:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;There is no Crypto++ code connection here, meaning the sample is not a
+Crypto++ library.&lt;/li&gt;
+&lt;li&gt;The file contains reused code from several malware families, mainly from
+Cobalt Gang binaries. This means the file is malicious and may have
+relations to Cobalt Gang.&lt;/li&gt;
+&lt;li&gt;The majority of the relevant code in this file is unique, indicating that
+it&amp;rsquo;s likely a new or highly modified malware. A Closer Look&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;A closer look reveals this file is a ransomware written in the
+&lt;a href="https://www.purebasic.com/"target="_blank" rel="noopener"&gt;PureBasic programming language&lt;/a&gt;, a rather uncommon
+programming language. This unusual choice poses advantages for the attacker. AV
+vendors have trouble generating reliable detection signatures for PureBasic
+binaries. In addition, PureBasic code is portable between Windows, Linux, and
+OS-X, making targeting different platforms easier.&lt;/p&gt;
+&lt;p&gt;The malware is designed to be executed as a COM server DLL by regsrv32.exe,
+which will invoke the DllRegisterServer export, where the malware&amp;rsquo;s code
+resides. All of the other, music related, exports have no functionality and are
+included in the ransomware for deception only.&lt;/p&gt;
+&lt;p&gt;The malware&amp;rsquo;s strings are encoded and stored as Unicode hex strings. Each
+string is decoded on demand by calling a string decoding function.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The malware&amp;rsquo;s code begins by checking if it was executed as intended by the
+attackers, and that it&amp;rsquo;s not being analyzed or debugged. If any of these checks
+fail, the malware will exit immediately, without deleting itself, likely as an
+anti-analysis method not to raise suspicion. The main function flow graph is
+presented below:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In case the malware&amp;rsquo;s payload is executed, the malware will delete itself
+immediately afterwards.&lt;/p&gt;
+&lt;h2&gt;Part of a Targeted Attack Chain&lt;span class="hx:absolute hx:-mt-20" id="part-of-a-targeted-attack-chain"&gt;&lt;/span&gt;
+&lt;a href="#part-of-a-targeted-attack-chain" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are several hints suggesting that this component is part of a targeted
+and multi-stage attack. The malware begins by checking whether it was executed
+with the &lt;code&gt;/s /i&lt;/code&gt; arguments, which instructs regsrv32.exe to install the DLL
+component without raising any dialogues (silent):&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Later on the malware verifies that it&amp;rsquo;s indeed executed by &lt;code&gt;regsrv32.exe&lt;/code&gt;, and
+that its file extension is either &lt;code&gt;.dll&lt;/code&gt; or &lt;code&gt;.ocx&lt;/code&gt;. It also verifies that the
+current year on the machine is 2019, and that it has administrator rights. As
+mentioned, if any of these checks fail, the malware will exit without
+performing any malicious activity, likely in an attempt to conceal its
+functionality.&lt;/p&gt;
+&lt;p&gt;This type of behavior is not common in ransomware, which typically prefer to
+infect as many victims as possible in the hopes of gaining as much profit as
+possible. Additionally, being a DLL file designed to be executed in a very
+specific manner reveals this ransomware is a later-stage component of a
+multi-stage attack.&lt;/p&gt;
+&lt;h2&gt;Evasion and Anti-Analysis Techniques&lt;span class="hx:absolute hx:-mt-20" id="evasion-and-anti-analysis-techniques"&gt;&lt;/span&gt;
+&lt;a href="#evasion-and-anti-analysis-techniques" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Uncharacteristically for a ransomware, the malware uses an anti-hooking
+technique by manually loading another copy of &amp;ldquo;ntdll.dll&amp;rdquo; and resolving API
+addresses manually from there. This is an attempt by the malware to evade
+user-mode hooking of ntdll functions. While it&amp;rsquo;s a known trick, it&amp;rsquo;s rarely
+used in ransomware.&lt;/p&gt;
+&lt;p&gt;The imports themselves are stored as 32bit hash values, and the ransomware uses
+the familiar resolve-by-hash method to obtain the function addresses.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s also worth noting that the
+&lt;a href="https://intezer.com/blog/research/acbackdoor-analysis-of-a-new-multiplatform-backdoor/"target="_blank" rel="noopener"&gt;malware uses low level Windows&lt;/a&gt;
+API functions in ntdll.dll for most of its functionality—with some exceptions
+from kernel32.dll and advapi32.dll—notably for file manipulation. The malware
+also does not use the Windows Crypto API functions, instead relying on the
+compiled-in purebasic crypto library for its encryption needs, with the
+exception of utilizing
+&lt;a href="https://docs.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-rtlgenrandom"target="_blank" rel="noopener"&gt;SystemFunction036 from advapi32.dll&lt;/a&gt;
+(RtlGenRandom) for pseudo-random number generation.&lt;/p&gt;
+&lt;h2&gt;Encryption and Ransom Note&lt;span class="hx:absolute hx:-mt-20" id="encryption-and-ransom-note"&gt;&lt;/span&gt;
+&lt;a href="#encryption-and-ransom-note" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the event that all anti-analysis and integrity tests performed by the
+malware are satisfied, it proceeds to encrypt the files on the victim&amp;rsquo;s machine
+with the standard AES+RSA combination, using a hard-coded RSA key. The
+ransomware adds the &lt;code&gt;.CR1&lt;/code&gt; extension for each encrypted file. It encrypts
+mostly data files, skipping encryption for executable files according to the
+particular file&amp;rsquo;s extension. The ransomware then secure-deletes the original
+files in order to prevent recovery. Once the malware has completed the
+encryption it leaves a ransom note file on the user&amp;rsquo;s desktop named
+&lt;code&gt;YOUR_FILES.txt&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s worth noting that the ransom note does not ask for the payment type or for
+the monetary amount inside of the note itself, instead instructing the victim
+to contact the attacker via email. The attackers use the anonymous and
+encrypted &lt;a href="https://protonmail.com/"target="_blank" rel="noopener"&gt;Proton email service&lt;/a&gt;. Each sample we
+analyzed contained a different email address, which might be how the attackers
+can link between different victims and their respective decryption keys (each
+email corresponds to a specific RSA key pair). This is further evidence that
+this threat is different from typical forms of ransomware.&lt;/p&gt;
+&lt;p&gt;Another element to note is the &lt;code&gt;CR1&lt;/code&gt; string, which appears in the attacker
+email addresses, the encrypted file extension, and ransom note. Since this is a
+RaaS, we believe this string is most likely the identifier of the group that is
+operating these specific samples.&lt;/p&gt;
+&lt;h2&gt;Code Connections and Origin&lt;span class="hx:absolute hx:-mt-20" id="code-connections-and-origin"&gt;&lt;/span&gt;
+&lt;a href="#code-connections-and-origin" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A deeper examination of the genetic analysis results reveals that the code
+reuse connections to Cobalt Gang are related to a specific component used by
+the group in its attack chain,
+&lt;a href="http://blog.morphisec.com/cobalt-gang-2.0"target="_blank" rel="noopener"&gt;described here by Morphisec&lt;/a&gt; as the
+Stage 3 Dropper DLL. More specifically, this component is the loader part of
+the &amp;ldquo;more_eggs&amp;rdquo; JScript backdoor, also known as &amp;ldquo;SpicyOmelette&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;Last year,
+&lt;a href="https://medium.com/@quoscient/golden-chickens-uncovering-a-malware-as-a-service-maas-provider-and-two-new-threat-actors-using-61cf0cb87648"target="_blank" rel="noopener"&gt;QuoScient uncovered&lt;/a&gt;
+that Cobalt Gang had been buying its malware kits from a malware-as-a-service
+(MaaS) provider on underground cybercrime forums. QuoScient also observed two
+additional threat groups using the same MaaS kits in their operations,
+including the &amp;ldquo;more_eggs&amp;rdquo; backdoor.&lt;/p&gt;
+&lt;p&gt;Most recently, IBM X-Force has
+&lt;a href="https://securityintelligence.com/posts/more_eggs-anyone-threat-actor-itg08-strikes-again/"target="_blank" rel="noopener"&gt;uncovered several campaigns by FIN6&lt;/a&gt;
+(also known as ITG08) where they observed heavy usage of the &amp;ldquo;more_eggs&amp;rdquo;
+malware kit.&lt;/p&gt;
+&lt;p&gt;A comparison between the PureLocker ransomware samples and recent more_eggs
+loader samples reveals it&amp;rsquo;s extremely likely that they were created by the same
+author. The lines of similarity are evident:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;COM Server DLL components written in PureBasic&lt;/li&gt;
+&lt;li&gt;Nearly identical pre-payload stage in both functionality and code, with
+identical evasion and anti-analysis methods&lt;/li&gt;
+&lt;li&gt;Identical string encoding and decoding methods&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;These findings strongly suggest that the MaaS provider of &amp;ldquo;more_eggs&amp;rdquo; has added
+a new malware kit to its offerings, by modifying the &amp;ldquo;more_eggs&amp;rdquo; loader&amp;rsquo;s
+payload from a JScript backdoor to a ransomware.&lt;/p&gt;
+&lt;p&gt;While we have a good sense regarding the malware&amp;rsquo;s origin, it&amp;rsquo;s unclear at this
+time whether the &amp;ldquo;CR1&amp;rdquo; group that&amp;rsquo;s using this ransomware for targeted attacks
+is a previous customer of the MaaS provider, such as Cobalt Gang and FIN6, or a
+new one.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;PureLocker is a rather unorthodox ransomware. Instead of trying to infect as
+many victims as possible, it was designed to conceal its intentions and
+functionalities unless executed in the intended manner. This approach has
+worked well for the attackers who have managed to successfully use it for
+targeted attacks, while remaining undetected for several months.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s interesting to note that the code of the evasion and anti-analysis
+functionalities described in this blog is directly copied from the &amp;ldquo;more_eggs&amp;rdquo;
+backdoor loader. Some of these duplicated features have allowed the ransomware
+to stay undetected by evading automated analysis systems. This provides an
+example of the importance of code reuse analysis for malware detection and
+classification. It twists the usage of any previously used code, even code for
+effective evasion and anti-analysis, into a reliable indicator for detection.&lt;/p&gt;
+&lt;p&gt;The PureLocker ransomware is now indexed in Intezer&amp;rsquo;s code genome database and
+the genetic analysis of its samples
+&lt;a href="https://analyze.intezer.com/#/files/c592c52381d43a6604b3fc657c5dc6bee61aa288bfa37e8fc54140841267338d"target="_blank" rel="noopener"&gt;can be viewed in Intezer Analyze&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Intezer would like to thank IBM&amp;rsquo;s X-Force IRIS team for its collaboration on
+this mutual research. For more information, check out
+&lt;a href="https://exchange.xforce.ibmcloud.com/collection/New-Ransomware-Available-for-Targeted-Attacks-99c7156cff70e1d8e1687ab7dadc8c0e"target="_blank" rel="noopener"&gt;IBM&amp;rsquo;s X-Force exchange collection related to this threat&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;1fd15c358e2df47f5dde9ca2102c30d5e26d202642169d3b2491b89c9acc0788
+c592c52381d43a6604b3fc657c5dc6bee61aa288bfa37e8fc54140841267338d&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>How We Seized 15 Active Ransomware Campaigns Targeting Linux File Storage Servers</title><link>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</link><pubDate>Wed, 10 Jul 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It is rare to see ransomware being used to target the Linux operating system.
 However, cyber criminals seem to adapt to this emerging environment and use a
