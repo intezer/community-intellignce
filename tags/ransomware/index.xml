@@ -1,4 +1,408 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Ransomware</title><link>https://intezer.github.io/community-intelligence/tags/ransomware/</link><description>Recent content in Ransomware on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 12 Nov 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/ransomware/index.xml" rel="self" type="application/rss+xml"/><item><title>PureLocker: New Ransomware-as-a-Service Being Used in Targeted Attacks Against Servers</title><link>https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</link><pubDate>Tue, 12 Nov 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Ransomware</title><link>https://intezer.github.io/community-intelligence/tags/ransomware/</link><description>Recent content in Ransomware on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 02 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/ransomware/index.xml" rel="self" type="application/rss+xml"/><item><title>When Viruses Mutate: Did SunCrypt Ransomware Evolve from QNAPCrypt?</title><link>https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/</link><pubDate>Tue, 02 Mar 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/</guid><description>
+&lt;p&gt;&lt;em&gt;Dov Lerner from Cybersixgill contributed to this report&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
+&lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Programmers frequently reuse code, as recycling something that is already
+written and functional is much more efficient than writing from scratch.
+Malware authors are no different; functions and modules from one malware can be
+reused in the next. Because of this, code reuse analysis can connect different
+malware to the same author.&lt;/p&gt;
+&lt;p&gt;When performing code reuse analysis, it is important to ensure that the code is
+unique to the specific developer and not common code that, for example, is part
+of an open-source library since open-source code can be used by many and cannot
+be tied to a specific author. If this is handled correctly, code reuse is a
+very powerful method for attributing malware to a specific malware author.&lt;/p&gt;
+&lt;p&gt;There is a constant churn of new actors and malware families. However,
+sometimes a seemingly new threat actor is just a &amp;ldquo;rebranding&amp;rdquo; or a new group
+formed by known actors. For example, in May 2019, the GandCrab group announced
+that they were retiring from their ransomware activity. Not long after,
+&lt;a href="https://www.secureworks.com/blog/revil-the-gandcrab-connection"target="_blank" rel="noopener"&gt;researchers&lt;/a&gt;
+connected a new ransomware called
+&lt;a href="https://analyze.intezer.com/families/098aa9b8-08e5-4b20-a83f-5e94e57f8fd7"target="_blank" rel="noopener"&gt;REvil&lt;/a&gt;
+(also known as Sodinokibi) to the then defunct GandCrab ransomware. REvil
+shared unique code similarities with GandCrab. This suggested that when
+GandCrab was closing down, the malware authors switched to develop a new
+ransomware using some of the code from GandCrab in a new collaboration with
+other threat actors.&lt;/p&gt;
+&lt;p&gt;This report uses both dark web research and malware analysis to investigate the
+connection between the affiliate ransomware service known as SunCrypt and the
+&lt;a href="../../../2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers"&gt;QNAPCrypt&lt;/a&gt;
+ransomware, the latter of which was used against QNAP and Synology devices back
+in 2019. While the two ransomware are operated by distinct different threat
+actors on the dark web, there are strong technical connections in code reuse
+and techniques, linking the two ransomware to the same author. Just because a
+malware is a derivative of another malware does not mean it will be deployed in
+exactly the same way. A new operator may use different targets, tactics,
+techniques and procedures (TTPs), which can include new evasion techniques.
+Defenders must remain vigilant.&lt;/p&gt;
+&lt;h2&gt;Technical Connection&lt;span class="hx:absolute hx:-mt-20" id="technical-connection"&gt;&lt;/span&gt;
+&lt;a href="#technical-connection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;SunCrypt is a Ransomware as a Service (RaaS) that uses a closed affiliate
+program on the dark web. The history of this RaaS can be traced back to circa
+October 2019. In October 2019, a new ransomware was found in-the-wild
+(&lt;a href="https://analyze.intezer.com/files/98b8924d3f49ed0279723d3311bbdafcc918f240390151ea65493e48d2803393"target="_blank" rel="noopener"&gt;5657abdb9d99cd5aec433099f8d6f53d&lt;/a&gt;).
+The new ransomware was written in Go and targeted Windows machines. This
+version of SunCrypt was not reported in many attacks and it wasn&amp;rsquo;t until
+&lt;a href="https://id-ransomware.blogspot.com/2020/08/suncrypt-ransomware.html"target="_blank" rel="noopener"&gt;mid-2020&lt;/a&gt;
+when a new version of the ransomware written in C/C++ was discovered, that
+attacks started to increase. It is an interesting shift of retooling from Go to
+C/C++ when
+&lt;a href="https://twitter.com/VK_Intel/status/1281677718376120328"target="_blank" rel="noopener"&gt;other groups&lt;/a&gt; are
+instead retooling from C/C++ to Go.&lt;/p&gt;
+&lt;p&gt;While the RaaS didn&amp;rsquo;t appear until October 2019, these ransomware share
+connections with another ransomware, called
+&lt;a href="../../../2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers"&gt;QNAPCrypt&lt;/a&gt;
+(also known as
+&lt;a href="https://www.anomali.com/blog/the-ech0raix-ransomware"target="_blank" rel="noopener"&gt;eCh0raix&lt;/a&gt;), that was
+used to target Network Attached Storage (NAS) devices back in July 2019. Both
+families share identical code logic for the file encryption, which we can
+conclude with high certainty has been compiled from the same source code.&lt;/p&gt;
+&lt;h3&gt;SunCrypt 2020 and SunCrypt 2019&lt;span class="hx:absolute hx:-mt-20" id="suncrypt-2020-and-suncrypt-2019"&gt;&lt;/span&gt;
+&lt;a href="#suncrypt-2020-and-suncrypt-2019" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The SunCrypt variant that was released in 2020 is written in C. Due to this, it
+does not have any shared code with the earlier version from 2019. The
+functionality of SunCrypt has been
+&lt;a href="https://sapphirex00.medium.com/diving-into-the-sun-suncrypt-a-new-neighbour-in-the-ransomware-mafia-d89010c9df83"target="_blank" rel="noopener"&gt;well-documented&lt;/a&gt;
+and some of the behaviors are similar between the two variants. For example,
+both variants are designed to encrypt and steal data. This, together with the
+name, is not enough to link the two variants together. Instead, we have to look
+at other data points.&lt;/p&gt;
+&lt;p&gt;After the ransomware has stolen and encrypted the files on the infected
+machine, the user is presented with a ransom note. The ransom note for the 2020
+variant is shown in Figure 1 below. The note can be read in English, German,
+French, Spanish or Japanese. It has an input box that when the user enters the
+unique ID, sends the user to a chat interface.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig1.png" title="Figure 1: Ransom note pages for SunCrypt. Left is showing the original ransom note and right is showing the current ransom note used. Both share the same typos and structure. The current ransom note provides a link to the leak site while the original note does not." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Ransom note pages for SunCrypt. Left is showing the original ransom note and right is showing the current ransom note used. Both share the same typos and structure. The current ransom note provides a link to the leak site while the original note does not.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The ransom note for the 2019 variant is very similar. It has essentially the
+same text. The background color is different. The major difference is that the
+2019 version does not include the text of leaking the stolen data if the ransom
+is not paid, as can be seen in Figure 1.&lt;/p&gt;
+&lt;h3&gt;Connection to QNAPCrypt&lt;span class="hx:absolute hx:-mt-20" id="connection-to-qnapcrypt"&gt;&lt;/span&gt;
+&lt;a href="#connection-to-qnapcrypt" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The 2021 variant is potentially a beta release of the RaaS. The version
+included in the PDB path is &amp;ldquo;0.1&amp;rdquo; as can be seen in Figure 2. The figure is
+showing a partial output of &lt;a href="https://github.com/goretk/redress"target="_blank" rel="noopener"&gt;redress&lt;/a&gt;, a
+tool used to analyze Go binaries. As part of the output, we can see a file
+called &amp;ldquo;aes.go&amp;rdquo; with two functions. Note that one of the functions has a typo
+in the name, &amp;ldquo;EncEAS&amp;rdquo; instead of &amp;ldquo;EncAES.&amp;rdquo; A similar file has been found being
+part of another malware family, QNAPCrypt. This typo was included in two
+samples of version 2 of QNAPCrypt
+(&lt;a href="https://analyze.intezer.com/files/50470f94e7d65b50bf00d7416a9634d9e4141c5109a78f5769e4204906ab5f0b"target="_blank" rel="noopener"&gt;8dd59345cc034317630b2ac2ee19b362&lt;/a&gt;
+and
+&lt;a href="https://analyze.intezer.com/files/9d4bc803c256bd340664ce08c2bf68249f33419d7decd866f3ade78626c95422"target="_blank" rel="noopener"&gt;516291d10b370c7be3863335cf5d57eb&lt;/a&gt;).
+An output generated by redress from one of the QNAPCrypt samples is shown in
+Figure 3. After searching both our data set of malware and a retro hunt on
+VirusTotal, only these three samples have the two function names. From this, we
+can conclude that the typo is unique and potentially shared code between the
+two ransomware families.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig2.png" title="Figure 2: Partial output of redress for SunCrypt 2019 variant. One of the functions has the typo EAS instead of AES." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: Partial output of redress for SunCrypt 2019 variant. One of the functions has the typo EAS instead of AES.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig3.png" title="Figure 3: Output from redress for a version of QNAPCrypt with the same typo." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: Output from redress for a version of QNAPCrypt with the same typo.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;A deeper analysis of the function confirms that they are derived from the same
+source. A flow graph of &amp;ldquo;&lt;code&gt;EncFile&lt;/code&gt;&amp;rdquo; is shown in Figure 4 and a flow graph for
+&amp;ldquo;&lt;code&gt;EncEAS&lt;/code&gt;&amp;rdquo; is shown in Figure 5.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig4.png" title="Figure 4: Flow graphs for EncFile function. The flow is identical." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: Flow graphs for EncFile function. The flow is identical.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The samples are compiled for different operating systems and architectures
+using different versions of the Go compiler which results in a slight
+difference in the generated assembly code. The function opens a file handler to
+the file to be encrypted. It uses the &amp;ldquo;Stat&amp;rdquo; function provided by Go&amp;rsquo;s standard
+library to determine the file size. Based on the size, the flow splits into two
+different branches.&lt;/p&gt;
+&lt;p&gt;For SunCrypt, if the file is larger than 100 MB it goes down one branch while
+QNAPCrypt uses a cutoff of 10 MB. Files smaller than the cutoff size goes down
+to the second branch. In the large file branch, the SunCrypt reads in the first
+100 MB using the &amp;ldquo;ReadAtLeast&amp;rdquo; function that is part of the standard library
+&amp;ldquo;io&amp;rdquo; package. QNAPCrypt does the same but in the first 10 MB instead.&lt;/p&gt;
+&lt;p&gt;For the smaller files, both families use the &amp;ldquo;ReadFile&amp;rdquo; function from the &amp;ldquo;io&amp;rdquo;
+package. The read-in data is passed to the &amp;ldquo;&lt;code&gt;EncEAS&lt;/code&gt;&amp;rdquo; function that encrypts
+the data. The content is finally written to disk as a new file with an
+extension appended while the original file is removed. Except for the size
+cutoff, the function logic in the two families is identical.&lt;/p&gt;
+&lt;p&gt;The &amp;ldquo;&lt;code&gt;EncEAS&lt;/code&gt;&amp;rdquo; function encrypts the data using AES in Cipher Feedback (CFB)
+mode. A comparison between the flow graphs is shown in Figure 5 below. As with
+the &amp;ldquo;EncFile&amp;rdquo; function, the &amp;ldquo;&lt;code&gt;EncEAS&lt;/code&gt;&amp;rdquo; function has an identical logic and it
+can be confirmed that it was compiled from a very similar source code.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig5.png" title="Figure 5: Flow graph comparison between SunCrypt and QNAPCrypt&amp;#39;s EncEAS function." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: Flow graph comparison between SunCrypt and QNAPCrypt&amp;#39;s EncEAS function.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Other Similarities&lt;span class="hx:absolute hx:-mt-20" id="other-similarities"&gt;&lt;/span&gt;
+&lt;a href="#other-similarities" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In addition to the shared code between the two malware families for the
+functionality responsible for the file encryption, the two families also have
+other similarities. The similarities on their own do not indicate a connection,
+but the collection of all of them does. The presentation of them is to
+strengthen the connection indicated by the shared code. Figure 6 is showing
+functions in QNAPCrypt that share similarities with functions in SunCrypt.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig6.png" title="Figure 6: Functions with similarities between QNAPCrypt and SunCrypt. File encryption logic is identical while the key generation and the encryption of the key is very similar. Both malware use the locale of the machine and GeoIP to determine the location of the machine." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: Functions with similarities between QNAPCrypt and SunCrypt. File encryption logic is identical while the key generation and the encryption of the key is very similar. Both malware use the locale of the machine and GeoIP to determine the location of the machine.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Both ransomware are designed to not run on some of the Commonwealth of
+Independent States (CIS). QNAPCrypt will not perform any encryption of files if
+it believes it is running on a Belarusian, Russian or Ukrainian machine.
+SunCrypt does the same, but also includes Kyrgyzstan and Syria in the list.&lt;/p&gt;
+&lt;p&gt;The way the ransomware tries to determine this is very similar, both use two
+sources for this information. One of the sources is the locale of the machine.
+As QNAPCrypt is targeting Linux machines and SunCrypt targets Windows machines,
+the way of obtaining this information is different. The second source is via
+geolocation based on the external IP address of the machine. Both ransomware
+reaches out to an external service to get this information, &amp;ldquo;&lt;code&gt;ip-api.com&lt;/code&gt;&amp;rdquo; for
+SunCrypt and &amp;ldquo;&lt;code&gt;ipapi.co&lt;/code&gt;&amp;rdquo; for QNAPCrypt. While the families use different
+services, they both use the locale on the machine and the geoip information to
+determine if the machine is located in a disallowed country.&lt;/p&gt;
+&lt;p&gt;As discussed in the section covering the file encryption code, the files are
+encrypted with AES in CFB mode. Both ransomware generates a unique 32
+characters &amp;ldquo;password.&amp;rdquo; The logic for generating this code is very similar. A
+comparison of the logic is shown in Figure 7. The characters in the password
+are randomly selected from a list of valid characters that includes all the
+English upper and lower characters and the numbers 0 through 9. The list is
+identical between the malware. The rand implementation provided the math
+package in the standard library is used, which means the randomness is not
+cryptographic. The randomness is seeded with the current time. The main
+difference is that SunCrypt resets the seed every time the function responsible
+for generating the &amp;ldquo;password&amp;rdquo; is called, while QNAPCrypt sets the seed during
+the initialization. SunCrypt also uses the function to generate a victim
+identifier.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig7.png" title="Figure 7: Generation of the encryption password. The function loops 32 times and uses rand.Intn to pick a random character from the list of valid characters. When the loop is done, the byte slice of characters is converted to a string." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 7: Generation of the encryption password. The function loops 32 times and uses rand.Intn to pick a random character from the list of valid characters. When the loop is done, the byte slice of characters is converted to a string.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The encryption password is encrypted with a public RSA key included in the
+binary. The logic for this code is similar as can be seen in Figure 8. The code
+uses the &lt;code&gt;EncryptPKCS1v15&lt;/code&gt; function that is part of the &lt;code&gt;crypto/rsa&lt;/code&gt; package.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig8.png" title="Figure 8: Encrypting of the password using the included public key in the binary." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 8: Encrypting of the password using the included public key in the binary.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Both ransomware families have command and control (C2) infrastructure hosted as
+Tor hidden services. The first version of QNAPCrypt reached out to the C2 to
+fetch information for the ransom note, including the Bitcoin wallet used for
+the campaign. SunCrypt sends campaign information and uploads stolen files to
+the C2 server. To access the hidden service, both families use a public
+available SocksV5 proxy. QNAPCrypt connects directly to an IP address
+(&lt;code&gt;192.99.206[.]61&lt;/code&gt;) while the proxy used by SunCrypt is accessed via the domain
+&lt;code&gt;vie8hoos[.]xyz&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The file types encrypted by the ransomware are also similar. Both families have
+a list of file extensions that they use to determine if the file should be
+encrypted. In total, SunCrypt has a list of 589 file extensions. If we compare
+the SunCrypt list to the list used by the first version of QNAPCrypt we can see
+that SunCrypt&amp;rsquo;s list has added four new entries and removed 19 entries. The
+lists are not sorted in any way so the extract lists appear exactly in the same
+order as they appeared in the malware. The code snippet below shows the &lt;code&gt;diff&lt;/code&gt;
+between the two lists.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ diff suncrypt_ext.lst qnap_ext_20190705.lst
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;460d459
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .mp4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;562, 564d560
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .java
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .swift
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .go
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;589a586, &lt;span class="m"&gt;604&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .gcode
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .ngc
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .sldprt
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .sldasm
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .x_t
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .step
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .fits
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .cat
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .ctlg
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .fit
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .rsn
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .eml
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .vhdx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .cfg
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .plist
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .bckup
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .far
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .tbz
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .abf&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;If we compare SunCrypt&amp;rsquo;s list to the list used by the second version of
+QNAPCrypt from August the same year, the overlap is even bigger. The &amp;ldquo;diff&amp;rdquo;
+output is shown in the snippet below. The difference is that SunCrypt has added
+three entries and removed two. This results in a string similarity of 0.991
+which is a strong similarity.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ diff suncrypt-files.lst qnap_ext_20190801.lst
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;562, 564d561
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .java
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .swift
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .go
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;589a587, &lt;span class="m"&gt;588&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .gcode
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .ngc&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Dark Web Activity&lt;span class="hx:absolute hx:-mt-20" id="dark-web-activity"&gt;&lt;/span&gt;
+&lt;a href="#dark-web-activity" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Not long after the public reports on QNAPCrypt/eCh0raix, a new forum user named
+eCh0raix became active and started promoting the ransomware. Later, a SunCrypt
+user account promoted a new ransomware affiliate service. While both actors
+operated on the same popular Russian-language dark web forum, this is where the
+similarities end.&lt;/p&gt;
+&lt;h3&gt;eCh0raix&lt;span class="hx:absolute hx:-mt-20" id="ech0raix"&gt;&lt;/span&gt;
+&lt;a href="#ech0raix" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The actor behind eCh0raix first posted on August 31, 2019, announcing an
+affiliate program for a ransomware targeting Linux, Figure 9. This includes a
+diagram showing how the program works.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig9.png" title="Figure 9: Announcement post made by the eCh0raix actor on the dark web." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 9: Announcement post made by the eCh0raix actor on the dark web.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;In the post (Figure 10), eCh0raix cites research by threat researchers (from
+Anomali and Trend Micro), a marketing technique often used by RaaS providers in
+order to bolster credibility.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig10.png" title="Figure 10: The threat actor referring to public research on his ransomware." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 10: The threat actor referring to public research on his ransomware.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;From this initial post until June 20, 2020, the actor posted 27 new threads on
+the forum and another 77 replies to existing threads. They were quite
+gregarious, jumping into threads and sharing expertise and advice. While the
+actor did not give any updates on eCh0raix ransomware, all of the posts
+concluded with a signature that included the citation from the threat
+researchers.&lt;/p&gt;
+&lt;p&gt;The actor&amp;rsquo;s catalogue of posts dealt with a broad variety of topics. On
+December 25, 2019, eCh0raix offered a second service called DirBuster (Figure
+11), for scanning domains, subdomains, pages, and scripts, which appears to
+have been rebranded as Masscan a few months later:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig11.png" title="Figure 11: Forum post by the threat actor announcing port scanning service called Masscan." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 11: Forum post by the threat actor announcing port scanning service called Masscan.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The actor was also interested in virtualization, network access, and databases.
+They posted a lengthy account of hacking a Magento site, sold SSH root
+access/web shell access to a Costa Rican ad network and to an American IT
+company, and a database dump from a Canadian cannabis store.&lt;/p&gt;
+&lt;p&gt;In his final post (Figure 12) on the forum, the actor was looking to purchase a
+Shodan account from which to export IP addresses. Like every post before it,
+this post concluded with the same announcement of eCh0raix ransomware that had
+been used ten months prior.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig12.png" title="Figure 12: Final post by the threat actor." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 12: Final post by the threat actor.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Since this was posted on June 20, 2020, without any reason or indication the
+account has been inactive.&lt;/p&gt;
+&lt;h3&gt;SunCrypt&lt;span class="hx:absolute hx:-mt-20" id="suncrypt"&gt;&lt;/span&gt;
+&lt;a href="#suncrypt" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;On August 12, 2020, the actor behind SunCrypt posted on the same forum for the
+first time. In a post titled &lt;code&gt;[PARTNERSHIP PROGRAM] SunCrypt Ransomware&lt;/code&gt;
+(Figure 13), the actor posted characteristics of the ransomware and issued a
+call for five affiliates to spread the ransomware. The actor noted that once
+the affiliate program was full, &amp;ldquo;we will go into private again.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig13.png" title="Figure 13: Forum post announcing the SunCrypt partnership program." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 13: Forum post announcing the SunCrypt partnership program.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The actor posted 11 more times, all on this single thread and having to do with
+searching for affiliates or answering technical questions about the ransomware.
+On August 29, the actor announced that the affiliate program was full. Then on
+September 3, they announced that a position was vacated.&lt;/p&gt;
+&lt;p&gt;On September 19, an actor posted on the thread (Figure 14), &amp;ldquo;Even hospitals are
+scammed by these scum,&amp;rdquo; and cited a Bleeping Computer article about a SunCrypt
+attack against University Hospital New Jersey (UHNJ).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig14.png" title="Figure 14: Another threat actor posts in the SunCrypt thread about how the ransomware has been used in attacks against hospitals." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 14: Another threat actor posts in the SunCrypt thread about how the ransomware has been used in attacks against hospitals.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;SunCrypt wrote defensively (Figure 15), &amp;ldquo;how can I see you are the most honest
+here…. Mother Teresa&amp;rdquo; a stretched take on &amp;ldquo;Let he who is without attacking a
+hospital with ransomware cast the first stone.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;The actor continued, blaming the hospital attack on a new affiliate, who was
+reportedly punished, since &amp;ldquo;we don&amp;rsquo;t do hospitals, government agencies,
+airports, and so on.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig15.png" title="Figure 15: The actor behind SunCrypt response to the hospital attack allegation." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 15: The actor behind SunCrypt response to the hospital attack allegation.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Later that day, another actor posted a lengthy technical analysis of the
+ransomware. The SunCrypt actor angrily responded, &amp;ldquo;Tell me, why are you posting
+this here?&amp;rdquo; and requested that the moderator erase the post (Figure 16).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig16.png" title="Figure 16: The threat actor&amp;#39;s angry response to a technical analysis of the ransomware." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 16: The threat actor&amp;#39;s angry response to a technical analysis of the ransomware.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;As of the date of this publication, the actor has not posted again. It is
+unclear why.&lt;/p&gt;
+&lt;p&gt;SunCrypt&amp;rsquo;s dedicated leak site (DLS) soon wound down. Starting on August 1,
+there were 15 posts of data from targeted organizations. After September 19,
+there were only three more over the next 10 days. Even though
+&lt;a href="https://analyze.intezer.com/files/95ca9e284a085ce93f68c3d12e6c5f557a5049539e3379284a65de784e1bdeff"target="_blank" rel="noopener"&gt;new&lt;/a&gt;
+samples of SunCrypt ransomware had surfaced in VirusTotal, it appears that
+SunCrypt&amp;rsquo;s public campaign on dark web forums and management of a DLS went
+dark.&lt;/p&gt;
+&lt;p&gt;It is unclear why the forum thread went silent and why the DLS site suspended
+operations, but the timing indicates that it was related to the hospital
+attack. SunCrypt&amp;rsquo;s operators may have been afraid that unwanted notoriety would
+attract law enforcement actions or security researchers, so they decided to
+keep a lower profile until the attention subsided.&lt;/p&gt;
+&lt;p&gt;Suddenly, on February 16, SunCrypt&amp;rsquo;s DLS listed a new victim: PRP Diagnostic
+Imaging. It appears that SunCrypt has returned to the business of public
+ransomware breaches.&lt;/p&gt;
+&lt;p&gt;It is notable that PRP provides &amp;ldquo;an extensive range of diagnostic [medical]
+imaging services,&amp;rdquo; such as MRIs, ultrasounds, and mammograms. Thus, while
+attacking a hospital may have forced the actor to suspend operations for
+several months, SunCrypt has returned and continues to target healthcare
+providers. These, despite the actor&amp;rsquo;s protest that &amp;ldquo;we don&amp;rsquo;t do hospitals.&amp;rdquo;&lt;/p&gt;
+&lt;h2&gt;Comparing the Actors&lt;span class="hx:absolute hx:-mt-20" id="comparing-the-actors"&gt;&lt;/span&gt;
+&lt;a href="#comparing-the-actors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Despite the code similarities between the two ransomwares, the actors behind
+them exhibited very different behaviors. The eCh0raix actor mentioned his
+ransomware in passing, but it was hardly their only focus. They launched other
+initiatives, shared advice, and participated in unrelated conversations in the
+forum.&lt;/p&gt;
+&lt;p&gt;Meanwhile, the SunCrypt actor was solely focused on a single purpose:
+advertising the ransomware in order to recruit affiliates. During his five
+weeks of activity, they were active in one thread only. SunCrypt operated a DLS
+site, indicating a more sophisticated operation, while eCh0raix did not.&lt;/p&gt;
+&lt;p&gt;Considering these behavioral differences, it is our assessment that the
+eCh0raix and SunCrypt accounts are operated by different individuals/groups.
+Perhaps the eCh0raix actor, overwhelmed by their many initiatives, decided that
+they did not have the resources to operate it and sold it to an affiliate.
+Maybe they were approached by a stranger asking to procure the source code.
+While we may never know the full story, it appears that the eCh0raix ransomware
+was transferred to and upgraded by the SunCrypt operators.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;With technical analysis, it is possible to link the currently active version of
+SunCrypt back to QNAPCrypt, a ransomware that was used to target NAS devices
+back in the Summer of 2019. While the technical based evidence strongly
+provides a link between QNAPCrypt and the earlier version of SunCrypt, it is
+clear that both ransomware are operated by different individuals. Based on the
+available data, it is not possible to connect the activity between the two
+actors on the forum. This suggests that when new malware services derived from
+older services appear, they may not always be operated by the same people.&lt;/p&gt;
+&lt;p&gt;With this in mind, security officials should note that just because one malware
+family is an iteration of another, it does not mean that the new family will be
+deployed in exactly the same way. If a malware is exchanged, whether to an
+affiliate or over the dark web, then the new operators may choose different
+procedures, attack vectors, and targets. They might invest considerably in the
+new malware, adding features and evasion techniques. Defenders must remain
+vigilant.&lt;/p&gt;</description></item><item><title>PureLocker: New Ransomware-as-a-Service Being Used in Targeted Attacks Against Servers</title><link>https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</link><pubDate>Tue, 12 Nov 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</guid><description>
 &lt;p&gt;&lt;em&gt;Analysis by Intezer and IBM X-Force points its origins to a
 Malware-as-a-Service (MaaS) provider utilized by the Cobalt Gang and FIN6
 attack groups&lt;/em&gt;&lt;/p&gt;

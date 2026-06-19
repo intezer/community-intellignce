@@ -6510,6 +6510,611 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>When Viruses Mutate: Did SunCrypt Ransomware Evolve from QNAPCrypt?</title><link>https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/</link><pubDate>Tue, 02 Mar 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/</guid><description>
+&lt;p&gt;&lt;em&gt;Dov Lerner from Cybersixgill contributed to this report&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
+&lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Programmers frequently reuse code, as recycling something that is already
+written and functional is much more efficient than writing from scratch.
+Malware authors are no different; functions and modules from one malware can be
+reused in the next. Because of this, code reuse analysis can connect different
+malware to the same author.&lt;/p&gt;
+&lt;p&gt;When performing code reuse analysis, it is important to ensure that the code is
+unique to the specific developer and not common code that, for example, is part
+of an open-source library since open-source code can be used by many and cannot
+be tied to a specific author. If this is handled correctly, code reuse is a
+very powerful method for attributing malware to a specific malware author.&lt;/p&gt;
+&lt;p&gt;There is a constant churn of new actors and malware families. However,
+sometimes a seemingly new threat actor is just a &amp;ldquo;rebranding&amp;rdquo; or a new group
+formed by known actors. For example, in May 2019, the GandCrab group announced
+that they were retiring from their ransomware activity. Not long after,
+&lt;a href="https://www.secureworks.com/blog/revil-the-gandcrab-connection"target="_blank" rel="noopener"&gt;researchers&lt;/a&gt;
+connected a new ransomware called
+&lt;a href="https://analyze.intezer.com/families/098aa9b8-08e5-4b20-a83f-5e94e57f8fd7"target="_blank" rel="noopener"&gt;REvil&lt;/a&gt;
+(also known as Sodinokibi) to the then defunct GandCrab ransomware. REvil
+shared unique code similarities with GandCrab. This suggested that when
+GandCrab was closing down, the malware authors switched to develop a new
+ransomware using some of the code from GandCrab in a new collaboration with
+other threat actors.&lt;/p&gt;
+&lt;p&gt;This report uses both dark web research and malware analysis to investigate the
+connection between the affiliate ransomware service known as SunCrypt and the
+&lt;a href="../../../2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers"&gt;QNAPCrypt&lt;/a&gt;
+ransomware, the latter of which was used against QNAP and Synology devices back
+in 2019. While the two ransomware are operated by distinct different threat
+actors on the dark web, there are strong technical connections in code reuse
+and techniques, linking the two ransomware to the same author. Just because a
+malware is a derivative of another malware does not mean it will be deployed in
+exactly the same way. A new operator may use different targets, tactics,
+techniques and procedures (TTPs), which can include new evasion techniques.
+Defenders must remain vigilant.&lt;/p&gt;
+&lt;h2&gt;Technical Connection&lt;span class="hx:absolute hx:-mt-20" id="technical-connection"&gt;&lt;/span&gt;
+&lt;a href="#technical-connection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;SunCrypt is a Ransomware as a Service (RaaS) that uses a closed affiliate
+program on the dark web. The history of this RaaS can be traced back to circa
+October 2019. In October 2019, a new ransomware was found in-the-wild
+(&lt;a href="https://analyze.intezer.com/files/98b8924d3f49ed0279723d3311bbdafcc918f240390151ea65493e48d2803393"target="_blank" rel="noopener"&gt;5657abdb9d99cd5aec433099f8d6f53d&lt;/a&gt;).
+The new ransomware was written in Go and targeted Windows machines. This
+version of SunCrypt was not reported in many attacks and it wasn&amp;rsquo;t until
+&lt;a href="https://id-ransomware.blogspot.com/2020/08/suncrypt-ransomware.html"target="_blank" rel="noopener"&gt;mid-2020&lt;/a&gt;
+when a new version of the ransomware written in C/C++ was discovered, that
+attacks started to increase. It is an interesting shift of retooling from Go to
+C/C++ when
+&lt;a href="https://twitter.com/VK_Intel/status/1281677718376120328"target="_blank" rel="noopener"&gt;other groups&lt;/a&gt; are
+instead retooling from C/C++ to Go.&lt;/p&gt;
+&lt;p&gt;While the RaaS didn&amp;rsquo;t appear until October 2019, these ransomware share
+connections with another ransomware, called
+&lt;a href="../../../2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers"&gt;QNAPCrypt&lt;/a&gt;
+(also known as
+&lt;a href="https://www.anomali.com/blog/the-ech0raix-ransomware"target="_blank" rel="noopener"&gt;eCh0raix&lt;/a&gt;), that was
+used to target Network Attached Storage (NAS) devices back in July 2019. Both
+families share identical code logic for the file encryption, which we can
+conclude with high certainty has been compiled from the same source code.&lt;/p&gt;
+&lt;h3&gt;SunCrypt 2020 and SunCrypt 2019&lt;span class="hx:absolute hx:-mt-20" id="suncrypt-2020-and-suncrypt-2019"&gt;&lt;/span&gt;
+&lt;a href="#suncrypt-2020-and-suncrypt-2019" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The SunCrypt variant that was released in 2020 is written in C. Due to this, it
+does not have any shared code with the earlier version from 2019. The
+functionality of SunCrypt has been
+&lt;a href="https://sapphirex00.medium.com/diving-into-the-sun-suncrypt-a-new-neighbour-in-the-ransomware-mafia-d89010c9df83"target="_blank" rel="noopener"&gt;well-documented&lt;/a&gt;
+and some of the behaviors are similar between the two variants. For example,
+both variants are designed to encrypt and steal data. This, together with the
+name, is not enough to link the two variants together. Instead, we have to look
+at other data points.&lt;/p&gt;
+&lt;p&gt;After the ransomware has stolen and encrypted the files on the infected
+machine, the user is presented with a ransom note. The ransom note for the 2020
+variant is shown in Figure 1 below. The note can be read in English, German,
+French, Spanish or Japanese. It has an input box that when the user enters the
+unique ID, sends the user to a chat interface.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig1.png" title="Figure 1: Ransom note pages for SunCrypt. Left is showing the original ransom note and right is showing the current ransom note used. Both share the same typos and structure. The current ransom note provides a link to the leak site while the original note does not." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Ransom note pages for SunCrypt. Left is showing the original ransom note and right is showing the current ransom note used. Both share the same typos and structure. The current ransom note provides a link to the leak site while the original note does not.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The ransom note for the 2019 variant is very similar. It has essentially the
+same text. The background color is different. The major difference is that the
+2019 version does not include the text of leaking the stolen data if the ransom
+is not paid, as can be seen in Figure 1.&lt;/p&gt;
+&lt;h3&gt;Connection to QNAPCrypt&lt;span class="hx:absolute hx:-mt-20" id="connection-to-qnapcrypt"&gt;&lt;/span&gt;
+&lt;a href="#connection-to-qnapcrypt" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The 2021 variant is potentially a beta release of the RaaS. The version
+included in the PDB path is &amp;ldquo;0.1&amp;rdquo; as can be seen in Figure 2. The figure is
+showing a partial output of &lt;a href="https://github.com/goretk/redress"target="_blank" rel="noopener"&gt;redress&lt;/a&gt;, a
+tool used to analyze Go binaries. As part of the output, we can see a file
+called &amp;ldquo;aes.go&amp;rdquo; with two functions. Note that one of the functions has a typo
+in the name, &amp;ldquo;EncEAS&amp;rdquo; instead of &amp;ldquo;EncAES.&amp;rdquo; A similar file has been found being
+part of another malware family, QNAPCrypt. This typo was included in two
+samples of version 2 of QNAPCrypt
+(&lt;a href="https://analyze.intezer.com/files/50470f94e7d65b50bf00d7416a9634d9e4141c5109a78f5769e4204906ab5f0b"target="_blank" rel="noopener"&gt;8dd59345cc034317630b2ac2ee19b362&lt;/a&gt;
+and
+&lt;a href="https://analyze.intezer.com/files/9d4bc803c256bd340664ce08c2bf68249f33419d7decd866f3ade78626c95422"target="_blank" rel="noopener"&gt;516291d10b370c7be3863335cf5d57eb&lt;/a&gt;).
+An output generated by redress from one of the QNAPCrypt samples is shown in
+Figure 3. After searching both our data set of malware and a retro hunt on
+VirusTotal, only these three samples have the two function names. From this, we
+can conclude that the typo is unique and potentially shared code between the
+two ransomware families.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig2.png" title="Figure 2: Partial output of redress for SunCrypt 2019 variant. One of the functions has the typo EAS instead of AES." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: Partial output of redress for SunCrypt 2019 variant. One of the functions has the typo EAS instead of AES.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig3.png" title="Figure 3: Output from redress for a version of QNAPCrypt with the same typo." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: Output from redress for a version of QNAPCrypt with the same typo.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;A deeper analysis of the function confirms that they are derived from the same
+source. A flow graph of &amp;ldquo;&lt;code&gt;EncFile&lt;/code&gt;&amp;rdquo; is shown in Figure 4 and a flow graph for
+&amp;ldquo;&lt;code&gt;EncEAS&lt;/code&gt;&amp;rdquo; is shown in Figure 5.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig4.png" title="Figure 4: Flow graphs for EncFile function. The flow is identical." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: Flow graphs for EncFile function. The flow is identical.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The samples are compiled for different operating systems and architectures
+using different versions of the Go compiler which results in a slight
+difference in the generated assembly code. The function opens a file handler to
+the file to be encrypted. It uses the &amp;ldquo;Stat&amp;rdquo; function provided by Go&amp;rsquo;s standard
+library to determine the file size. Based on the size, the flow splits into two
+different branches.&lt;/p&gt;
+&lt;p&gt;For SunCrypt, if the file is larger than 100 MB it goes down one branch while
+QNAPCrypt uses a cutoff of 10 MB. Files smaller than the cutoff size goes down
+to the second branch. In the large file branch, the SunCrypt reads in the first
+100 MB using the &amp;ldquo;ReadAtLeast&amp;rdquo; function that is part of the standard library
+&amp;ldquo;io&amp;rdquo; package. QNAPCrypt does the same but in the first 10 MB instead.&lt;/p&gt;
+&lt;p&gt;For the smaller files, both families use the &amp;ldquo;ReadFile&amp;rdquo; function from the &amp;ldquo;io&amp;rdquo;
+package. The read-in data is passed to the &amp;ldquo;&lt;code&gt;EncEAS&lt;/code&gt;&amp;rdquo; function that encrypts
+the data. The content is finally written to disk as a new file with an
+extension appended while the original file is removed. Except for the size
+cutoff, the function logic in the two families is identical.&lt;/p&gt;
+&lt;p&gt;The &amp;ldquo;&lt;code&gt;EncEAS&lt;/code&gt;&amp;rdquo; function encrypts the data using AES in Cipher Feedback (CFB)
+mode. A comparison between the flow graphs is shown in Figure 5 below. As with
+the &amp;ldquo;EncFile&amp;rdquo; function, the &amp;ldquo;&lt;code&gt;EncEAS&lt;/code&gt;&amp;rdquo; function has an identical logic and it
+can be confirmed that it was compiled from a very similar source code.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig5.png" title="Figure 5: Flow graph comparison between SunCrypt and QNAPCrypt&amp;#39;s EncEAS function." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: Flow graph comparison between SunCrypt and QNAPCrypt&amp;#39;s EncEAS function.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Other Similarities&lt;span class="hx:absolute hx:-mt-20" id="other-similarities"&gt;&lt;/span&gt;
+&lt;a href="#other-similarities" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In addition to the shared code between the two malware families for the
+functionality responsible for the file encryption, the two families also have
+other similarities. The similarities on their own do not indicate a connection,
+but the collection of all of them does. The presentation of them is to
+strengthen the connection indicated by the shared code. Figure 6 is showing
+functions in QNAPCrypt that share similarities with functions in SunCrypt.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig6.png" title="Figure 6: Functions with similarities between QNAPCrypt and SunCrypt. File encryption logic is identical while the key generation and the encryption of the key is very similar. Both malware use the locale of the machine and GeoIP to determine the location of the machine." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: Functions with similarities between QNAPCrypt and SunCrypt. File encryption logic is identical while the key generation and the encryption of the key is very similar. Both malware use the locale of the machine and GeoIP to determine the location of the machine.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Both ransomware are designed to not run on some of the Commonwealth of
+Independent States (CIS). QNAPCrypt will not perform any encryption of files if
+it believes it is running on a Belarusian, Russian or Ukrainian machine.
+SunCrypt does the same, but also includes Kyrgyzstan and Syria in the list.&lt;/p&gt;
+&lt;p&gt;The way the ransomware tries to determine this is very similar, both use two
+sources for this information. One of the sources is the locale of the machine.
+As QNAPCrypt is targeting Linux machines and SunCrypt targets Windows machines,
+the way of obtaining this information is different. The second source is via
+geolocation based on the external IP address of the machine. Both ransomware
+reaches out to an external service to get this information, &amp;ldquo;&lt;code&gt;ip-api.com&lt;/code&gt;&amp;rdquo; for
+SunCrypt and &amp;ldquo;&lt;code&gt;ipapi.co&lt;/code&gt;&amp;rdquo; for QNAPCrypt. While the families use different
+services, they both use the locale on the machine and the geoip information to
+determine if the machine is located in a disallowed country.&lt;/p&gt;
+&lt;p&gt;As discussed in the section covering the file encryption code, the files are
+encrypted with AES in CFB mode. Both ransomware generates a unique 32
+characters &amp;ldquo;password.&amp;rdquo; The logic for generating this code is very similar. A
+comparison of the logic is shown in Figure 7. The characters in the password
+are randomly selected from a list of valid characters that includes all the
+English upper and lower characters and the numbers 0 through 9. The list is
+identical between the malware. The rand implementation provided the math
+package in the standard library is used, which means the randomness is not
+cryptographic. The randomness is seeded with the current time. The main
+difference is that SunCrypt resets the seed every time the function responsible
+for generating the &amp;ldquo;password&amp;rdquo; is called, while QNAPCrypt sets the seed during
+the initialization. SunCrypt also uses the function to generate a victim
+identifier.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig7.png" title="Figure 7: Generation of the encryption password. The function loops 32 times and uses rand.Intn to pick a random character from the list of valid characters. When the loop is done, the byte slice of characters is converted to a string." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 7: Generation of the encryption password. The function loops 32 times and uses rand.Intn to pick a random character from the list of valid characters. When the loop is done, the byte slice of characters is converted to a string.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The encryption password is encrypted with a public RSA key included in the
+binary. The logic for this code is similar as can be seen in Figure 8. The code
+uses the &lt;code&gt;EncryptPKCS1v15&lt;/code&gt; function that is part of the &lt;code&gt;crypto/rsa&lt;/code&gt; package.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig8.png" title="Figure 8: Encrypting of the password using the included public key in the binary." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 8: Encrypting of the password using the included public key in the binary.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Both ransomware families have command and control (C2) infrastructure hosted as
+Tor hidden services. The first version of QNAPCrypt reached out to the C2 to
+fetch information for the ransom note, including the Bitcoin wallet used for
+the campaign. SunCrypt sends campaign information and uploads stolen files to
+the C2 server. To access the hidden service, both families use a public
+available SocksV5 proxy. QNAPCrypt connects directly to an IP address
+(&lt;code&gt;192.99.206[.]61&lt;/code&gt;) while the proxy used by SunCrypt is accessed via the domain
+&lt;code&gt;vie8hoos[.]xyz&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The file types encrypted by the ransomware are also similar. Both families have
+a list of file extensions that they use to determine if the file should be
+encrypted. In total, SunCrypt has a list of 589 file extensions. If we compare
+the SunCrypt list to the list used by the first version of QNAPCrypt we can see
+that SunCrypt&amp;rsquo;s list has added four new entries and removed 19 entries. The
+lists are not sorted in any way so the extract lists appear exactly in the same
+order as they appeared in the malware. The code snippet below shows the &lt;code&gt;diff&lt;/code&gt;
+between the two lists.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ diff suncrypt_ext.lst qnap_ext_20190705.lst
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;460d459
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .mp4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;562, 564d560
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .java
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .swift
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .go
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;589a586, &lt;span class="m"&gt;604&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .gcode
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .ngc
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .sldprt
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .sldasm
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .x_t
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .step
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .fits
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .cat
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .ctlg
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .fit
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .rsn
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .eml
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .vhdx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .cfg
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .plist
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .bckup
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .far
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .tbz
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .abf&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;If we compare SunCrypt&amp;rsquo;s list to the list used by the second version of
+QNAPCrypt from August the same year, the overlap is even bigger. The &amp;ldquo;diff&amp;rdquo;
+output is shown in the snippet below. The difference is that SunCrypt has added
+three entries and removed two. This results in a string similarity of 0.991
+which is a strong similarity.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ diff suncrypt-files.lst qnap_ext_20190801.lst
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;562, 564d561
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .java
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .swift
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;lt; .go
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;589a587, &lt;span class="m"&gt;588&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .gcode
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&amp;gt; .ngc&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Dark Web Activity&lt;span class="hx:absolute hx:-mt-20" id="dark-web-activity"&gt;&lt;/span&gt;
+&lt;a href="#dark-web-activity" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Not long after the public reports on QNAPCrypt/eCh0raix, a new forum user named
+eCh0raix became active and started promoting the ransomware. Later, a SunCrypt
+user account promoted a new ransomware affiliate service. While both actors
+operated on the same popular Russian-language dark web forum, this is where the
+similarities end.&lt;/p&gt;
+&lt;h3&gt;eCh0raix&lt;span class="hx:absolute hx:-mt-20" id="ech0raix"&gt;&lt;/span&gt;
+&lt;a href="#ech0raix" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The actor behind eCh0raix first posted on August 31, 2019, announcing an
+affiliate program for a ransomware targeting Linux, Figure 9. This includes a
+diagram showing how the program works.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig9.png" title="Figure 9: Announcement post made by the eCh0raix actor on the dark web." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 9: Announcement post made by the eCh0raix actor on the dark web.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;In the post (Figure 10), eCh0raix cites research by threat researchers (from
+Anomali and Trend Micro), a marketing technique often used by RaaS providers in
+order to bolster credibility.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig10.png" title="Figure 10: The threat actor referring to public research on his ransomware." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 10: The threat actor referring to public research on his ransomware.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;From this initial post until June 20, 2020, the actor posted 27 new threads on
+the forum and another 77 replies to existing threads. They were quite
+gregarious, jumping into threads and sharing expertise and advice. While the
+actor did not give any updates on eCh0raix ransomware, all of the posts
+concluded with a signature that included the citation from the threat
+researchers.&lt;/p&gt;
+&lt;p&gt;The actor&amp;rsquo;s catalogue of posts dealt with a broad variety of topics. On
+December 25, 2019, eCh0raix offered a second service called DirBuster (Figure
+11), for scanning domains, subdomains, pages, and scripts, which appears to
+have been rebranded as Masscan a few months later:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig11.png" title="Figure 11: Forum post by the threat actor announcing port scanning service called Masscan." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 11: Forum post by the threat actor announcing port scanning service called Masscan.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The actor was also interested in virtualization, network access, and databases.
+They posted a lengthy account of hacking a Magento site, sold SSH root
+access/web shell access to a Costa Rican ad network and to an American IT
+company, and a database dump from a Canadian cannabis store.&lt;/p&gt;
+&lt;p&gt;In his final post (Figure 12) on the forum, the actor was looking to purchase a
+Shodan account from which to export IP addresses. Like every post before it,
+this post concluded with the same announcement of eCh0raix ransomware that had
+been used ten months prior.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig12.png" title="Figure 12: Final post by the threat actor." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 12: Final post by the threat actor.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Since this was posted on June 20, 2020, without any reason or indication the
+account has been inactive.&lt;/p&gt;
+&lt;h3&gt;SunCrypt&lt;span class="hx:absolute hx:-mt-20" id="suncrypt"&gt;&lt;/span&gt;
+&lt;a href="#suncrypt" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;On August 12, 2020, the actor behind SunCrypt posted on the same forum for the
+first time. In a post titled &lt;code&gt;[PARTNERSHIP PROGRAM] SunCrypt Ransomware&lt;/code&gt;
+(Figure 13), the actor posted characteristics of the ransomware and issued a
+call for five affiliates to spread the ransomware. The actor noted that once
+the affiliate program was full, &amp;ldquo;we will go into private again.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig13.png" title="Figure 13: Forum post announcing the SunCrypt partnership program." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 13: Forum post announcing the SunCrypt partnership program.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The actor posted 11 more times, all on this single thread and having to do with
+searching for affiliates or answering technical questions about the ransomware.
+On August 29, the actor announced that the affiliate program was full. Then on
+September 3, they announced that a position was vacated.&lt;/p&gt;
+&lt;p&gt;On September 19, an actor posted on the thread (Figure 14), &amp;ldquo;Even hospitals are
+scammed by these scum,&amp;rdquo; and cited a Bleeping Computer article about a SunCrypt
+attack against University Hospital New Jersey (UHNJ).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig14.png" title="Figure 14: Another threat actor posts in the SunCrypt thread about how the ransomware has been used in attacks against hospitals." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 14: Another threat actor posts in the SunCrypt thread about how the ransomware has been used in attacks against hospitals.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;SunCrypt wrote defensively (Figure 15), &amp;ldquo;how can I see you are the most honest
+here…. Mother Teresa&amp;rdquo; a stretched take on &amp;ldquo;Let he who is without attacking a
+hospital with ransomware cast the first stone.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;The actor continued, blaming the hospital attack on a new affiliate, who was
+reportedly punished, since &amp;ldquo;we don&amp;rsquo;t do hospitals, government agencies,
+airports, and so on.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig15.png" title="Figure 15: The actor behind SunCrypt response to the hospital attack allegation." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 15: The actor behind SunCrypt response to the hospital attack allegation.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Later that day, another actor posted a lengthy technical analysis of the
+ransomware. The SunCrypt actor angrily responded, &amp;ldquo;Tell me, why are you posting
+this here?&amp;rdquo; and requested that the moderator erase the post (Figure 16).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig16.png" title="Figure 16: The threat actor&amp;#39;s angry response to a technical analysis of the ransomware." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 16: The threat actor&amp;#39;s angry response to a technical analysis of the ransomware.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;As of the date of this publication, the actor has not posted again. It is
+unclear why.&lt;/p&gt;
+&lt;p&gt;SunCrypt&amp;rsquo;s dedicated leak site (DLS) soon wound down. Starting on August 1,
+there were 15 posts of data from targeted organizations. After September 19,
+there were only three more over the next 10 days. Even though
+&lt;a href="https://analyze.intezer.com/files/95ca9e284a085ce93f68c3d12e6c5f557a5049539e3379284a65de784e1bdeff"target="_blank" rel="noopener"&gt;new&lt;/a&gt;
+samples of SunCrypt ransomware had surfaced in VirusTotal, it appears that
+SunCrypt&amp;rsquo;s public campaign on dark web forums and management of a DLS went
+dark.&lt;/p&gt;
+&lt;p&gt;It is unclear why the forum thread went silent and why the DLS site suspended
+operations, but the timing indicates that it was related to the hospital
+attack. SunCrypt&amp;rsquo;s operators may have been afraid that unwanted notoriety would
+attract law enforcement actions or security researchers, so they decided to
+keep a lower profile until the attention subsided.&lt;/p&gt;
+&lt;p&gt;Suddenly, on February 16, SunCrypt&amp;rsquo;s DLS listed a new victim: PRP Diagnostic
+Imaging. It appears that SunCrypt has returned to the business of public
+ransomware breaches.&lt;/p&gt;
+&lt;p&gt;It is notable that PRP provides &amp;ldquo;an extensive range of diagnostic [medical]
+imaging services,&amp;rdquo; such as MRIs, ultrasounds, and mammograms. Thus, while
+attacking a hospital may have forced the actor to suspend operations for
+several months, SunCrypt has returned and continues to target healthcare
+providers. These, despite the actor&amp;rsquo;s protest that &amp;ldquo;we don&amp;rsquo;t do hospitals.&amp;rdquo;&lt;/p&gt;
+&lt;h2&gt;Comparing the Actors&lt;span class="hx:absolute hx:-mt-20" id="comparing-the-actors"&gt;&lt;/span&gt;
+&lt;a href="#comparing-the-actors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Despite the code similarities between the two ransomwares, the actors behind
+them exhibited very different behaviors. The eCh0raix actor mentioned his
+ransomware in passing, but it was hardly their only focus. They launched other
+initiatives, shared advice, and participated in unrelated conversations in the
+forum.&lt;/p&gt;
+&lt;p&gt;Meanwhile, the SunCrypt actor was solely focused on a single purpose:
+advertising the ransomware in order to recruit affiliates. During his five
+weeks of activity, they were active in one thread only. SunCrypt operated a DLS
+site, indicating a more sophisticated operation, while eCh0raix did not.&lt;/p&gt;
+&lt;p&gt;Considering these behavioral differences, it is our assessment that the
+eCh0raix and SunCrypt accounts are operated by different individuals/groups.
+Perhaps the eCh0raix actor, overwhelmed by their many initiatives, decided that
+they did not have the resources to operate it and sold it to an affiliate.
+Maybe they were approached by a stranger asking to procure the source code.
+While we may never know the full story, it appears that the eCh0raix ransomware
+was transferred to and upgraded by the SunCrypt operators.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;With technical analysis, it is possible to link the currently active version of
+SunCrypt back to QNAPCrypt, a ransomware that was used to target NAS devices
+back in the Summer of 2019. While the technical based evidence strongly
+provides a link between QNAPCrypt and the earlier version of SunCrypt, it is
+clear that both ransomware are operated by different individuals. Based on the
+available data, it is not possible to connect the activity between the two
+actors on the forum. This suggests that when new malware services derived from
+older services appear, they may not always be operated by the same people.&lt;/p&gt;
+&lt;p&gt;With this in mind, security officials should note that just because one malware
+family is an iteration of another, it does not mean that the new family will be
+deployed in exactly the same way. If a malware is exchanged, whether to an
+affiliate or over the dark web, then the new operators may choose different
+procedures, attack vectors, and targets. They might invest considerably in the
+new malware, adding features and evasion techniques. Defenders must remain
+vigilant.&lt;/p&gt;</description></item><item><title>A Rare Look Inside a Cryptojacking Campaign and its Profit</title><link>https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/</link><pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/</guid><description>
+&lt;p&gt;&lt;a href="https://intezer.com/blog/cloud-security/top-linux-cloud-threats-of-2020/"target="_blank" rel="noopener"&gt;Linux threats&lt;/a&gt;
+are becoming more frequent and a more common type of Linux threat is
+cryptojacking, which is the unauthorized use of an IT system for the purpose of
+mining cryptocurrency. While cryptominers are well-documented, it&amp;rsquo;s not often
+that you get an inside look. It&amp;rsquo;s rare to see the dashboard of the wallets
+being used in an active cryptojacking campaign with dozens of victims, as well
+as the attacker&amp;rsquo;s profit margin.&lt;/p&gt;
+&lt;p&gt;This post details an ongoing cryptojacking campaign targeting Linux machines,
+using
+&lt;a href="https://intezer.com/blog/fix-your-misconfigured-docker-api-ports/"target="_blank" rel="noopener"&gt;exposed Docker API ports&lt;/a&gt;
+as an initial access vector to a victim&amp;rsquo;s machine. The attacker then installs a
+Golang binary, which is undetected in VirusTotal at the time of this writing.&lt;/p&gt;
+&lt;p&gt;The file serves as a Monero cryptominer installer and sets up configuration for
+the miner. The attack uses SSH to maintain superiority on the victim&amp;rsquo;s machine,
+leaving a backdoor and installing its own SSH keys on the host.&lt;/p&gt;
+&lt;p&gt;This cryptojacking campaign has been active for nearly a year. We are certain
+that each day at least one payment is passed into two wallets and there are
+currently 95 workers. Workers are victim machines whose resources are being
+used to mine cryptocurrency for the attacker. A snapshot of the active workers
+is shown in Figure 1.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig1.gif" title="Figure 1: Snapshot of workers mining cryptocurrency for the attacker" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Snapshot of workers mining cryptocurrency for the attacker&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Cryptojacking Campaign Attack Flow&lt;span class="hx:absolute hx:-mt-20" id="cryptojacking-campaign-attack-flow"&gt;&lt;/span&gt;
+&lt;a href="#cryptojacking-campaign-attack-flow" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A new attack flow takes advantage of a known Docker misconfiguration, putting
+the host at risk for being compromised. The attacker exploits this
+misconfiguration to gain full control over the Docker daemon and creates a new
+container with access to the host&amp;rsquo;s filesystem. With access to the filesystem,
+the attacker installs malware on the Docker host.&lt;/p&gt;
+&lt;p&gt;First, the attacker establishes a stable SSH connection by adding their own SSH
+key to the host and editing the configuration of the SSH service to allow
+password authentication. These modifications remove dependency on the
+misconfiguration, giving the attacker a stable connection to the victim.&lt;/p&gt;
+&lt;p&gt;Next, they install two binary files on the host: an XMRig Miner at location
+&lt;code&gt;/usr/share/dbus-1/bin/&lt;/code&gt; and an orchestrator file at &lt;code&gt;/usr/share/color/&lt;/code&gt;. We
+analyzed this file and came to the conclusion that it&amp;rsquo;s being used to execute
+XMRig Miner and to ensure it keeps running.&lt;/p&gt;
+&lt;p&gt;The orchestrator is responsible for preparing and initializing configurations
+for the execution of the coinminer malware. Before running the coinminer, it
+verifies the path &lt;code&gt;/usr/share/dbus-1/bin&lt;/code&gt; contains two files: &lt;code&gt;systemd-host&lt;/code&gt;
+(aka the miner) and the other named IBus, the miner&amp;rsquo;s configuration file.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig2.png" title="Figure 2: The cryptojacking campaign attack flow" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: The cryptojacking campaign attack flow&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The path &lt;code&gt;/usr/share&lt;/code&gt; is not commonly seen in Linux malware and is writable
+only with root privileges. The path &lt;code&gt;/tmp&lt;/code&gt; is more often seen as an
+installation path in Linux malware since it does not require root privileges.
+The attacker has root privileges because the container they escaped from has
+them and hence the attacker has access to &lt;code&gt;/usr&lt;/code&gt;. Placing the files at &lt;code&gt;/usr&lt;/code&gt;
+may imply that they are taking advantage of the high privileges they have in
+order to use this path as some sort of hiding technique that is harder to
+detect.&lt;/p&gt;
+&lt;p&gt;The configuration file reveals interesting insights about the miner and the
+cryptojacking attack campaign. From the configuration we can tell that the
+target cryptocurrency is Monero, known to be more private than other coins like
+Bitcoin. This means that the details of the transaction amounts and the
+sender/recipient identities are disguised. In addition, we found the address of
+the pools and the IDs of two wallets used in this campaign. The address of the
+pools belongs to &lt;a href="https://supportxmr.com/"target="_blank" rel="noopener"&gt;supportxmr&lt;/a&gt; domain and the wallets
+are still active at the time of this publication.&lt;/p&gt;
+&lt;h2&gt;Take a Look (or Two) at the Dashboards&lt;span class="hx:absolute hx:-mt-20" id="take-a-look-or-two-at-the-dashboards"&gt;&lt;/span&gt;
+&lt;a href="#take-a-look-or-two-at-the-dashboards" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It&amp;rsquo;s rare to find an active wallet with victim information for a few reasons.
+Management of the wallets is taken care of by another server that acts like a
+proxy so that the malware connects without providing the wallet. In some cases,
+the wallets are not active or have only a few workers. In this recent attack,
+we found a live dashboard—shown in Figure 3— that is constantly updated with
+new workers and paints the full picture of this campaign.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig3.png" title="Figure 3: Screenshot of the first cryptomining dashboard" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: Screenshot of the first cryptomining dashboard&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The dashboard shows that this cryptojacking campaign has been active for almost
+a year with both wallets receiving at least one payment per day. One of the
+wallets averages 95 workers while the second wallet averages four workers,
+meaning the campaign is still operational and has about 100 victims to date.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig4.png" title="Figure 4: Screenshot of second cryptomining dashboard" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: Screenshot of second cryptomining dashboard&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Insights About the Cryptojacking Victims&lt;span class="hx:absolute hx:-mt-20" id="insights-about-the-cryptojacking-victims"&gt;&lt;/span&gt;
+&lt;a href="#insights-about-the-cryptojacking-victims" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig5.png" title="Figure 5: Screenshot of the active workers, their names and hash rates" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: Screenshot of the active workers, their names and hash rates&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig6.png" title="Figure 6: Screenshot from Monero benchmarks" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: Screenshot from Monero benchmarks&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Using the randomx CPU benchmarks, we can cross-reference the hash rates seen in
+the dashboard (Figure 4) with the CPU type that generates them as shown in
+Figure 5. From this comparison we can see that most of the victims are not
+machines with high levels of performance but rather standard hosts similar to
+your home computer. But if we examine the rates from the wallet that has only
+three workers, we can infer its workers have more computing resources than
+those in the other wallet given their CPU power.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s possible that the attacker uses different wallets to separate high and low
+performance victims.&lt;/p&gt;
+&lt;p&gt;We examined the workers&amp;rsquo; names. Some of them contain a string that looks like a
+date, which we assume is the date of infection. In Figure 6, for example, the
+marked numbers can be translated into 01/11, or January 11.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig7.png" title="Figure 7: Screenshot from the dashboard disclosing the name of the worker" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 7: Screenshot from the dashboard disclosing the name of the worker&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Cryptojacking Mitigation&lt;span class="hx:absolute hx:-mt-20" id="cryptojacking-mitigation"&gt;&lt;/span&gt;
+&lt;a href="#cryptojacking-mitigation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Fix your Misconfigured Docker API Port&lt;span class="hx:absolute hx:-mt-20" id="fix-your-misconfigured-docker-api-port"&gt;&lt;/span&gt;
+&lt;a href="#fix-your-misconfigured-docker-api-port" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Misconfiguration of the Docker API port is one of the most common yet deadly
+mistakes users can make. Fortunately, this cryptomining operation can be easily
+avoided just by having a secure configuration.&lt;/p&gt;
+&lt;h3&gt;Docker Security Best Practices&lt;span class="hx:absolute hx:-mt-20" id="docker-security-best-practices"&gt;&lt;/span&gt;
+&lt;a href="#docker-security-best-practices" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Our article here provides a
+&lt;a href="https://intezer.com/blog/container-security-blog/best-practices-for-securing-a-docker-runtime-environment/"target="_blank" rel="noopener"&gt;checklist of Docker security best practices&lt;/a&gt;,
+from development and deployment onto the production environment. In addition,
+you can verify that other misconfigurations do not pose a risk to your
+environment via lateral movement by referencing this
+&lt;a href="https://dev-sec.io/baselines/docker/"target="_blank" rel="noopener"&gt;list of Docker misconfigurations&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Intezer Protect for Cloud Workload Protection&lt;span class="hx:absolute hx:-mt-20" id="intezer-protect-for-cloud-workload-protection"&gt;&lt;/span&gt;
+&lt;a href="#intezer-protect-for-cloud-workload-protection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Advanced attacks like SolarWinds and Pay2KEY have shown that focusing only on
+vulnerabilities in your own code is not enough to secure your environment. It&amp;rsquo;s
+time to assume breach and detect and respond to attacks when they occur in
+production.&lt;/p&gt;
+&lt;p&gt;Intezer Protect is a Cloud Workload Protection Platform designed to protect
+Linux machines in runtime against unauthorized code. With Intezer Protect you
+can easily detect cryptominers and other threats in your cloud, as well as
+identify the misconfiguration that could have been exploited — in this case, in
+Docker.&lt;/p&gt;
+&lt;p&gt;Executing the orchestrator file will prompt an immediate alert in Intezer
+Protect as seen in Figure 8.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig8.png" title="Figure 8: Screenshot from the dashboard disclosing the name of the worker" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 8: Screenshot from the dashboard disclosing the name of the worker&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;When XMRig Miner is executed by the first file, Intezer Protect will trigger a
+second alert as seen in Figure 9.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig9.png" title="Figure 9: Intezer Protect alert triggered upon the execution of XMRig Miner" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 9: Intezer Protect alert triggered upon the execution of XMRig Miner&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig10.png" title="Figure 10: Intezer Protect reports on Docker misconfiguration with an open API port" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 10: Intezer Protect reports on Docker misconfiguration with an open API port&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;The Bottom Line&lt;span class="hx:absolute hx:-mt-20" id="the-bottom-line"&gt;&lt;/span&gt;
+&lt;a href="#the-bottom-line" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The threat described in this post is an example of a well-detected miner that
+uses SSH to maintain connection with the victim; but also leaves a &amp;ldquo;trail&amp;rdquo; that
+privies us to information we rarely get to see from a cryptojacking campaign.&lt;/p&gt;
+&lt;p&gt;Cryptomining malware has become a familiar threat on Linux servers because it&amp;rsquo;s
+relatively cheap and easy to launch. It&amp;rsquo;s not often that you get to see how
+profitable these campaigns can be for the attacker—with access to the wallets,
+how much they earned and the dashboard as the attacker sees it.&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;XMRig Miner&lt;span class="hx:absolute hx:-mt-20" id="xmrig-miner"&gt;&lt;/span&gt;
+&lt;a href="#xmrig-miner" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;240fe01d9fcce5aae311e906b8311a1975f8c1431b83618f3d11aeaff10aede3&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Miner_installer&lt;span class="hx:absolute hx:-mt-20" id="miner_installer"&gt;&lt;/span&gt;
+&lt;a href="#miner_installer" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;8ecffbd4a0c3709cc98b036a895289f33b7a8650d7b000107bafd5bd0cb04db3&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Wallets&amp;rsquo; Addresses&lt;span class="hx:absolute hx:-mt-20" id="wallets-addresses"&gt;&lt;/span&gt;
+&lt;a href="#wallets-addresses" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;43Y5gWFUZmCS9JjkY5V4QA86to5wyAWMbZUdPYtiG7EF8ZKk4uA3BAj1eMoTns8whPJEoeaVdy55L1wcBkKn894kUpdimMq (mining pool: https://supportxmr.com/)
+49XZTjHS4aNjWgPhxbWNnDhiKnuJL4YKdE7JEyf45U1yYYe9ebTiS9PPUg8yJEL26eNHECyLH2DnUCuDgoZhhdiFVgD19kP (mining pool: https://supportxmr.com/)
+49r6Mp1fcb4fUT5FPTgaz9E47fZV7n6JiY76c4vdBZvgDm8GmWHTVYM9Azpe4MsA9oXs2RpUNPPfH7oXABr3QnwNQKaP2W7 (mining pool: https://supportxmr.com/)
+43Xbgtym2GZWBk87XiYbCpTKGPBTxYZZWi44SWrkqqvzPZV6Pfmjv3UHR6FDwvPgePJyv9N5PepeajfmKp1X71EW7jx4Tpze (mining pool: https://xmr.nanopool.org)
+82etS8QzVhqdiL6LMbb85BdEC3KgJeRGT3X1F3DQBnJa2tzgBJ54bn4aNDjuWDtpygBsRqcfGRK4gbbw3xUy3oJv7TwpUG4 (mining pool: https://www.f2pool.com)
+47PXdhiZphNHka2K1J9udPj5Nct4zpvCRUMqwVY4Rvyxf3FLmPqyR6J68hDX4fUF65jNxJa43szPM3Ni5zDerArzSkdFp1K (mining pool: https://supportxmr.com/)
+47xS7CWWZ8c7xdxBcuiqA7KLK8kRFcaLFPViKA9w3eHVe2WcKj8iaBEADzZYXGqE9sCC71cbu64qrZhZZkafzFn2VPA9xs9 (mining pool: https://minexmr.com/)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Early Bird Catches the Worm: New Golang Worm Drops XMRig Miner on Servers</title><link>https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/</link><pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/</guid><description>
 &lt;p&gt;In early December, we discovered a new, undetected worm written in Golang. This
 worm continues the popular
@@ -13449,141 +14054,4 @@ data-copied-label="Copied!"
 &lt;li&gt;&lt;a href="https://securelist.com/the-epic-turla-operation/65545/"target="_blank" rel="noopener"&gt;https://securelist.com/the-epic-turla-operation/65545/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://artemonsecurity.com/snake_whitepaper.pdf"target="_blank" rel="noopener"&gt;http://artemonsecurity.com/snake_whitepaper.pdf&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.gdatasoftware.com/blog/2015/01/23926-analysis-of-project-cobra"target="_blank" rel="noopener"&gt;https://www.gdatasoftware.com/blog/2015/01/23926-analysis-of-project-cobra&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>"EternalMiner" Copycats exploiting SambaCry for cryptocurrency mining</title><link>https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/</link><pubDate>Wed, 26 Jul 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/</guid><description>
-&lt;p&gt;About eight weeks ago, a critical RCE vulnerability present in every Samba
-version since 2010 was reported and patched. This vulnerability is mostly known
-as &amp;ldquo;SambaCry&amp;rdquo; after the famous WannaCry attack targeting Windows systems
-vulnerable to &amp;ldquo;EternalBlue&amp;rdquo; SMB exploit. The vulnerability lies in a logical
-bug, which enables an attacker with write-only access to a share to load a
-malicious samba module and execute arbitrary code.&lt;/p&gt;
-&lt;p&gt;Immediately after writing &amp;amp; publishing the first public
-&lt;a href="https://github.com/omri9741/cve-2017-7494"target="_blank" rel="noopener"&gt;POC code&lt;/a&gt;, I wrote a yara signature
-for a possible exploit payload and we began monitoring our data feeds for
-threats exploiting this vulnerability. Over time, we have noticed countless
-bind/reverse shells and droppers. Most of them are either Metasploit payload or
-other publicly available implants.&lt;/p&gt;
-&lt;p&gt;On June 9th, Kaspersky Labs published an article about
-&amp;ldquo;&lt;a href="https://securelist.com/sambacry-is-coming/78674/"target="_blank" rel="noopener"&gt;EternalMiner&lt;/a&gt;&amp;rdquo; — a
-financially driven cryptocurrency mining malware turning victim machines into
-&amp;ldquo;a workhouse on a large farm, mining crypto-currency for the attackers&amp;rdquo;.&lt;/p&gt;
-&lt;p&gt;Less than a week later, we were able to observe copycat cybercriminals actively
-exploiting the vulnerability with a similar yet improved setup for better
-cryptomining &amp;amp; control over the victim machines. Naturally, we decided to name
-this threat &amp;ldquo;&lt;strong&gt;CopyMiner&lt;/strong&gt;&amp;rdquo;!&lt;/p&gt;
-&lt;h2&gt;Overview&lt;span class="hx:absolute hx:-mt-20" id="overview"&gt;&lt;/span&gt;
-&lt;a href="#overview" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;As we mentioned above, the copycats used a similar yet improved setup.
-Implementing a multistage flexible approach with daily updates from multiple
-backup servers, a persistent backdoor for better control of the victim machines
-and even a more efficient
-&lt;a href="https://intezer.com/blog/research/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/"target="_blank" rel="noopener"&gt;cryptominer&lt;/a&gt;
-for better consumption of the victim machine’s resources! &lt;strong&gt;The copycats took
-EternalMiner to the next level as an operation suitable for multiple victim’s
-machines&lt;/strong&gt;. In the following sections, we will drill down on each component of
-the following graph, comparing CopyMiner’s setup vs EternalMiner:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
-&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&amp;ldquo;CopyMiner&amp;rdquo; Dropper&lt;span class="hx:absolute hx:-mt-20" id="copyminer-dropper"&gt;&lt;/span&gt;
-&lt;a href="#copyminer-dropper" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;On the 14th of June a small unique dropper
-&lt;a href="https://www.virustotal.com/en/file/444d0fae73e1221b81dc6c5d53cf087afa88248fc22ef36e756841ab04df24a8/analysis/1497997544/"target="_blank" rel="noopener"&gt;sample&lt;/a&gt;
-was uploaded to VirusTotal. The dropper starts executing from
-&amp;ldquo;samba_init_module&amp;rdquo; exports then tries to fetch a payload from the server &amp;amp;
-execute it as root user in the background. This is done using a hard-coded
-obfuscated bash one-liner as you can see in the picture below.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig2.png" title="sample hash: 444d0fae73e1221b81dc6c5d53cf087afa88248fc22ef36e756841ab04df24a8" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;sample hash: 444d0fae73e1221b81dc6c5d53cf087afa88248fc22ef36e756841ab04df24a8&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h3&gt;Payload&lt;span class="hx:absolute hx:-mt-20" id="payload"&gt;&lt;/span&gt;
-&lt;a href="#payload" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The payload (&lt;code&gt;http://update1.sdgndsfajfsdf[.]info/u1&lt;/code&gt;) is a short bash script
-which relays on system tools for 3 main tasks&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Setup daily updates from 3 different backup servers using crontab.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;http://update.sdgndsfajfsdf.info/upd&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;http://update.sdgsafdsf.pw/upd2&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;http://update.omfg.pw/upd3&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;ol start="2"&gt;
-&lt;li&gt;Drop and execute Tsunami backdoor &amp;amp; CPUMiner in the background.&lt;/li&gt;
-&lt;li&gt;Prevent further exploitation by other players who might compete for
-resources(patch &lt;code&gt;smb.conf&lt;/code&gt;).&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;We were also able to fetch the daily update script from a live server
-(&lt;code&gt;http://update.sdgndsfajfsdf.info/upd&lt;/code&gt;). It seems that this script is just a
-stripped version of the payload script, lacking the daily updates setup
-functionality:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;h3&gt;CPUMiner&lt;span class="hx:absolute hx:-mt-20" id="cpuminer"&gt;&lt;/span&gt;
-&lt;a href="#cpuminer" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;CPUMiner is an open source cryptomining command line utility supporting
-multiple coins/algorithms. It seems that the attackers used
-&amp;ldquo;&lt;a href="https://github.com/tpruvot/cpuminer-multi"target="_blank" rel="noopener"&gt;cpuminer-multi&lt;/a&gt;&amp;rdquo; – multithreaded
-more efficient version of the original @poolers cpuminer used by EternalMiner.
-This sample was &amp;ldquo;upgraded&amp;rdquo; it in a similar way as EternalMiner so it could run
-standalone without command line parameters. Once started, the upgraded cpuminer
-automatically login into the attackers private mining pool server
-(&lt;code&gt;p.theywant[.]in:8080&lt;/code&gt;), unlike the public mining pool server used by
-EternalMiner (&lt;code&gt;xmr.crypto-pool[.]fr:3333&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;h3&gt;Tsunami Backdoor&lt;span class="hx:absolute hx:-mt-20" id="tsunami-backdoor"&gt;&lt;/span&gt;
-&lt;a href="#tsunami-backdoor" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Alongside CPUMiner the payload script would also fetch &amp;amp; execute &amp;ldquo;Tsunami&amp;rdquo;
-(also known as Kaiten) which is an old Linux irc backdoor/ddos botnet best
-known for been used to infect
-&lt;a href="https://researchcenter.paloaltonetworks.com/2017/04/unit42-new-iotlinux-malware-targets-dvrs-forms-botnet/"target="_blank" rel="noopener"&gt;IOT devices&lt;/a&gt;
-and
-&lt;a href="https://www.welivesecurity.com/2011/10/25/linux-tsunami-hits-os-x/"target="_blank" rel="noopener"&gt;OSX systems&lt;/a&gt;
-in the past. The source is
-&lt;a href="https://dl.packetstormsecurity.net/irc/kaiten.c"target="_blank" rel="noopener"&gt;publicly available&lt;/a&gt; and could
-be used by anyone. This sample
-(&lt;code&gt;d8e93252f41e8b0d10cffa92923eeab94c6c42e8acc308e91340df102042c8c8&lt;/code&gt;) is
-configured with hardcoded c2 irc server (&lt;code&gt;asdgsd.uselesslongdomain[.]info&lt;/code&gt;). We
-were able to connect to the live irc server using credentials hard coded in the
-malware. In the following picture you can see two victims currently logged in
-(running as root user).&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;h3&gt;Quickly adopting&lt;span class="hx:absolute hx:-mt-20" id="quickly-adopting"&gt;&lt;/span&gt;
-&lt;a href="#quickly-adopting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We found that the domain used to host the payload file (&lt;code&gt;sdgndsfajfsdf[.]info&lt;/code&gt;)
-was registered on June 13th. Not only that but the first malicious
-CPUMiner/Tsunami samples were uploaded to VT a day after(June 14th), meaning
-that the attacks started within a short time of only 4-5 days after the
-original EternalMiner publication!&lt;/p&gt;
-&lt;h2&gt;Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="indicators-of-compromise"&gt;&lt;/span&gt;
-&lt;a href="#indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
-&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;444d0fae73e1221b81dc6c5d53cf087afa88248fc22ef36e756841ab04df24a8 Dropper
-2b96805abdbd1d9ca03d584e48fcfb30740d051dfc93248ff3e21b3a831c0e1a Payload
-22a8dc0603005e3eee49706330c6a5b90214dcb0b3d2f89411fa10a6b3942e3b update file(daily)
-d8e93252f41e8b0d10cffa92923eeab94c6c42e8acc308e91340df102042c8c8 Tsunami
-162de4e95e5e5d35d80ca4cf752c80b2b32b52c9e5fef5551caa20b0d5ed83af Tsunami
-26a717a7a14f10880a2869949814400b31d1f4c9cc45384be38289b012587468 Cpuminer&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
-&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;update1.sdgndsfajfsdf[.]info
-update.sdgndsfajfsdf.info
-update.sdgsafdsf.pw
-update.omfg.pw
-188.138.109.103
-asdgsd.uselesslongdomain.info
-p.theywant.in&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description></item></channel></rss>
+&lt;/ul&gt;</description></item></channel></rss>
