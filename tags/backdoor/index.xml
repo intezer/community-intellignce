@@ -745,10 +745,22 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;h4&gt;Windows&lt;span class="hx:absolute hx:-mt-20" id="windows"&gt;&lt;/span&gt;
-&lt;a href="#windows" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;61df74731fbe1eafb2eb987f20e5226962eeceef010164e41ea6c4494a4010fc
+&lt;a href="#windows" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;61df74731fbe1eafb2eb987f20e5226962eeceef010164e41ea6c4494a4010fc
 1ffd6559d21470c40dcf9236da51e5823d7ad58c93502279871c3fe7718c901c
 d476ca89674c987ca399a97f2d635fe30a6ba81c95f93e8320a5f979a0563517
-36fed8ab1bf473714d6886b8dcfbcaa200a72997d50ea0225a90c28306b7670e&lt;/p&gt;
+36fed8ab1bf473714d6886b8dcfbcaa200a72997d50ea0225a90c28306b7670e&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;h3&gt;C2&lt;span class="hx:absolute hx:-mt-20" id="c2"&gt;&lt;/span&gt;
 &lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;https[://]bookitlab[.]tech
@@ -929,7 +941,8 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;h4&gt;Persistence&lt;span class="hx:absolute hx:-mt-20" id="persistence-2"&gt;&lt;/span&gt;
-&lt;a href="#persistence-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Creates persistence via LaunchAgent under the path: &lt;code&gt;/Library/LaunchAgents/com.apple.update.plist&lt;/code&gt;.&lt;/p&gt;
+&lt;a href="#persistence-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Creates persistence via LaunchAgent under the path:
+&lt;code&gt;/Library/LaunchAgents/com.apple.update.plist&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Content:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;#34;1.0″ encoding=&amp;#34;UTF-8″?&amp;gt;&lt;/span&gt;
@@ -953,6 +966,369 @@ data-copied-label="Copied!"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;true/&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;/dict&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;/plist&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Watch Your Containers: Doki Infecting Docker Servers in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</link><pubDate>Tue, 28 Jul 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</guid><description>
+&lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
+&lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://blog.netlab.360.com/a-new-mining-botnet-blends-its-c2s-into-ngrok-service/"target="_blank" rel="noopener"&gt;Ngrok Mining Botnet&lt;/a&gt;
+is an active campaign targeting exposed Docker servers in AWS, Azure, and
+other cloud platforms. It has been active for at least two years.&lt;/li&gt;
+&lt;li&gt;We have detected a recent attack which includes a completely undetected Linux
+malware and a previously undocumented technique, using a blockchain wallet
+for generating C&amp;amp;C domain names.&lt;/li&gt;
+&lt;li&gt;Anyone with publicly open Docker API access is at high risk to be hacked
+within the span of just a few hours. This is probable due to the hackers'
+automated and continuous internet-wide scanning for vulnerable victims.&lt;/li&gt;
+&lt;li&gt;The new malware, dubbed &amp;ldquo;Doki&amp;rdquo;, hasn&amp;rsquo;t been detected by any of the 60 malware
+detection engines in VirusTotal since it was first analyzed on January 14,
+2020.&lt;/li&gt;
+&lt;li&gt;The attacker is using the infected victims to search for additional
+vulnerable cloud servers.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Linux threats are becoming more common. A contributing factor to this is the
+increasing shift and reliance on cloud environments, which are mostly based on
+Linux infrastructure. Hence, attackers have been adapting accordingly with new
+tools and techniques designed specifically for this infrastructure.&lt;/p&gt;
+&lt;p&gt;A technique that has become popular is the abuse of misconfigured Docker API
+ports, where attackers scan for publicly accessible Docker servers and exploit
+them in order to set up their own containers and execute malware on the
+victim&amp;rsquo;s infrastructure.&lt;/p&gt;
+&lt;p&gt;One of the longest ongoing attack campaigns exploiting Docker API ports is the
+Ngrok Botnet, previously reported on by researchers at
+&lt;a href="https://blog.netlab.360.com/a-new-mining-botnet-blends-its-c2s-into-ngrok-service/"target="_blank" rel="noopener"&gt;Netlab&lt;/a&gt;
+and
+&lt;a href="https://blog.trendmicro.com/trendlabs-security-intelligence/exposed-docker-control-api-and-community-image-abused-to-deliver-cryptocurrency-mining-malware/"target="_blank" rel="noopener"&gt;Trend Micro&lt;/a&gt;.
+As part of the attack, the attackers abuse Docker configuration features in
+order to elude standard container restrictions and execute various malicious
+payloads from the host. They also deploy a network scanner and use it to scan
+the cloud providers&amp;rsquo; IP ranges for additional potentially vulnerable targets.
+Our evidence shows that it takes only a few hours from when a new misconfigured
+Docker server is up online to become infected by this campaign.&lt;/p&gt;
+&lt;p&gt;Recently, we have detected a new malware payload that is different from the
+standard cryptominers typically deployed in this attack. The malware is a fully
+undetected backdoor which we have named Doki.&lt;/p&gt;
+&lt;p&gt;Doki uses a previously undocumented method to contact its operator by abusing
+the Dogecoin cryptocurrency blockchain in a unique way in order to dynamically
+generate its C2 domain address. The malware has managed to stay under the radar
+for over six months despite samples being publicly available in VirusTotal.&lt;/p&gt;
+&lt;p&gt;In this article we will cover the attack and provide a detailed analysis of the
+techniques that were implemented by the undetected Doki backdoor.&lt;/p&gt;
+&lt;h2&gt;The Attack&lt;span class="hx:absolute hx:-mt-20" id="the-attack"&gt;&lt;/span&gt;
+&lt;a href="#the-attack" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The threat is targeting misconfigured containerized environments in the cloud.
+The attackers scan for publicly accessible Docker API ports and exploit them in
+order to set up their own containers and execute malware on the victims'
+infrastructure. The attackers are spawning and deleting a number of containers
+during this attack.&lt;/p&gt;
+&lt;p&gt;Each container that is created during the attack is based on an alpine image
+with curl installed. The image is available on the
+&lt;a href="https://hub.docker.com/r/byrnedo/alpine-curl/tags/"target="_blank" rel="noopener"&gt;Docker hub&lt;/a&gt;. The image is
+not malicious but rather it&amp;rsquo;s being abused to carry out malicious activities.
+By using an image that contains the curl software, curl commands are executed
+as soon as the container is up and running.&lt;/p&gt;
+&lt;p&gt;The advantage of using a publicly available image is the attacker doesn&amp;rsquo;t need
+to hide it on Docker hub or other hosting solutions. Instead, the attackers can
+use an existing image and run their own logic and malware on top of it.&lt;/p&gt;
+&lt;p&gt;As mentioned above, attackers can create any container, however, to execute
+code from the hosting machine they must use a container escape method. The
+technique is based on the creation of a new container, accomplished by posting
+a
+‘&lt;a href="https://docs.docker.com/engine/api/v1.40/#operation/ContainerCreate"target="_blank" rel="noopener"&gt;create&lt;/a&gt;'
+API request. The body of the request contains configuration parameters for the
+container. One of the parameters is
+&lt;a href="https://docs.docker.com/storage/bind-mounts/"target="_blank" rel="noopener"&gt;bind&lt;/a&gt; which lets the user
+configure which file or directory on the host machine to mount into a
+container.&lt;/p&gt;
+&lt;p&gt;Containers that are created during the attack are configured to bind
+&lt;code&gt;/tmpXXXXXX&lt;/code&gt; directory to the root directory of the hosting server. This means
+every file on the server&amp;rsquo;s filesystem can be accessed and even modified, with
+the correct user permissions, from within the container.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://ngrok.com/"target="_blank" rel="noopener"&gt;Ngrok&lt;/a&gt; is a service which provides secure tunnels to
+connect between local servers and the public internet. The attacker abuses
+Ngrok to craft unique URLs with a short lifetime and uses them to download
+payloads during the attack by passing them to the curl based image. The
+downloaded payload is saved in &lt;code&gt;/tmpXXXXXX&lt;/code&gt; directory in the container.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig1.png" title="The command that created the container as seen on the syslog of the attacked server" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The command that created the container as seen on the syslog of the attacked server&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;By using the bind configuration the attacker can control the cron utility of
+the host. The attacker modifies the host&amp;rsquo;s cron to execute the downloaded
+payload every minute. We observed two types of payloads, one is a network
+scanner script and the other is a downloader script.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The network scanner uses zmap, zgrap, and jq to scan ports associated with
+Redis, Docker, SSH, and HTTP.&lt;/p&gt;
+&lt;p&gt;Using a list of hardcoded ranges of IP addresses, which belong mostly to cloud
+servers such as AWS and local cloud providers in foreign regions (we have seen
+providers from China, Austria, and the United Kingdom), the script gathers the
+information and uploads it to another Ngrok URL.&lt;/p&gt;
+&lt;p&gt;The downloader script is responsible for downloading and installing various
+malware binaries, often one of several well known cryptominers. We have noticed
+it can also install a fully undetected malware component. We named this malware
+Doki and will provide a technical analysis in the next section.&lt;/p&gt;
+&lt;p&gt;The attacker has full control over the configuration of the container he
+creates and the files that are dropped into the container. By using legitimate
+API commands, the attacker is able to escape from the container he created and
+execute any code from within the server itself.&lt;/p&gt;
+&lt;h2&gt;The Doki Malware&lt;span class="hx:absolute hx:-mt-20" id="the-doki-malware"&gt;&lt;/span&gt;
+&lt;a href="#the-doki-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Doki is a backdoor for Linux which function is to execute code received from
+its operators. The malware utilizes the
+&lt;a href="https://account.dyn.com/"target="_blank" rel="noopener"&gt;DynDNS service&lt;/a&gt; and a unique Domain Generation
+Algorithm (DGA) based on the Dogecoin cryptocurrency blockchain in order to
+find the domain of its C2 in real time.&lt;/p&gt;
+&lt;p&gt;The malware is a fully undetected backdoor. It has managed to stay undetected
+for over six months despite having
+&lt;a href="https://www.virustotal.com/gui/file/4aadb47706f0fe1734ee514e79c93eed65e1a0a9f61b63f3e7b6367bd9a3e63b/detection"target="_blank" rel="noopener"&gt;been uploaded to VirusTotal&lt;/a&gt;
+on January 14, 2020 and scanned multiple times since.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Doki is multi-threaded and uses the embedTLS library for cryptographic
+functions and network communication. When executed, the malware will create a
+seperate thread in order to handle all C2 communications.&lt;/p&gt;
+&lt;p&gt;The malware starts by generating a C2 domain using its unique DGA. In order to
+construct the C2 address the malware performs the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Query dogechain.info API, a Dogecoin cryptocurrency block explorer, for the
+value that was sent out (spent) from a hardcoded wallet address that is
+controlled by the attacker. The query format is:
+&lt;code&gt;https://dogechain.info/api/v1/address/sent/{address}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Perform SHA256 on the value returned under &amp;ldquo;sent&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Save the first 12 characters from the hex-string representation of the SHA256
+value, to be used as the subdomain.&lt;/li&gt;
+&lt;li&gt;Construct the full address by appending the subdomain to ddns.net. An example
+domain would be: &lt;code&gt;6d77335c4f23[.]ddns[.]net&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Using this technique the attacker controls which address the malware will
+contact by transferring a specific amount of Dogecoin from his or her wallet.
+Since only the attacker has control over the wallet, only he can control when
+and how much dogecoin to transfer, and thus switch the domain accordingly.
+Additionally, since the blockchain is both immutable and decentralized, this
+novel method can prove to be quite resilient to both infrastructure takedowns
+from law enforcement and domain filtering attempts from security products.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s worth noting that once the domain is generated, the malware ensures it&amp;rsquo;s
+not &amp;ldquo;46927e019820&amp;rdquo;, which is what&amp;rsquo;s generated for &amp;ldquo;0.000000&amp;rdquo;, meaning when no
+Dogecoin was ever transferred from the wallet. In the case that this domain is
+generated, the malware will exit without continuing any further.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Otherwise, the malware continues to download a shell script by contacting its
+C2 via HTTPS, using the URL &lt;code&gt;&amp;lt;c2_address&amp;gt;/update.sh&lt;/code&gt; and saving the returned
+data as &lt;code&gt;/tmp/update.sh&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;It will then resolve the current process&amp;rsquo;s PID and path to be used as script
+arguments, and proceeds to execute the script by running:
+&lt;code&gt;/bin/sh -c ./update.sh \&amp;lt;process_id&amp;gt; \&amp;lt;process_path&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Meanwhile, the main thread of the malware reads from STDIN, expecting to
+receive binary data from that shell script. The arguments are passed to the
+script in order to allow it to communicate with the malware in this way and
+receive code to execute.&lt;/p&gt;
+&lt;p&gt;If data is received via STDIN, the malware saves it as a file under /tmp,
+choosing its name randomly from a predefined list of Linux kernel modules.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;While it&amp;rsquo;s a very basic deception method, it&amp;rsquo;s not something commonly seen in
+Linux malware, which often don&amp;rsquo;t bother disguising as system files.&lt;/p&gt;
+&lt;p&gt;Finally, the malware proceeds to fork so the child process executes the file
+and the main process loops to repeat the malware&amp;rsquo;s logic flow.&lt;/p&gt;
+&lt;h2&gt;Bottom Line&lt;span class="hx:absolute hx:-mt-20" id="bottom-line"&gt;&lt;/span&gt;
+&lt;a href="#bottom-line" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Ngrok Botnet campaign has been ongoing for over two years and is rather
+effective, infecting any misconfigured Docker API server in a matter of hours.
+The incorporation of the unique and undetected Doki malware indicates the
+operation is continuing to evolve.&lt;/p&gt;
+&lt;p&gt;This attack is very dangerous due to the fact the attacker uses container
+escape techniques to gain full control of the victim&amp;rsquo;s infrastructure. Our
+evidence shows that it takes only a few hours from when a new misconfigured
+Docker server is up online to become infected by this campaign.&lt;/p&gt;
+&lt;h3&gt;Immediate Action Required by Container Server Owners&lt;span class="hx:absolute hx:-mt-20" id="immediate-action-required-by-container-server-owners"&gt;&lt;/span&gt;
+&lt;a href="#immediate-action-required-by-container-server-owners" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Both companies and individuals who own container servers in the cloud must
+immediately fix configuration to prevent exposure. This includes: Checking for
+any exposed ports, verifying there are no foregin or unknown containers among
+the existing containers, and monitoring excessive use of resources.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;We recommend you read our article,
+&lt;a href="https://intezer.com/blog/best-practices-for-securing-a-docker-runtime-environment/"target="_blank" rel="noopener"&gt;Best Practices for Securing a Docker Runtime Environment&lt;/a&gt;.
+You can also run our
+&lt;a href="https://github.com/intezer/yara-rules/blob/master/Doki_Attack.yar"target="_blank" rel="noopener"&gt;YARA rule&lt;/a&gt;
+on your cloud servers to check if you have been infected by this campaign.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;6d77335c4f23[.]ddns[.]net
+36b397f0da96fa0639a1e60f56af8be1a3060c4d1b98f108b7dc8e3c572b3337
+4aadb47706f0fe1734ee514e79c93eed65e1a0a9f61b63f3e7b6367bd9a3e63b
+9907eaa1b487306c43b1352369f0409ba59a9aa0f5590fbd60e8825999db1f14&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Linux Rekoobe Operating with New, Undetected Malware Samples</title><link>https://intezer.github.io/community-intelligence/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/</link><pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Our research team has identified new versions of an old Linux malware known as
+Rekoobe, a minimalistic trojan with a complex CNC authentication protocol
+originally targeting SPARC and Intel x86, x86-64 systems back in 2015.&lt;/p&gt;
+&lt;p&gt;The new malware samples have lower detection rates than their predecessors. We
+believe this malware ceased its operation in 2016 after it was reported,
+however, based on our findings we can estimate the operators behind Rekoobe
+have resumed their operations utilizing a newer version of the malware.&lt;/p&gt;
+&lt;p&gt;Based on our research, we can estimate the new samples have been in the wild
+since 2018.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;We will present a brief technical analysis of the new Rekoobe samples and
+explain why we believe the new samples have lower detection rates despite
+previous versions of Rekoobe being well-detected by different security vendors.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Linux Rekoobe
+&lt;a href="https://vms.drweb.com/virus/?i=7754026&amp;amp;lng=en"target="_blank" rel="noopener"&gt;was first reported&lt;/a&gt; by DrWeb in
+2015. We believe this malware resumed its operation some time between 2018 and
+2019, based on CNC reverse DNS intelligence from
+&lt;a href="https://community.riskiq.com/search/96.45.187.113"target="_blank" rel="noopener"&gt;RiskIQ&lt;/a&gt;, along with sample
+information from VirusTotal concerning the new variants.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;It’s important to mention that the new variants are statically compiled ELF
+binaries while older variants were dynamically compiled.&lt;/p&gt;
+&lt;p&gt;This undeniably implies that on a code level these two generations of the same
+malware are different. Since the compilation flags used by the GCC compiler
+differ between dynamically and statically linked code, the compiler will
+generate different code accordingly.&lt;/p&gt;
+&lt;p&gt;We have also taken into consideration that if indeed these new implants were
+generated after a three to four year gap, the GCC compiler version would also
+differ. Consequently, the compiler will generate different code on an assembly
+level even though additional compilation flags may not have been explicitly
+used.&lt;/p&gt;
+&lt;p&gt;It’s important to mention that the authors of Linux Rekoobe have removed every
+attributive string from older variants in their new samples. This explains why
+string-based signatures have not been able to detect the new version of the
+malware.&lt;/p&gt;
+&lt;p&gt;In previous Rekoobe variants, the malware would initially collect some
+preliminary configuration saved in disk, masquerading this configuration to be
+a shared object, as previously reported by DrWeb researchers. However, in the
+new variants, the need for this configuration file has been completely removed,
+having hard-coded the subject artifacts previously dependent on the
+configuration file.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/images/fig3.png" title="Main function comparison between Rekoobe variants" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Main function comparison between Rekoobe variants&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Among the hardcoded artifacts we can find the CNC IP and port, in addition to
+the shared ‘secret’ used to authenticate the CNC and client.&lt;/p&gt;
+&lt;p&gt;A new feature was added to the new Rekoobe variants to rewrite &lt;code&gt;argv[0]&lt;/code&gt;, as an
+attempt to rename the process name (as shown in the picture above) since some
+forensics tools do retrieve the process name from this location.&lt;/p&gt;
+&lt;p&gt;The names to rewrite &lt;code&gt;argv[0]&lt;/code&gt; chosen by the authors were:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/lib/sys/temd/sys/temd-udevd&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/bin/bash&lt;/code&gt; different Rekoobe versions&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/images/fig4.png" title="Shared secret retrieval comparison between different Rekoobe versions" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Shared secret retrieval comparison between different Rekoobe versions&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Another noticeable difference is that in previous variants a magic value was
+retrieved from the configuration file and sent to the CNC prior to the
+handshake mechanism. It seems that the authors removed this preliminary packet
+on the new Rekoobe variants.&lt;/p&gt;
+&lt;p&gt;The remaining code resembles previous variants of Rekoobe. The following is a
+simplified overview of the network protocol used by the new Rekoobe samples,
+mostly shared with older Rekoobe variants:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The following is a brief description of the most relevant steps in the
+authentication mechanism:&lt;/p&gt;
+&lt;p&gt;The client will read a stream of 40-bytes from the server. This packet will be
+divided into two blocks of 20-bytes that will be utilized to initialize two
+&lt;code&gt;AES128_HMAC_SHA1&lt;/code&gt; contexts. The HMAC SHA1 pair will be generated against each
+of the 20-byte streams using a given shared secret (&amp;ldquo;idontknow&amp;rdquo; hardcoded
+string in newer variants) and they will be used as AES128 keys for encryption
+and decryption of future packets.&lt;/p&gt;
+&lt;p&gt;These computed keys will be used throughout the communication process to
+decrypt the received packets and to encrypt the packets to be sent by the
+client with different keys. This implies that if this preliminary packet is not
+retrieved and the shared secret is not known, then the remaining traffic will
+unlikely be decryptable.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/images/fig6.png" alt="" loading="lazy" /&gt; &amp;ldquo;AES128_HMAC_SHA1 context generation&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;After &lt;code&gt;AES128_HMAC_SHA1&lt;/code&gt; context initialization is achieved there will be a CNC
+authentication procedure similar to a Challenge-Handshake Authentication
+Protocol (CHAP). The client will read an additional stream of 16-bytes that
+will then decrypt using AES128 with the corresponding and previously generated
+SHA1 hash as key. It will xor decode the stream to retrieve information of the
+next packet to be read. This process will be repeated every time the client and
+server sends an additional packet.&lt;/p&gt;
+&lt;p&gt;Every other packet will be subject to HMAC integrity checks to verify the
+integrity of the packets. Two layers of SHA1 will be computed against the
+subject packet with two additional salts. This computed SHA1 hash will be then
+compared with the first 20-bytes of the received packet which contains the
+pre-computed SHA1 of the AES encrypted packet’s payload.&lt;/p&gt;
+&lt;p&gt;If the computed SHA1 hash does not match with the hardcoded hash delivered in
+the packet, the client will cease execution since it would imply that the
+integrity of that packet has been compromised; otherwise the client will
+proceed to AES128 decrypt the packet’s payload and then apply an xor layout.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/images/fig7.png" title="SHA1 scheme applied to encrypted packet and comparison to hardcoded SHA1" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;SHA1 scheme applied to encrypted packet and comparison to hardcoded SHA1&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After this packet has been decrypted, the contents will be compared against a
+hard-coded byte sequence of 16-bytes in order to verify the integrity of the
+server.&lt;/p&gt;
+&lt;p&gt;Once again, if this sequence does not match, the handshake will fail.&lt;/p&gt;
+&lt;p&gt;If the sequence is correct, then this byte sequence will be AES128 encrypted
+with the corresponding HMAC SHA1 as key, two layers of SHA1 will be computed
+with its correspondent salts against the encrypted payload, and this SHA1 hash
+will be written on the first 20-bytes of the packet itself to then be sent back
+to the CNC as the last verification step, in this case to verify the integrity
+of the client.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/images/fig8.png" title="Hardcoded stream of 16-bytes the CNC and client authentication is based on" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Hardcoded stream of 16-bytes the CNC and client authentication is based on&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We assume this field would be an ideal choice for also identifying the campaign
+ID by the operators, although it seems the value of this field was shared with
+previous variants.&lt;/p&gt;
+&lt;p&gt;If the handshake was successful, the client will proceed to listen for a
+command from the CNC. The malware supports the same three different commands as
+it did in previous variants, those being file upload, file download, and a
+reverse shell. The following picture shows the command management implemented
+by the client after command packet has been successfully decrypted:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have provided a brief technical analysis of the new Linux Rekoobe samples,
+highlighting some of the differences between these variants and previous
+samples. We have also provided an overview of the network protocol.&lt;/p&gt;
+&lt;p&gt;We have provided several reasons for why the malware has gone undetected, even
+though the code base of these new variants doesn’t appear to have been heavily
+modified on a source code level from the original Rekoobe samples.&lt;/p&gt;
+&lt;p&gt;We do not believe this malware has been consistently operational since late
+2015. In contrast, we believe the malware may have operated intermittently over
+small periods of time, since the newly discovered samples appear to be created
+in recent years, and there appears to be a gap in 2017 where additional Rekoobe
+samples have not been found.&lt;/p&gt;
+&lt;p&gt;We have indexed the code from the new Linux Rekoobe variants in our Genetic
+Malware Analysiss platform Intezer Analyze, and we have published a new
+&lt;a href="https://github.com/intezer/yara-rules/blob/master/Rekoobe.yar"target="_blank" rel="noopener"&gt;YARA&lt;/a&gt; rule in
+order to help the community to detect this threat.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;80e5fec19843c32c6c3fc38aabdeb428c339b0dfce28023529144405b9c72b33
+C9eb46d00e11acb354b518f725412b88c69cc511ec8d5bd3cb03c1740f8a2936
+2e2dc0328f6c19b033bb19c24e59e354e519606958afb93fd8049d162a8e3edd
+E63c2e35a41c51e33b246f5b60c5d1b8da0d8c50bf7ec592383b61818217e8d7
+7148ae1ab45e17889915100fdc203fe7941d8e9b946d44a3989ab8baeb6066e1
+1d0591049a65db6508a9517f72954541ef6b5a7fe9153c5edcb1bac1b70b991c
+4B45E601D480124C38BE06A706F7D8F4
+F34119A442651945D5EFB33DB8901D9B
+7xin.bitscan[.]win
+huawel[.]site
+96.45.187[.]113
+119.3.22[.]174&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"

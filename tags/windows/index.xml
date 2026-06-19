@@ -562,10 +562,22 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;h4&gt;Windows&lt;span class="hx:absolute hx:-mt-20" id="windows"&gt;&lt;/span&gt;
-&lt;a href="#windows" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;61df74731fbe1eafb2eb987f20e5226962eeceef010164e41ea6c4494a4010fc
+&lt;a href="#windows" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;61df74731fbe1eafb2eb987f20e5226962eeceef010164e41ea6c4494a4010fc
 1ffd6559d21470c40dcf9236da51e5823d7ad58c93502279871c3fe7718c901c
 d476ca89674c987ca399a97f2d635fe30a6ba81c95f93e8320a5f979a0563517
-36fed8ab1bf473714d6886b8dcfbcaa200a72997d50ea0225a90c28306b7670e&lt;/p&gt;
+36fed8ab1bf473714d6886b8dcfbcaa200a72997d50ea0225a90c28306b7670e&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;h3&gt;C2&lt;span class="hx:absolute hx:-mt-20" id="c2"&gt;&lt;/span&gt;
 &lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;https[://]bookitlab[.]tech
@@ -746,7 +758,8 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;h4&gt;Persistence&lt;span class="hx:absolute hx:-mt-20" id="persistence-2"&gt;&lt;/span&gt;
-&lt;a href="#persistence-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Creates persistence via LaunchAgent under the path: &lt;code&gt;/Library/LaunchAgents/com.apple.update.plist&lt;/code&gt;.&lt;/p&gt;
+&lt;a href="#persistence-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Creates persistence via LaunchAgent under the path:
+&lt;code&gt;/Library/LaunchAgents/com.apple.update.plist&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Content:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;#34;1.0″ encoding=&amp;#34;UTF-8″?&amp;gt;&lt;/span&gt;
@@ -780,7 +793,688 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>ACBackdoor: Analysis of a New Multiplatform Backdoor</title><link>https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/</link><pubDate>Mon, 18 Nov 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/</guid><description>
+&lt;/div&gt;</description></item><item><title>A Storm is Brewing: IPStorm Now Has Linux Malware</title><link>https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</guid><description>
+&lt;h2&gt;UPDATE NOVEMBER 2023: IPStorm Infrastructure Dismantled by FBI&lt;span class="hx:absolute hx:-mt-20" id="update-november-2023-ipstorm-infrastructure-dismantled-by-fbi"&gt;&lt;/span&gt;
+&lt;a href="#update-november-2023-ipstorm-infrastructure-dismantled-by-fbi" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The FBI today revealed US law enforcement&amp;rsquo;s dismantlement of a botnet proxy
+network, along with a guilty plea for the individual responsible for the botnet
+infrastructure which was associated with the IPStorm malware. This achievement
+is a significant milestone in ongoing efforts to combat cyber threats. The
+research team at Intezer assisted in the FBI&amp;rsquo;s case, sharing our findings and
+analysis about the new IPStorm malware variants and capabilities as it expanded
+to infect Linux, Mac, and Android devices around the world.&lt;/p&gt;
+&lt;h2&gt;A Storm is Brewing&lt;span class="hx:absolute hx:-mt-20" id="a-storm-is-brewing"&gt;&lt;/span&gt;
+&lt;a href="#a-storm-is-brewing" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The development of cross-platform malware is not new, however, we continue to
+observe a number of malware that were previously documented only targeting
+Windows now
+&lt;a href="https://intezer.com/blog/looking-back-on-the-last-decade-of-linux-apt-attacks/"target="_blank" rel="noopener"&gt;targeting the Linux platform&lt;/a&gt;.
+One of these threats is IPStorm.&lt;/p&gt;
+&lt;p&gt;In May 2019, researchers from
+&lt;a href="https://www.anomali.com/blog/the-interplanetary-storm-new-malware-in-wild-using-interplanetary-file-systems-ipfs-p2p-network"target="_blank" rel="noopener"&gt;Anomali&lt;/a&gt;
+discovered a new Golang malware targeting Windows, which they dubbed
+&lt;strong&gt;IPStorm&lt;/strong&gt; (InterPlanetary Storm). IPStorm is a botnet that abuses a
+legitimate Peer-to-peer (p2p) network called InterPlanetary File System (IPFS)
+as a means to obscure malicious traffic. It was found the malware eventually
+allowed attackers to execute arbitrary PowerShell commands on the victim&amp;rsquo;s
+Windows machine.&lt;/p&gt;
+&lt;p&gt;Our research team recently identified new Linux variants of IPStorm targeting
+various Linux architectures (ARM, AMD64, Intel 80386) and platforms (servers,
+Android, IoT). We have also detected a macOS variant. The macOS variant and
+most of the Linux samples are fully undetected in VirusTotal at the time of
+this publication. IPStorm is written in Golang, which enabled Intezer to detect
+cross-platform code connections between the Linux samples and the Windows
+malware first reported by Anomali.&lt;/p&gt;
+&lt;p&gt;The Linux variant has additional features over the documented Windows version,
+such as using &lt;strong&gt;SSH brute-force&lt;/strong&gt; as a means to spread to additional victims
+and &lt;strong&gt;fraudulent network activity&lt;/strong&gt; abusing
+&lt;a href="https://store.steampowered.com/"target="_blank" rel="noopener"&gt;Steam&lt;/a&gt; gaming and advertising platforms. The
+Linux variant has adjusted some features in order to account for the
+fundamental differences that exist between this operating system and Windows.&lt;/p&gt;
+&lt;p&gt;In this post, we will present a code relations graph between the IPStorm
+Windows and Linux samples, analyze one of the Linux variant&amp;rsquo;s behavior, and
+compare its features and capabilities to the old Windows samples to track its
+evolution. Following we will take a deeper dive into some notable features and
+explain how to respond to this threat.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis of IPStorm&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis-of-ipstorm"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis-of-ipstorm" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Most of the IPStorm Linux samples were fully undetected before we submitted
+them for genetic analysis in Intezer.&lt;/p&gt;
+&lt;p&gt;In this post, we will focus on the
+&lt;code&gt;658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117&lt;/code&gt; Linux
+sample.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig1.png" title="658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117 sample undetected in VirusTotal." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117 sample undetected in VirusTotal.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Because IPStorm is written in Golang, not only can we observe strong code
+connections between the different Linux variants, we can also identify
+connections to IPStorm&amp;rsquo;s Windows samples uploaded to Intezer in 2019.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig2.png" title="Samples analyzed and classified by Intezer in the IPStorm malware family." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Samples analyzed and classified by Intezer in the IPStorm malware family.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The following map emphasizes code similarities between the different versions
+and operating systems. The nodes represent the individual samples and the lines
+are the code relations between them. All samples are linked to each other in
+some way:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IPStorm PE files from 2019&lt;/li&gt;
+&lt;li&gt;IPStorm ELF files from 2020&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig3.png" title="Map showing IPStorm code similarities between different samples analyzed. Nodes represent the individual samples and the lines show code relations between them." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Map showing IPStorm code similarities between different samples analyzed. Nodes represent the individual samples and the lines show code relations between them.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The graph depicts three main clusters, with each cluster containing samples
+that have strong code connections between them:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PE, intel 80386 architecture&lt;/li&gt;
+&lt;li&gt;ELF, intel 80386 architecture&lt;/li&gt;
+&lt;li&gt;ELF, amd x86-64 architecture&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You will also notice shared code exists between the ELF clusters and the ELF
+and PE intel 80386 architecture clusters.&lt;/p&gt;
+&lt;p&gt;You can use the &lt;code&gt;cluster_directory.py&lt;/code&gt; API script in this GitHub
+&lt;a href="https://github.com/intezer/analyze-scripts"target="_blank" rel="noopener"&gt;repository&lt;/a&gt; to create a cluster
+graph of your own. IPStorm Linux Variant Behavior Flow&lt;/p&gt;
+&lt;p&gt;The Linux variant symbols are stripped. Using the plugin
+&lt;a href="https://github.com/sibears/IDAGolangHelper"target="_blank" rel="noopener"&gt;IDAGolangHelper&lt;/a&gt; we retrieved the
+file&amp;rsquo;s symbols and saw exactly which packages the malware contains. A package
+in Go is a bundle of Go source files which make up a specific functionality.
+Every Go source file belongs to a package.&lt;/p&gt;
+&lt;p&gt;The Linux malware&amp;rsquo;s main logic is implemented in a package called
+&lt;code&gt;storm_starter&lt;/code&gt;, a new package that was not in the Windows version. All logic
+was implemented via the main function in the Windows version.&lt;/p&gt;
+&lt;p&gt;Both versions have similarities in the way the main flow is implemented,
+however, the Linux instances have additional features and adjusted some logic
+due to the differences that exist between the two operating systems.&lt;/p&gt;
+&lt;p&gt;The Linux iteration starts by disabling the out-of-memory (OOM) killer in order
+to prevent it from terminating the malware. It then proceeds to check for any
+processes related to antiviruses or other security tools that may prevent
+further execution of the malware. Next the malware generates and saves pubkeys
+in a file called &lt;code&gt;strom.key&lt;/code&gt;. The location of where this key is saved is based
+on privileges that the malware was executed with. If the malware was executed
+with root privileges, the key will be stored at &lt;code&gt;/etc/storm.key&lt;/code&gt;. Otherwise, it
+will be saved at &lt;code&gt;/tmp/storm.key&lt;/code&gt;. The malware then tries to establish
+connections with other nodes in the peer to peer network.&lt;/p&gt;
+&lt;p&gt;The malware sends HTTP requests to different services such as
+&lt;code&gt;diagnostic[.]opendns[.]com/myip&lt;/code&gt;, &lt;code&gt;ifconfig[.]io/ip&lt;/code&gt;, and
+&lt;code&gt;myip[.]dnsomatic[.]com&lt;/code&gt; to receive the external IP address of the victim
+server. If the malware is running as root, it will create a service under
+systemd to achieve persistence and copy itself to /usr/bin/storm. Otherwise, it
+will be copied to /tmp/storm. The malware will then relaunch itself from the
+new installation path.&lt;/p&gt;
+&lt;p&gt;This new process is responsible for executing the main features of the IPStorm
+malware, including reverse shell, which was previously seen in the Windows
+variant—maintaining connection with other peers in the P2P network and a new
+feature for spreading the malware to other victims.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig4.png" title="IPStorm Linux output non-privileged user." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;IPStorm Linux output non-privileged user.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Linux vs. Windows Comparison&lt;span class="hx:absolute hx:-mt-20" id="linux-vs-windows-comparison"&gt;&lt;/span&gt;
+&lt;a href="#linux-vs-windows-comparison" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Comparing IPStorm Linux version &lt;code&gt;0.2.05a&lt;/code&gt; to Windows version &lt;code&gt;0.0.2m&lt;/code&gt;, it
+became clear the developer added features and altered existing ones to attack
+Linux platforms.&lt;/p&gt;
+&lt;h3&gt;Packages Comparison&lt;span class="hx:absolute hx:-mt-20" id="packages-comparison"&gt;&lt;/span&gt;
+&lt;a href="#packages-comparison" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware is composed of different Golang packages with each package
+providing a different feature. The following table categorizes package
+comparisons between the two versions:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Golang Package&lt;/th&gt;
+&lt;th&gt;Functionality&lt;/th&gt;
+&lt;th&gt;Linux Version Version 0.2.05a (2020)&lt;/th&gt;
+&lt;th&gt;Windows Version Version 0.0.2m (2019)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;scan_tools&lt;/td&gt;
+&lt;td&gt;Scans for potential victims&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;web_api_client&lt;/td&gt;
+&lt;td&gt;Handles HTTP requests and responses&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;p2p (part of the web API)&lt;/td&gt;
+&lt;td&gt;HTTP over P2P&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;reque_client&lt;/td&gt;
+&lt;td&gt;Handles the communication of peers in the network&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;commander&lt;/td&gt;
+&lt;td&gt;Handles HTTP requests&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;starter&lt;/td&gt;
+&lt;td&gt;Implements the main logic of the malware (basically the &amp;ldquo;main function&amp;rdquo;)&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;malware-guard&lt;/td&gt;
+&lt;td&gt;Antivirus evasion&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;avbypass&lt;/td&gt;
+&lt;td&gt;Antivirus evasion&lt;/td&gt;
+&lt;td&gt;–&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;backshell&lt;/td&gt;
+&lt;td&gt;In charge of the reverse shell&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ddb&lt;/td&gt;
+&lt;td&gt;Database&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;filetransfer&lt;/td&gt;
+&lt;td&gt;Persistence and managing file transfering to other peers&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;logging&lt;/td&gt;
+&lt;td&gt;Output log&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;node&lt;/td&gt;
+&lt;td&gt;Responsible for advertising the node, getting the external IP, and maintaining connection with other nodes.&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;powershell&lt;/td&gt;
+&lt;td&gt;In Windows, in charge of the powershell artifact in the backdoor. In the Linux variant, the package has only one function copied from the Windows version and is used for achieving reverse shell. + util Utility functions&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ddbinterface&lt;/td&gt;
+&lt;td&gt;DB functions&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;proxy&lt;/td&gt;
+&lt;td&gt;Implements Socks5 Proxy&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note: We compared Linux version 0.2.05a to Windows version 0.0.2m which was
+analyzed in Anomali&amp;rsquo;s report. However, the malware is frequently being
+updated and we have observed multiple different versions since, so
+functionalities may differ between them.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Features Comparison Scanning tools&lt;span class="hx:absolute hx:-mt-20" id="features-comparison-scanning-tools"&gt;&lt;/span&gt;
+&lt;a href="#features-comparison-scanning-tools" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Android and SSH brute-force&lt;span class="hx:absolute hx:-mt-20" id="android-and-ssh-brute-force"&gt;&lt;/span&gt;
+&lt;a href="#android-and-ssh-brute-force" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The Linux variant attempts to spread and infect other victims on the internet
+by using SSH brute-force. Once a connection is established, the malware will
+check if the victim server is a honeypot by comparing the hostname of the
+attacked server to the string &amp;ldquo;svr04&amp;rdquo;, which is the default hostname of Cowrie
+SSH honeypot. If the malware identifies a honeypot it will close the
+connection, otherwise it will proceed to download the payload and infect the
+server.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig5.png" title="Validation of whether the server is a honeypot or not." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Validation of whether the server is a honeypot or not.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Another spreading method that is unique to the Linux version is searching for
+potential Android victims. The malware checks for devices connected with ADB
+(Android Debug Bridge) to the victim node. Once identified, it will upload an
+Android version of IPStorm to the device, which was previously downloaded from
+the P2P network.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig6.png" title="Screen capture from the log of the storm service showing the downloaded file." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Screen capture from the log of the storm service showing the downloaded file.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Antivirus Evasion&lt;span class="hx:absolute hx:-mt-20" id="antivirus-evasion"&gt;&lt;/span&gt;
+&lt;a href="#antivirus-evasion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Both IPStorm Windows and Linux versions implement features related to detection
+evasion and each variant uses a different technique. In the Linux version, the
+package in charge of this logic is called &lt;code&gt;storm_malware_guard&lt;/code&gt;. The file
+iterates through all current running processes in order to find and terminate
+ones that might detect the malware&amp;rsquo;s activity.&lt;/p&gt;
+&lt;p&gt;The function under the &lt;code&gt;storm_malware_guard&lt;/code&gt; package that implements this
+technique is called &lt;code&gt;KillSuspiciousProcesses&lt;/code&gt;. Other functions in this package
+are responsible for obtaining information about the CPU and memory usage,
+number of I/O ports, and functions that return information about processes and
+threads.&lt;/p&gt;
+&lt;p&gt;In the Windows version, the AV evasion logic is implemented in a package called
+&lt;code&gt;avbypass&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This technique is based on random sleep times and multiple function calls. The
+purpose of this method is to make tracing the original process harder for
+Antivirus solutions.&lt;/p&gt;
+&lt;p&gt;It appears that due to the different operating systems, each IPStorm version
+has its own way to evade detection.&lt;/p&gt;
+&lt;h3&gt;Reverse Shell&lt;span class="hx:absolute hx:-mt-20" id="reverse-shell"&gt;&lt;/span&gt;
+&lt;a href="#reverse-shell" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Both IPStorm versions use the name backshell to refer to the feature of reverse
+shell.&lt;/p&gt;
+&lt;p&gt;The backshell functions of the Linux variant are identical to those of the
+Windows variant.&lt;/p&gt;
+&lt;p&gt;The Windows variant has a package called &lt;code&gt;powershell&lt;/code&gt; which contains functions
+for achieving reverse shell. The same package is present in the Linux variant
+but it contains only one function:
+&lt;code&gt;storm_powershell__ptr_Backend_StartProcess&lt;/code&gt;. The function is used to get a
+reverse shell on the infected system.&lt;/p&gt;
+&lt;p&gt;The implementation of the reverse shell is a clear example of the code reuse
+connections between the two IPStorm variants. The screengrabs below demonstrate
+changes in the file names and the identical function names found in the two
+versions:&lt;/p&gt;
+&lt;h4&gt;Linux&lt;span class="hx:absolute hx:-mt-20" id="linux"&gt;&lt;/span&gt;
+&lt;a href="#linux" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig7.png" alt="" loading="lazy" /&gt; &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h4&gt;Windows&lt;span class="hx:absolute hx:-mt-20" id="windows"&gt;&lt;/span&gt;
+&lt;a href="#windows" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig9.png" alt="" loading="lazy" /&gt; &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h3&gt;Persistence&lt;span class="hx:absolute hx:-mt-20" id="persistence"&gt;&lt;/span&gt;
+&lt;a href="#persistence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The Linux version will attempt to gain persistence only if it was executed with
+root privileges. The Windows version, on the other hand, will always look to
+gain persistence. It is evident that each variant of the malware, Linux and
+Windows, uses a different technique to gain persistence since the operating
+systems they target are fundamentally different.&lt;/p&gt;
+&lt;p&gt;The Windows variant achieves persistence by copying itself to a random location
+and adding the program to the:
+&lt;code&gt;HKCU\Software\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt; registry key.&lt;/p&gt;
+&lt;p&gt;The Linux version achieves persistence by creating a &lt;code&gt;systemd&lt;/code&gt; service under
+&lt;code&gt;/etc/systemd/system/storm.service&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig11.png" title="/etc/systemd/system/storm.service" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;/etc/systemd/system/storm.service&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig12.png" title="The function that archives persistence in the Linux variant." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The function that archives persistence in the Linux variant.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Another difference is the location to which the file is copied. The Windows
+variant uses random file paths while the Linux version uses fixed paths.&lt;/p&gt;
+&lt;h3&gt;Network Traffic&lt;span class="hx:absolute hx:-mt-20" id="network-traffic"&gt;&lt;/span&gt;
+&lt;a href="#network-traffic" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;On top of creating a reverse shell, we have detected that IPStorm&amp;rsquo;s Linux
+variant takes advantage of its being widespread to perform different fraudulent
+activity in the background, abusing gaming and ads monetization. Because it&amp;rsquo;s a
+botnet, the malware utilizes the large amount of requests from different
+trusted sources, thus not being blocked nor traceable. This activity was not
+observed in the Windows variant.&lt;/p&gt;
+&lt;h4&gt;Steam Gaming Fraud&lt;span class="hx:absolute hx:-mt-20" id="steam-gaming-fraud"&gt;&lt;/span&gt;
+&lt;a href="#steam-gaming-fraud" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Steam is a popular gaming service from Valve Corporation and is used by
+hundreds of millions users worldwide. It also provides an API for developers
+who want to use Steam data on their own websites.&lt;/p&gt;
+&lt;p&gt;As part of the monetization process for game developers, Steam users can buy
+and sell different items such as equipment, skins, and other in-game elements.
+This platform is so popular that it has become a hot target for cybercriminals.
+A known method used by attackers is creating phishing websites to lure users to
+submit their Steam login credentials. With access to a user&amp;rsquo;s credentials the
+attacker has full access to the the account, API key included.&lt;/p&gt;
+&lt;p&gt;We noticed IPStorm generates a large amount of traffic to Steam&amp;rsquo;s API, querying
+data pertaining to various Steam users and using multiple valid API keys.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;We suspect these are stolen accounts that are being monitored as part of a fake
+trade scam.
+&lt;a href="https://www.skinwallet.com/csgo/how-to-avoid-steam-api-key-scam/"target="_blank" rel="noopener"&gt;Browse here&lt;/a&gt;
+for more information about this scam.&lt;/p&gt;
+&lt;h4&gt;Ad Fraud&lt;span class="hx:absolute hx:-mt-20" id="ad-fraud"&gt;&lt;/span&gt;
+&lt;a href="#ad-fraud" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The malware generates requests which imitate fake advertisements clicks. All
+the ads we have traced are related to pornographic websites. The malware crawls
+through different predefined sites, searches for advertisement iframes, and
+imitates a user &amp;ldquo;click&amp;rdquo; by browsing through the iframes.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig14.png" title="Example of a request the malware generates to an ad platform." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Example of a request the malware generates to an ad platform.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig15.png" title="Websites the malware crawls through." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Websites the malware crawls through.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;IPStorm Detection and Response&lt;span class="hx:absolute hx:-mt-20" id="ipstorm-detection-and-response"&gt;&lt;/span&gt;
+&lt;a href="#ipstorm-detection-and-response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Compromised System Detection&lt;span class="hx:absolute hx:-mt-20" id="compromised-system-detection"&gt;&lt;/span&gt;
+&lt;a href="#compromised-system-detection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;You can take the following steps to check if your system has been attacked by
+the IPStorm malware.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Check if the process of IPStorm is running on your system.
+&lt;ul&gt;
+&lt;li&gt;Run: &lt;code&gt;pstree | grep storm&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;IPStorm will usually run with multiple threads. &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Check the services that run on your system, since if the malware was executed
+with root privileges it would create a service for persistence.
+&lt;ul&gt;
+&lt;li&gt;Run: &lt;code&gt;sudo systemctl status strom.service&lt;/code&gt; &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Check if IPStorm&amp;rsquo;s files exist in your system.
+&lt;ul&gt;
+&lt;li&gt;Run: &lt;code&gt;sudo find / -name &amp;quot;storm*&amp;quot; -type f&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;In case of a non-root execution the output will look similar to the
+screen capture below &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+&lt;li&gt;If the malware was executed with root privileges, the output will look
+similar to the screen capture below: &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig19.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Check the open ports on your system and the processes that are associated
+with them.
+&lt;ul&gt;
+&lt;li&gt;Run: &lt;code&gt;sudo ss -tulpn&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;In the screen capture below a number of processes that belong to the
+IPStorm malware listen on specific ports. &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig20.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Use freely the Intezer Protect community beta to identify which process is
+running on your system. The screen capture below is taken from the alert of
+IPStorm executed on a server. The info provided by the system includes the
+malware family name, full path of the executable, the process ID, execution
+time, and a link to Intezer where you can observe code reuse prevalent in
+this malware. &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig21.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;How to Terminate IPStorm on a Compromised System&lt;span class="hx:absolute hx:-mt-20" id="how-to-terminate-ipstorm-on-a-compromised-system"&gt;&lt;/span&gt;
+&lt;a href="#how-to-terminate-ipstorm-on-a-compromised-system" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;If the malware runs as a service you should stop the service by executing the
+command: &lt;code&gt;sudo systemctl stop storm.service&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Delete all the files that are related to the IPStorm malware. The file paths
+are mentioned in the previous section.&lt;/li&gt;
+&lt;li&gt;Kill the process by running: &lt;code&gt;sudo pkill -9 storm&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Response&lt;span class="hx:absolute hx:-mt-20" id="response"&gt;&lt;/span&gt;
+&lt;a href="#response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We are providing a
+&lt;a href="https://github.com/intezer/yara-rules/blob/master/IPStorm.yar"target="_blank" rel="noopener"&gt;YARA rule&lt;/a&gt;
+intended to be run against in-memory artifacts in order to be able to detect
+these implants.&lt;/p&gt;
+&lt;h4&gt;System Security Hardening&lt;span class="hx:absolute hx:-mt-20" id="system-security-hardening"&gt;&lt;/span&gt;
+&lt;a href="#system-security-hardening" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Make sure your SSH connection is secured. Use a key instead of a password or
+use multi-factor authentication.
+&lt;a href="https://www.techrepublic.com/article/5-quick-ssh-hardening-tips/"target="_blank" rel="noopener"&gt;Browse here&lt;/a&gt;
+for more tips about SSH hardening.&lt;/li&gt;
+&lt;li&gt;Make sure your system is updated to the latest software and aligned with most
+recent security best practices.&lt;/li&gt;
+&lt;li&gt;Use a runtime cloud workload protection solution. Protect provides full
+runtime visibility over the code in your system and alerts on any suspicious
+or unauthorized code that deviates from the secure baseline.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Summary&lt;span class="hx:absolute hx:-mt-20" id="summary"&gt;&lt;/span&gt;
+&lt;a href="#summary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;IPStorm now with Linux malware is the latest example of a cross-platform
+malware developed in Golang. Platforms that are compromised by IPStorm are not
+only exposed to a backdoor to their services but are also added to the IPStorm
+Botnet which attempts to spread to other victims. The attackers behind IPStorm
+are very active evidenced by the frequent release of updated versions with new
+features and improvements, as well as the expansion to several different
+platforms and architectures.&lt;/p&gt;
+&lt;p&gt;IPStorm is part of a growing list of Golang ELF malware that have been spotted
+attacking live servers in the past six months alone, together with
+&lt;a href="../../../2020/05/kaiji-new-chinese-linux-malware-turning-to-golang"&gt;Kaiji&lt;/a&gt;,
+&lt;a href="https://blog.aquasec.com/threat-alert-kinsing-malware-container-vulnerability"target="_blank" rel="noopener"&gt;Kinsing&lt;/a&gt;,
+and
+&lt;a href="https://www.guardicore.com/2020/08/fritzfrog-p2p-botnet-infects-ssh-servers/"target="_blank" rel="noopener"&gt;FritzFrog&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;We want to give a special thanks to Paul Litvak and Michael Kajiloti for their
+help contributing to this analysis.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Both IPStorm Linux and Windows samples are indexed in Intezer and you can
+detect this and other cross-platform malware with the code reuse feature for
+Golang, just by uploading a file or hash to the system. Below is the analysis
+of one of the Linux samples.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig22.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Linux&lt;span class="hx:absolute hx:-mt-20" id="linux-1"&gt;&lt;/span&gt;
+&lt;a href="#linux-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;3aff4695c73709e2e0e55665c4850aa45064723a2c83e75325b27e77ec5f6d97
+b80346c4d31d77fba9427024d34af2f43e64a5272b5bbef28c6bf045a06143ff
+d233c37f2d49badbf53d054bce7fb8e787c9973067e8dcd79835d7816aacfa43
+658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117
+bfb69eadee1918a9402478c76dd15696bbac3e3e3e57c9a94c7d51e594b8c657
+64abc2cf5866e932b0731a6deb487aa3d9756724250de26bac2fb930cd478dc0
+52f215521ba59cb6a51314bd1527f1c540ffc04df924ad971ca2160405879778
+aa7639b11f7c852005110e5ac34c9a2c94c562bcc95dbf6f60a1a7192cf8ea77
+cae8a782765dd0f97e7a812a245cc5b94b3179ced9c8181d0fda13978c9f17be
+5103133574615fb49f6a94607540644689be017740d17005bc08b26be9485aa7
+08bf31862577567a56bf3be6425f1ddf4ac90914efd883a75a5a53dbcabd28a2
+984c5e980fb8a5b7bbc673f923f22ddf06c5dd89fcd0acf774d79d4d193b44c8
+591770835066958e912ceb445bd865e961ac946e8cf70ced9f0bd75c851d9478
+69ea7bcf3da16d968e6104745c1f015f6371c093188f1061a311a6385985b45b
+fbd5e48ee691df949e0dd3687755c80cc5b9d1a1a89e7dc486694370697de893
+c247b3c07b4bf13da67c51d5834193d128c45c7e41214096090b5d2610313783
+f4f1fb65df80666fe67b22b84d9d8f967449d1249c33ad97f4305784fa41e747
+ef226de8cc53e59c9431838085f3bbd1b8a32f7cc135682033a3fdba19a0ee97
+dfeecdd23f28f80e42e58c87c9a4858648964b3100dfb899c61b54aed7856cf7
+db9c95bdc4247ff6cdaf8a8e47b4add21a730461d8f6e2693136aecd346b3fb5
+b4c75e1d94bc4c8affd6d9f433585ace2738772e6a04403ab67cce3df9574068
+b07c2dfb4c57175446b6188bb4b1722272f63a301f18c5f46ee6401347894fea
+a5468b6130d90bc74cf8e458297f6d4c7fc42b87184623aefd535bca658542ed
+7c41de95313dc98a3fc4f6fe3910759c3561743dacc629dab11e754290f8c7aa
+7b044b8eddd20d8e1c7d499a6c34b1bc373f5fe9d59bab7b4e3a341a5f4ce0b5
+79ec318a968679f94d2ab0ba15daaeeb71406d2f744eb0cd1b314c4bb403114d
+52b081dbaafbbae8ad812f9c50a1a5f7d8b0850b3c6dc69eccb3322f34286c2e
+50406ec7fa22c78e9b14da4ccc127a899db21f7a23b1916ba432900716e0db3d
+1d0e003ee653d1a7b80ff5e69c33689af04e45fc836a29e0853219dd100fd534
+16bcb323bfb464f7b1fcfb7530ecb06948305d8de658868d9c3c3c31f63146d4&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;macOS&lt;span class="hx:absolute hx:-mt-20" id="macos"&gt;&lt;/span&gt;
+&lt;a href="#macos" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;522a5015d4d11833ead6d88d4405c0f4119ff29b1f64b226c464e958f03e1434&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Fantastic payloads and where we find them</title><link>https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/</link><pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/</guid><description>
+&lt;p&gt;Attackers have long used evasion features in their malware to avoid detection
+by security products and analysis systems. One of the most common anti-analysis
+tricks we have seen in today’s Windows malware is the use of packers. Packers
+often complicate the analysis and detection of binary files by hiding the
+malware’s real code and data; often referred to as the payload.&lt;/p&gt;
+&lt;p&gt;The most common solution to overcome packing is the use of &lt;strong&gt;dynamic analysis&lt;/strong&gt;
+(sandboxes) and emulation systems. However, as these solutions have become more
+mainstream, packers have started to incorporate new &lt;strong&gt;anti-analysis&lt;/strong&gt; methods
+to both detect and evade these systems.&lt;/p&gt;
+&lt;p&gt;One such anti-analysis method which is becoming increasingly popular is the
+malformation or complete removal of the Windows PE header from unpacked
+malicious payloads. This can make both finding the malware payload and properly
+analyzing its code more challenging.&lt;/p&gt;
+&lt;p&gt;While removal of Windows PE headers from malicious payloads is not an entirely
+new method, we are seeing some of the most popular and sophisticated crimeware
+families fully incorporate this approach into their packers. Below we will
+present some examples that demonstrate this trend through our Genetic Malware
+Analysis platform, Intezer Analyze.&lt;/p&gt;
+&lt;h2&gt;On packers and payloads&lt;span class="hx:absolute hx:-mt-20" id="on-packers-and-payloads"&gt;&lt;/span&gt;
+&lt;a href="#on-packers-and-payloads" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When we investigate a packed malware file, the malware (payload) itself is
+encrypted or encoded and therefore we can’t access its real code and data.
+Typically, in order to analyze the malware’s code, we must execute the file in
+a sandboxed environment, let it unpack itself, and then grab the payload from
+memory.&lt;/p&gt;
+&lt;p&gt;While various malware and packers operate in different ways, an abstraction of
+a typical unpacking flow looks like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In this flow we can see that the packer will decode and execute a shellcode
+component that will in turn decode and execute the real payload. This is just a
+common scenario; some packers will not use a shellcode loader and instead they
+will unpack the payload directly. It’s worth noting that unlike the packer’s
+code, which is designed to be obfuscated and appear random, we have observed
+that these shellcode components are often reused. This means that these
+components generally have more value than the packer itself when investigating
+them with code reuse analysis. Therefore, detecting and analyzing this
+component’s code can be worthwhile for us.&lt;/p&gt;
+&lt;p&gt;With that said, finding and analyzing the malware module itself is by far the
+most effective way to properly detect and classify packed malware. The most
+common way to identify malware payloads in memory is to search for PE header
+artifacts. Knowing this, many attackers try to stay undetected by removing
+these artifacts from the PE Header of the payload, or by using no PE header at
+all, as we’ll see soon in the examples presented in this article.&lt;/p&gt;
+&lt;h2&gt;The many faces of Emotet&lt;span class="hx:absolute hx:-mt-20" id="the-many-faces-of-emotet"&gt;&lt;/span&gt;
+&lt;a href="#the-many-faces-of-emotet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Emotet is one of the most widespread malware in the crimeware ecosystem which
+has undergone a number of updates since its inception. In particular, we have
+noticed that this malware is constantly evolving and adapting, both in the
+malware code itself, and in the packers it uses. While switching the packer is
+relatively inexpensive for the attacker and happens frequently, modifying the
+malware’s code is much more costly and happens rarely.&lt;/p&gt;
+&lt;p&gt;An interesting example of this can be seen when we compare the following Emotet
+samples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Emotet sample from June 2019:
+&lt;code&gt;8e5089260064a955819a92ebccc43d05520e32d234dd3c176bed5f6d0665ebdb&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Emotet sample from December 2019:
+&lt;code&gt;3e8a273f80575ab6079d6512008bb6355b59de978fabc2a9a66c0ed148b94fef&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When looking at the code of the packed files themselves, we can see just how
+different these samples are, showing no apparent connections to one another:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig2.png" title="Packer (June 2019) – 8e5089260064a955819a92ebccc43d05520e32d234dd3c176bed5f6d0665ebdb" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Packer (June 2019) – 8e5089260064a955819a92ebccc43d05520e32d234dd3c176bed5f6d0665ebdb&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig3.png" title="Packer (December 2019) – 3e8a273f80575ab6079d6512008bb6355b59de978fabc2a9a66c0ed148b94fef" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Packer (December 2019) – 3e8a273f80575ab6079d6512008bb6355b59de978fabc2a9a66c0ed148b94fef&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;But if we look at the unpacked memory module payloads after undergoing dynamic
+analysis, we can see that they are nearly identical from a binary code
+perspective:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig4.png" title="Payload (June 2019) – 8e5089260064a955819a92ebccc43d05520e32d234dd3c176bed5f6d0665ebdb" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Payload (June 2019) – 8e5089260064a955819a92ebccc43d05520e32d234dd3c176bed5f6d0665ebdb&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig5.png" title="Payload (December 2019) – 3e8a273f80575ab6079d6512008bb6355b59de978fabc2a9a66c0ed148b94fef" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Payload (December 2019) – 3e8a273f80575ab6079d6512008bb6355b59de978fabc2a9a66c0ed148b94fef&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;There is one notable exception: in the December 2019 sample, the payload memory
+module has a &amp;ldquo;&lt;strong&gt;malformed header&lt;/strong&gt;&amp;rdquo; tag. In this case, this indicates that the
+packer loaded the module with a PE Header that’s missing certain PE artifacts,
+such as the &amp;ldquo;MZ&amp;rdquo; magic or other PE Header constants. This is usually done in an
+attempt to make it more difficult to find these modules in memory, since the
+most common method of finding PE memory modules is by scanning for these
+artifacts.&lt;/p&gt;
+&lt;p&gt;It is worth mentioning that in Intezer Analyze we repair the malformed header
+as part of our analysis process. Downloading and examining the memory module
+will reveal that it has a full PE header.&lt;/p&gt;
+&lt;p&gt;It is also important to note that even in the instance of a constantly evolving
+threat such as Emotet, when the attacker modifies the code of the malware
+itself, there are still parts that remain unchanged. Therefore, when Intezer
+Analyze executes the malware, finds its payload, and then analyzes its code, we
+can still detect those traces to Emotet’s code that have not been modified.&lt;/p&gt;
+&lt;p&gt;This can be observed when we investigate a recent sample of Emotet from March
+2020. Looking at the packer’s code, we can see that it is different yet again,
+and has no relations to any code we have seen previously:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig6.png" title="Packer (March 2020) – C6684aa4af41685ffc584c1b1bb78855c894b3dae7f6fae4fb572bc02525102f" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Packer (March 2020) – C6684aa4af41685ffc584c1b1bb78855c894b3dae7f6fae4fb572bc02525102f&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;However, when we look at the memory module payload itself, we can see that some
+of the code is new and has been modified from previous versions. Most
+importantly, a substantial part of the code has been reused from previous
+Emotet variants that we have seen before:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig7.png" title="Payload (March 2020) – C6684aa4af41685ffc584c1b1bb78855c894b3dae7f6fae4fb572bc02525102f" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Payload (March 2020) – C6684aa4af41685ffc584c1b1bb78855c894b3dae7f6fae4fb572bc02525102f&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;When less is more&lt;span class="hx:absolute hx:-mt-20" id="when-less-is-more"&gt;&lt;/span&gt;
+&lt;a href="#when-less-is-more" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;While using a malformed PE Header is a relatively simple trick, using no PE
+header at all is a more sophisticated and complicated affair. It takes more
+than just removing a few unused magic constants from the header in order to
+conceal it. This method requires loading and executing the payload just like
+shellcode.&lt;/p&gt;
+&lt;p&gt;When malware authors write and compile the malware payload itself, it is
+usually compiled and built into the form of standard PE files, not position
+independent shellcode. Directly converting a sophisticated malware’s codebase
+such as Dridex or TrickBot to run like shellcode can be complicated.&lt;/p&gt;
+&lt;p&gt;Most malware authors choose a simpler option, using a packer that unpacks and
+loads the payload module without using its PE Header at load time. These
+packers typically store the relevant information from the PE header, such as
+API import and relocations data, in a custom structure during packing time. The
+packer then uses that structure during the unpacking process in order to
+properly load the malware code.&lt;/p&gt;
+&lt;h2&gt;Same Dridex, new tricks&lt;span class="hx:absolute hx:-mt-20" id="same-dridex-new-tricks"&gt;&lt;/span&gt;
+&lt;a href="#same-dridex-new-tricks" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;An example of a popular malware that has recently adopted such a packer is the
+Dridex banking trojan. Let’s compare two recent Dridex samples from February
+2020:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;9b6ffb05ec826b3fbff7db04ebd187e2f956a5730af1d36e10a9f56ee1bb767a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;45e0408d3ae2647cb9be835a5277eb7de41c83d8e473d22d5b3772c2f65305fb&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Similar to Emotet, these packed files are very different from one another at
+the code level, showing no resemblance:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig8.png" title="Packer – 9b6ffb05ec826b3fbff7db04ebd187e2f956a5730af1d36e10a9f56ee1bb767a" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Packer – 9b6ffb05ec826b3fbff7db04ebd187e2f956a5730af1d36e10a9f56ee1bb767a&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig9.png" title="Packer – 45e0408d3ae2647cb9be835a5277eb7de41c83d8e473d22d5b3772c2f65305fb" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Packer – 45e0408d3ae2647cb9be835a5277eb7de41c83d8e473d22d5b3772c2f65305fb&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;However, when we look at the payloads themselves, we can see again that they
+are actually very similar:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig10.png" title="Payload – 9b6ffb05ec826b3fbff7db04ebd187e2f956a5730af1d36e10a9f56ee1bb767a" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Payload – 9b6ffb05ec826b3fbff7db04ebd187e2f956a5730af1d36e10a9f56ee1bb767a&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig11.png" title="Payload – 45e0408d3ae2647cb9be835a5277eb7de41c83d8e473d22d5b3772c2f65305fb" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Payload – 45e0408d3ae2647cb9be835a5277eb7de41c83d8e473d22d5b3772c2f65305fb&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;There is one notable exception here as well, but in this case it is much more
+substantial. In the second payload we can see the &amp;ldquo;&lt;strong&gt;fileless_code&lt;/strong&gt;&amp;rdquo; tag,
+which indicates this module has no PE header. Downloading and examining this
+module will make it known that it is indeed a binary file with no structure.&lt;/p&gt;
+&lt;p&gt;Intezer Analyze detects these modules during dynamic analysis and analyzes
+their code even though no PE Header is present. It will also detect any other
+shellcode pieces that are used by the malware.&lt;/p&gt;
+&lt;h2&gt;Look ma! No heads!&lt;span class="hx:absolute hx:-mt-20" id="look-ma-no-heads"&gt;&lt;/span&gt;
+&lt;a href="#look-ma-no-heads" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;To demonstrate how prevalent this trend is, let’s look at the analyses of
+recent samples of the Ursnif and TrickBot malware. When looking at the dynamic
+analysis modules, we see several different malicious modules that are detected
+and analyzed:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;If we review them more closely, we will see that all of them — minus copies of
+the original packer file — have the &amp;ldquo;fileless_code&amp;rdquo; tag, indicating that they
+are all shellcode-style modules with no PE header:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig13.png" title="TrickBot – 26d61225f07e39d9e35880631c5043626eb8e3846a526a44015d3a5d03642d55" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;TrickBot – 26d61225f07e39d9e35880631c5043626eb8e3846a526a44015d3a5d03642d55&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The use of pure shellcode and shellcode-style components in modern malware
+seems to be a growing trend, one that is being adopted by some of the most
+successful malware developers. At the same time, when we identify and analyze
+these components using code reuse analysis, we can see that they are mostly
+just a different version of the same thing.&lt;/p&gt;</description></item><item><title>ACBackdoor: Analysis of a New Multiplatform Backdoor</title><link>https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/</link><pubDate>Mon, 18 Nov 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have discovered an undetected Linux backdoor which does not have any known
 connections to other threat groups.&lt;/p&gt;

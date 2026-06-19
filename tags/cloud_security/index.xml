@@ -1,4 +1,325 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cloud_security</title><link>https://intezer.github.io/community-intelligence/tags/cloud_security/</link><description>Recent content in Cloud_security on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 09 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cloud_security/index.xml" rel="self" type="application/rss+xml"/><item><title>Technical Analysis: Pacha Group Competing against Rocke Group for Cryptocurrency Mining Foothold on the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</link><pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cloud_security</title><link>https://intezer.github.io/community-intelligence/tags/cloud_security/</link><description>Recent content in Cloud_security on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 08 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cloud_security/index.xml" rel="self" type="application/rss+xml"/><item><title>Attackers Abusing Legitimate Cloud Monitoring Tools to Conduct Cyber Attacks</title><link>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</link><pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;TeamTNT is a cybercrime group that targets cloud environments including Docker
+and Kubernetes instances. The group has been
+&lt;a href="https://www.cadosecurity.com/2020/08/17/teamtnt-the-first-crypto-mining-worm-to-steal-aws-credentials/"target="_blank" rel="noopener"&gt;previously documented&lt;/a&gt;
+using several tools including crypto-miners and Amazon Web Services (AWS)
+credential stealing worms.&lt;/p&gt;
+&lt;p&gt;TeamTNT has also been spotted using a malicious Docker image which can be found
+on Docker Hub to infect its victims&amp;rsquo; servers. Now the group is evolving. In a
+recent attack observed by Intezer, TeamTNT uses a new technique by abusing
+&lt;a href="https://www.weave.works/oss/scope/"target="_blank" rel="noopener"&gt;Weave Scope&lt;/a&gt;, a trusted tool which gives
+the user full access to their cloud environment and is integrated with Docker,
+Kubernetes, the Distributed Cloud Operating System (DC/OS), and AWS Elastic
+Compute Cloud (ECS). The attackers install this tool in order to map the cloud
+environment of their victim and execute system commands without deploying
+malicious code on the server.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;To our knowledge, this is the first time attackers have been caught using
+legitimate third party software to target cloud infrastructure&lt;/strong&gt;. When abused,
+Weave Scope gives the attacker full visibility and control over all assets in
+the victim&amp;rsquo;s cloud environment, essentially functioning as a backdoor.&lt;/p&gt;
+&lt;p&gt;Below we will describe the attack flow and the use of Weave Scope by the
+attacker.&lt;/p&gt;
+&lt;h2&gt;Attack Flow&lt;span class="hx:absolute hx:-mt-20" id="attack-flow"&gt;&lt;/span&gt;
+&lt;a href="#attack-flow" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;TeamTNT&amp;rsquo;s attacks typically involve the use of malicious Docker images from the
+Docker Hub in addition to crypto-miners and malicious scripts. The uniqueness
+of the recent attack observed by Intezer is the group abuses a legitimate open
+source tool called Weave Scope to gain full control over the victim&amp;rsquo;s cloud
+infrastructure.&lt;/p&gt;
+&lt;p&gt;Weave Scope is an open source tool from
+&lt;a href="https://www.weave.works/oss/scope/"target="_blank" rel="noopener"&gt;Weave Works&lt;/a&gt;, a company that offers
+automation tools for working with containerized applications. It provides
+monitoring, visualization, and control over Docker and Kubernetes. Using a
+dashboard accessible from the browser the user gains full control over the
+infrastructure including all information and metadata about containers,
+processes, and hosts.&lt;/p&gt;
+&lt;p&gt;Weave Scope is a powerful utility, giving the attackers access to all
+information about the victim&amp;rsquo;s server environment with the ability to control
+them including: installed applications, connection between the cloud workloads,
+use of the memory and CPU, and a list of existing containers with the ability
+to start, stop, and open interactive shells in any of these containers. By
+installing a legitimate tool such as Weave Scope the attackers reap all the
+benefits as if they had installed a backdoor on the server, with significantly
+less effort and without needing to use malware.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;The image above is a Weave Scope visualization of a Linux server. On the left
+is the open terminal of a Nginx-based container. On the right is a view of all
+the containers on the server.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;To install Weave Scope on the server the attackers use an exposed Docker API
+port and create a new privileged container with a clean Ubuntu image. The
+container is configured to mount the file system of the container to the
+filesystem of the victim server, thus gaining the attackers access to all files
+on the server. The initial command given to the container is to download and
+execute several cryptominers.&lt;/p&gt;
+&lt;p&gt;The attackers then attempt to gain root access to the server by setting up a
+local privileged user named &amp;lsquo;hilde&amp;rsquo; on the host server and use it in order to
+connect back via SSH.&lt;/p&gt;
+&lt;p&gt;Next the attackers download and install Weave Scope. As described in the
+installation guide in &lt;a href="https://github.com/weaveworks/scope"target="_blank" rel="noopener"&gt;Weave Scope&amp;rsquo;s git&lt;/a&gt;,
+it takes only a few commands to complete installation of the tool.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Once installed, the attackers can connect to the Weave Scope dashboard via HTTP
+on port 4040 and gain full visibility and control over the victim&amp;rsquo;s
+infrastructure.&lt;/p&gt;
+&lt;p&gt;From the dashboard the attackers can see a visual map of the Docker runtime
+cloud environment and give shell commands without needing to deploy any
+malicious backdoor component. Not only is this scenario incredibly rare, to our
+knowledge this is the first time an attacker has downloaded legitimate software
+to use as an admin tool on the Linux operating system.&lt;/p&gt;
+&lt;h2&gt;Mitigation Recommendations&lt;span class="hx:absolute hx:-mt-20" id="mitigation-recommendations"&gt;&lt;/span&gt;
+&lt;a href="#mitigation-recommendations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Precise and correct configuration of cloud workloads and services can prevent
+many attacks which is why it&amp;rsquo;s important to take the time and effort to check
+them. To protect yourself from this attack we recommend to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Close exposed Docker API ports: This attack takes advantage of a common
+misconfiguration of the Docker API which gives the attacker full control over
+the Docker service. Therefore, Docker API ports should be closed or contain
+restricted access policies in the firewall.&lt;/li&gt;
+&lt;li&gt;Block incoming connections to port 4040: Weave Scope uses default port 4040
+to make the dashboard accessible and anyone with access to the network can
+view the dashboard. Similar to the Docker API port, this port should be
+closed or restricted by the firewall.&lt;/li&gt;
+&lt;li&gt;Block the IOCs provided below.&lt;/li&gt;
+&lt;li&gt;Check out our article
+&lt;a href="https://intezer.com/blog/best-practices-for-securing-a-docker-runtime-environment/"target="_blank" rel="noopener"&gt;Best Practice for Securing a Docker Runtime environment&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Apply Zero Trust Execution to Your Workloads&lt;span class="hx:absolute hx:-mt-20" id="apply-zero-trust-execution-to-your-workloads"&gt;&lt;/span&gt;
+&lt;a href="#apply-zero-trust-execution-to-your-workloads" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Zero Trust Execution is viewed by market research firms as the best practice
+for securing cloud workloads for reasons like the nature of this TeamTNT
+attack. ZTE creates a trusted baseline of your workloads and monitors for any
+new process or injected code. Any unauthorized code or applications that drift
+from the pre-approved baseline are blocked from running in your cloud
+environment, allowing you to retain a trusted state.&lt;/p&gt;
+&lt;p&gt;In this scenario, although Weave Scope is a legitimate administration tool
+(it&amp;rsquo;s not malware and therefore doesn&amp;rsquo;t contain malicious code), the
+application was still flagged by ZTE because it&amp;rsquo;s unauthorized code that
+deviates from the trusted baseline.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://intezer.com/blog/cloud-workload-protection/what-is-zero-trust-execution-definition-adoption-more/"target="_blank" rel="noopener"&gt;This article&lt;/a&gt;
+explains how you can adopt a genetic-based ZTE approach to alleviate some of
+the high overhead caused by traditional implementations.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;A special thank you to Idan Katz for his contribution to this research.&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;Update from Weave Works&lt;span class="hx:absolute hx:-mt-20" id="update-from-weave-works"&gt;&lt;/span&gt;
+&lt;a href="#update-from-weave-works" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Weave Works has since provided this
+&lt;a href="https://www.weave.works/blog/preventing-malicious-use-of-weave-scope/"target="_blank" rel="noopener"&gt;in-depth article&lt;/a&gt;
+on how to prevent malicious attacks using Weave Scope. The article covers both
+how Scope is used and how you can prevent it being misused by securing it in
+any Kubernetes installation.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;85[.]214.149.236
+https://iplogger[.]org/2Xvkv5
+24d7d21c3675d66826da0372369ec3e8
+8c6681daba966addd295ad89bf5146af
+656eca480e2161e8645f9b29af7e4762
+8ffdba0c9708f153237aabb7d386d083
+45385f7519c11a58840931ee38fa3c7b&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Watch Your Containers: Doki Infecting Docker Servers in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</link><pubDate>Tue, 28 Jul 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</guid><description>
+&lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
+&lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://blog.netlab.360.com/a-new-mining-botnet-blends-its-c2s-into-ngrok-service/"target="_blank" rel="noopener"&gt;Ngrok Mining Botnet&lt;/a&gt;
+is an active campaign targeting exposed Docker servers in AWS, Azure, and
+other cloud platforms. It has been active for at least two years.&lt;/li&gt;
+&lt;li&gt;We have detected a recent attack which includes a completely undetected Linux
+malware and a previously undocumented technique, using a blockchain wallet
+for generating C&amp;amp;C domain names.&lt;/li&gt;
+&lt;li&gt;Anyone with publicly open Docker API access is at high risk to be hacked
+within the span of just a few hours. This is probable due to the hackers'
+automated and continuous internet-wide scanning for vulnerable victims.&lt;/li&gt;
+&lt;li&gt;The new malware, dubbed &amp;ldquo;Doki&amp;rdquo;, hasn&amp;rsquo;t been detected by any of the 60 malware
+detection engines in VirusTotal since it was first analyzed on January 14,
+2020.&lt;/li&gt;
+&lt;li&gt;The attacker is using the infected victims to search for additional
+vulnerable cloud servers.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Linux threats are becoming more common. A contributing factor to this is the
+increasing shift and reliance on cloud environments, which are mostly based on
+Linux infrastructure. Hence, attackers have been adapting accordingly with new
+tools and techniques designed specifically for this infrastructure.&lt;/p&gt;
+&lt;p&gt;A technique that has become popular is the abuse of misconfigured Docker API
+ports, where attackers scan for publicly accessible Docker servers and exploit
+them in order to set up their own containers and execute malware on the
+victim&amp;rsquo;s infrastructure.&lt;/p&gt;
+&lt;p&gt;One of the longest ongoing attack campaigns exploiting Docker API ports is the
+Ngrok Botnet, previously reported on by researchers at
+&lt;a href="https://blog.netlab.360.com/a-new-mining-botnet-blends-its-c2s-into-ngrok-service/"target="_blank" rel="noopener"&gt;Netlab&lt;/a&gt;
+and
+&lt;a href="https://blog.trendmicro.com/trendlabs-security-intelligence/exposed-docker-control-api-and-community-image-abused-to-deliver-cryptocurrency-mining-malware/"target="_blank" rel="noopener"&gt;Trend Micro&lt;/a&gt;.
+As part of the attack, the attackers abuse Docker configuration features in
+order to elude standard container restrictions and execute various malicious
+payloads from the host. They also deploy a network scanner and use it to scan
+the cloud providers&amp;rsquo; IP ranges for additional potentially vulnerable targets.
+Our evidence shows that it takes only a few hours from when a new misconfigured
+Docker server is up online to become infected by this campaign.&lt;/p&gt;
+&lt;p&gt;Recently, we have detected a new malware payload that is different from the
+standard cryptominers typically deployed in this attack. The malware is a fully
+undetected backdoor which we have named Doki.&lt;/p&gt;
+&lt;p&gt;Doki uses a previously undocumented method to contact its operator by abusing
+the Dogecoin cryptocurrency blockchain in a unique way in order to dynamically
+generate its C2 domain address. The malware has managed to stay under the radar
+for over six months despite samples being publicly available in VirusTotal.&lt;/p&gt;
+&lt;p&gt;In this article we will cover the attack and provide a detailed analysis of the
+techniques that were implemented by the undetected Doki backdoor.&lt;/p&gt;
+&lt;h2&gt;The Attack&lt;span class="hx:absolute hx:-mt-20" id="the-attack"&gt;&lt;/span&gt;
+&lt;a href="#the-attack" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The threat is targeting misconfigured containerized environments in the cloud.
+The attackers scan for publicly accessible Docker API ports and exploit them in
+order to set up their own containers and execute malware on the victims'
+infrastructure. The attackers are spawning and deleting a number of containers
+during this attack.&lt;/p&gt;
+&lt;p&gt;Each container that is created during the attack is based on an alpine image
+with curl installed. The image is available on the
+&lt;a href="https://hub.docker.com/r/byrnedo/alpine-curl/tags/"target="_blank" rel="noopener"&gt;Docker hub&lt;/a&gt;. The image is
+not malicious but rather it&amp;rsquo;s being abused to carry out malicious activities.
+By using an image that contains the curl software, curl commands are executed
+as soon as the container is up and running.&lt;/p&gt;
+&lt;p&gt;The advantage of using a publicly available image is the attacker doesn&amp;rsquo;t need
+to hide it on Docker hub or other hosting solutions. Instead, the attackers can
+use an existing image and run their own logic and malware on top of it.&lt;/p&gt;
+&lt;p&gt;As mentioned above, attackers can create any container, however, to execute
+code from the hosting machine they must use a container escape method. The
+technique is based on the creation of a new container, accomplished by posting
+a
+‘&lt;a href="https://docs.docker.com/engine/api/v1.40/#operation/ContainerCreate"target="_blank" rel="noopener"&gt;create&lt;/a&gt;'
+API request. The body of the request contains configuration parameters for the
+container. One of the parameters is
+&lt;a href="https://docs.docker.com/storage/bind-mounts/"target="_blank" rel="noopener"&gt;bind&lt;/a&gt; which lets the user
+configure which file or directory on the host machine to mount into a
+container.&lt;/p&gt;
+&lt;p&gt;Containers that are created during the attack are configured to bind
+&lt;code&gt;/tmpXXXXXX&lt;/code&gt; directory to the root directory of the hosting server. This means
+every file on the server&amp;rsquo;s filesystem can be accessed and even modified, with
+the correct user permissions, from within the container.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://ngrok.com/"target="_blank" rel="noopener"&gt;Ngrok&lt;/a&gt; is a service which provides secure tunnels to
+connect between local servers and the public internet. The attacker abuses
+Ngrok to craft unique URLs with a short lifetime and uses them to download
+payloads during the attack by passing them to the curl based image. The
+downloaded payload is saved in &lt;code&gt;/tmpXXXXXX&lt;/code&gt; directory in the container.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig1.png" title="The command that created the container as seen on the syslog of the attacked server" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The command that created the container as seen on the syslog of the attacked server&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;By using the bind configuration the attacker can control the cron utility of
+the host. The attacker modifies the host&amp;rsquo;s cron to execute the downloaded
+payload every minute. We observed two types of payloads, one is a network
+scanner script and the other is a downloader script.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The network scanner uses zmap, zgrap, and jq to scan ports associated with
+Redis, Docker, SSH, and HTTP.&lt;/p&gt;
+&lt;p&gt;Using a list of hardcoded ranges of IP addresses, which belong mostly to cloud
+servers such as AWS and local cloud providers in foreign regions (we have seen
+providers from China, Austria, and the United Kingdom), the script gathers the
+information and uploads it to another Ngrok URL.&lt;/p&gt;
+&lt;p&gt;The downloader script is responsible for downloading and installing various
+malware binaries, often one of several well known cryptominers. We have noticed
+it can also install a fully undetected malware component. We named this malware
+Doki and will provide a technical analysis in the next section.&lt;/p&gt;
+&lt;p&gt;The attacker has full control over the configuration of the container he
+creates and the files that are dropped into the container. By using legitimate
+API commands, the attacker is able to escape from the container he created and
+execute any code from within the server itself.&lt;/p&gt;
+&lt;h2&gt;The Doki Malware&lt;span class="hx:absolute hx:-mt-20" id="the-doki-malware"&gt;&lt;/span&gt;
+&lt;a href="#the-doki-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Doki is a backdoor for Linux which function is to execute code received from
+its operators. The malware utilizes the
+&lt;a href="https://account.dyn.com/"target="_blank" rel="noopener"&gt;DynDNS service&lt;/a&gt; and a unique Domain Generation
+Algorithm (DGA) based on the Dogecoin cryptocurrency blockchain in order to
+find the domain of its C2 in real time.&lt;/p&gt;
+&lt;p&gt;The malware is a fully undetected backdoor. It has managed to stay undetected
+for over six months despite having
+&lt;a href="https://www.virustotal.com/gui/file/4aadb47706f0fe1734ee514e79c93eed65e1a0a9f61b63f3e7b6367bd9a3e63b/detection"target="_blank" rel="noopener"&gt;been uploaded to VirusTotal&lt;/a&gt;
+on January 14, 2020 and scanned multiple times since.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Doki is multi-threaded and uses the embedTLS library for cryptographic
+functions and network communication. When executed, the malware will create a
+seperate thread in order to handle all C2 communications.&lt;/p&gt;
+&lt;p&gt;The malware starts by generating a C2 domain using its unique DGA. In order to
+construct the C2 address the malware performs the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Query dogechain.info API, a Dogecoin cryptocurrency block explorer, for the
+value that was sent out (spent) from a hardcoded wallet address that is
+controlled by the attacker. The query format is:
+&lt;code&gt;https://dogechain.info/api/v1/address/sent/{address}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Perform SHA256 on the value returned under &amp;ldquo;sent&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Save the first 12 characters from the hex-string representation of the SHA256
+value, to be used as the subdomain.&lt;/li&gt;
+&lt;li&gt;Construct the full address by appending the subdomain to ddns.net. An example
+domain would be: &lt;code&gt;6d77335c4f23[.]ddns[.]net&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Using this technique the attacker controls which address the malware will
+contact by transferring a specific amount of Dogecoin from his or her wallet.
+Since only the attacker has control over the wallet, only he can control when
+and how much dogecoin to transfer, and thus switch the domain accordingly.
+Additionally, since the blockchain is both immutable and decentralized, this
+novel method can prove to be quite resilient to both infrastructure takedowns
+from law enforcement and domain filtering attempts from security products.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s worth noting that once the domain is generated, the malware ensures it&amp;rsquo;s
+not &amp;ldquo;46927e019820&amp;rdquo;, which is what&amp;rsquo;s generated for &amp;ldquo;0.000000&amp;rdquo;, meaning when no
+Dogecoin was ever transferred from the wallet. In the case that this domain is
+generated, the malware will exit without continuing any further.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Otherwise, the malware continues to download a shell script by contacting its
+C2 via HTTPS, using the URL &lt;code&gt;&amp;lt;c2_address&amp;gt;/update.sh&lt;/code&gt; and saving the returned
+data as &lt;code&gt;/tmp/update.sh&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;It will then resolve the current process&amp;rsquo;s PID and path to be used as script
+arguments, and proceeds to execute the script by running:
+&lt;code&gt;/bin/sh -c ./update.sh \&amp;lt;process_id&amp;gt; \&amp;lt;process_path&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Meanwhile, the main thread of the malware reads from STDIN, expecting to
+receive binary data from that shell script. The arguments are passed to the
+script in order to allow it to communicate with the malware in this way and
+receive code to execute.&lt;/p&gt;
+&lt;p&gt;If data is received via STDIN, the malware saves it as a file under /tmp,
+choosing its name randomly from a predefined list of Linux kernel modules.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;While it&amp;rsquo;s a very basic deception method, it&amp;rsquo;s not something commonly seen in
+Linux malware, which often don&amp;rsquo;t bother disguising as system files.&lt;/p&gt;
+&lt;p&gt;Finally, the malware proceeds to fork so the child process executes the file
+and the main process loops to repeat the malware&amp;rsquo;s logic flow.&lt;/p&gt;
+&lt;h2&gt;Bottom Line&lt;span class="hx:absolute hx:-mt-20" id="bottom-line"&gt;&lt;/span&gt;
+&lt;a href="#bottom-line" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Ngrok Botnet campaign has been ongoing for over two years and is rather
+effective, infecting any misconfigured Docker API server in a matter of hours.
+The incorporation of the unique and undetected Doki malware indicates the
+operation is continuing to evolve.&lt;/p&gt;
+&lt;p&gt;This attack is very dangerous due to the fact the attacker uses container
+escape techniques to gain full control of the victim&amp;rsquo;s infrastructure. Our
+evidence shows that it takes only a few hours from when a new misconfigured
+Docker server is up online to become infected by this campaign.&lt;/p&gt;
+&lt;h3&gt;Immediate Action Required by Container Server Owners&lt;span class="hx:absolute hx:-mt-20" id="immediate-action-required-by-container-server-owners"&gt;&lt;/span&gt;
+&lt;a href="#immediate-action-required-by-container-server-owners" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Both companies and individuals who own container servers in the cloud must
+immediately fix configuration to prevent exposure. This includes: Checking for
+any exposed ports, verifying there are no foregin or unknown containers among
+the existing containers, and monitoring excessive use of resources.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;We recommend you read our article,
+&lt;a href="https://intezer.com/blog/best-practices-for-securing-a-docker-runtime-environment/"target="_blank" rel="noopener"&gt;Best Practices for Securing a Docker Runtime Environment&lt;/a&gt;.
+You can also run our
+&lt;a href="https://github.com/intezer/yara-rules/blob/master/Doki_Attack.yar"target="_blank" rel="noopener"&gt;YARA rule&lt;/a&gt;
+on your cloud servers to check if you have been infected by this campaign.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;6d77335c4f23[.]ddns[.]net
+36b397f0da96fa0639a1e60f56af8be1a3060c4d1b98f108b7dc8e3c572b3337
+4aadb47706f0fe1734ee514e79c93eed65e1a0a9f61b63f3e7b6367bd9a3e63b
+9907eaa1b487306c43b1352369f0409ba59a9aa0f5590fbd60e8825999db1f14&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Technical Analysis: Pacha Group Competing against Rocke Group for Cryptocurrency Mining Foothold on the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</link><pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</guid><description>
 &lt;p&gt;Pacha Group is a crypto-mining threat actor we at Intezer discovered and
 profiled in a &lt;a href="../../../2019/02/technical-analysis-pacha-group"&gt;blog post&lt;/a&gt;
 published on February 28, 2019. This threat actor targeted Linux servers dating

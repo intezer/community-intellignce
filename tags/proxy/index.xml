@@ -1,0 +1,186 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Proxy</title><link>https://intezer.github.io/community-intelligence/tags/proxy/</link><description>Recent content in Proxy on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 24 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/proxy/index.xml" rel="self" type="application/rss+xml"/><item><title>Stantinko's Proxy After Your Apache Server</title><link>https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/</link><pubDate>Tue, 24 Nov 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/</guid><description>
+&lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
+&lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It is common for threat actors to evolve their Linux malware. BlackTech with
+their new &lt;a href="https://blogs.jpcert.or.jp/en/2020/11/elf-plead.html"target="_blank" rel="noopener"&gt;ELF_PLEAD&lt;/a&gt;
+malware and Winnti&amp;rsquo;s
+&lt;a href="https://twitter.com/IntezerLabs/status/1308740144120213506"target="_blank" rel="noopener"&gt;PWNLNX&lt;/a&gt; tool are
+recent examples. On par with this trend, we have discovered a new version of a
+Linux proxy trojan related to Stantinko group. The malware has just one
+detection in VirusTotal at the time of this publication.&lt;/p&gt;
+&lt;p&gt;Stantinko group is known for targeting Windows operating systems with ongoing
+campaigns dating back to 2012. The group&amp;rsquo;s malware mainly consists of
+coin-miners and adware botnets.&lt;/p&gt;
+&lt;p&gt;In a 2017
+&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;white paper&lt;/a&gt;
+summarizing Stantinko&amp;rsquo;s operations, researchers at ESET analyzed a Linux trojan
+proxy. Up until now, this was the only known Linux malware belonging to
+Stantinko.&lt;/p&gt;
+&lt;p&gt;We have identified a new version of this Linux trojan masqueraded as &lt;code&gt;httpd&lt;/code&gt;.
+httpd is Apache Hypertext Transfer Protocol Server, a commonly used program on
+Linux servers. The sample&amp;rsquo;s version is 2.17, and the older version is 1.2*.&lt;/p&gt;
+&lt;p&gt;We believe this malware is part of a broader campaign that takes advantage of
+compromised Linux servers. Below we provide a technical analysis of the malware
+and compare it to its previous version.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The new proxy version file name is &lt;code&gt;httpd&lt;/code&gt; and it has only one detection in
+VirusTotal at the time of this writing. Figure 1 below depicts the result from
+VirusTotal. The sample was uploaded on November 7, 2020 from Russia, one of
+Stantinko&amp;rsquo;s main target countries. The sample is an unstripped 64-bit ELF
+binary.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig1.png" title="Figure 1: The sample&amp;#39;s detection report in VirusTotal (7d2a840048f32e487f8a61d7fc1a0c39)." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: The sample&amp;#39;s detection report in VirusTotal (7d2a840048f32e487f8a61d7fc1a0c39).&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Malware Flow&lt;span class="hx:absolute hx:-mt-20" id="malware-flow"&gt;&lt;/span&gt;
+&lt;a href="#malware-flow" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Upon execution, the malware will validate a configuration file which is
+delivered together with the malware on the infected machine. The malware
+expects the configuration file to be located at &lt;code&gt;/etc/pd.d/proxy.conf&lt;/code&gt;. If the
+configuration file does not exist, or if it lacks the required structure, the
+malware exits without conducting any additional malicious activity. Figure 2
+below is a snippet from the configuration parsing logic. The configurations are
+stored as key/value pairs.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig2.png" title="Figure 2: ParseConfigElement function is used to parse the configuration file." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: ParseConfigElement function is used to parse the configuration file.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The configuration file is expected to have the following keys: &lt;code&gt;proxy_ip&lt;/code&gt;,
+&lt;code&gt;port&lt;/code&gt;, &lt;code&gt;redirect_url&lt;/code&gt;, &lt;code&gt;localhost&lt;/code&gt;, &lt;code&gt;ip_header&lt;/code&gt; and
+&lt;code&gt;request_header_log_files&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;After validating and parsing the configuration file structure, the
+&lt;code&gt;start_demon&lt;/code&gt; function is called and the proxy daemonizes itself. Then, it
+creates a socket and a listener to accept connections from a client. We believe
+the clients who interact with this Trojan are other infected machines that are
+part of the campaign. Figure 3 is a snippet taken from the main function,
+showing the general code flow described above.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig3.png" title="Figure 3: Main function flow snippet" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: Main function flow snippet&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Once a client connects to the listener, the program calls the
+&lt;code&gt;on_client_connect&lt;/code&gt; function. First, it checks if the request method is &lt;code&gt;GET&lt;/code&gt;,
+&lt;code&gt;POST&lt;/code&gt; or &lt;code&gt;NOTIFY&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If the request method is GET, the program will reply with a 301 redirect HTTP
+response containing the &lt;code&gt;redirect_url&lt;/code&gt; parameter from the configuration file.
+This means that if the C&amp;amp;C IP is simply searched, using a browser for instance,
+the response could be misleading by redirecting to a benign website, leaving no
+trace of an extra payload that is used in the attack. If the request method is
+POST or NOTIFY, the malware will build a POST request to send to the C&amp;amp;C server
+based on the client&amp;rsquo;s HTTP request headers and content, using the
+&lt;code&gt;create_post_data&lt;/code&gt; function. The program will then call the
+&lt;code&gt;mysql_server_do_request&lt;/code&gt; function which is in charge of sending the POST
+request to the C&amp;amp;C. Figure 4 shows a snippet from the &lt;code&gt;on_client_connect&lt;/code&gt;
+function.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig4.png" title="Figure 4: Snippet from on_client_connect function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: Snippet from on_client_connect function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The POST request is sent to one of the following paths on the C&amp;amp;C server:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/kbdmai/index.php&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/kbdmai/dht/index.php&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/kbdmai/DRTIPROV/index.php&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/kbdmai/winsvc/index.php&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/kbdmai/anti_rstrui/index.php&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The path is selected in the detect_proxy_script function based on the data sent
+from the client. We believe that each path delivers a different payload as part
+of the campaign&amp;rsquo;s attack chain. The C&amp;amp;C IP address is stored as the proxy_ip
+parameter in the config file. Finally, the proxy forwards the C&amp;amp;C response back
+to the client. Figure 5 emphasizes the attack flow at a high level.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig5.png" title="Figure 5: Attack Flow" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: Attack Flow&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;An infected client sends a POST or NOTIFY HTTP request to the proxy&lt;/li&gt;
+&lt;li&gt;The proxy parses the request and passes on a POST request to the attacker&amp;rsquo;s
+server&lt;/li&gt;
+&lt;li&gt;The attacker&amp;rsquo;s server replies to the proxy and the proxy passes on the
+response to the client&lt;/li&gt;
+&lt;li&gt;A non-infected machine sends a GET request to the proxy&lt;/li&gt;
+&lt;li&gt;The proxy replies with a 301 Redirect to a preconfigured URL&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Versions Comparison&lt;span class="hx:absolute hx:-mt-20" id="versions-comparison"&gt;&lt;/span&gt;
+&lt;a href="#versions-comparison" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;With a nearly three year difference between the two versions, the trojan
+proxies have similar purpose but they are not identical. In this section we
+will compare version 1.2* and 2.17 based on three criteria: Parameters,
+functionality, and ELF structure.&lt;/p&gt;
+&lt;h3&gt;Parameters&lt;span class="hx:absolute hx:-mt-20" id="parameters"&gt;&lt;/span&gt;
+&lt;a href="#parameters" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The new version (2.17) uses a configuration file that is dropped on the
+victim&amp;rsquo;s machine together with the malware. The configuration file contains the
+C&amp;amp;C IP address together with other parameters. In the old version (1.2*) the
+C&amp;amp;C is hardcoded in the binary, making it easier to block the campaign&amp;rsquo;s
+traffic once the binary is detected.&lt;/p&gt;
+&lt;h3&gt;Functionality&lt;span class="hx:absolute hx:-mt-20" id="functionality"&gt;&lt;/span&gt;
+&lt;a href="#functionality" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In addition to the proxy functionality, the old version receives files and self
+update commands from the C&amp;amp;C. The new version is more simple in that it only
+functions as a proxy.&lt;/p&gt;
+&lt;h3&gt;ELF Structure&lt;span class="hx:absolute hx:-mt-20" id="elf-structure"&gt;&lt;/span&gt;
+&lt;a href="#elf-structure" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Both versions 1.2* and 2.17 are unstripped and include debug symbols. The old
+version is statically linked, whereas the new version is dynamically linked.&lt;/p&gt;
+&lt;h2&gt;The Stantinko Connection&lt;span class="hx:absolute hx:-mt-20" id="the-stantinko-connection"&gt;&lt;/span&gt;
+&lt;a href="#the-stantinko-connection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After uploading the file to Intezer Analyze we noticed that the new variant
+shares several function names with the old one. These functions, such as
+&lt;code&gt;get_binary_full_path&lt;/code&gt; and &lt;code&gt;read_variable_string&lt;/code&gt;, are not called statically in
+the new version. We are almost certain these functions are leftover from the
+previous variant.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig6.png" title="Figure 6: String reuse between the Linux versions" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: String reuse between the Linux versions&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Interestingly, the C&amp;amp;C paths hint at some of Stantinko&amp;rsquo;s earlier campaigns
+based on
+&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;ESET&amp;rsquo;s research&lt;/a&gt;.
+An example of the hard coded paths is shown in Figure 7. The root directory
+name is kbdmai. &lt;code&gt;KDBMAI.dll&lt;/code&gt; is a malware filename used by Stantinko in 2012.
+Also, the malware&amp;rsquo;s C&amp;amp;C was hosted on &lt;code&gt;kdbmai[.]net&lt;/code&gt;. Another interesting
+directory is DRTIPROV. DRTIPROV is part of a Program Database (pdb) path from
+one of the group&amp;rsquo;s Windows malware.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig7.png" title="Figure 7: Path hard coded in the detect_proxy_script function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 7: Path hard coded in the detect_proxy_script function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Wrap-Up&lt;span class="hx:absolute hx:-mt-20" id="wrap-up"&gt;&lt;/span&gt;
+&lt;a href="#wrap-up" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Stantinko is the latest malware targeting Linux servers to fly under the radar,
+joining threats such as
+&lt;a href="../../../2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud"&gt;Doki&lt;/a&gt;,
+&lt;a href="../../../2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware"&gt;IPStorm&lt;/a&gt;
+and
+&lt;a href="https://securelist.com/ransomexx-trojan-attacks-linux-systems/99279/"target="_blank" rel="noopener"&gt;RansomEXX&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The code from the new Stantinko sample is now indexed in Intezer&amp;rsquo;s Genome
+Database.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;I want to thank Nicole Fishbein and Joakim Kennedy for their contributions to
+this analysis&lt;/em&gt;.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;New version: 2.17&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;1de81bf6ee490b6bebe9f27d5386a48700e8431f902f4f17d64ddc5d8509ca7a&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Old version: 1.2*&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;889aa5a740a3c7441cdf7759d4b1c41c98fd048f4cf7e18fcdda49ea3911d5e5
+968b41b6ca0e12ea86e51e0d9414860d13599cd127ad860e1c52c2678f4f2cb9
+43a6894d5953b37f92940d5c783c9977690f358b5e25bba8c096fa54657bb2e5
+a305d488733d50ea92a2794cb6e0aa9d1d176e2c8906305ea48ff503fc2eb276&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>
