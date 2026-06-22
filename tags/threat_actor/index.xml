@@ -1,4 +1,171 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Threat_actor</title><link>https://intezer.github.io/community-intelligence/tags/threat_actor/</link><description>Recent content in Threat_actor on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 24 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/threat_actor/index.xml" rel="self" type="application/rss+xml"/><item><title>Stantinko's Proxy After Your Apache Server</title><link>https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/</link><pubDate>Tue, 24 Nov 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Threat_actor</title><link>https://intezer.github.io/community-intelligence/tags/threat_actor/</link><description>Recent content in Threat_actor on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 27 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/threat_actor/index.xml" rel="self" type="application/rss+xml"/><item><title>Wrapping Up a Year of Infamous Bazar Campaigns</title><link>https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</link><pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</guid><description>
+&lt;h2&gt;Bazar is the latest tool developed by the TrickBot gang&lt;span class="hx:absolute hx:-mt-20" id="bazar-is-the-latest-tool-developed-by-the-trickbot-gang"&gt;&lt;/span&gt;
+&lt;a href="#bazar-is-the-latest-tool-developed-by-the-trickbot-gang" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Common malware used for cybercrime such as Agent Tesla, Dridex and Formbook
+have been around for at least five years and are still distributed and active.
+About one year ago, a new malware named Bazar breathed some fresh air into this
+landscape. Since its
+&lt;a href="https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/"target="_blank" rel="noopener"&gt;first campaign&lt;/a&gt;,
+Bazar has been extremely active and has taken part in large-scale breaches
+including the
+&lt;a href="https://www.bleepingcomputer.com/news/security/uhs-hospitals-hit-by-reported-country-wide-ryuk-ransomware-attack/"target="_blank" rel="noopener"&gt;nationwide Ryuk ransomware attack on UHS hospitals&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The name &amp;lsquo;Bazar&amp;rsquo; was given to the malware because of its use of
+&lt;a href="https://emercoin.com/en/emerdns"target="_blank" rel="noopener"&gt;EmerDNS&lt;/a&gt; (.bazar) domains for
+command-and-control networking. On top of serving as a backdoor, Bazar is
+designed to gain a foothold on the victim&amp;rsquo;s machine to deliver an additional
+payload as a next phase of the attack. The time between Bazar installation and
+payload delivery can vary between a
+&lt;a href="https://thedfirreport.com/2020/11/05/ryuk-speed-run-2-hours-to-ransom/"target="_blank" rel="noopener"&gt;few hours&lt;/a&gt;
+to &lt;a href="https://www.hhs.gov/sites/default/files/bazarloader.pdf"target="_blank" rel="noopener"&gt;days&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this post we will profile Bazar and highlight four prominent campaigns
+delivering this year-old malware.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Key Profiling&lt;span class="hx:absolute hx:-mt-20" id="key-profiling"&gt;&lt;/span&gt;
+&lt;a href="#key-profiling" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Attribution&lt;span class="hx:absolute hx:-mt-20" id="attribution"&gt;&lt;/span&gt;
+&lt;a href="#attribution" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Based on code similarities, delivery, infrastructure and operation methods,
+researchers believe that Bazar was developed by the TrickBot gang (aka Team9).&lt;/p&gt;
+&lt;h3&gt;Targets&lt;span class="hx:absolute hx:-mt-20" id="targets"&gt;&lt;/span&gt;
+&lt;a href="#targets" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The operators behind the malware are mainly financially motivated, meaning they
+target organizations with high capital.&lt;/p&gt;
+&lt;h3&gt;Delivery Method&lt;span class="hx:absolute hx:-mt-20" id="delivery-method"&gt;&lt;/span&gt;
+&lt;a href="#delivery-method" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware delivery method is purely based on social engineering initiated
+with a phishing email. The email will usually contain a link to a website,
+hosting a malicious Microsoft Office document, delivering Bazar upon running
+the document on a victim&amp;rsquo;s machine, or it will host the malware itself
+masqueraded as a document.&lt;/p&gt;
+&lt;h3&gt;Stealth&lt;span class="hx:absolute hx:-mt-20" id="stealth"&gt;&lt;/span&gt;
+&lt;a href="#stealth" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Bazar implements the following evasion techniques to bypass detection:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://attack.mitre.org/techniques/T1553/002/"target="_blank" rel="noopener"&gt;Signing malware with certificates&lt;/a&gt;:
+Antiviruses tend to rely on code signing certificates to increase the
+credibility of a file. Therefore, signed files are less likely to be detected
+as malicious by Antivirus vendors.&lt;/p&gt;
+&lt;p&gt;Fileless payload: Bazar uses a lightweight loader to inject its fileless
+payload into memory. Fileless malware challenges traditional Antivirus
+solutions as it resides only in memory and leaves no footprint on disk. The
+following is the genetic analysis of a Bazar sample
+(&lt;code&gt;3578e96b72cba790179d546f11e045ca&lt;/code&gt;) injecting fileless code into memory.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig2.png" title="Bazar sample (3578e96b72cba790179d546f11e045ca) injects fileless code" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Bazar sample (3578e96b72cba790179d546f11e045ca) injects fileless code&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Use of decentralized C2C: For its C2C communication, Bazar uses
+&lt;a href="https://emercoin.com/en/emerdns"target="_blank" rel="noopener"&gt;EmerDNS&lt;/a&gt; which is a decentralized domain name
+system based on Emercoin blockchain technology. EmerDNS domains cannot be
+altered, revoked, or suspended, which allows Bazar&amp;rsquo;s operations to be nearly
+immune from a take down attempt by law enforcement.&lt;/p&gt;
+&lt;h2&gt;Timeline and Milestone Campaigns&lt;span class="hx:absolute hx:-mt-20" id="timeline-and-milestone-campaigns"&gt;&lt;/span&gt;
+&lt;a href="#timeline-and-milestone-campaigns" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;As Bazar evolves and takes part in different phishing campaigns, we are
+highlighting the top four milestones of this threat so far.&lt;/p&gt;
+&lt;h3&gt;Apr 2020 – Bazar Exposed to the Masses&lt;span class="hx:absolute hx:-mt-20" id="apr-2020--bazar-exposed-to-the-masses"&gt;&lt;/span&gt;
+&lt;a href="#apr-2020--bazar-exposed-to-the-masses" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;With the outburst of COVID-19, many threat actors leveraged the pandemic for
+phishing campaigns. This theme was used as part of the
+&lt;a href="https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/"target="_blank" rel="noopener"&gt;first documented campaign&lt;/a&gt;
+delivering Bazar.&lt;/p&gt;
+&lt;p&gt;Similar to other campaigns using Bazar, this one began with a phishing email
+containing a link to a page hosted on Google Docs. On this page, the victim was
+lured to click on a link preview to a doc report. By clicking on the link, the
+victim would download the Bazar malware executable masqueraded as a document.
+Because
+&lt;a href="https://www.bleepingcomputer.com/news/microsoft/hiding-windows-file-extensions-is-a-security-risk-enable-now/"target="_blank" rel="noopener"&gt;Windows does not present&lt;/a&gt;
+a file&amp;rsquo;s extension by default, threat actors are able to trick victims by
+masquerading a non-executable file type, so that the file has a word document
+icon but it is in fact an executable.&lt;/p&gt;
+&lt;p&gt;The next image shows a Google Docs page hosting the malware executable.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig3.png" title="COVID-19 themed phishing campaign (source: BleepingComputer)" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;COVID-19 themed phishing campaign (source: BleepingComputer)&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Interestingly, one of these phishing emails was sent to a BleepingComputer
+domain.&lt;/p&gt;
+&lt;h3&gt;Sep 2020 – Healthcare, Ransomware and Bazar in Between&lt;span class="hx:absolute hx:-mt-20" id="sep-2020--healthcare-ransomware-and-bazar-in-between"&gt;&lt;/span&gt;
+&lt;a href="#sep-2020--healthcare-ransomware-and-bazar-in-between" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;a href="https://www.bleepingcomputer.com/news/security/uhs-hospitals-hit-by-reported-country-wide-ryuk-ransomware-attack/"target="_blank" rel="noopener"&gt;UHS hospitals&lt;/a&gt;
+were hit by a Ryuk ransomware attack in September 2020. This attack was part of
+a greater trend targeting hospitals and other healthcare-related organizations
+in the United States.&lt;/p&gt;
+&lt;p&gt;These ransomware attacks were initiated with phishing emails sent to employees
+delivering Bazar but also BuerLoader or TrickBot. After an employee was lured
+to install Bazar, a Cobalt Strike Beacon was delivered to the victim&amp;rsquo;s machine
+for lateral movement and persistence. Together with Cobalt Strike, other
+penetration testing tools were installed and ran on the victim&amp;rsquo;s machine for
+reconnaissance and privilege escalation purposes. Ryuk ransomware was delivered
+as the final step of the attack to run widely on the organization&amp;rsquo;s assets.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig4.png" title="CISA alert on the ransomware campaign" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;CISA alert on the ransomware campaign&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This attack chain not only targeted the healthcare sector but also went after
+different organizations inside France after it became public that
+&lt;a href="https://www.lemagit.fr/actualites/252491402/Cyberattaque-Ryuk-chez-Sopra-Steria-ce-que-nous-apprennent-les-echantillons"target="_blank" rel="noopener"&gt;Sopra Steria&lt;/a&gt;,
+a French consulting organization, was hit by Ryuk.&lt;/p&gt;
+&lt;h3&gt;Jan 2021 – Hello, Who is This?&lt;span class="hx:absolute hx:-mt-20" id="jan-2021--hello-who-is-this"&gt;&lt;/span&gt;
+&lt;a href="#jan-2021--hello-who-is-this" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The BazarCall campaign may be the most interesting social engineering method
+used for delivering Bazar thus far.&lt;/p&gt;
+&lt;p&gt;As the first step, a personalized phishing email is sent claiming that a free
+trial for a [fake] product is about to expire, and the addressee will be
+charged via a &amp;ldquo;pre provided payment method.&amp;rdquo; The email also states that if the
+addressee wishes to drop the subscription, they can make a call to the
+&amp;ldquo;customer service center.&amp;rdquo; Once a victim calls the customer service center
+number, the &amp;ldquo;service provider&amp;rdquo; lures the user to browse a phishing website,
+insert a code, and click on &amp;ldquo;unsubscribe.&amp;rdquo; By clicking unsubscribe a malicious
+Microsoft Office document is downloaded delivering Bazar.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig5.png" title="Example of a BazarCall phishing email (source: Sophos)" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Example of a BazarCall phishing email (source: Sophos)&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The email has no indication of maliciousness as it does not contain any links
+or attachments but it is purely an attempt to exploit the innocence of the
+victims who are lured to make the phone call.&lt;/p&gt;
+&lt;p&gt;This &lt;a href="https://www.youtube.com/watch?v=uAkeXCYcl4Y"target="_blank" rel="noopener"&gt;YouTube video&lt;/a&gt; documents a
+phone call between a researcher posing as a victim and the &amp;ldquo;service provider.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;The campaign, which started by delivering BazarLoader, continues to deliver
+other loaders such as IceID.&lt;/p&gt;
+&lt;h3&gt;Feb 2021 – Nim What?&lt;span class="hx:absolute hx:-mt-20" id="feb-2021--nim-what"&gt;&lt;/span&gt;
+&lt;a href="#feb-2021--nim-what" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In the beginning of February, a new and unusual
+&lt;a href="https://www.bleepingcomputer.com/news/security/trickbots-bazarbackdoor-malware-is-now-coded-in-nim-to-evade-antivirus/"target="_blank" rel="noopener"&gt;version of Bazar&lt;/a&gt;
+was detected—an implementation of the backdoor written in
+&lt;a href="https://nim-lang.org/"target="_blank" rel="noopener"&gt;Nim&lt;/a&gt;, which is a statically-typed self-contained
+programming language.&lt;/p&gt;
+&lt;p&gt;Because Nim is not a common choice for malware development, it is believed that
+the use of this programming language is an attempt to bypass detection. This
+attempt can be considered successful as this version, also known as
+&amp;lsquo;&lt;a href="https://twitter.com/GossiTheDog/status/1357396209372168199"target="_blank" rel="noopener"&gt;BazarNimrod&lt;/a&gt;&amp;rsquo; and
+&amp;lsquo;&lt;a href="https://www.proofpoint.com/us/blog/threat-insight/nimzaloader-ta800s-new-initial-access-malware"target="_blank" rel="noopener"&gt;NimzaLoader&lt;/a&gt;,&amp;rsquo;
+had low detection rates in VirusTotal.&lt;/p&gt;
+&lt;p&gt;Bazar is not the first malware written in Nim. Sofacy (Russian APT) developed a
+&lt;a href="https://www.welivesecurity.com/2019/09/24/no-summer-vacations-zebrocy/"target="_blank" rel="noopener"&gt;downloader in Nim&lt;/a&gt;
+for their Zebrocy tool.&lt;/p&gt;
+&lt;h2&gt;Final Words&lt;span class="hx:absolute hx:-mt-20" id="final-words"&gt;&lt;/span&gt;
+&lt;a href="#final-words" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Threat actors are highly motivated and must keep reinventing themselves to stay
+effective. They put in the time and money to bypass Antivirus detection on the
+way to successful compromises. We assess that cybercriminals will continue to
+step up their game with social engineering creativity and different malware
+implementation.&lt;/p&gt;
+&lt;h2&gt;How to Protect Your Organization&lt;span class="hx:absolute hx:-mt-20" id="how-to-protect-your-organization"&gt;&lt;/span&gt;
+&lt;a href="#how-to-protect-your-organization" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Bazar and similar threats use social engineering as an entry point and keep a
+low profile once inside. Keep in mind that it takes only one employee to take
+down an entire organization.&lt;/p&gt;
+&lt;p&gt;Take the following steps to keep your organization clean from these type of
+attacks:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Enhance social engineering awareness inside your organization.&lt;/li&gt;
+&lt;li&gt;Perform proactive hunting on all endpoints inside your organization to make
+sure that no traces of malicious code or malware exist. Intezer&amp;rsquo;s live
+Endpoint Scanner collects all binaries running in memory, including fileless,
+and classifies them using genetic code analysis technology.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig6.png" title="Endpoint scan on an infected machine" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Endpoint scan on an infected machine&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;References&lt;span class="hx:absolute hx:-mt-20" id="references"&gt;&lt;/span&gt;
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/"target="_blank" rel="noopener"&gt;https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.bleepingcomputer.com/news/security/bazarcall-malware-uses-malicious-call-centers-to-infect-victims/"target="_blank" rel="noopener"&gt;https://www.bleepingcomputer.com/news/security/bazarcall-malware-uses-malicious-call-centers-to-infect-victims/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon"target="_blank" rel="noopener"&gt;https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://threatpost.com/bazarloader-malware-slack-basecamp/165455/"target="_blank" rel="noopener"&gt;https://threatpost.com/bazarloader-malware-slack-basecamp/165455/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://news.sophos.com/en-us/2021/04/15/bazarloader/"target="_blank" rel="noopener"&gt;https://news.sophos.com/en-us/2021/04/15/bazarloader/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.cybereason.com/blog/a-bazar-of-tricks-following-team9s-development-cycles#trickbot-connection"target="_blank" rel="noopener"&gt;https://www.cybereason.com/blog/a-bazar-of-tricks-following-team9s-development-cycles#trickbot-connection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon"target="_blank" rel="noopener"&gt;https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Stantinko's Proxy After Your Apache Server</title><link>https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/</link><pubDate>Tue, 24 Nov 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/</guid><description>
 &lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
 &lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It is common for threat actors to evolve their Linux malware. BlackTech with
 their new &lt;a href="https://blogs.jpcert.or.jp/en/2020/11/elf-plead.html"target="_blank" rel="noopener"&gt;ELF_PLEAD&lt;/a&gt;

@@ -1,4 +1,287 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cryptominer</title><link>https://intezer.github.io/community-intelligence/tags/cryptominer/</link><description>Recent content in Cryptominer on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 28 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cryptominer/index.xml" rel="self" type="application/rss+xml"/><item><title>Watch Your Containers: Doki Infecting Docker Servers in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</link><pubDate>Tue, 28 Jul 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cryptominer</title><link>https://intezer.github.io/community-intelligence/tags/cryptominer/</link><description>Recent content in Cryptominer on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 06 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cryptominer/index.xml" rel="self" type="application/rss+xml"/><item><title>Rocke Group Actively Targeting the Cloud: Wants Your SSH Keys</title><link>https://intezer.github.io/community-intelligence/blog/2021/04/rocke-group-actively-targeting-the-cloud-wants-your-ssh-keys/</link><pubDate>Tue, 06 Apr 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/04/rocke-group-actively-targeting-the-cloud-wants-your-ssh-keys/</guid><description>
+&lt;h2&gt;New Malware Variant Exploits Production Environment&lt;span class="hx:absolute hx:-mt-20" id="new-malware-variant-exploits-production-environment"&gt;&lt;/span&gt;
+&lt;a href="#new-malware-variant-exploits-production-environment" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Rocke Group is a Chinese-based threat actor most known for running
+cryptojacking malware on Linux machines. The group has been
+&lt;a href="https://blog.talosintelligence.com/2018/08/rocke-champion-of-monero-miners.html"target="_blank" rel="noopener"&gt;active since 2018&lt;/a&gt;
+and continues to evolve by modifying its tools and techniques to stay evasive.
+In 2019, we reported that Rocke Group was
+&lt;a href="https://intezer.com/blog/cloud-security/technical-analysis-cryptocurrency-mining-war-on-the-cloud/"target="_blank" rel="noopener"&gt;competing&lt;/a&gt;
+with Pacha Group for cryptomining positioning on Linux-based servers in the
+cloud. We have found a
+&lt;a href="https://analyze.intezer.com/files/fe27d4a8a5f299b0b25d10816e98cef2852af6dc3541bf25a77960b1573ca61d"target="_blank" rel="noopener"&gt;new malware variant&lt;/a&gt;
+developed by Rocke Group, that infects other machines in the network using
+saved SSH keys and weak passwords. It also exploits vulnerabilities in popular
+platforms and services such as Jenkins, Redis and ActiveMQ. Once the victim is
+infected a
+&lt;a href="https://analyze.intezer.com/files/398e3608455dbea2cba8e9944d9b43cbb0982b48b2882fe54adf937a7a62d9e2/sub/d10bf427-6cc9-41cb-bfae-7e12268f6f9e"target="_blank" rel="noopener"&gt;Monero cryptominer&lt;/a&gt;
+is executed. Below we present our findings with instructions on how to check if
+your system has been compromised, as well as how to protect your cloud
+environments against future Rocke Group attacks.&lt;/p&gt;
+&lt;h2&gt;Capabilities and Findings on Rocke Group Malware&lt;span class="hx:absolute hx:-mt-20" id="capabilities-and-findings-on-rocke-group-malware"&gt;&lt;/span&gt;
+&lt;a href="#capabilities-and-findings-on-rocke-group-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The malware that is initially delivered to the victim&amp;rsquo;s server is packed with a
+modified UPX which can make it harder for some Endpoint Detection and Response
+(EDR) products to detect the malicious code. This threat contains a number of
+modules that are stored in a compressed form inside the malware, and during the
+execution the payloads are extracted and executed. Rocke Group uses a new
+script that downloads malware from a hosting server and executes it. The
+malware then uses public SSH keys, which are saved in a file called
+&lt;code&gt;known_hosts&lt;/code&gt; on the victim&amp;rsquo;s Linux machine, to infect other machines on the
+network. The malware archives persistence using a scheduled task in &lt;code&gt;crontab&lt;/code&gt;
+and &lt;code&gt;bashrc&lt;/code&gt; files. It creates a service that controls the execution of the
+malware and configures it to be executed on startup. The payload of the service
+is extracted from within the Rocke Group sample. Next, the malware attempts to
+spread in the network by brute forcing SSH, Redis and Jenkins with weak
+passwords. Then, it exploits vulnerabilities. For Jenkins it uses two
+vulnerabilities for executing code (CVE-2018-1000861, CVE-2019-1003000) and for
+ActiveMQ it tries to do an arbitrary file writing (CVE-2016-3088). To hide the
+activity of the malware, it implements an evasion technique that uses library
+hijacking. This way the information retrieved by system commands is altered in
+a way that hides resources used by the malware and its components. For
+instance, running the &lt;code&gt;top&lt;/code&gt; command will not show the high CPU usage caused by
+the cryptomining malware. One of the compressed modules is an XMRig Miner.
+Before the miner is executed the dropper kills any other process that uses more
+than 30% of the cloud server&amp;rsquo;s CPU, this way the cryptominer will have all of
+the CPU for itself.&lt;/p&gt;
+&lt;h2&gt;Detection and Response&lt;span class="hx:absolute hx:-mt-20" id="detection-and-response"&gt;&lt;/span&gt;
+&lt;a href="#detection-and-response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Detect if a machine in your system has been compromised by following all of
+these steps:&lt;/p&gt;
+&lt;p&gt;The malware creates files in the following directories:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/usr/local/sbin&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/usr/local/bin&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/usr/bin&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/usr/libexec&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/tmp&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Check if there are suspicious files in these locations. This campaign is known
+for using similar names to valid Linux services and file names such as
+&lt;code&gt;kerberods&lt;/code&gt;, so pay attention to the files you see in these directories. In
+other cases, it uses file names like: &lt;code&gt;6ff4ba5d0de4498&lt;/code&gt;. In addition, the
+malware changes the timestamps of files created during the attack so that they
+appear older. You should not rely on the creation/modification time of the
+files.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Response&lt;/strong&gt;: Remove the malicious files.&lt;/p&gt;
+&lt;p&gt;MITRE Technique:
+&lt;a href="https://attack.mitre.org/techniques/T1036/"target="_blank" rel="noopener"&gt;Masquerading (T1036)&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Check if there is a service that listens on port 61131 for incoming
+connections. Use the command: &lt;code&gt;netstat -tupln&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Response&lt;/strong&gt;: Find the PID of the process and kill it. Run the following
+command to get the PID:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;netstat -ltnp &lt;span class="p"&gt;|&lt;/span&gt; grep -w &lt;span class="s1"&gt;&amp;#39;:61131&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;and then run the following to kill the process:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo &lt;span class="nb"&gt;kill&lt;/span&gt; -9 &amp;lt;PID&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Check if you have a service called &lt;code&gt;sshservice.service&lt;/code&gt;. You can do this by
+running: &lt;code&gt;systemctl status sshservice.service&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Response&lt;/strong&gt;: Stop and remove the service by running these commands:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;systemctl stop &lt;span class="o"&gt;[&lt;/span&gt;servicename&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; systemctl disable &lt;span class="o"&gt;[&lt;/span&gt;servicename&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; rm /etc/systemd/system/&lt;span class="o"&gt;[&lt;/span&gt;servicename&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; rm /etc/systemd/system/&lt;span class="o"&gt;[&lt;/span&gt;servicename&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; rm /usr/lib/systemd/system/&lt;span class="o"&gt;[&lt;/span&gt;servicename&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; rm /usr/lib/systemd/system/&lt;span class="o"&gt;[&lt;/span&gt;servicename&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; systemctl daemon-reload systemctl reset-failed&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;MITRE Technique:
+&lt;a href="https://attack.mitre.org/techniques/T1543/002/"target="_blank" rel="noopener"&gt;Create System Process (T1543)&lt;/a&gt;
+and &lt;a href="https://attack.mitre.org/techniques/T1036/"target="_blank" rel="noopener"&gt;Masquerading (T1036)&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Check if the cron jobs include commands in the following format:
+&lt;code&gt;*/15 * * * * (curl -fsSL -m180 ||wget -q -T180 -O- )|sh&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Check the following location of scheduled jobs:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/var/spool/cron/root&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/var/spool/cron/crontabs/root&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/cron.d/root&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Response&lt;/strong&gt;: Delete these commands from the crontab.&lt;/p&gt;
+&lt;p&gt;MITRE Technique:
+&lt;a href="https://attack.mitre.org/techniques/T1053/"target="_blank" rel="noopener"&gt;Scheduled Task/Job (T1053)&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Check that &lt;code&gt;/etc/bashrc&lt;/code&gt; contains commands in the same format as the crontab
+files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Response&lt;/strong&gt;: Delete the commands from the file.&lt;/p&gt;
+&lt;p&gt;MITRE Technique:
+&lt;a href="https://attack.mitre.org/techniques/T1546/004/"target="_blank" rel="noopener"&gt;Event Triggered Execution using .bashrc file (T1546)&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;This campaign uses DNS over HTTPs (DoH) to obtain the address of the C2
+server using hard-coded domains that send back an encrypted DNS record.
+Inspect your network traffic for anomalies in HTTPs packages. Check if your
+machine tried to access one (or more) of the following domains:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Update.iap5u1rbety6vifaxsi9vovnc9jjay2l[.]com&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cloudflare-dns[.]com&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MITRE Technique:
+&lt;a href="https://attack.mitre.org/techniques/T1572/"target="_blank" rel="noopener"&gt;Protocol Tunneling (T1572)&lt;/a&gt; and
+&lt;a href="https://attack.mitre.org/techniques/T1573/"target="_blank" rel="noopener"&gt;Encrypted Channel (T1573)&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The malware tries to infect other machines in the network by brute forcing
+weak passwords and exploiting vulnerabilities in Jenkins, Redis, SSH and
+ActiveMQ. Follow all of the steps above for machines that have these
+services.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MITRE Technique:
+&lt;a href="https://attack.mitre.org/techniques/T1046/"target="_blank" rel="noopener"&gt;Network Service Scanning (T1046)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;TTPs now available in Intezer. Speed up malware analysis with relevant insights
+to understand how malware behaves.&lt;/p&gt;
+&lt;h2&gt;Be Proactive&lt;span class="hx:absolute hx:-mt-20" id="be-proactive"&gt;&lt;/span&gt;
+&lt;a href="#be-proactive" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Use strong passwords for SSH, Jenkins and Redis services. It is also highly
+recommended to use TLS authentication.&lt;/li&gt;
+&lt;li&gt;Use different passwords and authentication keys for each machine in the
+network.&lt;/li&gt;
+&lt;li&gt;Make sure that your Jenkins and ActiveMQ services have the latest updates.&lt;/li&gt;
+&lt;li&gt;Restrict access to services and machines, and give only the required
+permissions for each user.&lt;/li&gt;
+&lt;li&gt;Filter network traffic to untrusted or known bad domains.&lt;/li&gt;
+&lt;li&gt;Apply detection of anomalies in the networks to detect suspicious
+communication that digresses from the usual traffic.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Runtime Protection is a Must&lt;span class="hx:absolute hx:-mt-20" id="runtime-protection-is-a-must"&gt;&lt;/span&gt;
+&lt;a href="#runtime-protection-is-a-must" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;This attack is sophisticated in that it implements evasion techniques making
+detection much harder. It also spreads to other services and machines on the
+network making it harder to respond to. Runtime protection gives you immediate
+visibility over all code running in your systems and alerts you whenever
+unauthorized code is executed. So, if Rocke Group attacks an environment with
+runtime protection, the user would immediately get an alert on all infected
+machines with the ability to terminate the malicious processes. While there are
+dozens of cloud attack vectors that threat actors can utilize, such as software
+vulnerabilities and misconfigurations, eventually all attackers must run code
+or commands in the production environment to conduct any damage. Consider that
+it&amp;rsquo;s not realistic to be able to close all attack vectors. Not only does it
+take time to fix vulnerabilities, but there are always attack vectors that are
+practically impossible to prevent such as supply chain or unknown
+vulnerabilities. Recent attacks have shown that Linux cryptominers and other
+threats will find their way into the production environment no matter how hard
+you work to reduce the attack surface. Runtime protection is a necessary last
+line of defense as actors like Rocke Group remain active.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Thanks to Joakim Kennedy for contributing to this post.&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Dropper Script&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;f947e69f9f8d113fb9fba3e795827110ee17feb310b54a7f7b6672a5386a3de2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Malware&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;fe27d4a8a5f299b0b25d10816e98cef2852af6dc3541bf25a77960b1573ca61d&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Mining Pool&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;minexmr[.]com pool&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;XMRig Miner&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;398e3608455dbea2cba8e9944d9b43cbb0982b48b2882fe54adf937a7a62d9e2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Domains Used to Download the Malware&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;img[.]sobot.com
+cdn[.]xiaoduoai.com
+https://user-images[.]githubusercontent.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Domains Used for Resolving the C2 Address&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;update.iap5u1rbety6vifaxsi9vovnc9jjay2l[.]com
+cloudflare-dns[.]com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Watch Your Containers: Doki Infecting Docker Servers in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</link><pubDate>Tue, 28 Jul 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</guid><description>
 &lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
 &lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://blog.netlab.360.com/a-new-mining-botnet-blends-its-c2s-into-ngrok-service/"target="_blank" rel="noopener"&gt;Ngrok Mining Botnet&lt;/a&gt;

@@ -697,4 +697,695 @@ data-copied-label="Copied!"
 &lt;td&gt;Data can be exfiltrated&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item></channel></rss>
+&lt;/table&gt;</description></item><item><title>Targeted Phishing Attack against Ukrainian Government Expands to Georgia</title><link>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</guid><description>
+&lt;p&gt;In May 2021,
+&lt;a href="https://www.fortinet.com/blog/threat-research/spearphishing-attack-uses-covid-21-lure-to-target-ukrainian-government"target="_blank" rel="noopener"&gt;Fortinet published a report&lt;/a&gt;
+about the early stages of an ongoing phishing attack against the Ukrainian
+government. The attack, initially based on the
+&lt;a href="https://blog.malwarebytes.com/threat-analysis/2021/04/a-deep-dive-into-saint-bot-downloader/"target="_blank" rel="noopener"&gt;Saint Bot downloader&lt;/a&gt;,
+also targeted Georgia as reported by Malwarebytes. Since June we have seen this
+threat actor expand its operation with new samples targeting government
+entities in Georgia. In this report we will cover the new malware samples we
+found.&lt;/p&gt;
+&lt;h2&gt;Method of Infection&lt;span class="hx:absolute hx:-mt-20" id="method-of-infection"&gt;&lt;/span&gt;
+&lt;a href="#method-of-infection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The attack&amp;rsquo;s entry point is a spear phishing email referencing
+government-related topics including veterans, Ukraine&amp;rsquo;s Anti-Terrorist
+Operation (ATO), Georgia&amp;rsquo;s Internally Displaced Persons (IDPs), organizations
+in Georgia&amp;rsquo;s private sector and COVID-19. The attack mainly targets government
+agencies in Ukraine and Georgia.&lt;/p&gt;
+&lt;h2&gt;The Malware&lt;span class="hx:absolute hx:-mt-20" id="the-malware"&gt;&lt;/span&gt;
+&lt;a href="#the-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The main payload delivered by the malware is an infostealer written in AutoIt.
+Its main goal is to steal files from the victim&amp;rsquo;s machine, uploading them to a
+predefined Command and control (C2) server.&lt;/p&gt;
+&lt;p&gt;Based on victimology and the fact that this attack tries to steal files from
+government entities, a classic goal of nation-state groups, it is likely
+operated by a Russian nation-state. There are also several similarities between
+this attack and past APT28 campaigns which we will discuss later.&lt;/p&gt;
+&lt;p&gt;Below we summarize the early stages of the attack and show the latest malware
+targeting government entities in Georgia. We assess with high confidence that
+this attack may expand its operations to target additional Eastern European
+countries.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The attack flow, described below, begins with a phishing email containing a
+malicious shortened URL. The URL redirects to a Command and control (C2) where
+a ZIP file or malicious document is hosted. The ZIP file contains a malicious
+file and in some emails also a harmless PDF file. The malicious attachment
+varies between RTF, DOC, PDF, JS, LNK or EXE. Its main goal is to drop the
+packed payloads from the C2. The method in which a dropper contacts the C2 in
+order to deliver the packed payload varies between the different file types and
+stages of the attack. The packed executable loads an AutoIt payload into
+memory. The payload searches for files on the victim&amp;rsquo;s machine based on a list
+of file extensions and uploads them to a C2 that is hardcoded in the script.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig1.png" title="Attack flow." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Attack flow.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;An example of one of the phishing emails sent to the Ukrainian government is
+below. The threat actor references payments made to veterans of the
+Anti-Terrorist Operation (ATO).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig2.png" title="Phishing email sent to the Ukrainian government. Translation from Ukrainian – Subject: Payments to ATO Veterans. Content: It must be filled in and sent back." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Phishing email sent to the Ukrainian government. Translation from Ukrainian – Subject: Payments to ATO Veterans. Content: It must be filled in and sent back.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The link, masqueraded as a Ukrainian .gov domain, is actually a shortened URL
+(&lt;code&gt;https[://]cutt[.]ly/WcBTVdf&lt;/code&gt;) which contacts
+&lt;code&gt;http[://]gosloto[.]site/doc/form_request.doc&lt;/code&gt; and downloads &lt;code&gt;form_request.doc&lt;/code&gt;
+to the victim&amp;rsquo;s machine. This document is an RTF file that once runs will
+present content related to the Israeli
+&lt;a href="https://en.wikipedia.org/wiki/Merkava"target="_blank" rel="noopener"&gt;Merkava&lt;/a&gt;, the main battle tank used by
+the Israeli Defense Forces.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig3.png" title="Reference to Israeli Merkava in the RTF file." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Reference to Israeli Merkava in the RTF file.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This file is incharge of dropping the final payload from the C2. In other
+phishing emails, this file is named &lt;code&gt;NATO_06042021&lt;/code&gt;
+(&lt;code&gt;44697aad796c0d82c1adbee15fd1266b&lt;/code&gt;).&lt;/p&gt;
+&lt;h3&gt;First we Take Kyiv, then we Take Tbilisi&lt;span class="hx:absolute hx:-mt-20" id="first-we-take-kyiv-then-we-take-tbilisi"&gt;&lt;/span&gt;
+&lt;a href="#first-we-take-kyiv-then-we-take-tbilisi" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Combined with continuous attacks against Ukraine, the threat actor has expanded
+its campaign to target government entities in Georgia. The following malicious
+documents were uploaded to VirusTotal from Georgia on June 17 and July 5.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;b56975725c4e260370af540f9c0b6709&lt;/code&gt; —
+&lt;code&gt;Georgia_Private_Sector_Poster_Inputs_06_2021.pdf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;900e892c8151f0f59a93af1206583ce6&lt;/code&gt; —
+&lt;code&gt;2021-2022 Strategy Action Plan for IDPs.doc&lt;/code&gt; (translated from Georgian)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;333796e18eb3f3d1529d07ec90c63e61&lt;/code&gt; — &lt;code&gt;Change to 828.doc&lt;/code&gt; (translated from
+Georgian)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All three files have low detection rates in VirusTotal at the time of this
+writing. In the following sections we will describe each file&amp;rsquo;s behavior.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig4.png" title="b56975725c4e260370af540f9c0b6709 in VirusTotal." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;b56975725c4e260370af540f9c0b6709 in VirusTotal.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h4&gt;The PDF File&lt;span class="hx:absolute hx:-mt-20" id="the-pdf-file"&gt;&lt;/span&gt;
+&lt;a href="#the-pdf-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The PDF file, named &lt;code&gt;Georgia_Private_Sector_Poster_Inputs_06_2021.pdf&lt;/code&gt;, was
+uploaded to VirusTotal on June 17, 2021. The PDF contains an action object.
+Upon a victim opening the PDF it will send a query to Google containing the C2:
+&lt;code&gt;http://www[.]google[.]com/url?q=http%3A%2F%2F93482432493824792343432843240234327488 92349702394023.xyz&amp;amp;sa=D&amp;amp;sntz=1&amp;amp;usg=AFQjCNFWmVffgSGlrrv-2U9sSOJYzfUQqw&lt;/code&gt;)
+The system will prompt a security warning allowing the document to contact
+&lt;code&gt;http[:]//www.google.com&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig5.png" title="Action object in b56975725c4e260370af540f9c0b6709" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Action object in b56975725c4e260370af540f9c0b6709&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig6.png" title="System prompt message." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;System prompt message.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Once the document connects to Google a short series of network redirections
+occurs. First, Google will redirect to the C2&amp;rsquo;s URL. Then, as described in the
+image below, the C2 contains a frame with an src to another C2 URL
+(&lt;code&gt;https[://]16868138130[.]space/000/&lt;/code&gt;), which then redirects to a shortened URL
+(&lt;code&gt;https[://]qaz[.]im/load/rKtsZD/hDKKFD&lt;/code&gt;) using a meta refresh redirect. This
+will finally drop &lt;code&gt;georgia_private_sector_poster_inputs_06_2021.cpl&lt;/code&gt;
+(&lt;code&gt;02f0118bd15dabf727659b9fd27c86c9&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig7.png" title="Network redirections for delivering the payload." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Network redirections for delivering the payload.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This redirection process, starting with Google as the first domain the PDF
+attempts to access, is an obvious Antivirus evasion technique.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;georgia_private_sector_poster_inputs_06_2021.cpl&lt;/code&gt; is a DLL which upon clicking
+on it, runs under a trusted control panel process. The DLL is incharge of
+dropping and running the packed payload from the C2,
+&lt;code&gt;16868138130[.]space/000/000.exe&lt;/code&gt; (&lt;code&gt;41af4d9fbd0bc719212b78cd7a1b89ec&lt;/code&gt;). The
+packed malware loads the AutoIt payload into memory.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig8.png" title="Genetic report of 02f0118bd15dabf727659b9fd27c86c9. Drops 41af4d9fbd0bc719212b78cd7a1b89ec which loads AutoIt into memory." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Genetic report of 02f0118bd15dabf727659b9fd27c86c9. Drops 41af4d9fbd0bc719212b78cd7a1b89ec which loads AutoIt into memory.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig9.png" title="IoC report of 02f0118bd15dabf727659b9fd27c86c9 in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;IoC report of 02f0118bd15dabf727659b9fd27c86c9 in Intezer Analyze.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The
+&lt;a href="https://github.com/intezer/community-intellignce/blob/master/AutoIt_Infostealer_GE_UA.txt"target="_blank" rel="noopener"&gt;AutoIt script&amp;rsquo;s&lt;/a&gt;
+main goal is to upload files from the victim&amp;rsquo;s machine to a predefined C2. The
+main logic (see image below) calls the &lt;code&gt;_filsearch&lt;/code&gt; function (two images below)
+which looks for files containing the following extensions:
+&lt;code&gt;*.doc;*.pdf;*.ppt;*.dot;*.xl;*.csv;*.rtf;*.dot;*.mdb;*.accdb;*.pot;*.pps;*.ppa;*.rar;*.zip;*.tar;*.7z;*.txt&lt;/code&gt;.
+&lt;code&gt;_filsearch&lt;/code&gt; uses &lt;code&gt;@ComSpec&lt;/code&gt; environment variable (which usually points to
+CMD). The process tree created by the AutoIt file is below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig10.png" title="Code snippet from the AutoIt script main logic." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code snippet from the AutoIt script main logic.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig11.png" title="Code snippet from the AutoIt script _filsearch function." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code snippet from the AutoIt script _filsearch function.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig12.png" title="Process tree snippet in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Process tree snippet in Intezer Analyze.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Each file is uploaded to the C2 via a multipart/form-data POST request. The
+file&amp;rsquo;s directory is sent as Hex. Below is an example of a file upload request.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig13.png" title="Example of C_/Users/admin/AppData/Roaming/Microsoft/Windows/Cookies/NUT28OOW.txt file upload." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Example of C_/Users/admin/AppData/Roaming/Microsoft/Windows/Cookies/NUT28OOW.txt file upload.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Lastly, the AutoIt script creates and runs a batch named &lt;code&gt;r.bat&lt;/code&gt; which deletes
+the malware from disk and kills the process.&lt;/p&gt;
+&lt;h4&gt;The Document Files&lt;span class="hx:absolute hx:-mt-20" id="the-document-files"&gt;&lt;/span&gt;
+&lt;a href="#the-document-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Both malicious Word documents uploaded to VirusTotal on July 5 display similar
+behavior. Let&amp;rsquo;s look at &lt;code&gt;900e892c8151f0f59a93af1206583ce6&lt;/code&gt;. Once a user opens
+this document, it will run a VBA macro with the main logic to create, write to
+and run a batch file named &lt;code&gt;ballDemocrat.bat&lt;/code&gt;. The script written to the batch
+file will run a PowerShell command that drops an executable from the C2
+(&lt;code&gt;http[://]1221[.]site/15858415841/0407.exe&lt;/code&gt;) and saves it as
+&lt;code&gt;centuryarticle.exe&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig14.png" title="VBA script (7546f382d73231a4c1fdc58ab1535ec0) in the malicious document." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VBA script (7546f382d73231a4c1fdc58ab1535ec0) in the malicious document.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig15.png" title="Process tree of 900e892c8151f0f59a93af1206583ce6" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Process tree of 900e892c8151f0f59a93af1206583ce6&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The file dropped from the C2 is a packed .NET file that loads the AutoIt
+payload into memory.&lt;/p&gt;
+&lt;h2&gt;Possible Russian Connection&lt;span class="hx:absolute hx:-mt-20" id="possible-russian-connection"&gt;&lt;/span&gt;
+&lt;a href="#possible-russian-connection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We noticed similarities between this attack and Russia&amp;rsquo;s APT28 campaigns. While
+these similarities alone are not enough to attribute APT28, victimology and
+intent to conduct espionage on various government entities in Eastern European
+regions gives us reason to believe that Russia is behind the attack.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Victimology: APT28 has targeted Ukraine and Georgia in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;[3]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Phishing theme: APT28 previously used COVID-19-related phishing themes to
+target countries including Ukraine. APT28 also used NATO as a phishing theme
+in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;[4]&lt;/a&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;[5]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Use of AutoIt: One of Zebrocy&amp;rsquo;s (malware from APT28) variants is written in
+AutoIt. &lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;[6]&lt;/a&gt;&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;[7]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;File search with predefined extensions: Zebrocy searches for predefined file
+extensions on the victim machine. &lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2018/11/20/sednit-whats-going-zebrocy/"target="_blank" rel="noopener"&gt;[9]&lt;/a&gt;&lt;a href="https://attack.mitre.org/software/S0251/"target="_blank" rel="noopener"&gt;[13]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Compressed file holding both malicious and benign files was used in an APT28
+COVID-19 phishing attack last year and in other campaigns in the past. &lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;[4]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Use of spear phishing emails containing URL-shortener was documented in past
+APT28 campaigns. In one of the campaigns, this URL hosted a ZIP file
+containing a benign PDF and a malicious executable. &lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://www.justice.gov/opa/page/file/1098481/download"target="_blank" rel="noopener"&gt;[10]&lt;/a&gt;&lt;a href="https://www.justice.gov/file/1080281/download"target="_blank" rel="noopener"&gt;[11]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Use of Hex encoding: The Zebrocy AutoIt version uses String to Hex encoding.
+&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;[7]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Use of batch files, PowerShell and CMD are part of APT28&amp;rsquo;s documented TTPs.
+&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://attack.mitre.org/groups/G0007/"target="_blank" rel="noopener"&gt;[12]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Mitigation&lt;span class="hx:absolute hx:-mt-20" id="mitigation"&gt;&lt;/span&gt;
+&lt;a href="#mitigation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Take the following precautions to keep your organization clean and safe from
+phishing attacks.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Enhance social engineering awareness within your organization.&lt;/li&gt;
+&lt;li&gt;Use an email gateway to analyze attachments and links. Intezer Analyze now
+supports analysis for Microsoft Office documents, PDFs and scripts.&lt;/li&gt;
+&lt;li&gt;Conduct proactive threat hunting on all endpoints inside your organization to
+routinely ensure that no traces of malicious code or malware exist in-memory.
+Intezer&amp;rsquo;s live Endpoint Scanner can help you achieve this at scale by
+collecting all binaries running in-memory, including fileless, and
+classifying them using Genetic Code Analysis technology. We also have a
+&lt;a href="https://intezer.com/blog/malware-analysis/accelerate-incident-response-with-intezer-analyze-volatility-plugin/"target="_blank" rel="noopener"&gt;Volatility plugin&lt;/a&gt;
+for analyzing memory dumps.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;AutoIt Payload Script&lt;span class="hx:absolute hx:-mt-20" id="autoit-payload-script"&gt;&lt;/span&gt;
+&lt;a href="#autoit-payload-script" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The AutoIt script can be found in the following
+&lt;a href="https://github.com/intezer/community-intellignce/blob/master/AutoIt_Infostealer_GE_UA.txt"target="_blank" rel="noopener"&gt;GitHub repository&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Delivery Files&lt;span class="hx:absolute hx:-mt-20" id="delivery-files"&gt;&lt;/span&gt;
+&lt;a href="#delivery-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;RTF&lt;span class="hx:absolute hx:-mt-20" id="rtf"&gt;&lt;/span&gt;
+&lt;a href="#rtf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;a60f4a353ea89adc8def453c8a1e65ea2ecc46c64d0d9ea375ca4e85e1c428fd&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;52173598ca2f4a023ec193261b0f65f57d9be3cb448cd6e2fcc0c8f3f15eaaf7&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2ec710d38a0919f9f472b220cfe8d554a30d24bfa4bdd90b96105cee842cf40d&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9803e65afa5b8eef0b6f7ced42ebd15f979889b791b8eadfc98e7f102853451a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;f357f9bf438f44b2029dfa12c03856393484f723b9df03ecde3e1ef03ddffcb7&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;DOC&lt;span class="hx:absolute hx:-mt-20" id="doc"&gt;&lt;/span&gt;
+&lt;a href="#doc" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;0be1801a6c5ca473e2563b6b77e76167d88828e1347db4215b7a83e161dae67f&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;96f815abb422bb75117e867384306a3f1b3625e48b81c44ebf032953deb2b3ff&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;LNK&lt;span class="hx:absolute hx:-mt-20" id="lnk"&gt;&lt;/span&gt;
+&lt;a href="#lnk" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;101d9f3a9e4a8d0c8d80bcd40082e10ab71a7d45a04ab443ef8761dfad246ca5&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Ced5f53bafc5896be0a62ed5bdabed38a6224f8dcbe61669e833749ff62693dd&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2b15ade9de6fb993149f27c802bb5bc95ad3fc1ca5f2e86622a044cf3541a70d&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;ZIP&lt;span class="hx:absolute hx:-mt-20" id="zip"&gt;&lt;/span&gt;
+&lt;a href="#zip" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;275388ffad3a1046087068a296a6060ed372d5d4ef6cf174f55c3b4ec7e8a0e8&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;A16e466bed46fcf9c0a771ca0e41bc42a1ac13e66717354e4824f61d1695dbb1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;47e1991f94309566e35ea57507c7c8d013103e860f12f2166450900e8179a75e&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;E39a12f34bb8a7a5a03fd23f351846088692e1248a3952e488102d3aea577644&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;677500881c64f4789025f46f3d0e853c00f2f41216eb2f2aaa1a6c59884b04cc&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;5227adda2d80fb9b66110eeb26d57e69bbbb7bd681aecc3b1e882dc15e06be17&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;a856ae150144179848e0cc9be7618b4404c20c356eb93db490c8496ae2775b5e&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;CPL&lt;span class="hx:absolute hx:-mt-20" id="cpl"&gt;&lt;/span&gt;
+&lt;a href="#cpl" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;10d21d4bf93e78a059a32b0210bd7891e349aabe88d0184d162c104b1e8bee2e&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0c644fedcb4298b705d24f2dee45dda0ae5dd6322d1607e342bcf1d42b59436c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0db336cab2ca69d630d6b7676e5eab86252673b1197b34cf4e3351807229f12a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;72f57b040d6f523afee40159a743b1ecae685a5bf939cab06b78d1fc397ec5e7&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;64057982a5874a9ccdb1b53fc15dd40f298eda2eb38324ac676329f5c81b64e0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;f4a56c86e2903d509ede20609182fbe001b3a3ca05f8c23c597189935d4f71b8&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;JS&lt;span class="hx:absolute hx:-mt-20" id="js"&gt;&lt;/span&gt;
+&lt;a href="#js" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;5d9c7192cae28f4b6cc0463efe8f4361e449f87c2ad5e74a6192a0ad96525417&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fe49909fdd70192e3367d4d88458afbaf817e7a50acae199db97bd68358b241e&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;PDF&lt;span class="hx:absolute hx:-mt-20" id="pdf"&gt;&lt;/span&gt;
+&lt;a href="#pdf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;f69125eafdd54e1aae10707e0d95b0526e80b3b224f2b64f5f6d65485ca9e886&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Packed AutoIT Infostealer&lt;span class="hx:absolute hx:-mt-20" id="packed-autoit-infostealer"&gt;&lt;/span&gt;
+&lt;a href="#packed-autoit-infostealer" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cd93f6df63187e3ac31ea56339f9b859b0f4fbe3e73e1c07192cef4c9a6f8b08&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;4fdc37f59801976606849882095992efecee0931ece77d74015113123643796e&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2bef4a398a88749828afac59b773ae8b31c8e4e5b499aad516dd39ada1a11eca&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;d6e2a79bc87d48819fabe332dd3539f572605bb6091d34ae7d25ae0934b606b5&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;6ee2fd3994acdbb9a1b1680ccd3ac4b7dcb077b30b44c8677252202a03dccf79&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ea9e5ad0ef82af2c0c75c371e683352a781eb2260a45c584d70995edec956ce9&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0d83c1f7d2d7ea0e7fe144933bfa9dd314dae3937af714ea9274f43641756060&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;4d59a7739f15c17f144587762447d5abb81c01f16224a3f7ce5897d1b6f7ee77&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;39e8455d21447e32141dc064eb7504c6925f823bf6d9c8ce004d44cb8facc80b&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cb4a93864a19fc14c1e5221912f8e7f409b5b8d835f1b3acc3712b80e4a909f1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b72188ba545ad865eb34954afbbdf2c9e8ebc465a87c5122cebb711f41005939&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;005d2d373e7ba5ee42010870b9f9bf829213a42b2dd3c4f3f4405c8b904641f2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ba4b321bf2bc542d9e9bcfcf54bc98335acd0b27a5e5851f4667e6b23d968a04&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b0b4550ba09080e02c8a15cec8b5aeaa9fbb193cec1d92c793bdede78a70cec6&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;a9a89bb76c6f06277b729bc2de5e1aaef05fc0d9675edbc0895c7591c35f17eb&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;bd83e801b836906bab4854351b4d6000e0a435736524a504b9839b5f7bdf97cc&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;3075a467e89643d1f37e9413a2b38328fbec4dd1717ae57128fdf1da2fe39819&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;8ab3879ed4b1601feb0de11637c9c4d1baeb5266f399d822f565299e5c1cd0c4&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b83c41763b5e861e15614d3d6ab8573c7948bf176143ee4142516e9b8bcb4423&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0222f6bdfd21c41650bcb056f618ee9e4724e722b3abcd8731b92a99167c6f8d&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b02c420e6f8a977cd254cd69281a7e8ce8026bda3fc594e1fc550c3b5e41565d&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;6a698edb366f25f156e4b481639903d816c5f5525668f65e2c097ef682afc269&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9ee1a587acaddb45481aebd5778a6c293fe94f70fe89b4961098eb7ba32624a8&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2762cbc81056348f2816de01e93d43398ba65354252c97928a56031e32ec776f&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;476ee9c0b7f7f864b169f0d1beb1a3bbcc7dbab1bae7d7f77ee69e22ad25ff66&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;df3b1ad5445d628c24c1308aa6cb476bd9a06f0095a2b285927964339866b2c3&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;26ce818e64caf89d795861db0c84a59e42428bd99b381feb53cb05a67ec69c07&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ff07325f5454c46e883fefc7106829f75c27e3aaf312eb3ab50525faba51c23c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;494122ff204f3dedaa8f0027f9f98971b32c50acbcce4efa8de0498efa148365&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;7419f0798c70888e7197f69ed1091620b2c6fbefead086b5faf23badf0474044&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ec62c984941954f0eb4f3e8baee455410a9dc0deb222360d376e28981c53b1a0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;56731c777896837782beff4432330486a941e4f3af44b4d24be7c62c16e96256&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0f7a8611deea696b2b36e44ea652c8979e296b623e841796a4ea4b6916b39e7c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;975f9ce0769a079e99f06870122e9c4d394dfd51a6020818feeef9ccdb8b0614&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0f19735f076a42396b9f41b10c314d094a54e0e647f2cf7a2c025da8f8e9f54e&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9917c962b7e0a36592c4740d193adbd31bc1eae748d2b441e77817d648487cff&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;f24ee966ef2dd31204b900b5c7eb7e367bc18ff92a13422d800c25dbb1de1e99&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;7eb1dc1719f0918828cc8349ee56ca5e6bbde7cada3bc67a11d7ff7f420c7871&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;71e9cc55f159f2cec96de4f15b3c94c2b076f97d5d8cecb60b8857e7a8113a35&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;afdc010fc134b0b4a8b8788d084c6b0cff9ea255d84032571e038f1a29b56d0a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9528a97d8d73b0dbed2ac496991f0a2eecc5a857d22e994d227ae7c3bef7296f&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0fc7154ebd80ea5d81d82e3a4920cb2699a8dd7c31100ca8ec0693a7bd4af8b7&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2d9d61ce6c01329808db1ca466c1c5fbf405e4e869ed04c59f0e45d7ad12f25b&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9ef2d114c329c169e7b62f89a02d3f7395cb487fcd6cff4e7cac1eb198407ba6&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b2f5edef0e599005e205443b20f6ffd9804681b260eec52fa2f7533622f46a6c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dfc24fa837b6cd3210e7ea0802db3dcf7bb1f85bff2c1b4bda4c3c599821bf8c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;27868ae50b849506121c36b00d92afe3115ce2f041cc28476db8dfc0cc1d6908&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;7963f8606e4c0e7502a813969a04e1266e7cd20708bef19c338e8933c1b85eda&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;89da9a4a5c26b7818e5660b33941b45c8838fa7cfa15685adfe83ff84463799a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;187e0a02620b7775c2a8f88d5b27e80b5d419ad156afc50ef217a95547d0feaa&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b24eac4c704502ee8952ad32384daec5894fd81d7bb668224730d4fb06293942&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2945393c74dd6d8de782e060362cdd468004ae2633bb4958c6063cd2fd5f5561&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;707971879e65cbd70fd371ae76767d3a7bff028b56204ca64f27e93609c8c473&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;37be3d8810959e63d5b6535164e51f16ccea9ca11d7dab7c1dfaa335affe6e3d&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C33a905e513005cee9071ed10933b8e6a11be2335755660e3f7b2adf554f704a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0e1e2f87699a24d1d7b0d984c3622971028a0cafaf665c791c70215f76c7c8fe&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;C2&lt;span class="hx:absolute hx:-mt-20" id="c2"&gt;&lt;/span&gt;
+&lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;9832473219412342343423243242364-34939246823743287468793247237[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;4895458025-4545445-222435-9635794543-3242314342-234123423728[.]space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1221[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1681683130[.]website&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1833[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2215[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2055[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;16868138130[.]space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;33655990[.]cyou&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;16868138130[.]space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;name4050[.]com&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;name1d[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;000000027[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;coronavirus5g[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;99kg[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9348243249382479234343284324023432748892349702394023[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;15052021[.]space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1000020[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;32689657[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1000018[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;32689658[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;45[.]146[.]165[.]91&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;31[.]42[.]185[.]63&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;194[.]58[.]112[.]173&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;194[.]147[.]142[.]232&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;176[.]113[.]115[.]133&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;References&lt;span class="hx:absolute hx:-mt-20" id="references"&gt;&lt;/span&gt;
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;CNBC, Russian Hackers Target NATO, Military Secrets&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;FireEye, APT28: A Window Into Russia&amp;rsquo;s Cyber Espionage Operations?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;Kaspersky, GreyEnergy&amp;rsquo;s Overlap with Zebrocy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;Intezer, A Zebra in Gopher&amp;rsquo;s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;Quointelligence, APT28 Delivers Zebrocy Malware Campaign using NATO Theme as Lure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;ESET, Sednit Update: Analysis of Zebrocy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;VK-Intel. Let&amp;rsquo;s Learn: Progression of APT28 AutoIt Zebrocy Downloaders: Source-Code Level Analysis&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;ESET, A Journey to Zebrocy Land&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.welivesecurity.com/2018/11/20/sednit-whats-going-zebrocy/"target="_blank" rel="noopener"&gt;ESET, Sednit: What&amp;rsquo;s Going on with Zebrocy?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.justice.gov/opa/page/file/1098481/download"target="_blank" rel="noopener"&gt;Brady, S. Indictment – United States vs Aleksei Sergeyevich Morenets, et al.. Retrieved October 1, 2020&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.justice.gov/file/1080281/download"target="_blank" rel="noopener"&gt;Mueller, R. Indictment – United States of America vs. Viktor Borisovich Netyksho, et al. Retrieved September 13, 2018&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://attack.mitre.org/groups/G0007/"target="_blank" rel="noopener"&gt;APT28 MITRE ATT&amp;amp;CK&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://attack.mitre.org/software/S0251/"target="_blank" rel="noopener"&gt;Zebrocy MITRE ATT&amp;amp;CK&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>Energy Sector and its Suppliers Targeted in Global Phishing Campaign</title><link>https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/</link><pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/</guid><description>
+&lt;p&gt;Our research team has found a sophisticated campaign, active for at least one
+year, targeting large international companies in the energy, oil &amp;amp; gas, and
+electronics industries. The attack also targets oil &amp;amp; gas suppliers, possibly
+indicating that this is only the first stage in a wider campaign. In the event
+of a successful breach, the attacker could use the compromised email account of
+the receipt to send spear phishing emails to companies that work with the
+supplier. Thus using the established reputation of the supplier to go after
+more targeted entities.&lt;/p&gt;
+&lt;p&gt;The attackers use typosquatted and spoofed emails to launch the attack. The
+campaign spreads via phishing emails tailored to employees at each company
+being targeted. The contents and sender of the emails are made to look like
+they are being sent from another company in the relevant industry offering a
+business partnership or opportunity. Each email has an attachment, usually an
+IMG, ISO or CAB file. These file formats are commonly used by attackers to
+evade detection from email-based Antivirus scanners. Once the victim opens the
+attachment and clicks on one of the contained files an information stealer is
+executed.&lt;/p&gt;
+&lt;p&gt;Below we describe the attack vector, the attackers&amp;rsquo; motives and tactics used in
+this campaign, and how you can protect your systems from this attack.&lt;/p&gt;
+&lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
+&lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;The campaign uses spoofed or typosquatted emails to make them look like part
+of a normal business-to-business (B2B) correspondence.&lt;/li&gt;
+&lt;li&gt;The attached file is primarily an IMG, ISO or CAB file containing information
+stealer malware.&lt;/li&gt;
+&lt;li&gt;The dropped malware is generally able to steal private information, log
+keyboard strokes and steal browsing data.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig1.png" title="Attack Flow Targeting Energy, Oil, and Gas Companies" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Attack Flow Targeting Energy, Oil, and Gas Companies&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;The Phishing Campaign&lt;span class="hx:absolute hx:-mt-20" id="the-phishing-campaign"&gt;&lt;/span&gt;
+&lt;a href="#the-phishing-campaign" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Recently, we have identified a number of IMG files with names related to the
+oil &amp;amp; gas and energy industries. Inside these image files are predominantly
+.NET malware. Upon further investigation the distribution method for this
+malware appears to be
+&lt;a href="https://intezer.com/blog/incident-response/automated-phishing-investigation/"target="_blank" rel="noopener"&gt;spear phishing emails&lt;/a&gt;,
+with either an IMG, ISO, or CAB file included as an attachment and sent to
+specific targets. The IMG/ISO files are part of the
+&lt;a href="https://en.wikipedia.org/wiki/Universal_Disk_Format"target="_blank" rel="noopener"&gt;Universal Disk Format&lt;/a&gt;
+(UDF) which are disk images commonly used for DVDs. Cabinet (CAB) files are a
+type of archive file. In most of these emails the file name and icon of the
+attachment mimics
+&lt;a href="https://intezer.com/blog/incident-response/analyze-malicious-pdf-files/"target="_blank" rel="noopener"&gt;a PDF file&lt;/a&gt;.
+The purpose is to make the file look less suspicious, enticing the targeted
+individual to open and read it.&lt;/p&gt;
+&lt;p&gt;The campaign targets major companies from around the world, including the
+United States, United Arab Emirates (UAE) and Germany, but its primary targets
+are South Korean companies. The targeted industries are wide-ranging but mostly
+focused on the energy sector, including oil and gas companies.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Energy&lt;/li&gt;
+&lt;li&gt;Oil &amp;amp; Gas&lt;/li&gt;
+&lt;li&gt;Information Technology&lt;/li&gt;
+&lt;li&gt;Manufacturing&lt;/li&gt;
+&lt;li&gt;Media&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;The Spear Phishing Emails&lt;span class="hx:absolute hx:-mt-20" id="the-spear-phishing-emails"&gt;&lt;/span&gt;
+&lt;a href="#the-spear-phishing-emails" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The phishing emails are formatted to look like valid correspondence between two
+companies. This extra effort made by the attacker is likely to increase the
+credibility of the emails and lure victims into opening the malicious
+attachments. The emails use social engineering tactics such as making
+references to executives, using physical addresses, logos and emails of
+legitimate companies. They also include requests for quotations (RFQ),
+contracts, and referrals/tenders to real projects related to the business of
+the targeted company.&lt;/p&gt;
+&lt;p&gt;The content of the emails demonstrates that the threat actor is well-versed in
+business-to-business (B2B) correspondence. The recipient email addresses of
+these emails range from generic email handles such as
+&lt;code&gt;info@target_company[.]com&lt;/code&gt; or &lt;code&gt;sales@target_company[.]com&lt;/code&gt; to specific people
+within companies. This suggests that for some companies they have likely
+managed to gather more intelligence during reconnaissance than others.&lt;/p&gt;
+&lt;p&gt;An example of one of the emails involved in the campaign (image below) uses a
+combined cycle power plant (CCPP) project in Panama as a lure. The email
+pretends to be sent from Hyundai Engineering Co (HEC). The email asks the
+receiver to submit a bid for the supply of equipment in the project and states
+that more details and requirements can be found in the attached file
+(containing the malware). The email presents a strict deadline for which the
+request for the bid should be submitted.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig2.png" title="Phishing email inviting recipient to participate in a project." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Phishing email inviting recipient to participate in a project.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Upon opening the disk image file the target is presented with an executable.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig3.png" title="Malicious file contained in the disk image." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Malicious file contained in the disk image.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Phishing Email Tactics&lt;span class="hx:absolute hx:-mt-20" id="phishing-email-tactics"&gt;&lt;/span&gt;
+&lt;a href="#phishing-email-tactics" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Typosquatting&lt;span class="hx:absolute hx:-mt-20" id="typosquatting"&gt;&lt;/span&gt;
+&lt;a href="#typosquatting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In several emails it appears the sender domains have been typosquatted in order
+to increase the credibility of the spear phishing attempt. Typosquatted domains
+are a technique used to social engineer email recipients into thinking an email
+has been sent from a trusted entity. This technique is performed by registering
+a domain name which mimics a legitimate domain. When viewed quickly it can
+increase the chances of the recipient thinking that the email has been sent
+from a legitimate company.&lt;/p&gt;
+&lt;p&gt;In this campaign, many of the typosquatted domains mimic South Korean companies
+with legitimate domains in the format of &lt;code&gt;&amp;lt;company.co.kr&amp;gt;&lt;/code&gt;. Typosquatting is
+achieved by registering a domain without the second level &lt;code&gt;.co&lt;/code&gt; and instead
+registering the domain as &lt;code&gt;&amp;lt;company-co.kr&amp;gt;&lt;/code&gt;. One example of this is the domain
+&lt;code&gt;&amp;lt;hec-co.kr&amp;gt;&lt;/code&gt;, registered by the attackers to typosquat the legitimate domain
+for the company Hyundai Engineering (&lt;code&gt;hec.co.kr&lt;/code&gt;). The typosquatted email from
+&amp;ldquo;Hyundai Engineering&amp;rdquo; invites the recipient to reply to a confidentiality
+agreement with respect to a refinery expansion project.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig4.png" title="Email sent from typosquatted domain (jeongwan@hec-co.kr)." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Email sent from typosquatted domain (jeongwan@hec-co.kr).&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Another typosquatted email that caught our attention was supposedly sent by
+Barend Jenje from GustoMSC, asking to return a signed non-disclosure agreement
+(NDA). The attachment was just an IMG file containing a malware executable.&lt;/p&gt;
+&lt;p&gt;GustoMSC is based in The Netherlands, specializing in offshore equipment and
+technology for the oil &amp;amp; gas industry. On June 14, 2021,
+&lt;a href="https://www.gustomsc.com/news/scam-alert"target="_blank" rel="noopener"&gt;GustoMSC posted an alert&lt;/a&gt; on their
+site warning users that the company&amp;rsquo;s domain was being typosquatted and
+scammers were sending emails on behalf of their employees.&lt;/p&gt;
+&lt;p&gt;The email below references the Dunkirk offshore wind farm project to add
+credibility to the message. The project was granted to the Éoliennes en Mer de
+Dunkerque (EMD) consortium by the French government in June 2019. The
+consortium is made up of several companies, two of which are mentioned in the
+email: EDF Renouvelables and Enbridge. In
+&lt;a href="https://renews.biz/69489/edf-team-move-ahead-with-dunkirk-offshore-wind/"target="_blank" rel="noopener"&gt;recent news&lt;/a&gt;,
+the companies announced their decision to move forward with the development of
+the project beginning in the second half of 2021.&lt;/p&gt;
+&lt;p&gt;It would make sense then why the attackers name dropped this project, due to
+its recent developments and also because the offshore wind farm is under the
+occupation of GustoMSC.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig5.png" title="Phishing email impersonating GustoMSC." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Phishing email impersonating GustoMSC.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Email Spoofing&lt;span class="hx:absolute hx:-mt-20" id="email-spoofing"&gt;&lt;/span&gt;
+&lt;a href="#email-spoofing" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Many email addresses in this campaign are spoofed by the actor. Email spoofing
+is another tactic that is used to social engineer targets into opening emails.
+Email spoofing is done by sending an email with forged headers to suggest that
+the email is sent from a trusted or legitimate entity. An example of a spoofed
+email from this campaign pretends to come from a company called Haesung Tech,
+seen below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig6.png" title="Spoofed email pretending to be sent from Haesung Tech." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Spoofed email pretending to be sent from Haesung Tech.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This email is clearly spoofed since inside the header the Sender Policy
+Framework (SPF) check does not pass. The reason for this is there is no DNS TXT
+record for &lt;code&gt;haesungtech.com&lt;/code&gt; that defines a permitted sender. The SPF verdict
+is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig7.png" title="Sender Policy Framework (SPF) verdict." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Sender Policy Framework (SPF) verdict.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;The Malware&lt;span class="hx:absolute hx:-mt-20" id="the-malware"&gt;&lt;/span&gt;
+&lt;a href="#the-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;This campaign uses several known Remote Access Tools (RATs) and information
+stealing malware contained in the files attached to the phishing emails.
+Although the threats belong to different malware families, they do share a
+number of capabilities including: stealing private and banking information,
+logging keyboard strokes and stealing browsing data.&lt;/p&gt;
+&lt;p&gt;There are several known malware-as-a-service (MaaS) threats like Formbook and
+Agent Tesla used in this campaign. Other threats we have identified are Loki,
+Snake Keylogger and AZORult.&lt;/p&gt;
+&lt;h3&gt;Email File Attachments&lt;span class="hx:absolute hx:-mt-20" id="email-file-attachments"&gt;&lt;/span&gt;
+&lt;a href="#email-file-attachments" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Each email has an attached file containing one or more executables encapsulated
+inside an IMG, ISO, or CAB file, each belonging to one of the threats mentioned
+above. In Windows 8 and Windows 10, simply double-clicking on virtual disk
+files will automatically mount its content. This feature is appealing for
+threat actors because it takes a small number of user clicks to execute the
+malware. In addition, traditional email defenders do not handle disk image
+files as well as more common formats such as ZIP files. Therefore, it&amp;rsquo;s more
+likely that the malicious emails will end up in the inbox of the recipients
+without being blocked. One of the emails we analyzed was allegedly sent by
+Rashid Mahmood from
+&lt;a href="http://cpecc.cnpc.com.cn/cpeccen/"target="_blank" rel="noopener"&gt;China Petroleum Engineering &amp;amp; Construction Corporation&lt;/a&gt;
+(CPECC), a subsidiary of the China National Petroleum Corporation. The
+recipient of the phishing email works for a company called
+&lt;a href="http://www.gsenc.com/"target="_blank" rel="noopener"&gt;GS E&amp;amp;C&lt;/a&gt;, a Korean EPC contractor engaged in various
+global power plant projects.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig8.png" title="Phishing email sent to GS E&amp;amp;C." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Phishing email sent to GS E&amp;amp;C.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The email contains a reference to the
+&lt;a href="https://www.nsenergybusiness.com/projects/bab-onshore-oil-field-expansion/"target="_blank" rel="noopener"&gt;expansion project&lt;/a&gt;
+of an oil field in Abu Dhabi called
+&lt;a href="https://www.adnoc.ae/en/our-projects/bab-epc"target="_blank" rel="noopener"&gt;BAB&lt;/a&gt;. BAB is the oldest
+operating oil field in the United Arab Emirates (UAE). The receiver of this
+email, who works at GS E&amp;amp;C (a Seoul-based global contractor for oil and gas,
+power plants, and renewable energy), is invited to submit both technical and
+commercial offers for the items described in the attached material take off
+(MTO) document (below).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig9.png" title="Second part of the phishing email sent to employee at GS E&amp;amp;C." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Second part of the phishing email sent to employee at GS E&amp;amp;C.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;There is a typo in the email below. Instead of &amp;ldquo;regional headquarters&amp;rdquo; the
+address says &amp;ldquo;Reginal Headquarter.&amp;rdquo; In addition to this mistake, the address
+provided is the actual
+&lt;a href="https://ae.arabplaces.com/abu-dhabi/cpecc-87624"target="_blank" rel="noopener"&gt;address&lt;/a&gt; of CPECC in UAE.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig10.png" title="Phishing email with a typo." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Phishing email with a typo.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Though the attached file has a seemingly complementary name related to the
+contents of the email, it is actually an IMG file that contains Snake Keylogger
+malware. Once the user double-clicks on the IMG file, the content of the file
+is mounted, as shown below, and the user can click the file to be executed.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig11.png" title="Mounted disk image file with malicious Snake Keylogger binary masquerading as PDF." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Mounted disk image file with malicious Snake Keylogger binary masquerading as PDF.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Fileless Malware Execution&lt;span class="hx:absolute hx:-mt-20" id="fileless-malware-execution"&gt;&lt;/span&gt;
+&lt;a href="#fileless-malware-execution" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;To bypass detection from standard antiviruses, the execution of the malware is
+fileless, meaning that it is loaded into memory without creating a file on
+disk. In this case, it performs the same loading and execution process used to
+load Agent Tesla as reported by
+&lt;a href="https://blogs.blackberry.com/en/2021/06/threat-thursday-agent-tesla-infostealer-malware"target="_blank" rel="noopener"&gt;BlackBerry&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We uploaded the attached file to
+&lt;a href="https://analyze.intezer.com/files/3da25300ec711385344467823ae229bbc25a9a5a7caeccd911875994ed74c5b9/sub/5cb3737a-02b7-4945-b38c-d9aa9f8c934b"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;
+for investigation. The file contains a malicious PE file that shares code with
+other Snake Keylogger samples.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig12.png" title="Genetic analysis of the ISO sample containing Snake Keylogger." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Genetic analysis of the ISO sample containing Snake Keylogger.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Targeting Companies in Religion Media Business&lt;span class="hx:absolute hx:-mt-20" id="targeting-companies-in-religion-media-business"&gt;&lt;/span&gt;
+&lt;a href="#targeting-companies-in-religion-media-business" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Among the targeted companies there is one that differs drastically from the
+others. The company is &lt;a href="http://www.febc.net/intro"target="_blank" rel="noopener"&gt;FEBC&lt;/a&gt;, a religious Korean
+Christian radio broadcaster that reaches other countries outside of South
+Korea, many of these countries which downplay or ban religion. One of FEBC&amp;rsquo;s
+goals is to subvert the religion ban in North Korea.&lt;/p&gt;
+&lt;h2&gt;Recommendations for Energy Sector Businesses&lt;span class="hx:absolute hx:-mt-20" id="recommendations-for-energy-sector-businesses"&gt;&lt;/span&gt;
+&lt;a href="#recommendations-for-energy-sector-businesses" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Treat emails with awareness and caution, especially emails that are received
+from outside your company&amp;rsquo;s domain. Most importantly, don&amp;rsquo;t open suspicious
+files or links.&lt;/p&gt;
+&lt;p&gt;Fileless malware is now very common. A recent
+&lt;a href="https://www.pandasecurity.com/en/mediacenter/news/internet-security-report-q4-watchguard/"target="_blank" rel="noopener"&gt;blog&lt;/a&gt;
+by Panda Security states that fileless malware rates in 2020 increased by 888%
+over 2019. Therefore, it is important to ensure that your organization&amp;rsquo;s
+security strategy includes software that is able to detect malware injected and
+executed in-memory. In case you come across a suspicious file, you can upload
+it to &lt;a href="http://analyze.intezer.com/sign-in"target="_blank" rel="noopener"&gt;Intezer Analyze&lt;/a&gt; to get an immediate
+verdict (trusted or malicious) and malware family classification if it is
+indeed a malicious file. The platform supports a wide range of file formats,
+including Windows and Linux executables, scripts and documents.&lt;/p&gt;
+&lt;p&gt;To summarize, don&amp;rsquo;t click on suspicious emails and make sure you have a
+solution that handles fileless malware in-memory effectively. Intezer Analyze
+can help you with the latter.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Intezer Analyze now supports non-executable files such as Microsoft Office
+documents, PDF files, and scripts such as PowerShell and VBS.&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Email: &lt;code&gt;1c85618ef82808c9bcc6deddf93b66d6ee7a81b82c03341ecbf61d3ee4975bb3&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;74109522b38c609b4c576eecde644ffe544fcdc9a6494a9683f8eea6fb9e0bc7&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;cd77a054500efdac4d39d743ad83f963c738d6f2b6b53f5c4b5818d34742f02b&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;3da25300ec711385344467823ae229bbc25a9a5a7caeccd911875994ed74c5b9&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;8877b6a829967924063e85120bf22b2ccc511fa25e376b479213020a15482bf6&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;0dc594a10793d93e26584d8dcd4d811c4b2ccb017b86eb1119380f17e3606f85&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;b51e83fd2583c8e92ef34f6b8d23e07aaa82eedcf2db4b68e667f3a52c8862f5&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;079c7d83465481952407f3da954e08a5f165ff5480e2a51c32505088e78750f5&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;53e3ae371a3e329c6ed4942eb6cc51007c53008e3b9da6fccaecbed8f68f2ffa&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;96ff156bd7b09ec5a6216f43c0de578aafa9a8103832a401ce156e2ee918f580&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;ff5be1c9c0ee11ceca68c10a9bcd1f8a995be8e3f89ed17a4933adde010ac3ad&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;d5080a9391b2ad1a75deeee81db15be47be2b0742378f633081eb4c9f81226ad&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;a722bde3892eeaafdd285b6e9aabc67f0ad8dc8abe4035a8ff11671a7c2a68b1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;01970569f16e4adfdd4afb50d7a85327e8eb6abd7cb61a446e4a6f1010835968&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;0ab00782d02cb0e817b0237007b6b7f81139ff6ded17bc42fbf277e929b77ccf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;3d8d4fbf52301ea8dca5602d6c86da3d82fd659074d7868938064e84c7ad424a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;ee7a4274d02042c8e516de2695ced13f4623c96377762f088d7795d5b0b2bd6f&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;0ea3575eed95cf60b1efb487a350a9fa24fd77482e881020a9a0f77220a6ad33&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;102adafddb589d6739ce8a489054825a9a958baa01e87b95eebdc302675a3bd9&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;9644169dee32d60f41d8d4e1f3dfb45a930ad3efd993fe941647549cf5e924dd&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;e2adb897c29a67295a2b411c47ee76e1e9ce1e27dccf259bc42a84c481ae41ce&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;a03c0a2b6458cf55ee800291cf6b4698d1450bddd6d9e3e02f963c465004ac5c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;f1e85b9f7b1c2a6ce9da528dbfe2c66f0a0f513f39411dbf7bb7d4d917e1ba99&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;0840cff0a98daa3962236913952b7b16896cae63af24fa99e46f3371c0e1ca49&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;6a99c482b1634f3d0c775f4c8a0d1bb04cd24a0f54f1f48d1ee2697f5bf1c6c3&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;86ebf42301074e2907578e98dc20c46f6ecf9789503c625e2b2abfcb2af847b2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;079c7d83465481952407f3da954e08a5f165ff5480e2a51c32505088e78750f5&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;53e3ae371a3e329c6ed4942eb6cc51007c53008e3b9da6fccaecbed8f68f2ffa&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;96ff156bd7b09ec5a6216f43c0de578aafa9a8103832a401ce156e2ee918f580&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;5384a56a7d814aea903c33fbd602a3e3d5bc637b6e3bc0bd4568d4b7b99db2ad&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;f873b017cb3063a499db2874275e4797b8412ccd1300d29f4f1af03d66ee6700&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;8620f85ffd045187ffbc5d7e70df01d8a04e7fc5c69048b152f2b7284d20caf1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;06a3fe74ff3dd352db742ac96c6fbd0da1a0d98164dda2a6637e809ec0f48b35&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;b552939890305a0a0d2c9af8973a7d04b1593d9f512c0cc485a0b987f4293d97&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;8e2c23037b36f558920f626e7ef8767daa55734551238eb8816abd144f27db45&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;9c55cc8f7acc09b5de745ec99b0c60862f7975eab77420e41b5c9d1351114cd9&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;d90f2a4a97cf6523e868f67356df7fc08581912c37e8f1f6ee16f2220eabdbb6&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;5db134f3aa187e74903a732b1bd55419977d66c63a55ae8952d908b8b0bc2616&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;713da8a5f0b2ee6a477a57b90834d4ae4637723ad817ffc5a53e5c86792e8ba4&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;7b57b59d06c7ef6cc6fa09fafdf427f2db5969d1b49041d1b7a992e47a9a2726&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;b06cfcc8fabebb1bc83a4dfc91c0f9ba4e23c539018bb94fef1431745c0a2506&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;87b197032a6976c18f7f3df1df6e09cf9fd6a8e4cce3f35f51b2cf521b9ca278&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;7aacd968f2cfb23a8369712c0dc60bcabc7b7d7c0ebf69863f7643e6b90e656f&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;9e9ea32799bf9a246d76b11131abf71bbcffd3b79e026e440b221f6b1bdffe90&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Email: &lt;code&gt;75ce82077ab9b2e18df87dae0e52270ae49fe20ec22f66fa3698b6fb75452e95&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;14ae4b4b66588af22cf569a90c94e9dd6e2af708ad9dc0efde0cd7d2a809fb51&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Attached file:
+&lt;code&gt;60dc089158d86e9fb10ace29eb6afd7f23d001181e8a4a6ba5083c3597733a71&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

@@ -1,4 +1,128 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cloud_security</title><link>https://intezer.github.io/community-intelligence/tags/cloud_security/</link><description>Recent content in Cloud_security on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 08 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cloud_security/index.xml" rel="self" type="application/rss+xml"/><item><title>Attackers Abusing Legitimate Cloud Monitoring Tools to Conduct Cyber Attacks</title><link>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</link><pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cloud_security</title><link>https://intezer.github.io/community-intelligence/tags/cloud_security/</link><description>Recent content in Cloud_security on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 20 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cloud_security/index.xml" rel="self" type="application/rss+xml"/><item><title>Why Relying on the Cloud Provider for Security is Not Enough</title><link>https://intezer.github.io/community-intelligence/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</link><pubDate>Thu, 20 May 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</guid><description>
+&lt;p&gt;73% of organizations using the cloud are not sure which parts of security fall
+under their responsibility. Ultimately, the customer is responsible for
+security in the cloud, meaning protecting the workloads (applications and code)
+hosted on top of the virtual resources created in the cloud provider&amp;rsquo;s
+platform. Whereas the cloud provider is responsible for the security of the
+cloud, meaning the physical infrastructure (e.g., data centers, network and
+server equipment) and for operating that infrastructure (e.g., physical
+security, power redundancy, connectivity between facilities). The big three
+cloud providers, Amazon Web Services (AWS), Microsoft Azure and Google Cloud
+Platform (GCP), offer various built-in tools and services designed to prevent a
+wide range of attacks and reduce the attack surface. Yet, breaches still
+happen. Let&amp;rsquo;s examine some cases where the security tools provided by the cloud
+provider were not enough to fully secure the customer&amp;rsquo;s environment.&lt;/p&gt;
+&lt;h2&gt;Security in the Cloud&lt;span class="hx:absolute hx:-mt-20" id="security-in-the-cloud"&gt;&lt;/span&gt;
+&lt;a href="#security-in-the-cloud" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Before we get started, it&amp;rsquo;s important to note that most cloud monitoring tools
+are based on one or more of the following categories:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Network security&lt;/strong&gt; – Firewalls, networking segmentation and protection
+against DDoS attacks.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Vulnerability management&lt;/strong&gt; – Scanning and patching vulnerabilities in the
+cloud system.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cloud Workload Protection Platforms (CWPP)&lt;/strong&gt; – Focus on securing the
+workloads themselves with runtime visibility and protection.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cloud Security Posture Management (CSPM)&lt;/strong&gt; – Find misconfigurations and
+security risks based on predefined security policies in the cloud
+infrastructure. In some cases, remediation can be automated to terminate an
+attack.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SIEM capability&lt;/strong&gt; – A combination of security event management (SEM) and
+security information management (SIM). The goal is to collect logs from
+different sources and take the appropriate action when an incident happens.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The security tools provided by the cloud providers are not bulletproof though.
+Certain attack vectors, such as unknown vulnerabilities and supply chain
+backdoors, are not preventable.&lt;/p&gt;
+&lt;h2&gt;Cloud Snooper Attack Bypasses Firewall&lt;span class="hx:absolute hx:-mt-20" id="cloud-snooper-attack-bypasses-firewall"&gt;&lt;/span&gt;
+&lt;a href="#cloud-snooper-attack-bypasses-firewall" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The
+&lt;a href="https://news.sophos.com/en-us/2020/02/25/cloud-snooper-attack-bypasses-firewall-security-measures/"target="_blank" rel="noopener"&gt;Cloud Snooper&lt;/a&gt;
+attack bypassed the on-premise
+&lt;a href="https://aws.amazon.com/network-firewall/?whats-new-cards.sort-by=item.additionalFields.postDateTime&amp;amp;whats-new-cards.sort-order=desc"target="_blank" rel="noopener"&gt;AWS Network Firewall&lt;/a&gt;
+using a rootkit. The rootkit hid the communication with the Command and control
+(C2) server by disguising it as &amp;ldquo;innocent&amp;rdquo; packets and then dropped a RAT. The
+attackers had control over the victims and a safe channel to communicate with
+the C2. Despite having a well-configured firewall the attackers still managed
+to infiltrate the system, meaning the security tools of AWS couldn&amp;rsquo;t stop this
+attack. Having runtime visibility is an important last line of defense, since
+it detects the execution of any unauthorized code or commands which are
+critical for an attacker to carry out a successful attack. AWS doesn&amp;rsquo;t support
+this capability, therefore the cloud customer should leverage third party tools
+for workload-centric security and runtime protection.&lt;/p&gt;
+&lt;h2&gt;Security Tools Have Vulnerabilities Too&lt;span class="hx:absolute hx:-mt-20" id="security-tools-have-vulnerabilities-too"&gt;&lt;/span&gt;
+&lt;a href="#security-tools-have-vulnerabilities-too" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cloud services
+&lt;a href="../../../2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data"&gt;have their own vulnerabilities&lt;/a&gt;
+which can be exploited as an initial attack vector. The problem is it&amp;rsquo;s nearly
+impossible to eliminate all software vulnerabilities, especially for large
+deployments spread across multiple clouds and when using third parties.
+Consider that not every software has a fix and not every vulnerability is
+known. Not to mention, fixing vulnerabilities takes time and third party
+vulnerable software also exists. Relying only on the cloud provider&amp;rsquo;s tools is
+not enough because once a vulnerability in the tool is exploited by an
+attacker, the only way to detect and stop the attack is by detecting
+unauthorized code or commands in runtime. This capability is not natively
+supported by AWS and GCP. Azure offers
+&lt;a href="https://intezer.com/blog/incident-response/autonomous-soc-for-microsoft-defender/"target="_blank" rel="noopener"&gt;Microsoft defender&lt;/a&gt;
+however it has limited support for Linux which runs 90% of the cloud.&lt;/p&gt;
+&lt;h2&gt;Misconfigurations are the Leading Cause of Attacks&lt;span class="hx:absolute hx:-mt-20" id="misconfigurations-are-the-leading-cause-of-attacks"&gt;&lt;/span&gt;
+&lt;a href="#misconfigurations-are-the-leading-cause-of-attacks" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A whopping 99% of
+&lt;a href="https://www.cio.com/article/3529426/posture-management-cloud-security-tools-rise-in-wake-of-breaches.html"target="_blank" rel="noopener"&gt;cloud security failures&lt;/a&gt;
+are expected to be the fault of the customer through 2025. Despite the variety
+of tools and policies, setting up and maintaining a secured environment relies
+on skilled and experienced professionals. Yet, people can make mistakes that
+can compromise information or expose the infrastructure to attacks. For
+example:
+&lt;a href="https://www.infosecurity-magazine.com/news/fedex-s3-bucket-exposes-private/"target="_blank" rel="noopener"&gt;FedEx exposed information by leaving an exposed storage server&lt;/a&gt;.
+The
+&lt;a href="https://money.cnn.com/2017/11/17/technology/centcom-data-exposed/"target="_blank" rel="noopener"&gt;Pentagon&lt;/a&gt;
+exposed &lt;a href="https://www.bbc.com/news/technology-42166004"target="_blank" rel="noopener"&gt;100 GB of data&lt;/a&gt; from a
+joint intelligence program with the U.S. Army and National Security Agency. The
+data had been available for years in a publicly exposed S3 bucket. The attack
+using a
+&lt;a href="../../../2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/"&gt;misconfigured Docker port&lt;/a&gt;
+drops the Doki malware which installs a backdoor on the victim&amp;rsquo;s machine and
+executes a cryptomining malware. 73% of companies leave SSH ports
+&lt;a href="https://www.eweek.com/security/misconfiguration-of-aws-services-by-users-exposes-cloud-security-risks/"target="_blank" rel="noopener"&gt;publicly exposed&lt;/a&gt;.
+Sometimes the user is not aware of the misconfiguration only until a breach
+occurs and the damage is done. In this case, a runtime protection solution can
+stop the attack before it causes more damage.&lt;/p&gt;
+&lt;h2&gt;Unauthorized Access to Cloud Workloads&lt;span class="hx:absolute hx:-mt-20" id="unauthorized-access-to-cloud-workloads"&gt;&lt;/span&gt;
+&lt;a href="#unauthorized-access-to-cloud-workloads" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Credentials and permissions have an important role in securing the
+infrastructure and cloud providers offer dedicated tools like Identity and
+Access Management (IAM). However, when attackers or malicious insiders gain or
+steal credentials to cloud assets they
+&lt;a href="https://www.darkreading.com/attacks-breaches/compromised-credentials-show-that-abuse-happens-in-multiple-phases/d/d-id/1340179"target="_blank" rel="noopener"&gt;can cause extensive damage&lt;/a&gt;
+to the entire cloud environment. Attackers used
+&lt;a href="https://arstechnica.com/information-technology/2018/02/tesla-cloud-resources-are-hacked-to-run-cryptocurrency-mining-malware/"target="_blank" rel="noopener"&gt;Tesla&amp;rsquo;s Kubernetes dashboard&lt;/a&gt;
+that was exposed to the public internet and not password protected. One of the
+pods contained access credentials for Tesla&amp;rsquo;s AWS environment which included an
+Amazon S3 bucket that stored sensitive information and telemetry. The attackers
+ran
+&lt;a href="../../../2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/"&gt;cryptomining malware&lt;/a&gt;
+on the server and took measures to hide the activity of the miner. The
+attackers used atypical ports for communicating with the mining pools and they
+also did not use well-known mining pool hosts. When an attacker bypasses all
+security measures, having clear visibility into what code is running on your
+systems enables you to identify and stop the attack before the attacker gains
+remote access to other assets. Having runtime security measures in the
+environment will help to identify and mitigate attacks on cloud workloads. But
+not all cloud vendors have these tools, specifically for Linux.&lt;/p&gt;
+&lt;h2&gt;You Need Runtime Protection&lt;span class="hx:absolute hx:-mt-20" id="you-need-runtime-protection"&gt;&lt;/span&gt;
+&lt;a href="#you-need-runtime-protection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Currently, AWS and GCP do not offer a runtime Cloud Workload Protection
+Platform (CWPP) focused on what is running &amp;ldquo;inside the machine.&amp;rdquo; Azure has a
+CWPP but it&amp;rsquo;s mostly focused on Windows threats, which means you still need a
+third party tool to secure your Linux workloads. Runtime visibility and
+protection for your cloud-hosted applications is a critical control that is not
+supported by the cloud providers. At Intezer, we recommend protecting the
+runtime environment as a key security control. Most research shows that nearly
+all successful attacks are based on running unauthorized code or commands,
+regardless of how the attacker got in. Risk reduction programs like
+vulnerability scanning and misconfiguration management are very important but
+they take a lot of time. If you take an assume breach mentality, an attacker
+will eventually get through, making the last line of defense a priority.
+Protecting the runtime environment buys you time to do larger programs to
+reduce risk and have a more holistic cloud security. Runtime protection is also
+needed to detect and respond to attacks. If an attacker exploits an unknown
+vulnerability or a backdoor in the supply chain you must be able to detect it.&lt;/p&gt;</description></item><item><title>Attackers Abusing Legitimate Cloud Monitoring Tools to Conduct Cyber Attacks</title><link>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</link><pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;TeamTNT is a cybercrime group that targets cloud environments including Docker
 and Kubernetes instances. The group has been

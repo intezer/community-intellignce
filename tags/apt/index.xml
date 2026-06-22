@@ -2476,7 +2476,925 @@ data-copied-label="Copied!"
 &lt;td&gt;Data can be exfiltrated&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>A Zebra in Gopher’s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy</title><link>https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</link><pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</guid><description>
+&lt;/table&gt;</description></item><item><title>Targeted Phishing Attack against Ukrainian Government Expands to Georgia</title><link>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</guid><description>
+&lt;p&gt;In May 2021,
+&lt;a href="https://www.fortinet.com/blog/threat-research/spearphishing-attack-uses-covid-21-lure-to-target-ukrainian-government"target="_blank" rel="noopener"&gt;Fortinet published a report&lt;/a&gt;
+about the early stages of an ongoing phishing attack against the Ukrainian
+government. The attack, initially based on the
+&lt;a href="https://blog.malwarebytes.com/threat-analysis/2021/04/a-deep-dive-into-saint-bot-downloader/"target="_blank" rel="noopener"&gt;Saint Bot downloader&lt;/a&gt;,
+also targeted Georgia as reported by Malwarebytes. Since June we have seen this
+threat actor expand its operation with new samples targeting government
+entities in Georgia. In this report we will cover the new malware samples we
+found.&lt;/p&gt;
+&lt;h2&gt;Method of Infection&lt;span class="hx:absolute hx:-mt-20" id="method-of-infection"&gt;&lt;/span&gt;
+&lt;a href="#method-of-infection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The attack&amp;rsquo;s entry point is a spear phishing email referencing
+government-related topics including veterans, Ukraine&amp;rsquo;s Anti-Terrorist
+Operation (ATO), Georgia&amp;rsquo;s Internally Displaced Persons (IDPs), organizations
+in Georgia&amp;rsquo;s private sector and COVID-19. The attack mainly targets government
+agencies in Ukraine and Georgia.&lt;/p&gt;
+&lt;h2&gt;The Malware&lt;span class="hx:absolute hx:-mt-20" id="the-malware"&gt;&lt;/span&gt;
+&lt;a href="#the-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The main payload delivered by the malware is an infostealer written in AutoIt.
+Its main goal is to steal files from the victim&amp;rsquo;s machine, uploading them to a
+predefined Command and control (C2) server.&lt;/p&gt;
+&lt;p&gt;Based on victimology and the fact that this attack tries to steal files from
+government entities, a classic goal of nation-state groups, it is likely
+operated by a Russian nation-state. There are also several similarities between
+this attack and past APT28 campaigns which we will discuss later.&lt;/p&gt;
+&lt;p&gt;Below we summarize the early stages of the attack and show the latest malware
+targeting government entities in Georgia. We assess with high confidence that
+this attack may expand its operations to target additional Eastern European
+countries.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The attack flow, described below, begins with a phishing email containing a
+malicious shortened URL. The URL redirects to a Command and control (C2) where
+a ZIP file or malicious document is hosted. The ZIP file contains a malicious
+file and in some emails also a harmless PDF file. The malicious attachment
+varies between RTF, DOC, PDF, JS, LNK or EXE. Its main goal is to drop the
+packed payloads from the C2. The method in which a dropper contacts the C2 in
+order to deliver the packed payload varies between the different file types and
+stages of the attack. The packed executable loads an AutoIt payload into
+memory. The payload searches for files on the victim&amp;rsquo;s machine based on a list
+of file extensions and uploads them to a C2 that is hardcoded in the script.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig1.png" title="Attack flow." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Attack flow.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;An example of one of the phishing emails sent to the Ukrainian government is
+below. The threat actor references payments made to veterans of the
+Anti-Terrorist Operation (ATO).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig2.png" title="Phishing email sent to the Ukrainian government. Translation from Ukrainian – Subject: Payments to ATO Veterans. Content: It must be filled in and sent back." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Phishing email sent to the Ukrainian government. Translation from Ukrainian – Subject: Payments to ATO Veterans. Content: It must be filled in and sent back.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The link, masqueraded as a Ukrainian .gov domain, is actually a shortened URL
+(&lt;code&gt;https[://]cutt[.]ly/WcBTVdf&lt;/code&gt;) which contacts
+&lt;code&gt;http[://]gosloto[.]site/doc/form_request.doc&lt;/code&gt; and downloads &lt;code&gt;form_request.doc&lt;/code&gt;
+to the victim&amp;rsquo;s machine. This document is an RTF file that once runs will
+present content related to the Israeli
+&lt;a href="https://en.wikipedia.org/wiki/Merkava"target="_blank" rel="noopener"&gt;Merkava&lt;/a&gt;, the main battle tank used by
+the Israeli Defense Forces.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig3.png" title="Reference to Israeli Merkava in the RTF file." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Reference to Israeli Merkava in the RTF file.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This file is incharge of dropping the final payload from the C2. In other
+phishing emails, this file is named &lt;code&gt;NATO_06042021&lt;/code&gt;
+(&lt;code&gt;44697aad796c0d82c1adbee15fd1266b&lt;/code&gt;).&lt;/p&gt;
+&lt;h3&gt;First we Take Kyiv, then we Take Tbilisi&lt;span class="hx:absolute hx:-mt-20" id="first-we-take-kyiv-then-we-take-tbilisi"&gt;&lt;/span&gt;
+&lt;a href="#first-we-take-kyiv-then-we-take-tbilisi" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Combined with continuous attacks against Ukraine, the threat actor has expanded
+its campaign to target government entities in Georgia. The following malicious
+documents were uploaded to VirusTotal from Georgia on June 17 and July 5.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;b56975725c4e260370af540f9c0b6709&lt;/code&gt; —
+&lt;code&gt;Georgia_Private_Sector_Poster_Inputs_06_2021.pdf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;900e892c8151f0f59a93af1206583ce6&lt;/code&gt; —
+&lt;code&gt;2021-2022 Strategy Action Plan for IDPs.doc&lt;/code&gt; (translated from Georgian)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;333796e18eb3f3d1529d07ec90c63e61&lt;/code&gt; — &lt;code&gt;Change to 828.doc&lt;/code&gt; (translated from
+Georgian)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All three files have low detection rates in VirusTotal at the time of this
+writing. In the following sections we will describe each file&amp;rsquo;s behavior.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig4.png" title="b56975725c4e260370af540f9c0b6709 in VirusTotal." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;b56975725c4e260370af540f9c0b6709 in VirusTotal.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h4&gt;The PDF File&lt;span class="hx:absolute hx:-mt-20" id="the-pdf-file"&gt;&lt;/span&gt;
+&lt;a href="#the-pdf-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The PDF file, named &lt;code&gt;Georgia_Private_Sector_Poster_Inputs_06_2021.pdf&lt;/code&gt;, was
+uploaded to VirusTotal on June 17, 2021. The PDF contains an action object.
+Upon a victim opening the PDF it will send a query to Google containing the C2:
+&lt;code&gt;http://www[.]google[.]com/url?q=http%3A%2F%2F93482432493824792343432843240234327488 92349702394023.xyz&amp;amp;sa=D&amp;amp;sntz=1&amp;amp;usg=AFQjCNFWmVffgSGlrrv-2U9sSOJYzfUQqw&lt;/code&gt;)
+The system will prompt a security warning allowing the document to contact
+&lt;code&gt;http[:]//www.google.com&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig5.png" title="Action object in b56975725c4e260370af540f9c0b6709" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Action object in b56975725c4e260370af540f9c0b6709&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig6.png" title="System prompt message." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;System prompt message.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Once the document connects to Google a short series of network redirections
+occurs. First, Google will redirect to the C2&amp;rsquo;s URL. Then, as described in the
+image below, the C2 contains a frame with an src to another C2 URL
+(&lt;code&gt;https[://]16868138130[.]space/000/&lt;/code&gt;), which then redirects to a shortened URL
+(&lt;code&gt;https[://]qaz[.]im/load/rKtsZD/hDKKFD&lt;/code&gt;) using a meta refresh redirect. This
+will finally drop &lt;code&gt;georgia_private_sector_poster_inputs_06_2021.cpl&lt;/code&gt;
+(&lt;code&gt;02f0118bd15dabf727659b9fd27c86c9&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig7.png" title="Network redirections for delivering the payload." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Network redirections for delivering the payload.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This redirection process, starting with Google as the first domain the PDF
+attempts to access, is an obvious Antivirus evasion technique.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;georgia_private_sector_poster_inputs_06_2021.cpl&lt;/code&gt; is a DLL which upon clicking
+on it, runs under a trusted control panel process. The DLL is incharge of
+dropping and running the packed payload from the C2,
+&lt;code&gt;16868138130[.]space/000/000.exe&lt;/code&gt; (&lt;code&gt;41af4d9fbd0bc719212b78cd7a1b89ec&lt;/code&gt;). The
+packed malware loads the AutoIt payload into memory.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig8.png" title="Genetic report of 02f0118bd15dabf727659b9fd27c86c9. Drops 41af4d9fbd0bc719212b78cd7a1b89ec which loads AutoIt into memory." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Genetic report of 02f0118bd15dabf727659b9fd27c86c9. Drops 41af4d9fbd0bc719212b78cd7a1b89ec which loads AutoIt into memory.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig9.png" title="IoC report of 02f0118bd15dabf727659b9fd27c86c9 in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;IoC report of 02f0118bd15dabf727659b9fd27c86c9 in Intezer Analyze.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The
+&lt;a href="https://github.com/intezer/community-intellignce/blob/master/AutoIt_Infostealer_GE_UA.txt"target="_blank" rel="noopener"&gt;AutoIt script&amp;rsquo;s&lt;/a&gt;
+main goal is to upload files from the victim&amp;rsquo;s machine to a predefined C2. The
+main logic (see image below) calls the &lt;code&gt;_filsearch&lt;/code&gt; function (two images below)
+which looks for files containing the following extensions:
+&lt;code&gt;*.doc;*.pdf;*.ppt;*.dot;*.xl;*.csv;*.rtf;*.dot;*.mdb;*.accdb;*.pot;*.pps;*.ppa;*.rar;*.zip;*.tar;*.7z;*.txt&lt;/code&gt;.
+&lt;code&gt;_filsearch&lt;/code&gt; uses &lt;code&gt;@ComSpec&lt;/code&gt; environment variable (which usually points to
+CMD). The process tree created by the AutoIt file is below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig10.png" title="Code snippet from the AutoIt script main logic." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code snippet from the AutoIt script main logic.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig11.png" title="Code snippet from the AutoIt script _filsearch function." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code snippet from the AutoIt script _filsearch function.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig12.png" title="Process tree snippet in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Process tree snippet in Intezer Analyze.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Each file is uploaded to the C2 via a multipart/form-data POST request. The
+file&amp;rsquo;s directory is sent as Hex. Below is an example of a file upload request.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig13.png" title="Example of C_/Users/admin/AppData/Roaming/Microsoft/Windows/Cookies/NUT28OOW.txt file upload." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Example of C_/Users/admin/AppData/Roaming/Microsoft/Windows/Cookies/NUT28OOW.txt file upload.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Lastly, the AutoIt script creates and runs a batch named &lt;code&gt;r.bat&lt;/code&gt; which deletes
+the malware from disk and kills the process.&lt;/p&gt;
+&lt;h4&gt;The Document Files&lt;span class="hx:absolute hx:-mt-20" id="the-document-files"&gt;&lt;/span&gt;
+&lt;a href="#the-document-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Both malicious Word documents uploaded to VirusTotal on July 5 display similar
+behavior. Let&amp;rsquo;s look at &lt;code&gt;900e892c8151f0f59a93af1206583ce6&lt;/code&gt;. Once a user opens
+this document, it will run a VBA macro with the main logic to create, write to
+and run a batch file named &lt;code&gt;ballDemocrat.bat&lt;/code&gt;. The script written to the batch
+file will run a PowerShell command that drops an executable from the C2
+(&lt;code&gt;http[://]1221[.]site/15858415841/0407.exe&lt;/code&gt;) and saves it as
+&lt;code&gt;centuryarticle.exe&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig14.png" title="VBA script (7546f382d73231a4c1fdc58ab1535ec0) in the malicious document." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VBA script (7546f382d73231a4c1fdc58ab1535ec0) in the malicious document.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig15.png" title="Process tree of 900e892c8151f0f59a93af1206583ce6" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Process tree of 900e892c8151f0f59a93af1206583ce6&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The file dropped from the C2 is a packed .NET file that loads the AutoIt
+payload into memory.&lt;/p&gt;
+&lt;h2&gt;Possible Russian Connection&lt;span class="hx:absolute hx:-mt-20" id="possible-russian-connection"&gt;&lt;/span&gt;
+&lt;a href="#possible-russian-connection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We noticed similarities between this attack and Russia&amp;rsquo;s APT28 campaigns. While
+these similarities alone are not enough to attribute APT28, victimology and
+intent to conduct espionage on various government entities in Eastern European
+regions gives us reason to believe that Russia is behind the attack.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Victimology: APT28 has targeted Ukraine and Georgia in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;[3]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Phishing theme: APT28 previously used COVID-19-related phishing themes to
+target countries including Ukraine. APT28 also used NATO as a phishing theme
+in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;[4]&lt;/a&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;[5]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Use of AutoIt: One of Zebrocy&amp;rsquo;s (malware from APT28) variants is written in
+AutoIt. &lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;[6]&lt;/a&gt;&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;[7]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;File search with predefined extensions: Zebrocy searches for predefined file
+extensions on the victim machine. &lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2018/11/20/sednit-whats-going-zebrocy/"target="_blank" rel="noopener"&gt;[9]&lt;/a&gt;&lt;a href="https://attack.mitre.org/software/S0251/"target="_blank" rel="noopener"&gt;[13]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Compressed file holding both malicious and benign files was used in an APT28
+COVID-19 phishing attack last year and in other campaigns in the past. &lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;[4]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Use of spear phishing emails containing URL-shortener was documented in past
+APT28 campaigns. In one of the campaigns, this URL hosted a ZIP file
+containing a benign PDF and a malicious executable. &lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://www.justice.gov/opa/page/file/1098481/download"target="_blank" rel="noopener"&gt;[10]&lt;/a&gt;&lt;a href="https://www.justice.gov/file/1080281/download"target="_blank" rel="noopener"&gt;[11]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Use of Hex encoding: The Zebrocy AutoIt version uses String to Hex encoding.
+&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;[7]&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Use of batch files, PowerShell and CMD are part of APT28&amp;rsquo;s documented TTPs.
+&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://attack.mitre.org/groups/G0007/"target="_blank" rel="noopener"&gt;[12]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Mitigation&lt;span class="hx:absolute hx:-mt-20" id="mitigation"&gt;&lt;/span&gt;
+&lt;a href="#mitigation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Take the following precautions to keep your organization clean and safe from
+phishing attacks.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Enhance social engineering awareness within your organization.&lt;/li&gt;
+&lt;li&gt;Use an email gateway to analyze attachments and links. Intezer Analyze now
+supports analysis for Microsoft Office documents, PDFs and scripts.&lt;/li&gt;
+&lt;li&gt;Conduct proactive threat hunting on all endpoints inside your organization to
+routinely ensure that no traces of malicious code or malware exist in-memory.
+Intezer&amp;rsquo;s live Endpoint Scanner can help you achieve this at scale by
+collecting all binaries running in-memory, including fileless, and
+classifying them using Genetic Code Analysis technology. We also have a
+&lt;a href="https://intezer.com/blog/malware-analysis/accelerate-incident-response-with-intezer-analyze-volatility-plugin/"target="_blank" rel="noopener"&gt;Volatility plugin&lt;/a&gt;
+for analyzing memory dumps.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;AutoIt Payload Script&lt;span class="hx:absolute hx:-mt-20" id="autoit-payload-script"&gt;&lt;/span&gt;
+&lt;a href="#autoit-payload-script" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The AutoIt script can be found in the following
+&lt;a href="https://github.com/intezer/community-intellignce/blob/master/AutoIt_Infostealer_GE_UA.txt"target="_blank" rel="noopener"&gt;GitHub repository&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Delivery Files&lt;span class="hx:absolute hx:-mt-20" id="delivery-files"&gt;&lt;/span&gt;
+&lt;a href="#delivery-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;RTF&lt;span class="hx:absolute hx:-mt-20" id="rtf"&gt;&lt;/span&gt;
+&lt;a href="#rtf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;a60f4a353ea89adc8def453c8a1e65ea2ecc46c64d0d9ea375ca4e85e1c428fd&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;52173598ca2f4a023ec193261b0f65f57d9be3cb448cd6e2fcc0c8f3f15eaaf7&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2ec710d38a0919f9f472b220cfe8d554a30d24bfa4bdd90b96105cee842cf40d&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9803e65afa5b8eef0b6f7ced42ebd15f979889b791b8eadfc98e7f102853451a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;f357f9bf438f44b2029dfa12c03856393484f723b9df03ecde3e1ef03ddffcb7&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;DOC&lt;span class="hx:absolute hx:-mt-20" id="doc"&gt;&lt;/span&gt;
+&lt;a href="#doc" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;0be1801a6c5ca473e2563b6b77e76167d88828e1347db4215b7a83e161dae67f&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;96f815abb422bb75117e867384306a3f1b3625e48b81c44ebf032953deb2b3ff&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;LNK&lt;span class="hx:absolute hx:-mt-20" id="lnk"&gt;&lt;/span&gt;
+&lt;a href="#lnk" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;101d9f3a9e4a8d0c8d80bcd40082e10ab71a7d45a04ab443ef8761dfad246ca5&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Ced5f53bafc5896be0a62ed5bdabed38a6224f8dcbe61669e833749ff62693dd&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2b15ade9de6fb993149f27c802bb5bc95ad3fc1ca5f2e86622a044cf3541a70d&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;ZIP&lt;span class="hx:absolute hx:-mt-20" id="zip"&gt;&lt;/span&gt;
+&lt;a href="#zip" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;275388ffad3a1046087068a296a6060ed372d5d4ef6cf174f55c3b4ec7e8a0e8&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;A16e466bed46fcf9c0a771ca0e41bc42a1ac13e66717354e4824f61d1695dbb1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;47e1991f94309566e35ea57507c7c8d013103e860f12f2166450900e8179a75e&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;E39a12f34bb8a7a5a03fd23f351846088692e1248a3952e488102d3aea577644&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;677500881c64f4789025f46f3d0e853c00f2f41216eb2f2aaa1a6c59884b04cc&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;5227adda2d80fb9b66110eeb26d57e69bbbb7bd681aecc3b1e882dc15e06be17&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;a856ae150144179848e0cc9be7618b4404c20c356eb93db490c8496ae2775b5e&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;CPL&lt;span class="hx:absolute hx:-mt-20" id="cpl"&gt;&lt;/span&gt;
+&lt;a href="#cpl" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;10d21d4bf93e78a059a32b0210bd7891e349aabe88d0184d162c104b1e8bee2e&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0c644fedcb4298b705d24f2dee45dda0ae5dd6322d1607e342bcf1d42b59436c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0db336cab2ca69d630d6b7676e5eab86252673b1197b34cf4e3351807229f12a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;72f57b040d6f523afee40159a743b1ecae685a5bf939cab06b78d1fc397ec5e7&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;64057982a5874a9ccdb1b53fc15dd40f298eda2eb38324ac676329f5c81b64e0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;f4a56c86e2903d509ede20609182fbe001b3a3ca05f8c23c597189935d4f71b8&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;JS&lt;span class="hx:absolute hx:-mt-20" id="js"&gt;&lt;/span&gt;
+&lt;a href="#js" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;5d9c7192cae28f4b6cc0463efe8f4361e449f87c2ad5e74a6192a0ad96525417&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fe49909fdd70192e3367d4d88458afbaf817e7a50acae199db97bd68358b241e&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;PDF&lt;span class="hx:absolute hx:-mt-20" id="pdf"&gt;&lt;/span&gt;
+&lt;a href="#pdf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;f69125eafdd54e1aae10707e0d95b0526e80b3b224f2b64f5f6d65485ca9e886&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Packed AutoIT Infostealer&lt;span class="hx:absolute hx:-mt-20" id="packed-autoit-infostealer"&gt;&lt;/span&gt;
+&lt;a href="#packed-autoit-infostealer" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cd93f6df63187e3ac31ea56339f9b859b0f4fbe3e73e1c07192cef4c9a6f8b08&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;4fdc37f59801976606849882095992efecee0931ece77d74015113123643796e&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2bef4a398a88749828afac59b773ae8b31c8e4e5b499aad516dd39ada1a11eca&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;d6e2a79bc87d48819fabe332dd3539f572605bb6091d34ae7d25ae0934b606b5&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;6ee2fd3994acdbb9a1b1680ccd3ac4b7dcb077b30b44c8677252202a03dccf79&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ea9e5ad0ef82af2c0c75c371e683352a781eb2260a45c584d70995edec956ce9&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0d83c1f7d2d7ea0e7fe144933bfa9dd314dae3937af714ea9274f43641756060&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;4d59a7739f15c17f144587762447d5abb81c01f16224a3f7ce5897d1b6f7ee77&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;39e8455d21447e32141dc064eb7504c6925f823bf6d9c8ce004d44cb8facc80b&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cb4a93864a19fc14c1e5221912f8e7f409b5b8d835f1b3acc3712b80e4a909f1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b72188ba545ad865eb34954afbbdf2c9e8ebc465a87c5122cebb711f41005939&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;005d2d373e7ba5ee42010870b9f9bf829213a42b2dd3c4f3f4405c8b904641f2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ba4b321bf2bc542d9e9bcfcf54bc98335acd0b27a5e5851f4667e6b23d968a04&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b0b4550ba09080e02c8a15cec8b5aeaa9fbb193cec1d92c793bdede78a70cec6&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;a9a89bb76c6f06277b729bc2de5e1aaef05fc0d9675edbc0895c7591c35f17eb&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;bd83e801b836906bab4854351b4d6000e0a435736524a504b9839b5f7bdf97cc&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;3075a467e89643d1f37e9413a2b38328fbec4dd1717ae57128fdf1da2fe39819&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;8ab3879ed4b1601feb0de11637c9c4d1baeb5266f399d822f565299e5c1cd0c4&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b83c41763b5e861e15614d3d6ab8573c7948bf176143ee4142516e9b8bcb4423&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0222f6bdfd21c41650bcb056f618ee9e4724e722b3abcd8731b92a99167c6f8d&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b02c420e6f8a977cd254cd69281a7e8ce8026bda3fc594e1fc550c3b5e41565d&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;6a698edb366f25f156e4b481639903d816c5f5525668f65e2c097ef682afc269&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9ee1a587acaddb45481aebd5778a6c293fe94f70fe89b4961098eb7ba32624a8&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2762cbc81056348f2816de01e93d43398ba65354252c97928a56031e32ec776f&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;476ee9c0b7f7f864b169f0d1beb1a3bbcc7dbab1bae7d7f77ee69e22ad25ff66&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;df3b1ad5445d628c24c1308aa6cb476bd9a06f0095a2b285927964339866b2c3&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;26ce818e64caf89d795861db0c84a59e42428bd99b381feb53cb05a67ec69c07&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ff07325f5454c46e883fefc7106829f75c27e3aaf312eb3ab50525faba51c23c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;494122ff204f3dedaa8f0027f9f98971b32c50acbcce4efa8de0498efa148365&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;7419f0798c70888e7197f69ed1091620b2c6fbefead086b5faf23badf0474044&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ec62c984941954f0eb4f3e8baee455410a9dc0deb222360d376e28981c53b1a0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;56731c777896837782beff4432330486a941e4f3af44b4d24be7c62c16e96256&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0f7a8611deea696b2b36e44ea652c8979e296b623e841796a4ea4b6916b39e7c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;975f9ce0769a079e99f06870122e9c4d394dfd51a6020818feeef9ccdb8b0614&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0f19735f076a42396b9f41b10c314d094a54e0e647f2cf7a2c025da8f8e9f54e&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9917c962b7e0a36592c4740d193adbd31bc1eae748d2b441e77817d648487cff&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;f24ee966ef2dd31204b900b5c7eb7e367bc18ff92a13422d800c25dbb1de1e99&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;7eb1dc1719f0918828cc8349ee56ca5e6bbde7cada3bc67a11d7ff7f420c7871&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;71e9cc55f159f2cec96de4f15b3c94c2b076f97d5d8cecb60b8857e7a8113a35&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;afdc010fc134b0b4a8b8788d084c6b0cff9ea255d84032571e038f1a29b56d0a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9528a97d8d73b0dbed2ac496991f0a2eecc5a857d22e994d227ae7c3bef7296f&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0fc7154ebd80ea5d81d82e3a4920cb2699a8dd7c31100ca8ec0693a7bd4af8b7&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2d9d61ce6c01329808db1ca466c1c5fbf405e4e869ed04c59f0e45d7ad12f25b&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9ef2d114c329c169e7b62f89a02d3f7395cb487fcd6cff4e7cac1eb198407ba6&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b2f5edef0e599005e205443b20f6ffd9804681b260eec52fa2f7533622f46a6c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dfc24fa837b6cd3210e7ea0802db3dcf7bb1f85bff2c1b4bda4c3c599821bf8c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;27868ae50b849506121c36b00d92afe3115ce2f041cc28476db8dfc0cc1d6908&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;7963f8606e4c0e7502a813969a04e1266e7cd20708bef19c338e8933c1b85eda&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;89da9a4a5c26b7818e5660b33941b45c8838fa7cfa15685adfe83ff84463799a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;187e0a02620b7775c2a8f88d5b27e80b5d419ad156afc50ef217a95547d0feaa&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;b24eac4c704502ee8952ad32384daec5894fd81d7bb668224730d4fb06293942&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2945393c74dd6d8de782e060362cdd468004ae2633bb4958c6063cd2fd5f5561&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;707971879e65cbd70fd371ae76767d3a7bff028b56204ca64f27e93609c8c473&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;37be3d8810959e63d5b6535164e51f16ccea9ca11d7dab7c1dfaa335affe6e3d&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C33a905e513005cee9071ed10933b8e6a11be2335755660e3f7b2adf554f704a&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;0e1e2f87699a24d1d7b0d984c3622971028a0cafaf665c791c70215f76c7c8fe&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;C2&lt;span class="hx:absolute hx:-mt-20" id="c2"&gt;&lt;/span&gt;
+&lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;9832473219412342343423243242364-34939246823743287468793247237[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;4895458025-4545445-222435-9635794543-3242314342-234123423728[.]space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1221[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1681683130[.]website&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1833[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2215[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2055[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;16868138130[.]space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;33655990[.]cyou&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;16868138130[.]space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;name4050[.]com&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;name1d[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;000000027[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;coronavirus5g[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;99kg[.]site&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;9348243249382479234343284324023432748892349702394023[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;15052021[.]space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1000020[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;32689657[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1000018[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;32689658[.]xyz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;45[.]146[.]165[.]91&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;31[.]42[.]185[.]63&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;194[.]58[.]112[.]173&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;194[.]147[.]142[.]232&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;176[.]113[.]115[.]133&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;References&lt;span class="hx:absolute hx:-mt-20" id="references"&gt;&lt;/span&gt;
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;CNBC, Russian Hackers Target NATO, Military Secrets&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;FireEye, APT28: A Window Into Russia&amp;rsquo;s Cyber Espionage Operations?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;Kaspersky, GreyEnergy&amp;rsquo;s Overlap with Zebrocy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;Intezer, A Zebra in Gopher&amp;rsquo;s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;Quointelligence, APT28 Delivers Zebrocy Malware Campaign using NATO Theme as Lure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;ESET, Sednit Update: Analysis of Zebrocy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;VK-Intel. Let&amp;rsquo;s Learn: Progression of APT28 AutoIt Zebrocy Downloaders: Source-Code Level Analysis&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;ESET, A Journey to Zebrocy Land&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.welivesecurity.com/2018/11/20/sednit-whats-going-zebrocy/"target="_blank" rel="noopener"&gt;ESET, Sednit: What&amp;rsquo;s Going on with Zebrocy?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.justice.gov/opa/page/file/1098481/download"target="_blank" rel="noopener"&gt;Brady, S. Indictment – United States vs Aleksei Sergeyevich Morenets, et al.. Retrieved October 1, 2020&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.justice.gov/file/1080281/download"target="_blank" rel="noopener"&gt;Mueller, R. Indictment – United States of America vs. Viktor Borisovich Netyksho, et al. Retrieved September 13, 2018&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://attack.mitre.org/groups/G0007/"target="_blank" rel="noopener"&gt;APT28 MITRE ATT&amp;amp;CK&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://attack.mitre.org/software/S0251/"target="_blank" rel="noopener"&gt;Zebrocy MITRE ATT&amp;amp;CK&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>New Linux Backdoor RedXOR Likely Operated by Chinese Nation-State Actor</title><link>https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/</link><pubDate>Wed, 10 Mar 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/</guid><description>
+&lt;ul&gt;
+&lt;li&gt;We discovered a new sophisticated backdoor targeting Linux endpoints and
+servers&lt;/li&gt;
+&lt;li&gt;Based on Tactics, Techniques, and Procedures (TTPs) the backdoor is believed
+to be developed by Chinese nation-state actors&lt;/li&gt;
+&lt;li&gt;The backdoor masquerades itself as polkit daemon. We named it RedXOR for its
+network data encoding scheme based on XOR. The malware was compiled on Red
+Hat Enterprise Linux&lt;/li&gt;
+&lt;li&gt;We provide recommendations for detecting and responding to this threat below&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
+&lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;2020
+&lt;a href="https://intezer.com/blog/cloud-security/2020-set-record-for-new-linux-malware-families/"target="_blank" rel="noopener"&gt;set a record&lt;/a&gt;
+for new Linux malware families. New malware families targeting Linux systems
+are being discovered on a regular basis. Backdoors attributed to advanced
+threat actors are disclosed less frequently.&lt;/p&gt;
+&lt;p&gt;We have discovered an undocumented backdoor targeting Linux systems,
+masqueraded as &lt;a href="https://linux.die.net/man/8/polkitd"target="_blank" rel="noopener"&gt;polkit daemon&lt;/a&gt;. We named
+it RedXOR for its network data encoding scheme based on XOR.&lt;/p&gt;
+&lt;p&gt;Based on victimology, as well as similar components and Tactics, Techniques,
+and Procedures (TTPs), we believe RedXOR was developed by high profile Chinese
+threat actors. The samples, which have low detection rates in VirusTotal, were
+uploaded from Indonesia and Taiwan, countries known to be targeted by Chinese
+threat actors. The samples are compiled with a legacy GCC compiler on an old
+release of Red Hat Enterprise Linux, hinting that RedXOR is used in targeted
+attacks against legacy Linux systems.&lt;/p&gt;
+&lt;p&gt;During our investigation we experienced an &amp;ldquo;on and off&amp;rdquo; availability of the
+Command and Control (C2) server indicating that the operation is still active.&lt;/p&gt;
+&lt;h2&gt;Connections to Chinese Threat Actors&lt;span class="hx:absolute hx:-mt-20" id="connections-to-chinese-threat-actors"&gt;&lt;/span&gt;
+&lt;a href="#connections-to-chinese-threat-actors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We uncovered key similarities between RedXOR and previously reported malware
+associated with Winnti umbrella threat group. These malware are PWNLNX backdoor
+and XOR.DDOS and Groundhog, two botnets attributed to Winnti by
+&lt;a href="https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-bb-decade-of-the-rats.pdf"target="_blank" rel="noopener"&gt;BlackBerry&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The below samples can be used for reference:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PWNLNX –
+&lt;a href="https://analyze.intezer.com/files/6a9f16440b9319f427825bb12d7a0cda89b101cf7b8b15ec7dd620b4d68db514"target="_blank" rel="noopener"&gt;4278ab79c34ea92788259fb43e535aa3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;XOR.DDOS –
+&lt;a href="https://analyze.intezer.com/files/dba757c20fbc1d81566ef2877a9bfca9b3ddb84b9f04c0ca5ae668b7f40ea8c3"target="_blank" rel="noopener"&gt;d6a6dee6afa6879b729a0af3cde7ff33&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Similarities between the samples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Use of old open-source kernel rootkits: RedXOR uses an open-source LKM
+rootkit called &amp;ldquo;&lt;a href="https://github.com/yaoyumeng/adore-ng"target="_blank" rel="noopener"&gt;Adore-ng&lt;/a&gt;&amp;rdquo; to hide
+its process. Based on a
+&lt;a href="https://content.fireeye.com/apt-41/rpt-apt41/"target="_blank" rel="noopener"&gt;FireEye report&lt;/a&gt; Winnti used
+this rootkit in their &amp;ldquo;ADORE.XSE&amp;rdquo; Linux backdoor. Embedding open-source LKM
+rootkits is a common Winnti technique. The group has been documented using
+&lt;a href="https://medium.com/chronicle-blog/winnti-more-than-just-windows-and-gates-e4f03436031a"target="_blank" rel="noopener"&gt;Azazel&lt;/a&gt;
+and
+&lt;a href="https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-bb-decade-of-the-rats.pdf#MKTG%2020-0089%20Decade_the_RAT%27s_Report.indd%3A.176091%3A522"target="_blank" rel="noopener"&gt;Suterusu&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;code&gt;CheckLKM&lt;/code&gt; function name used by RedXOR has also been used in PWNLNX and
+XOR.DDOS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Provides the operator with a pseudo-terminal: RedXOR uses Python pty shell by
+importing the &lt;a href="https://docs.python.org/3/library/pty.html"target="_blank" rel="noopener"&gt;python pty&lt;/a&gt;
+library. PWNLNX implements the pty shell function in c.
+&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig1.png" title="Figure 1: Python pty shell used in RedXOR" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Python pty shell used in RedXOR&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Encoding network with XOR: The backdoor encodes its network data with a
+scheme based on XOR. Encoding network data with XOR has been used in previous
+Winnti malware including PWNLNX.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Persistence service name: As part of its persistence methods, RedXOR attempts
+to create a service under rc.d. The developer added &amp;ldquo;S99&amp;rdquo; before the name of
+the service to lower its priority and make it run last on system initiation.
+This technique was used in XOR.DDOS and Groundhog samples where the malware
+developer added &amp;ldquo;S90&amp;rdquo; to the service name.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Main functions flow: PWNLX and RedXOR have a main function which is in charge
+of initialization. In both backdoors, the main function calls another
+function which is in charge of the main logic. The main logic function names
+are main_process in RedXOR and MainThread in PWLNX. Both main functions
+daemonize the process to detach from the terminal and run in the background.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;XML for file listing: RedXOR’s directory function and PWNLNX’s getfiles
+function are both in charge of directory listing. Their code flow
+implementation is different, however, as both malware send the directory
+listing as an XML file to the C2 server. Figure 2 shows the XML structure
+used in PWNLNX and RedXOR. The file’s data used in both functions are: path,
+name, type, user, permission, size, time.
+&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig2.png" title="Figure 2: The XML structure used by PWNLNX’s getfiles function and RedXOR’s directory function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: The XML structure used by PWNLNX’s getfiles function and RedXOR’s directory function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Legacy Red Hat compilers: RedXOR and PWNLNX were both compiled with a Red Hat
+4.4.7 compiler. This compiler is the default GCC compiler on RHEL6.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Chown similarity: Both PWNLNX and RedXOR change the file’s user and group
+owner to a large ID. The same technique has been used by the XOR.DDoS malware
+as referenced in the analysis by
+&lt;a href="https://blog.malwaremustdie.org/2014/09/mmd-0028-2014-fuzzy-reversing-new-china.html"target="_blank" rel="noopener"&gt;MalwareMustDie&lt;/a&gt;.
+&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig3.png" title="Figure 3: Similarity between PWNLNX and RedXOR of the UID and GID used with lchown function call" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: Similarity between PWNLNX and RedXOR of the UID and GID used with lchown function call&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Overall flow and functionalities: The overall code flow, behavior, and
+capabilities of RedXOR are very similar to PWNLNX. Both have file uploading
+and downloading functionalities together with a running shell. The network
+tunneling functionality in both families is called &amp;ldquo;PortMap&amp;rdquo;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Unstripped ELF binaries: Malware developers will often tamper with a file’s
+symbols and/or sections, making it harder for researchers to analyze them.
+However, RedXOR and various Winnti malware, including PWNLNX and XOR.DDOS,
+are unstripped.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The samples are both unstripped 64-bit ELF files called po1kitd-update-k.
+Uploaded to VirusTotal from Taiwan and Indonesia, they are low detected at the
+time of this writing.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig4.png" title="Figure 4: 2bd6e2f8c1a97347b1e499e29a1d9b7c in VirusTotal" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: 2bd6e2f8c1a97347b1e499e29a1d9b7c in VirusTotal&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Malware Installation&lt;span class="hx:absolute hx:-mt-20" id="malware-installation"&gt;&lt;/span&gt;
+&lt;a href="#malware-installation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Upon execution RedXOR forks off a child process allowing the parent process to
+exit. The purpose is to detach the process from the shell. The new child
+determines if it has been executed as the root user or as another user on the
+system. It does this to create a hidden folder, called &lt;code&gt;.po1kitd.thumb&lt;/code&gt;, inside
+the user’s home folder which is used to store files related to the malware. The
+malware creates a hidden file called &lt;code&gt;.po1kitd-2a4D53&lt;/code&gt; inside the folder. The
+file is locked to the current running process, seen in Figure 5, essentially
+creating a mutex. If another instance of the malware is executed, it also tries
+to obtain the lock but ultimately fails. Upon this failure the process exits.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig5.png" title="Figure 5: The malware creates a mutex file locking it to the process ID" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: The malware creates a mutex file locking it to the process ID&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After the malware creates the mutex, it installs itself on the infected
+machine. As shown in Figure 6, the malware looks up its current path and moves
+the binary to the created folder. It hides the file by naming it
+&lt;code&gt;.po1kitd-update-k&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig6.png" title="Figure 6: Malware moves the binary to the hidden folder po1kitd.thumb created earlier. It first tries to use the rename function provided by libc. If this fails, it executes an mv shell command via the system function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: Malware moves the binary to the hidden folder po1kitd.thumb created earlier. It first tries to use the rename function provided by libc. If this fails, it executes an mv shell command via the system function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After installing the binary to the hidden folder, the malware sets up
+persistence via &lt;code&gt;init&lt;/code&gt; scripts. The following files are created after executing
+the malware on boot:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/usr/syno/etc/rc.d/S99po1kitd-update.sh&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/init.d/po1kitd-update&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/rc2.d/S99po1kitd-update&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The malware checks if the rootkit is active by creating a file and removing it.
+Then, the malware compares the &amp;ldquo;saved set-user-ID&amp;rdquo; of the process to the user
+ID. If they don’t match, the rootkit is enabled. If they match, it looks to see
+if the user ID is &amp;ldquo;10&amp;rdquo;. If this is the case, the rootkit is enabled. This logic
+is shown in Figure 7.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig7.png" title="Figure 7: Logic used by RedXOR to check if the rootkit is enabled" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 7: Logic used by RedXOR to check if the rootkit is enabled&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;CheckLKM&lt;/code&gt; logic is almost identical to the &lt;code&gt;adore_init&lt;/code&gt; function in the
+&amp;ldquo;adore-ng&amp;rdquo; rootkit. Afore-ng is a Chinese open-source LKM (Loadable Kernel
+Module) rootkit. This technique allows the malware to stay under the radar by
+hiding its processes. The code for the init function is shown in Figure 8.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig8.png" title="Figure 8: Client authentication code for the adore-ng rootkit" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 8: Client authentication code for the adore-ng rootkit&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Configuration&lt;span class="hx:absolute hx:-mt-20" id="configuration"&gt;&lt;/span&gt;
+&lt;a href="#configuration" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware stores the configuration encrypted within the binary. In addition
+to the Command and control (C2) IP address and port it can also be configured
+to use a proxy. The configuration includes a password, as can be seen in Figure
+9. This password is used by the malware to authenticate to the C2 server.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig9.png" title="Figure 9: Configuration options for the malware" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 9: Configuration options for the malware&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The configuration values are decrypted by the &lt;code&gt;doXor&lt;/code&gt; function. A pseudo-code
+representation of the function is shown in Figure 10. The decryption logic is a
+simple XOR against a byte key. The byte key is incremented by a constant for
+each item in the buffer. The only configuration value that is not encrypted is
+the server port. The port value is used to derive the key and the adder. The
+key is derived from bit shifting the port value eight steps to the right. The
+constant uses the port value.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig10.png" title="Figure 10: Decryption logic of the configuration data. The data is XORed against a key byte that is incremented by a constant for each entry in the buffer" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 10: Decryption logic of the configuration data. The data is XORed against a key byte that is incremented by a constant for each entry in the buffer&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Communication with the C2&lt;span class="hx:absolute hx:-mt-20" id="communication-with-the-c2"&gt;&lt;/span&gt;
+&lt;a href="#communication-with-the-c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware communicates with the C2 server over a TCP socket. The traffic is
+made to look like HTTP traffic. Figure 11 shows a pseudo-code representation of
+the function used by the malware to prepare data that is to be sent to the C2
+server. First, it fills the buffer with null bytes. The request body is XORed
+against a key. The malware uses the buffer length as the key. This value is
+also passed into the function as the &amp;ldquo;total_length&amp;rdquo; argument.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig11.png" title="Figure 11: Function for preparing data to be sent to the C2 server" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 11: Function for preparing data to be sent to the C2 server&lt;/figcaption&gt;
+&lt;/figure&gt;
+The same logic is used to decrypt the response body from the C2 server. From
+the response, the malware extracts &amp;ldquo;JSESSIONID&amp;rdquo;, &amp;ldquo;Content-Length&amp;rdquo;,
+&amp;ldquo;Total-Length&amp;rdquo; and the response body. The data is added to a struct with the
+following layout:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;0x0 JSESSIONID as int
+0x8 Content-Length as long
+0x10 Total-Length as long
+0x18 Response body&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The content length is the length of the response body but also used as the key.
+The total length value is used as a constant which is added to the key in each
+iteration. The JSESSIONID value holds the command ID for the job the C2 wants
+the malware to perform.&lt;/p&gt;
+&lt;h3&gt;Commands&lt;span class="hx:absolute hx:-mt-20" id="commands"&gt;&lt;/span&gt;
+&lt;a href="#commands" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The C2 server tells the malware to execute different commands via a command
+code that is returned in the &amp;ldquo;JSESSIONID&amp;rdquo; cookie. The codes are encoded as
+decimal integers. A full list of commands supported by the analyzed malware
+sample are shown in the table below. They can be grouped into command types.
+Commands in the 2000 range provide &amp;ldquo;filesystem&amp;rdquo; interaction, 3000 handle
+&amp;ldquo;shell&amp;rdquo; commands, and 4000 handle network tunneling.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Table 1: List of commands supported by the malware&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Code&lt;/th&gt;
+&lt;th&gt;Command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0000&lt;/td&gt;
+&lt;td&gt;System information&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0008&lt;/td&gt;
+&lt;td&gt;Update&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0009&lt;/td&gt;
+&lt;td&gt;Uninstall&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1000&lt;/td&gt;
+&lt;td&gt;Ping&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1010&lt;/td&gt;
+&lt;td&gt;Install LKM&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2049&lt;/td&gt;
+&lt;td&gt;List folder&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2054&lt;/td&gt;
+&lt;td&gt;Upload file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2055&lt;/td&gt;
+&lt;td&gt;Open file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2056&lt;/td&gt;
+&lt;td&gt;Execute with system&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2058&lt;/td&gt;
+&lt;td&gt;Remove file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2060&lt;/td&gt;
+&lt;td&gt;Remove folder&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2061&lt;/td&gt;
+&lt;td&gt;Rename&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2062&lt;/td&gt;
+&lt;td&gt;Create new folder&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2066&lt;/td&gt;
+&lt;td&gt;Write content to file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3000&lt;/td&gt;
+&lt;td&gt;Start shell&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3058&lt;/td&gt;
+&lt;td&gt;Exec shell command&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3999&lt;/td&gt;
+&lt;td&gt;Close tty&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4001&lt;/td&gt;
+&lt;td&gt;Portmap (Proxy)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4002&lt;/td&gt;
+&lt;td&gt;Kill portmap&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;System Information&lt;span class="hx:absolute hx:-mt-20" id="system-information"&gt;&lt;/span&gt;
+&lt;a href="#system-information" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When the malware first contacts the C2 server it sends a password encoded in
+the request body. The C2 server responds with the command code 0 to collect
+system information. The data collected about the system by the malware is
+listed in the table below. The data is serialized into a URL query-like string,
+encrypted and then sent as the request body.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Table 2: Data collected by the malware and sent back to the C2 server&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;URL key&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;th&gt;Comment&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;hostip&lt;/td&gt;
+&lt;td&gt;IP&lt;/td&gt;
+&lt;td&gt;Hardcoded to 127.0.0.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;softtype&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;Hardcoded to &amp;ldquo;Linux&amp;rdquo;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pscaddr&lt;/td&gt;
+&lt;td&gt;MAC address&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hostname&lt;/td&gt;
+&lt;td&gt;Machine name&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hosttar&lt;/td&gt;
+&lt;td&gt;Username&lt;/td&gt;
+&lt;td&gt;Possibly &amp;ldquo;host target&amp;rdquo;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hostos&lt;/td&gt;
+&lt;td&gt;Distribution&lt;/td&gt;
+&lt;td&gt;Extracted from /etc/issue or /etc/redhat-release&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hostcpu&lt;/td&gt;
+&lt;td&gt;Clock speed&lt;/td&gt;
+&lt;td&gt;/proc/cpuinfo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hostmem&lt;/td&gt;
+&lt;td&gt;Amount of memory&lt;/td&gt;
+&lt;td&gt;/proc/meminfo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hostpack&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;Hardcoded to &amp;ldquo;Linux&amp;rdquo;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;lkmtag&lt;/td&gt;
+&lt;td&gt;Is rootkit enabled&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;kernel&lt;/td&gt;
+&lt;td&gt;Kernel version&lt;/td&gt;
+&lt;td&gt;Extracted from uname&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Figure 12 shows the communication between RedXOR and the C2. The malware sends
+the password &lt;code&gt;pd=admin&lt;/code&gt; and C2 responds with &lt;code&gt;all right&lt;/code&gt; (&lt;code&gt;JSESSIONID=0000&lt;/code&gt;).
+Next, the malware sends the system information and the C2 replies with the ping
+command (&lt;code&gt;JSESSIONID=1000&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig12.png" title="Figure 12: RedXOR communication with C2" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 12: RedXOR communication with C2&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Update Functionality&lt;span class="hx:absolute hx:-mt-20" id="update-functionality"&gt;&lt;/span&gt;
+&lt;a href="#update-functionality" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware can be updated by the threat actor. This is performed by sending
+command code 8 to the malware. When the malware receives this code the
+following actions are taken:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The malware opens the mutex file for writing.&lt;/li&gt;
+&lt;li&gt;It sends a request with the command code 8 and an empty request body to the
+C2 server.&lt;/li&gt;
+&lt;li&gt;The response body from the server is written to the mutex file. The response
+body is not encrypted.&lt;/li&gt;
+&lt;li&gt;The lock is released on the mutex file.&lt;/li&gt;
+&lt;li&gt;The malware executes &amp;ldquo;chmod&amp;rdquo; to set the execution flag on the file via the
+libc system function.&lt;/li&gt;
+&lt;li&gt;The malware sleeps and tries to obtain the lock on the file again when it
+wakes up. If it fails, it assumes the update was successful, closes the
+connection to the C2 server and exits.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Shell Functionality&lt;span class="hx:absolute hx:-mt-20" id="shell-functionality"&gt;&lt;/span&gt;
+&lt;a href="#shell-functionality" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware has the ability to provide its operator with a &lt;code&gt;tty&lt;/code&gt; shell. If a
+shell is requested via the command code 3000, the malware creates a new thread
+executing &lt;code&gt;/bin/sh&lt;/code&gt;. In the new spawned shell, the malware executes
+&lt;code&gt;python -c &amp;quot;import pty;pty.spawn('/bin/sh')&amp;quot;&lt;/code&gt; to get a pseudo-terminal (pty)
+interface. Any shell commands sent to the malware with the command code of 3058
+are executed in the pty and the response is returned to the operator.&lt;/p&gt;
+&lt;h3&gt;Network Tunneling&lt;span class="hx:absolute hx:-mt-20" id="network-tunneling"&gt;&lt;/span&gt;
+&lt;a href="#network-tunneling" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Network tunneling is enabled by sending the command code 4001 to the malware.
+As part of the request, a &amp;ldquo;configuration&amp;rdquo; is sent as part of the response body.
+The configuration consists of three items separated by a &amp;ldquo;#&amp;rdquo; character. The
+items are: a port to bind to, the IP to connect to, and a port to connect to.
+The malware uses a modified version of the open-source project Rinetd for the
+tunneling logic. Rinetd is designed to use a configuration file stored on the
+machine. To get around this, the malware author has modified the function that
+parses the configuration in order to directly take the required values normally
+found in the configuration file.&lt;/p&gt;
+&lt;h2&gt;Detection &amp;amp; Response&lt;span class="hx:absolute hx:-mt-20" id="detection--response"&gt;&lt;/span&gt;
+&lt;a href="#detection--response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Detect if a Machine in Your Network Has Been Compromised&lt;span class="hx:absolute hx:-mt-20" id="detect-if-a-machine-in-your-network-has-been-compromised"&gt;&lt;/span&gt;
+&lt;a href="#detect-if-a-machine-in-your-network-has-been-compromised" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Use a Cloud Workload Protection Platform like
+&lt;a href="https://intezer.com/intezer-protect"target="_blank" rel="noopener"&gt;Intezer Protect&lt;/a&gt; to gain full runtime
+visibility over the code in your Linux-based systems and get alerted on any
+malicious or unauthorized code or commands.
+&lt;a href="https://protect.intezer.com/signup"target="_blank" rel="noopener"&gt;Try our free community edition&lt;/a&gt; Figure 13
+emphasizes an Intezer Protect alert on a compromised machine. The alert
+provides additional context about the malicious code including threat
+classification (RedXOR), binary’s path on the disk, process tree, command, and
+hash.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig13.png" title="Figure 13: Intezer Protect alerts on RedXOR" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 13: Intezer Protect alerts on RedXOR&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We also recommend using the IOCs section below to ensure that the RedXOR
+process and the files it creates do not exist on your system.&lt;/p&gt;
+&lt;p&gt;Intezer Protect defends all types of compute resources—including VMs,
+containers and Kubernetes—against the latest Linux threats in runtime.
+&lt;a href="https://protect.intezer.com/signup"target="_blank" rel="noopener"&gt;Try our free community edition&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;Response&lt;span class="hx:absolute hx:-mt-20" id="response"&gt;&lt;/span&gt;
+&lt;a href="#response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;If you are a victim of this operation, take the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kill the process and delete all files related to the malware.&lt;/li&gt;
+&lt;li&gt;Make sure your machine is clean and running only trusted code using a Cloud
+Workload Protection Platform like Intezer Protect.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Wrap Up&lt;span class="hx:absolute hx:-mt-20" id="wrap-up"&gt;&lt;/span&gt;
+&lt;a href="#wrap-up" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Linux systems are under constant attack given that Linux runs on most of the
+public cloud workload. A
+&lt;a href="https://secure2.sophos.com/en-us/content/state-of-cloud-security.aspx"target="_blank" rel="noopener"&gt;survey conducted by Sophos&lt;/a&gt;
+found that 70% of organizations using the public cloud to host data or
+workloads experienced a security incident in the past year. Along with botnets
+and cryptominers, the Linux threat landscape is also home to sophisticated
+threats like RedXOR developed by
+&lt;a href="https://intezer.com/blog/malware-analysis/looking-back-on-the-last-decade-of-linux-apt-attacks/"target="_blank" rel="noopener"&gt;nation-state actors&lt;/a&gt;.
+RedXOR samples are indexed in Intezer Analyze so that you can detect any
+suspicious file that shares code with this malware.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig14.png" title="Figure 14: RedXOR sample in Intezer Analyze" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 14: RedXOR sample in Intezer Analyze&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
+&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;0a76c55fa88d4c134012a5136c09fb938b4be88a382f88bf2804043253b0559f
+0423258b94e8a9af58ad63ea493818618de2d8c60cf75ec7980edcaa34dcc919&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
+&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;update[.]cloudjscdn[.]com
+158[.]247[.]208[.]230
+34[.]92[.]228[].216&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Process name&lt;span class="hx:absolute hx:-mt-20" id="process-name"&gt;&lt;/span&gt;
+&lt;a href="#process-name" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;po1kitd-update-k&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;File and directories created on disk&lt;span class="hx:absolute hx:-mt-20" id="file-and-directories-created-on-disk"&gt;&lt;/span&gt;
+&lt;a href="#file-and-directories-created-on-disk" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;.po1kitd-update-k
+.po1kitd.thumb
+.po1kitd-2a4D53
+.po1kitd-k3i86dfv
+.po1kitd-nrkSh7d6
+.po1kitd-2sAq14
+.2sAq14
+.2a4D53
+po1kitd.ko
+po1kitd-update.desktop
+S99po1kitd-update.sh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>A Zebra in Gopher’s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy</title><link>https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</link><pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</guid><description>
 &lt;h2&gt;Summary&lt;span class="hx:absolute hx:-mt-20" id="summary"&gt;&lt;/span&gt;
 &lt;a href="#summary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In November, we uncovered COVID-19 phishing lures that were used to deliver the
 Go version of

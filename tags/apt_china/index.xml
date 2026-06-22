@@ -1287,6 +1287,561 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>New Linux Backdoor RedXOR Likely Operated by Chinese Nation-State Actor</title><link>https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/</link><pubDate>Wed, 10 Mar 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/</guid><description>
+&lt;ul&gt;
+&lt;li&gt;We discovered a new sophisticated backdoor targeting Linux endpoints and
+servers&lt;/li&gt;
+&lt;li&gt;Based on Tactics, Techniques, and Procedures (TTPs) the backdoor is believed
+to be developed by Chinese nation-state actors&lt;/li&gt;
+&lt;li&gt;The backdoor masquerades itself as polkit daemon. We named it RedXOR for its
+network data encoding scheme based on XOR. The malware was compiled on Red
+Hat Enterprise Linux&lt;/li&gt;
+&lt;li&gt;We provide recommendations for detecting and responding to this threat below&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
+&lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;2020
+&lt;a href="https://intezer.com/blog/cloud-security/2020-set-record-for-new-linux-malware-families/"target="_blank" rel="noopener"&gt;set a record&lt;/a&gt;
+for new Linux malware families. New malware families targeting Linux systems
+are being discovered on a regular basis. Backdoors attributed to advanced
+threat actors are disclosed less frequently.&lt;/p&gt;
+&lt;p&gt;We have discovered an undocumented backdoor targeting Linux systems,
+masqueraded as &lt;a href="https://linux.die.net/man/8/polkitd"target="_blank" rel="noopener"&gt;polkit daemon&lt;/a&gt;. We named
+it RedXOR for its network data encoding scheme based on XOR.&lt;/p&gt;
+&lt;p&gt;Based on victimology, as well as similar components and Tactics, Techniques,
+and Procedures (TTPs), we believe RedXOR was developed by high profile Chinese
+threat actors. The samples, which have low detection rates in VirusTotal, were
+uploaded from Indonesia and Taiwan, countries known to be targeted by Chinese
+threat actors. The samples are compiled with a legacy GCC compiler on an old
+release of Red Hat Enterprise Linux, hinting that RedXOR is used in targeted
+attacks against legacy Linux systems.&lt;/p&gt;
+&lt;p&gt;During our investigation we experienced an &amp;ldquo;on and off&amp;rdquo; availability of the
+Command and Control (C2) server indicating that the operation is still active.&lt;/p&gt;
+&lt;h2&gt;Connections to Chinese Threat Actors&lt;span class="hx:absolute hx:-mt-20" id="connections-to-chinese-threat-actors"&gt;&lt;/span&gt;
+&lt;a href="#connections-to-chinese-threat-actors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We uncovered key similarities between RedXOR and previously reported malware
+associated with Winnti umbrella threat group. These malware are PWNLNX backdoor
+and XOR.DDOS and Groundhog, two botnets attributed to Winnti by
+&lt;a href="https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-bb-decade-of-the-rats.pdf"target="_blank" rel="noopener"&gt;BlackBerry&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The below samples can be used for reference:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PWNLNX –
+&lt;a href="https://analyze.intezer.com/files/6a9f16440b9319f427825bb12d7a0cda89b101cf7b8b15ec7dd620b4d68db514"target="_blank" rel="noopener"&gt;4278ab79c34ea92788259fb43e535aa3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;XOR.DDOS –
+&lt;a href="https://analyze.intezer.com/files/dba757c20fbc1d81566ef2877a9bfca9b3ddb84b9f04c0ca5ae668b7f40ea8c3"target="_blank" rel="noopener"&gt;d6a6dee6afa6879b729a0af3cde7ff33&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Similarities between the samples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Use of old open-source kernel rootkits: RedXOR uses an open-source LKM
+rootkit called &amp;ldquo;&lt;a href="https://github.com/yaoyumeng/adore-ng"target="_blank" rel="noopener"&gt;Adore-ng&lt;/a&gt;&amp;rdquo; to hide
+its process. Based on a
+&lt;a href="https://content.fireeye.com/apt-41/rpt-apt41/"target="_blank" rel="noopener"&gt;FireEye report&lt;/a&gt; Winnti used
+this rootkit in their &amp;ldquo;ADORE.XSE&amp;rdquo; Linux backdoor. Embedding open-source LKM
+rootkits is a common Winnti technique. The group has been documented using
+&lt;a href="https://medium.com/chronicle-blog/winnti-more-than-just-windows-and-gates-e4f03436031a"target="_blank" rel="noopener"&gt;Azazel&lt;/a&gt;
+and
+&lt;a href="https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-bb-decade-of-the-rats.pdf#MKTG%2020-0089%20Decade_the_RAT%27s_Report.indd%3A.176091%3A522"target="_blank" rel="noopener"&gt;Suterusu&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;code&gt;CheckLKM&lt;/code&gt; function name used by RedXOR has also been used in PWNLNX and
+XOR.DDOS.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Provides the operator with a pseudo-terminal: RedXOR uses Python pty shell by
+importing the &lt;a href="https://docs.python.org/3/library/pty.html"target="_blank" rel="noopener"&gt;python pty&lt;/a&gt;
+library. PWNLNX implements the pty shell function in c.
+&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig1.png" title="Figure 1: Python pty shell used in RedXOR" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Python pty shell used in RedXOR&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Encoding network with XOR: The backdoor encodes its network data with a
+scheme based on XOR. Encoding network data with XOR has been used in previous
+Winnti malware including PWNLNX.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Persistence service name: As part of its persistence methods, RedXOR attempts
+to create a service under rc.d. The developer added &amp;ldquo;S99&amp;rdquo; before the name of
+the service to lower its priority and make it run last on system initiation.
+This technique was used in XOR.DDOS and Groundhog samples where the malware
+developer added &amp;ldquo;S90&amp;rdquo; to the service name.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Main functions flow: PWNLX and RedXOR have a main function which is in charge
+of initialization. In both backdoors, the main function calls another
+function which is in charge of the main logic. The main logic function names
+are main_process in RedXOR and MainThread in PWLNX. Both main functions
+daemonize the process to detach from the terminal and run in the background.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;XML for file listing: RedXOR’s directory function and PWNLNX’s getfiles
+function are both in charge of directory listing. Their code flow
+implementation is different, however, as both malware send the directory
+listing as an XML file to the C2 server. Figure 2 shows the XML structure
+used in PWNLNX and RedXOR. The file’s data used in both functions are: path,
+name, type, user, permission, size, time.
+&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig2.png" title="Figure 2: The XML structure used by PWNLNX’s getfiles function and RedXOR’s directory function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: The XML structure used by PWNLNX’s getfiles function and RedXOR’s directory function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Legacy Red Hat compilers: RedXOR and PWNLNX were both compiled with a Red Hat
+4.4.7 compiler. This compiler is the default GCC compiler on RHEL6.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Chown similarity: Both PWNLNX and RedXOR change the file’s user and group
+owner to a large ID. The same technique has been used by the XOR.DDoS malware
+as referenced in the analysis by
+&lt;a href="https://blog.malwaremustdie.org/2014/09/mmd-0028-2014-fuzzy-reversing-new-china.html"target="_blank" rel="noopener"&gt;MalwareMustDie&lt;/a&gt;.
+&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig3.png" title="Figure 3: Similarity between PWNLNX and RedXOR of the UID and GID used with lchown function call" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: Similarity between PWNLNX and RedXOR of the UID and GID used with lchown function call&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Overall flow and functionalities: The overall code flow, behavior, and
+capabilities of RedXOR are very similar to PWNLNX. Both have file uploading
+and downloading functionalities together with a running shell. The network
+tunneling functionality in both families is called &amp;ldquo;PortMap&amp;rdquo;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Unstripped ELF binaries: Malware developers will often tamper with a file’s
+symbols and/or sections, making it harder for researchers to analyze them.
+However, RedXOR and various Winnti malware, including PWNLNX and XOR.DDOS,
+are unstripped.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The samples are both unstripped 64-bit ELF files called po1kitd-update-k.
+Uploaded to VirusTotal from Taiwan and Indonesia, they are low detected at the
+time of this writing.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig4.png" title="Figure 4: 2bd6e2f8c1a97347b1e499e29a1d9b7c in VirusTotal" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: 2bd6e2f8c1a97347b1e499e29a1d9b7c in VirusTotal&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Malware Installation&lt;span class="hx:absolute hx:-mt-20" id="malware-installation"&gt;&lt;/span&gt;
+&lt;a href="#malware-installation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Upon execution RedXOR forks off a child process allowing the parent process to
+exit. The purpose is to detach the process from the shell. The new child
+determines if it has been executed as the root user or as another user on the
+system. It does this to create a hidden folder, called &lt;code&gt;.po1kitd.thumb&lt;/code&gt;, inside
+the user’s home folder which is used to store files related to the malware. The
+malware creates a hidden file called &lt;code&gt;.po1kitd-2a4D53&lt;/code&gt; inside the folder. The
+file is locked to the current running process, seen in Figure 5, essentially
+creating a mutex. If another instance of the malware is executed, it also tries
+to obtain the lock but ultimately fails. Upon this failure the process exits.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig5.png" title="Figure 5: The malware creates a mutex file locking it to the process ID" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: The malware creates a mutex file locking it to the process ID&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After the malware creates the mutex, it installs itself on the infected
+machine. As shown in Figure 6, the malware looks up its current path and moves
+the binary to the created folder. It hides the file by naming it
+&lt;code&gt;.po1kitd-update-k&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig6.png" title="Figure 6: Malware moves the binary to the hidden folder po1kitd.thumb created earlier. It first tries to use the rename function provided by libc. If this fails, it executes an mv shell command via the system function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: Malware moves the binary to the hidden folder po1kitd.thumb created earlier. It first tries to use the rename function provided by libc. If this fails, it executes an mv shell command via the system function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After installing the binary to the hidden folder, the malware sets up
+persistence via &lt;code&gt;init&lt;/code&gt; scripts. The following files are created after executing
+the malware on boot:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/usr/syno/etc/rc.d/S99po1kitd-update.sh&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/init.d/po1kitd-update&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/etc/rc2.d/S99po1kitd-update&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The malware checks if the rootkit is active by creating a file and removing it.
+Then, the malware compares the &amp;ldquo;saved set-user-ID&amp;rdquo; of the process to the user
+ID. If they don’t match, the rootkit is enabled. If they match, it looks to see
+if the user ID is &amp;ldquo;10&amp;rdquo;. If this is the case, the rootkit is enabled. This logic
+is shown in Figure 7.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig7.png" title="Figure 7: Logic used by RedXOR to check if the rootkit is enabled" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 7: Logic used by RedXOR to check if the rootkit is enabled&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;CheckLKM&lt;/code&gt; logic is almost identical to the &lt;code&gt;adore_init&lt;/code&gt; function in the
+&amp;ldquo;adore-ng&amp;rdquo; rootkit. Afore-ng is a Chinese open-source LKM (Loadable Kernel
+Module) rootkit. This technique allows the malware to stay under the radar by
+hiding its processes. The code for the init function is shown in Figure 8.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig8.png" title="Figure 8: Client authentication code for the adore-ng rootkit" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 8: Client authentication code for the adore-ng rootkit&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Configuration&lt;span class="hx:absolute hx:-mt-20" id="configuration"&gt;&lt;/span&gt;
+&lt;a href="#configuration" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware stores the configuration encrypted within the binary. In addition
+to the Command and control (C2) IP address and port it can also be configured
+to use a proxy. The configuration includes a password, as can be seen in Figure
+9. This password is used by the malware to authenticate to the C2 server.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig9.png" title="Figure 9: Configuration options for the malware" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 9: Configuration options for the malware&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The configuration values are decrypted by the &lt;code&gt;doXor&lt;/code&gt; function. A pseudo-code
+representation of the function is shown in Figure 10. The decryption logic is a
+simple XOR against a byte key. The byte key is incremented by a constant for
+each item in the buffer. The only configuration value that is not encrypted is
+the server port. The port value is used to derive the key and the adder. The
+key is derived from bit shifting the port value eight steps to the right. The
+constant uses the port value.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig10.png" title="Figure 10: Decryption logic of the configuration data. The data is XORed against a key byte that is incremented by a constant for each entry in the buffer" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 10: Decryption logic of the configuration data. The data is XORed against a key byte that is incremented by a constant for each entry in the buffer&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Communication with the C2&lt;span class="hx:absolute hx:-mt-20" id="communication-with-the-c2"&gt;&lt;/span&gt;
+&lt;a href="#communication-with-the-c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware communicates with the C2 server over a TCP socket. The traffic is
+made to look like HTTP traffic. Figure 11 shows a pseudo-code representation of
+the function used by the malware to prepare data that is to be sent to the C2
+server. First, it fills the buffer with null bytes. The request body is XORed
+against a key. The malware uses the buffer length as the key. This value is
+also passed into the function as the &amp;ldquo;total_length&amp;rdquo; argument.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig11.png" title="Figure 11: Function for preparing data to be sent to the C2 server" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 11: Function for preparing data to be sent to the C2 server&lt;/figcaption&gt;
+&lt;/figure&gt;
+The same logic is used to decrypt the response body from the C2 server. From
+the response, the malware extracts &amp;ldquo;JSESSIONID&amp;rdquo;, &amp;ldquo;Content-Length&amp;rdquo;,
+&amp;ldquo;Total-Length&amp;rdquo; and the response body. The data is added to a struct with the
+following layout:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;0x0 JSESSIONID as int
+0x8 Content-Length as long
+0x10 Total-Length as long
+0x18 Response body&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The content length is the length of the response body but also used as the key.
+The total length value is used as a constant which is added to the key in each
+iteration. The JSESSIONID value holds the command ID for the job the C2 wants
+the malware to perform.&lt;/p&gt;
+&lt;h3&gt;Commands&lt;span class="hx:absolute hx:-mt-20" id="commands"&gt;&lt;/span&gt;
+&lt;a href="#commands" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The C2 server tells the malware to execute different commands via a command
+code that is returned in the &amp;ldquo;JSESSIONID&amp;rdquo; cookie. The codes are encoded as
+decimal integers. A full list of commands supported by the analyzed malware
+sample are shown in the table below. They can be grouped into command types.
+Commands in the 2000 range provide &amp;ldquo;filesystem&amp;rdquo; interaction, 3000 handle
+&amp;ldquo;shell&amp;rdquo; commands, and 4000 handle network tunneling.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Table 1: List of commands supported by the malware&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Code&lt;/th&gt;
+&lt;th&gt;Command&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0000&lt;/td&gt;
+&lt;td&gt;System information&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0008&lt;/td&gt;
+&lt;td&gt;Update&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0009&lt;/td&gt;
+&lt;td&gt;Uninstall&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1000&lt;/td&gt;
+&lt;td&gt;Ping&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1010&lt;/td&gt;
+&lt;td&gt;Install LKM&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2049&lt;/td&gt;
+&lt;td&gt;List folder&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2054&lt;/td&gt;
+&lt;td&gt;Upload file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2055&lt;/td&gt;
+&lt;td&gt;Open file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2056&lt;/td&gt;
+&lt;td&gt;Execute with system&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2058&lt;/td&gt;
+&lt;td&gt;Remove file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2060&lt;/td&gt;
+&lt;td&gt;Remove folder&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2061&lt;/td&gt;
+&lt;td&gt;Rename&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2062&lt;/td&gt;
+&lt;td&gt;Create new folder&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2066&lt;/td&gt;
+&lt;td&gt;Write content to file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3000&lt;/td&gt;
+&lt;td&gt;Start shell&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3058&lt;/td&gt;
+&lt;td&gt;Exec shell command&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3999&lt;/td&gt;
+&lt;td&gt;Close tty&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4001&lt;/td&gt;
+&lt;td&gt;Portmap (Proxy)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4002&lt;/td&gt;
+&lt;td&gt;Kill portmap&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;System Information&lt;span class="hx:absolute hx:-mt-20" id="system-information"&gt;&lt;/span&gt;
+&lt;a href="#system-information" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When the malware first contacts the C2 server it sends a password encoded in
+the request body. The C2 server responds with the command code 0 to collect
+system information. The data collected about the system by the malware is
+listed in the table below. The data is serialized into a URL query-like string,
+encrypted and then sent as the request body.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Table 2: Data collected by the malware and sent back to the C2 server&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;URL key&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;th&gt;Comment&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;hostip&lt;/td&gt;
+&lt;td&gt;IP&lt;/td&gt;
+&lt;td&gt;Hardcoded to 127.0.0.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;softtype&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;Hardcoded to &amp;ldquo;Linux&amp;rdquo;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pscaddr&lt;/td&gt;
+&lt;td&gt;MAC address&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hostname&lt;/td&gt;
+&lt;td&gt;Machine name&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hosttar&lt;/td&gt;
+&lt;td&gt;Username&lt;/td&gt;
+&lt;td&gt;Possibly &amp;ldquo;host target&amp;rdquo;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hostos&lt;/td&gt;
+&lt;td&gt;Distribution&lt;/td&gt;
+&lt;td&gt;Extracted from /etc/issue or /etc/redhat-release&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hostcpu&lt;/td&gt;
+&lt;td&gt;Clock speed&lt;/td&gt;
+&lt;td&gt;/proc/cpuinfo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hostmem&lt;/td&gt;
+&lt;td&gt;Amount of memory&lt;/td&gt;
+&lt;td&gt;/proc/meminfo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hostpack&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;Hardcoded to &amp;ldquo;Linux&amp;rdquo;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;lkmtag&lt;/td&gt;
+&lt;td&gt;Is rootkit enabled&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;kernel&lt;/td&gt;
+&lt;td&gt;Kernel version&lt;/td&gt;
+&lt;td&gt;Extracted from uname&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Figure 12 shows the communication between RedXOR and the C2. The malware sends
+the password &lt;code&gt;pd=admin&lt;/code&gt; and C2 responds with &lt;code&gt;all right&lt;/code&gt; (&lt;code&gt;JSESSIONID=0000&lt;/code&gt;).
+Next, the malware sends the system information and the C2 replies with the ping
+command (&lt;code&gt;JSESSIONID=1000&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig12.png" title="Figure 12: RedXOR communication with C2" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 12: RedXOR communication with C2&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Update Functionality&lt;span class="hx:absolute hx:-mt-20" id="update-functionality"&gt;&lt;/span&gt;
+&lt;a href="#update-functionality" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware can be updated by the threat actor. This is performed by sending
+command code 8 to the malware. When the malware receives this code the
+following actions are taken:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The malware opens the mutex file for writing.&lt;/li&gt;
+&lt;li&gt;It sends a request with the command code 8 and an empty request body to the
+C2 server.&lt;/li&gt;
+&lt;li&gt;The response body from the server is written to the mutex file. The response
+body is not encrypted.&lt;/li&gt;
+&lt;li&gt;The lock is released on the mutex file.&lt;/li&gt;
+&lt;li&gt;The malware executes &amp;ldquo;chmod&amp;rdquo; to set the execution flag on the file via the
+libc system function.&lt;/li&gt;
+&lt;li&gt;The malware sleeps and tries to obtain the lock on the file again when it
+wakes up. If it fails, it assumes the update was successful, closes the
+connection to the C2 server and exits.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Shell Functionality&lt;span class="hx:absolute hx:-mt-20" id="shell-functionality"&gt;&lt;/span&gt;
+&lt;a href="#shell-functionality" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware has the ability to provide its operator with a &lt;code&gt;tty&lt;/code&gt; shell. If a
+shell is requested via the command code 3000, the malware creates a new thread
+executing &lt;code&gt;/bin/sh&lt;/code&gt;. In the new spawned shell, the malware executes
+&lt;code&gt;python -c &amp;quot;import pty;pty.spawn('/bin/sh')&amp;quot;&lt;/code&gt; to get a pseudo-terminal (pty)
+interface. Any shell commands sent to the malware with the command code of 3058
+are executed in the pty and the response is returned to the operator.&lt;/p&gt;
+&lt;h3&gt;Network Tunneling&lt;span class="hx:absolute hx:-mt-20" id="network-tunneling"&gt;&lt;/span&gt;
+&lt;a href="#network-tunneling" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Network tunneling is enabled by sending the command code 4001 to the malware.
+As part of the request, a &amp;ldquo;configuration&amp;rdquo; is sent as part of the response body.
+The configuration consists of three items separated by a &amp;ldquo;#&amp;rdquo; character. The
+items are: a port to bind to, the IP to connect to, and a port to connect to.
+The malware uses a modified version of the open-source project Rinetd for the
+tunneling logic. Rinetd is designed to use a configuration file stored on the
+machine. To get around this, the malware author has modified the function that
+parses the configuration in order to directly take the required values normally
+found in the configuration file.&lt;/p&gt;
+&lt;h2&gt;Detection &amp;amp; Response&lt;span class="hx:absolute hx:-mt-20" id="detection--response"&gt;&lt;/span&gt;
+&lt;a href="#detection--response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Detect if a Machine in Your Network Has Been Compromised&lt;span class="hx:absolute hx:-mt-20" id="detect-if-a-machine-in-your-network-has-been-compromised"&gt;&lt;/span&gt;
+&lt;a href="#detect-if-a-machine-in-your-network-has-been-compromised" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Use a Cloud Workload Protection Platform like
+&lt;a href="https://intezer.com/intezer-protect"target="_blank" rel="noopener"&gt;Intezer Protect&lt;/a&gt; to gain full runtime
+visibility over the code in your Linux-based systems and get alerted on any
+malicious or unauthorized code or commands.
+&lt;a href="https://protect.intezer.com/signup"target="_blank" rel="noopener"&gt;Try our free community edition&lt;/a&gt; Figure 13
+emphasizes an Intezer Protect alert on a compromised machine. The alert
+provides additional context about the malicious code including threat
+classification (RedXOR), binary’s path on the disk, process tree, command, and
+hash.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig13.png" title="Figure 13: Intezer Protect alerts on RedXOR" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 13: Intezer Protect alerts on RedXOR&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We also recommend using the IOCs section below to ensure that the RedXOR
+process and the files it creates do not exist on your system.&lt;/p&gt;
+&lt;p&gt;Intezer Protect defends all types of compute resources—including VMs,
+containers and Kubernetes—against the latest Linux threats in runtime.
+&lt;a href="https://protect.intezer.com/signup"target="_blank" rel="noopener"&gt;Try our free community edition&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;Response&lt;span class="hx:absolute hx:-mt-20" id="response"&gt;&lt;/span&gt;
+&lt;a href="#response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;If you are a victim of this operation, take the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kill the process and delete all files related to the malware.&lt;/li&gt;
+&lt;li&gt;Make sure your machine is clean and running only trusted code using a Cloud
+Workload Protection Platform like Intezer Protect.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Wrap Up&lt;span class="hx:absolute hx:-mt-20" id="wrap-up"&gt;&lt;/span&gt;
+&lt;a href="#wrap-up" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Linux systems are under constant attack given that Linux runs on most of the
+public cloud workload. A
+&lt;a href="https://secure2.sophos.com/en-us/content/state-of-cloud-security.aspx"target="_blank" rel="noopener"&gt;survey conducted by Sophos&lt;/a&gt;
+found that 70% of organizations using the public cloud to host data or
+workloads experienced a security incident in the past year. Along with botnets
+and cryptominers, the Linux threat landscape is also home to sophisticated
+threats like RedXOR developed by
+&lt;a href="https://intezer.com/blog/malware-analysis/looking-back-on-the-last-decade-of-linux-apt-attacks/"target="_blank" rel="noopener"&gt;nation-state actors&lt;/a&gt;.
+RedXOR samples are indexed in Intezer Analyze so that you can detect any
+suspicious file that shares code with this malware.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig14.png" title="Figure 14: RedXOR sample in Intezer Analyze" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 14: RedXOR sample in Intezer Analyze&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
+&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;0a76c55fa88d4c134012a5136c09fb938b4be88a382f88bf2804043253b0559f
+0423258b94e8a9af58ad63ea493818618de2d8c60cf75ec7980edcaa34dcc919&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
+&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;update[.]cloudjscdn[.]com
+158[.]247[.]208[.]230
+34[.]92[.]228[].216&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Process name&lt;span class="hx:absolute hx:-mt-20" id="process-name"&gt;&lt;/span&gt;
+&lt;a href="#process-name" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;po1kitd-update-k&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;File and directories created on disk&lt;span class="hx:absolute hx:-mt-20" id="file-and-directories-created-on-disk"&gt;&lt;/span&gt;
+&lt;a href="#file-and-directories-created-on-disk" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;.po1kitd-update-k
+.po1kitd.thumb
+.po1kitd-2a4D53
+.po1kitd-k3i86dfv
+.po1kitd-nrkSh7d6
+.po1kitd-2sAq14
+.2sAq14
+.2a4D53
+po1kitd.ko
+po1kitd-update.desktop
+S99po1kitd-update.sh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>ChinaZ Updates Toolkit by Introducing New, Undetected Malware</title><link>https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</link><pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;ChinaZ is a Chinese cybercrime group and the author of several
