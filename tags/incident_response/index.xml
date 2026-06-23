@@ -1,0 +1,294 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Incident_response</title><link>https://intezer.github.io/community-intelligence/tags/incident_response/</link><description>Recent content in Incident_response on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 11 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/incident_response/index.xml" rel="self" type="application/rss+xml"/><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
+&lt;p&gt;Enterprises today rely on a wide range of cloud services—infrastructure as a
+service (IaaS), platform as a service (PaaS), software as a service (SaaS), and
+more—to meet their business needs. But the growing popularity of cloud has also
+led to an increase in attacks on cloud infrastructure, and thus the need for
+companies to develop strong security and incident response skills. Before we
+dive into incident response in the cloud, however, it&amp;rsquo;s important to
+distinguish between the responsibility of the cloud service provider (CSP) and
+that of the cloud consumer. According to the &amp;ldquo;shared responsibility model,&amp;rdquo; the
+CSP is responsible for securing the cloud, while security in the cloud falls on
+the customer. This means it&amp;rsquo;s the client&amp;rsquo;s job to protect their workloads
+(including applications, systems, and code) running on the CSP&amp;rsquo;s platform. With
+this responsibility placed on the customer, how they respond to an attack can
+have a significant impact on the mitigation of security breaches. But incidents
+in the cloud, such as those involving your EC2s, differ from those occurring
+on-premises (e.g., involving endpoints). This poses new challenges for incident
+response teams and requires different approaches. In this blog, we cover the
+differences between cloud forensics and forensics in on-premises systems. We
+also take a look at the incident response process for a real attack that was
+spotted in the wild.&lt;/p&gt;
+&lt;h2&gt;Incident Response: Cloud vs. Endpoint&lt;span class="hx:absolute hx:-mt-20" id="incident-response-cloud-vs-endpoint"&gt;&lt;/span&gt;
+&lt;a href="#incident-response-cloud-vs-endpoint" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The incident response process involves a skilled response or security team
+gathering the information needed in order to conduct a thorough investigation
+of the incident. But incident response in the cloud presents obstacles that
+don&amp;rsquo;t exist when investigating standard endpoints. The main difference between
+cloud and on-premises systems is the degree of access and control a user has
+over resources. On-premises systems provide users full access to both hardware
+and software, while access in the cloud is limited depending on the type of
+service being used and the service provider. Because cloud systems are
+distributed, the forensic evidence may be spread out across the globe, making
+it difficult to gather all of the information needed to investigate. These
+factors need to be taken into consideration. The challenges of incident
+response in the cloud can be divided into six categories, each of which are
+covered below.&lt;/p&gt;
+&lt;h3&gt;Collecting Forensic Evidence&lt;span class="hx:absolute hx:-mt-20" id="collecting-forensic-evidence"&gt;&lt;/span&gt;
+&lt;a href="#collecting-forensic-evidence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When investigating incidents on endpoint or on-premises systems, the
+investigator has full access to all of the resources, including logs, memory
+dumps, hard drives, and more. But this isn&amp;rsquo;t the case in a cloud environment.
+First, access to the forensics data depends on the cloud model. For instance,
+IaaS customers will have access to more data relative to SaaS customers. For
+example, let&amp;rsquo;s assume attackers gained access to a messaging application (SaaS)
+used by company employees and stole sensitive data. In order to obtain the
+compromised/malicious account information (e.g., IP addresses and logs), the
+company would have to contact the messaging application and ask them to provide
+this information. On the other hand, if attackers gained access to an EC2
+(IaaS) instance, as long as you have basic logging and monitoring capabilities,
+you&amp;rsquo;d be able to access more information on your own, without the help of the
+CSP.
+&lt;a href="https://link.springer.com/content/pdf/10.1007%2F978-3-319-07881-6_19.pdf"target="_blank" rel="noopener"&gt;CSPs are not inclined to provide logs and data&lt;/a&gt;
+for fear of exposing sensitive information that could compromise them or their
+customers. In other cases, they may be reluctant to do so because they simply
+don&amp;rsquo;t know how to handle the event. If customers of service models like PaaS
+and SaaS depend on their CSP for logs, they may not have access to important
+information needed in order to conduct a thorough investigation. On the other
+hand, customers using IaaS have greater control and the ability to set up
+different logs. Customers should therefore configure logs and especially what
+to log. But logging everything isn&amp;rsquo;t the best solution, since this results in a
+huge amount of information that needs to be filtered, analyzed, and stored.
+Sifting through such large amounts of data during an investigation can be
+overwhelming and time-consuming. While CSPs provide logging services, the more
+logs your system produces, the more expensive it will be. The cost will also
+depend on whether you&amp;rsquo;re using
+&lt;a href="https://aws.amazon.com/cloudwatch/pricing/"target="_blank" rel="noopener"&gt;AWS&lt;/a&gt;,
+&lt;a href="https://azure.microsoft.com/en-us/pricing/details/monitor/"target="_blank" rel="noopener"&gt;Azure&lt;/a&gt;, or
+&lt;a href="https://cloud.google.com/stackdriver/pricing"target="_blank" rel="noopener"&gt;GCP&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Data is Volatile or Not Saved&lt;span class="hx:absolute hx:-mt-20" id="data-is-volatile-or-not-saved"&gt;&lt;/span&gt;
+&lt;a href="#data-is-volatile-or-not-saved" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The incident response process is based on collecting information, including
+events that happened prior to the incident. CSPs provide clients with many
+tools that need to be configured according to your organization&amp;rsquo;s needs. This
+means the amount of data you can collect depends on what you choose to log and
+store, as well as the time period for which the data is stored. In an IaaS like
+AWS, the data stored on the instances is lost after termination of the machine.
+As a result,
+&lt;a href="https://aws.amazon.com/premiumsupport/knowledge-center/recovery-terminated-instance/"target="_blank" rel="noopener"&gt;important evidence is lost&lt;/a&gt;,
+including commands, scripts, processes, and files. Attackers can take advantage
+of this data loss to hide their malicious activity once they&amp;rsquo;ve completed their
+task.&lt;/p&gt;
+&lt;h3&gt;No Physical Evidence&lt;span class="hx:absolute hx:-mt-20" id="no-physical-evidence"&gt;&lt;/span&gt;
+&lt;a href="#no-physical-evidence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In the cloud, systems are distributed, and the physical components on which the
+data is stored may be in different geographic locations. This can make it
+nearly impossible to acquire the physical evidence or to perform physical
+forensics. Since each country has different laws, the process of seizing
+hardware involves collaboration between different governing legal authorities,
+which is a long and complicated process, with no guarantee the drives can be
+retrieved. Without access to the physical drives, investigators need to ensure
+they&amp;rsquo;re using the appropriate forensics tools, since many rely on access to
+hardware. This has created a real need for new tools developed specifically for
+cloud forensics.&lt;/p&gt;
+&lt;h3&gt;Chain of Custody and Privacy Laws&lt;span class="hx:absolute hx:-mt-20" id="chain-of-custody-and-privacy-laws"&gt;&lt;/span&gt;
+&lt;a href="#chain-of-custody-and-privacy-laws" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Due to the nature of cloud computing and the way data is stored, a single
+physical hard drive may contain the information of multiple customers. CSPs
+must notify clients that their data is protected and logically segmented from
+other tenants so they know other tenants can&amp;rsquo;t access their information—and
+vice versa. This makes collecting data from the hard drive complicated, and
+ultimately, only the CSP will be able to do so. If evidence is presented in a
+court of law, the investigators must maintain the chain of custody of that
+evidence throughout the investigation. This becomes a major challenge due to
+multi-jurisdictional laws, further compounded when CSPs and other third-party
+companies join in the evidence collection process.&lt;/p&gt;
+&lt;h3&gt;CSP Limitations&lt;span class="hx:absolute hx:-mt-20" id="csp-limitations"&gt;&lt;/span&gt;
+&lt;a href="#csp-limitations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When an incident occurs, especially in SaaS and PaaS infrastructures,
+investigators must rely on the CSP to assist in the investigation. Another
+challenge is the dependency between CSPs and third parties. For example, a
+provider of email services may use a third-party platform to host its
+infrastructure. In the event of an incident, the investigators would have to
+collaborate with all of the entities in this chain of dependencies, each with
+their own incident response approaches and methods. Once again, this
+prolongates the
+&lt;a href="https://intezer.com/blog/malware-analysis/save-incident-response-time-intezer-analyze/"target="_blank" rel="noopener"&gt;incident response time&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Service-Level Agreement (SLA)&lt;span class="hx:absolute hx:-mt-20" id="service-level-agreement-sla"&gt;&lt;/span&gt;
+&lt;a href="#service-level-agreement-sla" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When it comes to SLAs, important terms related to forensics are often missing.
+This is due to both the failure of CSPs to provide full transparency in this
+regard as well as a lack of customer awareness on the matter. In the case of an
+incident, this creates an additional barrier for customers attempting to
+collect all the evidence needed for the investigation process.&lt;/p&gt;
+&lt;h2&gt;Overcoming the Challenges of Incident Response in the Cloud&lt;span class="hx:absolute hx:-mt-20" id="overcoming-the-challenges-of-incident-response-in-the-cloud"&gt;&lt;/span&gt;
+&lt;a href="#overcoming-the-challenges-of-incident-response-in-the-cloud" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The
+&lt;a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf"target="_blank" rel="noopener"&gt;incident response lifecycle&lt;/a&gt;
+can be broken down into four phases, as outlined by the National Institute of
+Standards and Technology (NIST). As visible from Figure 1, the process is
+cyclical, meaning it is an ongoing learning process whereby organizations can
+continue to improve their prevention and response methods.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig1.png" title="Figure 1: Cycle of incident response (Source: The National Institute of Standards and Technology)" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Cycle of incident response (Source: The National Institute of Standards and Technology)&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The challenges of incident response in the cloud are complex, and not all can
+be solved at once. However, there are actions that can be taken in the various
+stages of the process to help you better handle and investigate incidents.&lt;/p&gt;
+&lt;h3&gt;Preparation Stage&lt;span class="hx:absolute hx:-mt-20" id="preparation-stage"&gt;&lt;/span&gt;
+&lt;a href="#preparation-stage" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Preparation is the most important stage. When your systems are well configured
+and your software is up to date, your response team will be prepared. This
+reduces incident handling time and even prevents attacks from happening in the
+first place.&lt;/p&gt;
+&lt;h4&gt;Setting Logs&lt;span class="hx:absolute hx:-mt-20" id="setting-logs"&gt;&lt;/span&gt;
+&lt;a href="#setting-logs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Logging events in the cloud is the key to proper incident handling. If your
+cloud provider offers logging options, you should use them. Just remember,
+logging everything isn&amp;rsquo;t ideal; instead, carefully choose which events and
+resources should be logged. For example, in order to set notifications for
+suspicious activities such as unusual access to secrets in your company&amp;rsquo;s cloud
+account, you can configure
+&lt;a href="https://docs.aws.amazon.com/cloudtrail/index.html"target="_blank" rel="noopener"&gt;CloudTrail&lt;/a&gt; to log these
+events. Each provider has its own set of recommendations, so be sure to follow
+the CIS benchmark best practices for the CSP you are using, whether
+&lt;a href="https://docs.aws.amazon.com/config/latest/developerguide/operational-best-practices-for-cis_aws_benchmark_level_1.html"target="_blank" rel="noopener"&gt;AWS&lt;/a&gt;,
+&lt;a href="https://docs.microsoft.com/en-us/azure/security/fundamentals/operational-best-practices"target="_blank" rel="noopener"&gt;Azure&lt;/a&gt;,
+or &lt;a href="https://cloud.google.com/security/best-practices"target="_blank" rel="noopener"&gt;GCP&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Rules and Permissions&lt;span class="hx:absolute hx:-mt-20" id="rules-and-permissions"&gt;&lt;/span&gt;
+&lt;a href="#rules-and-permissions" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Set permissions and rules for each user and group based on the principle of
+least privilege policy, where a user is given the minimum level of access and
+permissions they need to do their job. For example, each development team
+should only have access to the repositories and servers relevant to their
+specific departments, and developers should have permissions to add new code
+only to projects they are currently working on. But members of the finance
+department—or any other department that doesn&amp;rsquo;t require it—shouldn&amp;rsquo;t have
+access to any of these resources.&lt;/p&gt;
+&lt;h4&gt;Zero Trust&lt;span class="hx:absolute hx:-mt-20" id="zero-trust"&gt;&lt;/span&gt;
+&lt;a href="#zero-trust" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Use the zero trust approach when configuring your network. Based on this
+concept, no device is trusted until its integrity and identity are verified.
+There are many ways to apply this model:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Implement a network and logical segmentation on the VPC in
+&lt;a href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html"target="_blank" rel="noopener"&gt;AWS&lt;/a&gt;,
+&lt;a href="https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview"target="_blank" rel="noopener"&gt;Azure Virtual Network&lt;/a&gt;
+(VNet), or &lt;a href="https://cloud.google.com/vpc"target="_blank" rel="noopener"&gt;GCP&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;For access control:
+&lt;ul&gt;
+&lt;li&gt;Identify all of the company&amp;rsquo;s employees and configure roles for each of
+them.&lt;/li&gt;
+&lt;li&gt;Manage company devices (e.g., laptops) and verify their integrity using
+&lt;a href="https://www.manageengine.com/mobile-device-management/what-is-mdm.html"target="_blank" rel="noopener"&gt;MDM&lt;/a&gt;
+solutions such as
+&lt;a href="https://jumpcloud.com/blog/hosted-mdm-solution"target="_blank" rel="noopener"&gt;JumpCloud&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Map permissions for each asset to each role in the company.&lt;/li&gt;
+&lt;li&gt;Map the application employees need to use and implement SSO authentication.&lt;/li&gt;
+&lt;li&gt;Implement two-factor authentication (2FA).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Notifications&lt;span class="hx:absolute hx:-mt-20" id="notifications"&gt;&lt;/span&gt;
+&lt;a href="#notifications" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Add alarms and notifications for specific events, but try to minimize false
+positive alerts. There are two types of alerts; those that are triggered by a
+user&amp;rsquo;s actions and those that come from system and metrics events. It&amp;rsquo;s
+important to configure both types, but the configuration of events that will
+trigger alerts also depends on your company&amp;rsquo;s organizational behavior. Examples
+include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;User alerts: If all of your company employees use the same VPN configuration,
+setting a geolocation login alert will notify you of any suspicious login
+attempts that do not originate from your VPN.&lt;/li&gt;
+&lt;li&gt;System alerts: If your cloud infrastructure doesn&amp;rsquo;t typically require high
+CPU and memory usage, setting an alert for high usage will allow you to
+address any anomalies in the system.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Prepare in Advance for Different Types of Attacks&lt;span class="hx:absolute hx:-mt-20" id="prepare-in-advance-for-different-types-of-attacks"&gt;&lt;/span&gt;
+&lt;a href="#prepare-in-advance-for-different-types-of-attacks" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Make sure you&amp;rsquo;re ready for whatever type of attack comes your way:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Backup and recovery: Develop a recovery plan and maintain up-to-date backups
+of your organization&amp;rsquo;s most valuable data. Using cloud backups, which employs
+versioning to make copies of all your files, will ensure continuous backup
+and make it easier to restore data after any attacks.&lt;/li&gt;
+&lt;li&gt;Playbooks: Prepare a playbook of routines and the actions for different
+incident scenarios.&lt;/li&gt;
+&lt;li&gt;Recovery drills: Prepare a recovery drill to test your backups so you&amp;rsquo;re
+fully prepared to use them when they are most needed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These preparations can help with many different incidents, such as DDoS attacks
+that prevent customers from accessing your system, or ransomware attacks that
+encrypt all the files in your environment. Following the principles of chaos
+engineering, you can use automated tools like
+&lt;a href="https://github.com/Netflix/chaosmonkey"target="_blank" rel="noopener"&gt;Chaos Monkey&lt;/a&gt; to test your system&amp;rsquo;s
+resilience. Last, define the impacts and prioritize risks for every component
+in your environment, so you know where to put your best efforts during an
+incident.&lt;/p&gt;
+&lt;h4&gt;Know Your Runtime&lt;span class="hx:absolute hx:-mt-20" id="know-your-runtime"&gt;&lt;/span&gt;
+&lt;a href="#know-your-runtime" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Knowing what code is being executed in your environment makes it easy to detect
+any unauthorized code that could be part of an attack. A cloud workload
+protection platform (CWPP) that monitors your runtime and alerts you on the
+execution of code that deviates from your known code baseline will help you
+identify and stop attacks in their earliest stages.&lt;/p&gt;
+&lt;h4&gt;Fix Misconfigurations&lt;span class="hx:absolute hx:-mt-20" id="fix-misconfigurations"&gt;&lt;/span&gt;
+&lt;a href="#fix-misconfigurations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Cloud infrastructure can be complex, with many components and services that
+need to be configured. This increases your opportunity for error. Scanning your
+cloud environment for misconfigurations is important, because attackers are
+scanning as well. And if they find it before you do, the consequences can be
+catastrophic. There are many cloud security posture management (CSPM) tools
+that can be used for misconfiguration scanning. A few examples include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GCP&amp;rsquo;s
+&lt;a href="https://cloud.google.com/security-command-center/"target="_blank" rel="noopener"&gt;Security Command Center&lt;/a&gt;
+(SCC).&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://cloudsploit.com/opensource"target="_blank" rel="noopener"&gt;CloudSploit&lt;/a&gt;, an open-source project
+that finds security misconfigurations in cloud infrastructures.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/OpenCSPM/opencspm"target="_blank" rel="noopener"&gt;OpenCSPM&lt;/a&gt;, an open-source project that
+provides visibility over the configuration of the cloud infrastructure.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Patch Vulnerabilities and Install System Updates&lt;span class="hx:absolute hx:-mt-20" id="patch-vulnerabilities-and-install-system-updates"&gt;&lt;/span&gt;
+&lt;a href="#patch-vulnerabilities-and-install-system-updates" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Keeping all the components of your cloud environment updated and patched can
+prevent attacks from happening in the first place. There are several
+open-source projects, such as &lt;a href="https://github.com/future-architect/vuls"target="_blank" rel="noopener"&gt;Vuls&lt;/a&gt;,
+&lt;a href="https://www.openvas.org/"target="_blank" rel="noopener"&gt;OpenVAS&lt;/a&gt;, and
+&lt;a href="https://github.com/XTLS/Xray-core"target="_blank" rel="noopener"&gt;Xray&lt;/a&gt;, that can be used for vulnerability
+scanning.&lt;/p&gt;
+&lt;h3&gt;Detection and Analysis&lt;span class="hx:absolute hx:-mt-20" id="detection-and-analysis"&gt;&lt;/span&gt;
+&lt;a href="#detection-and-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;So if you&amp;rsquo;ve done everything you can to reduce the likelihood of an attack,
+where do you start when one happens? First, collect all of the information that
+indicates that an incident is occurring in the system, including logs, IP
+addresses, affected accounts, virtual images of the victim hosts, commands and
+scripts that are being executed, and so on. Next, analyze the evidence to
+better understand the incident and how you should respond to it. For example,
+let&amp;rsquo;s assume you got an alert on the creation of several new AWS instances. The
+first thing to check is the CloudTrial logs, where you&amp;rsquo;ll find RunInstances
+events as shown in Figure 2 below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig2.png" title="Figure 2: AWS CloudTrail logs showing RunInstances events" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: AWS CloudTrail logs showing RunInstances events&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After you isolate the instances and connect securely (not from your personal
+computer), you find a suspicious file in the &lt;code&gt;/tmp/kdevtmpfsi&lt;/code&gt; directory. After
+extracting the file from the machine either you or the threat analysis team
+will analyze the file and the events that led to the execution of the malware
+in an attempt to understand the threat and the damage to the environment. This
+process may take a long time especially for sophisticated threats.&lt;/p&gt;
+&lt;h3&gt;Containment, Eradication, and Recovery&lt;span class="hx:absolute hx:-mt-20" id="containment-eradication-and-recovery"&gt;&lt;/span&gt;
+&lt;a href="#containment-eradication-and-recovery" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The next stage in the process involves:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Identifying and isolating the hosts or containers that were attacked to
+prevent the attack from spreading in the network.&lt;/li&gt;
+&lt;li&gt;Making a snapshot/copy of the instance and the volume that was attacked to
+preserve the evidence. Preserving the evidence is important for investigation
+of the incident. It will help you learn how the attackers got into the
+system, find compromised hosts, and understand the attack flow.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Post Incident&lt;span class="hx:absolute hx:-mt-20" id="post-incident"&gt;&lt;/span&gt;
+&lt;a href="#post-incident" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Once the incident is over:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Complete an incident response report and share it with relevant stakeholders
+in the organization so they can read and understand it. It&amp;rsquo;s important to
+document the investigation and findings to prevent similar events in the
+future, improve the incident response process, and to fix and add security
+measures.&lt;/li&gt;
+&lt;li&gt;Learn the kill chain of the attack based on the evidence you gathered, and
+monitor your systems for post-incident activity.&lt;/li&gt;
+&lt;li&gt;If the incident was caused by misconfigurations or vulnerabilities, make sure
+to patch and fix them.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Getting Started&lt;span class="hx:absolute hx:-mt-20" id="getting-started"&gt;&lt;/span&gt;
+&lt;a href="#getting-started" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Developing a reliable incident response process in cloud environments is a
+complicated and challenging task, with many factors that need to be taken into
+account. Even with the precautions detailed in this blog, breaches still
+happen—whether due to unknown vulnerabilities/misconfigurations, unauthorized
+access, or supply chain attacks. Having strong runtime threat detection and
+response capabilities is crucial.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Special thanks to Aner Izraeli for contributing to this post.&lt;/em&gt;&lt;/p&gt;</description></item></channel></rss>

@@ -6510,7 +6510,975 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Targeted Phishing Attack against Ukrainian Government Expands to Georgia</title><link>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</guid><description>
+&lt;/div&gt;</description></item><item><title>Vermilion Strike: Linux and Windows Re-implementation of Cobalt Strike</title><link>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</link><pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</guid><description>
+&lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
+&lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Discovered Linux &amp;amp; Windows re-implementation of Cobalt Strike Beacon written
+from scratch&lt;/li&gt;
+&lt;li&gt;Linux malware is fully undetected by vendors&lt;/li&gt;
+&lt;li&gt;Has IoC and technical overlaps with previously discovered Windows DLL files&lt;/li&gt;
+&lt;li&gt;Highly targeted with victims including telecommunications, government and
+finance&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="../../../2021/08/cobalt-strike-detect-this-persistent-threat"&gt;Cobalt Strike&lt;/a&gt;
+is a popular red team tool for Windows which is also heavily used by threat
+actors. At the time of this writing, there is no official
+&lt;a href="https://blog.cobaltstrike.com/2016/03/23/linux-left-out-in-the-cold/"target="_blank" rel="noopener"&gt;Cobalt Strike version for Linux&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In August 2021, we at Intezer discovered a
+&lt;a href="https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc"target="_blank" rel="noopener"&gt;fully undetected ELF implementation&lt;/a&gt;
+of Cobalt Strike&amp;rsquo;s &lt;a href="https://www.cobaltstrike.com/help-beacon"target="_blank" rel="noopener"&gt;beacon&lt;/a&gt;, which we
+named &lt;strong&gt;Vermilion Strike&lt;/strong&gt;. The stealthy sample uses Cobalt Strike&amp;rsquo;s Command
+and Control (C2) protocol when communicating to the C2 server and has Remote
+Access capabilities such as uploading files, running shell commands and writing
+to files. The malware is fully undetected in VirusTotal at the time of this
+writing and was uploaded from Malaysia.&lt;/p&gt;
+&lt;p&gt;Based on telemetry with collaboration from our partners at McAfee Enterprise
+ATR, this Linux threat has been active in the wild since August targeting
+telecom companies, government agencies, IT companies, financial institutions
+and advisory companies around the world. Targeting has been limited in scope,
+suggesting that this malware is used in specific attacks rather than mass
+spreading.&lt;/p&gt;
+&lt;p&gt;After further analysis, we found Windows samples that use the same C2. The
+samples are re-implementations of Cobalt Strike Beacon. The Windows and ELF
+samples share the same functionalities.&lt;/p&gt;
+&lt;p&gt;The sophistication of this threat, its intent to conduct espionage, and the
+fact that the code hasn&amp;rsquo;t been seen before in other attacks, together with the
+fact that it targets specific entities in the wild, leads us to believe that
+this threat was developed by a skilled threat actor.&lt;/p&gt;
+&lt;p&gt;In this post we will provide a technical analysis of the samples and explain
+how you can detect and respond to this threat.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Linux File&lt;span class="hx:absolute hx:-mt-20" id="linux-file"&gt;&lt;/span&gt;
+&lt;a href="#linux-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The file was uploaded to VirusTotal from Malaysia and has no detections in
+VirusTotal at the time of this writing.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig1.png" title="294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc in VirusTotal" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc in VirusTotal&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig2.png" title="Vermilion Strike analysis in Intezer: https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Vermilion Strike analysis in Intezer: https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The file shares strings with previously seen Cobalt Strike samples and triggers
+a number of YARA rules that detect encoded Cobalt Strike configurations. The
+ELF file is built on a Red Hat Linux distribution. It uses OpenSSL via dynamic
+linking. The shared object names for OpenSSL on Red Hat-based distributions are
+different from other Linux distributions. Because of this, it can only run on
+machines with Linux distribution based on Red Hat&amp;rsquo;s code base.&lt;/p&gt;
+&lt;h3&gt;Initialization&lt;span class="hx:absolute hx:-mt-20" id="initialization"&gt;&lt;/span&gt;
+&lt;a href="#initialization" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The sample starts by forcing itself to run in the background using &lt;code&gt;daemon&lt;/code&gt;. It
+will decrypt the configuration, using the XOR key &lt;code&gt;0x69&lt;/code&gt;, shown in the
+screenshot below. The key &lt;code&gt;0x69&lt;/code&gt; is a common value used by Cobalt Strike&amp;rsquo;s
+encrypted configuration too. Vermilion Strike&amp;rsquo;s configuration format is the
+same as Cobalt Strike. Tools used for extracting Cobalt Strike configurations
+can also be used to extract Vermilion Strike configuration. The Windows
+components of the configuration are ignored for this Linux version.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig3.png" title="Decoded configuration of the beacon" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decoded configuration of the beacon&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Further decryption is performed in a heap with decoded strings, keys, and
+values required by the beacon for its operation. The beacon will then generate
+a SHA256 hash sourced from a random number seeded from the thread ID. This
+value will be used later in DNS beaconing. Next, a public RSA key will be
+imported for later use.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig4.png" title="Importing of public RSA key to encrypt machine fingerprint" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Importing of public RSA key to encrypt machine fingerprint&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The beacon will begin fingerprinting the machine. A random number will be
+generated and the process ID will be fetched. It will grab the kernel version
+of the machine using &lt;code&gt;uname&lt;/code&gt;. Next, the beacon will fingerprint network
+information through the &lt;code&gt;getifaddrs&lt;/code&gt; function. It will loop through the
+interfaces looking for IPv4 addresses. It will gather the interface with an
+address not equal to &lt;code&gt;127.0.0.1&lt;/code&gt; and stage the IPv4 address.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig5.png" title="Network interface fingerprinting" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Network interface fingerprinting&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Next, the beacon will fingerprint the entry in the local password database for
+information about the current effective user ID of the process.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig6.png" title="Fingerprinting of local password database" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Fingerprinting of local password database&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The beacon will then fingerprint the hostname of the machine. The collected
+information will be formatted into a string, encrypted with the public RSA key,
+and base64 encoded, as is standard for communication with a Cobalt Strike
+server. The stages are shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig7.png" title="Stages of formatting the machine fingerprint" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Stages of formatting the machine fingerprint&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Prepended to the fingerprint string is the value &lt;code&gt;1.0.1.LR&lt;/code&gt;. This appears to be
+an internal version string. A similar string, &lt;code&gt;W1.0.1&lt;/code&gt;, was found in a newly
+discovered Windows sample of Vermilion Strike that shares the same C2 and
+malware functionality.&lt;/p&gt;
+&lt;p&gt;The encrypted data is sent to the C2 server in a similar way that the metadata
+is sent from a Cobalt Strike beacon to the C2 server. The payload that is
+encrypted starts with the marker &lt;code&gt;0xbeef&lt;/code&gt;. The same marker is used by the
+legitimate Cobalt Strike beacon.&lt;/p&gt;
+&lt;h3&gt;Command and Control&lt;span class="hx:absolute hx:-mt-20" id="command-and-control"&gt;&lt;/span&gt;
+&lt;a href="#command-and-control" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Command and Control is primarily performed over DNS but also available over
+HTTP. This DNS-based approach for communications can help avoid traditional
+defenses that monitor HTTP traffic. Commands are received via DNS Address (A)
+and Text (TXT) records. The beacon first makes DNS requests out to hardcoded
+subdomains and gets an IP address returned. Normally, DNS requests on hostnames
+are intended to be translated into an IP address for which to visit. In this
+case, the IP address returned is not used as an IP address but for triggers to
+change the beacon behavior.&lt;/p&gt;
+&lt;p&gt;Once the beacon gets the signal to download a task, it will perform a DNS TXT
+query to the domain&amp;rsquo;s nameservers, as shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig8.png" title="Packet capture of C2 communication" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Packet capture of C2 communication&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The result of the TXT query is a base64 encoded and AES encrypted struct
+containing task information. An example of a returned task is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig9.png" title="A DNS TXT query result for a task" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;A DNS TXT query result for a task&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;A decrypted task is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig10.png" title="Decrypted command" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decrypted command&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Tasks that the beacon can perform are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Change working directory&lt;/li&gt;
+&lt;li&gt;Get current working directory&lt;/li&gt;
+&lt;li&gt;Append/write to file&lt;/li&gt;
+&lt;li&gt;Upload file to C2&lt;/li&gt;
+&lt;li&gt;Execute command via &lt;code&gt;popen&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Get disk partitions&lt;/li&gt;
+&lt;li&gt;List files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The malware uses a separate thread to execute the tasks. The tasks are
+scheduled as jobs via a semaphore to ensure not too many jobs are executed at
+once. Vermilion Strike has a third way of communicating with the C2 server via
+ICMP ping messages. The malware adds the current pid to the offset &lt;code&gt;0x4&lt;/code&gt; in the
+header and the encrypted payload is sent as data in the ICMP packet. The data
+size for an ICMP packet is limited to 65,507 bytes but the malware uses a size
+limit of 64,000 bytes for the payload. The code for sending and processing ICMP
+messages exists in the malware but the code for enabling it via the
+configuration is not present. This means it has the capability but can&amp;rsquo;t be
+configured to use it. This suggests it may be a new feature that hasn&amp;rsquo;t been
+fully developed yet.&lt;/p&gt;
+&lt;h3&gt;Links to Windows Files&lt;span class="hx:absolute hx:-mt-20" id="links-to-windows-files"&gt;&lt;/span&gt;
+&lt;a href="#links-to-windows-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When investigating this Linux file, we discovered related Windows samples. The
+first sample we noticed was:
+&lt;code&gt;3ad119d4f2f1d8ce3851181120a292f41189e4417ad20a6c86b6f45f6a9fbcfc&lt;/code&gt;. This is a
+32-bit EXE sample that shares a C2 IP address (&lt;code&gt;160.202.163[.]100&lt;/code&gt;). This is a
+stager that will fetch a DLL from the C2 over HTTP and execute it in-memory.&lt;/p&gt;
+&lt;p&gt;An example of the next stage DLL is
+&lt;code&gt;7129434afc1fec276525acfeee5bb08923ccd9b32269638a54c7b452f5493492&lt;/code&gt;. This
+sample, first noticed in 2019 by
+&lt;a href="https://twitter.com/silascutler/status/1153696870499119104"target="_blank" rel="noopener"&gt;Silas Cutler&lt;/a&gt;, is
+the Windows DLL equivalent of the ELF file. The functionality is almost exactly
+the same, except for the Windows environment. A side-by-side comparison of the
+configuration decoding function for the ELF and DLL beacons is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig11.png" title="Configuration decryption function comparison" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Configuration decryption function comparison&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The DLL has the same domains as the ELF for C2, as well as an additional
+configured domain &lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Using the stager we managed to get a new payload from the server
+(&lt;a href="https://analyze.intezer.com/files/e40370f463b4a4feb2d515a3fb64af1573523f03917b2fd9e7a9d0a741ef89a5"target="_blank" rel="noopener"&gt;e40370f463b4a4feb2d515a3fb64af1573523f03917b2fd9e7a9d0a741ef89a5&lt;/a&gt;).
+It has a lot of shared code with the sample from 2019. This sample and another
+Windows version of Vermilion Strike
+(&lt;code&gt;c49631db0b2e41125ccade68a0fe7fb70939315f1c580510e40e5b30ead868f5&lt;/code&gt;) includes a
+similar version string as the ELF version. The version string in these samples
+is &lt;code&gt;W1.0.1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig12.png" title="Internal version string in recent Windows versions" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Internal version string in recent Windows versions&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Vermilion Strike and other Linux threats remain a constant threat. The
+predominance of Linux servers in the cloud and its continued rise invites APTs
+to modify their toolsets in order to navigate the existing environment. Linux
+threats often have low detection rates compared to their Windows counterparts
+due to reasons discussed in
+&lt;a href="https://intezer.com/blog/malware-analysis/why-we-should-be-paying-more-attention-to-linux-threats/"target="_blank" rel="noopener"&gt;Why we Should be Paying More Attention to Linux Threats&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Vermilion Strike is not the only Linux port of Cobalt Strike&amp;rsquo;s Beacon. Another
+example is the open-source project &lt;a href="https://github.com/darkr4y/geacon"target="_blank" rel="noopener"&gt;geacon&lt;/a&gt;,
+a Go-based implementation. Vermilion Strike may not be the last Linux
+implementation of Beacon.&lt;/p&gt;
+&lt;h2&gt;Detection and Response&lt;span class="hx:absolute hx:-mt-20" id="detection-and-response"&gt;&lt;/span&gt;
+&lt;a href="#detection-and-response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Intezer can detect both Linux and Windows variants of Vermilion Strike, based
+on code reuse, TTPs, and strings. Shown below are the verdicts for both
+versions.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig13.png" title="Intezer verdict of Windows version of Vermilion Strike" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer verdict of Windows version of Vermilion Strike&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Intezer
+&lt;a href="https://analyze.intezer.com/files/07b815cee2b85a41820cd8157a68f35aa1ed0aa5f4093b8cb79a1d645a16273f"target="_blank" rel="noopener"&gt;verdict&lt;/a&gt;
+of Windows version of Vermilion Strike.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig14.png" title="Intezer verdict of Linux version of Vermilion Strike" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer verdict of Linux version of Vermilion Strike&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Intezer
+&lt;a href="https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc"target="_blank" rel="noopener"&gt;verdict&lt;/a&gt;
+of Linux version of Vermilion Strike.&lt;/p&gt;
+&lt;h3&gt;Detect if a Machine in Your Network Has Been Compromised&lt;span class="hx:absolute hx:-mt-20" id="detect-if-a-machine-in-your-network-has-been-compromised"&gt;&lt;/span&gt;
+&lt;a href="#detect-if-a-machine-in-your-network-has-been-compromised" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We recommend using the IoCs section below to ensure that the Vermilion Strike
+process does not exist anywhere on your system.&lt;/p&gt;
+&lt;h3&gt;Response&lt;span class="hx:absolute hx:-mt-20" id="response"&gt;&lt;/span&gt;
+&lt;a href="#response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;If you are a victim of this operation, take the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kill the process and delete all files related to the malware.&lt;/li&gt;
+&lt;li&gt;Make sure that your machine is clean and running only trusted code.&lt;/li&gt;
+&lt;li&gt;Make sure that your software is up-to-date with the latest versions and
+security patches and configured to security best practices.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Intezer would like to thank McAfee ATR for their help during the research
+process.&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;ELF&lt;span class="hx:absolute hx:-mt-20" id="elf"&gt;&lt;/span&gt;
+&lt;a href="#elf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;PE&lt;span class="hx:absolute hx:-mt-20" id="pe"&gt;&lt;/span&gt;
+&lt;a href="#pe" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Stager&lt;span class="hx:absolute hx:-mt-20" id="stager"&gt;&lt;/span&gt;
+&lt;a href="#stager" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;code&gt;3ad119d4f2f1d8ce3851181120a292f41189e4417ad20a6c86b6f45f6a9fbcfc&lt;/code&gt;&lt;/p&gt;
+&lt;h4&gt;Beacon&lt;span class="hx:absolute hx:-mt-20" id="beacon"&gt;&lt;/span&gt;
+&lt;a href="#beacon" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;code&gt;7129434afc1fec276525acfeee5bb08923ccd9b32269638a54c7b452f5493492&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;c49631db0b2e41125ccade68a0fe7fb70939315f1c580510e40e5b30ead868f5&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;07b815cee2b85a41820cd8157a68f35aa1ed0aa5f4093b8cb79a1d645a16273f&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;e40370f463b4a4feb2d515a3fb64af1573523f03917b2fd9e7a9d0a741ef89a5&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;C2&lt;span class="hx:absolute hx:-mt-20" id="c2"&gt;&lt;/span&gt;
+&lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;160.202.163.100&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;update.microsofthk[.]com&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;update.microsoftkernel[.]com&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;&lt;/p&gt;</description></item><item><title>How to Detect Cobalt Strike</title><link>https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</link><pubDate>Wed, 18 Aug 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</guid><description>
+&lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
+&lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike is a penetration testing tool created by Raphael Mudge in 2012.
+To this day, it remains extremely popular in red team activities and used for
+malicious purposes by threat actors. Cobalt Strike is popular due to its range
+of deployment options, ease of use, ability to avoid detection by security
+products, and a number of capabilities it has. It is for these reasons that
+threat actors like Cobalt Strike. Since Cobalt Strike is widely used by a range
+of actors, its lack of exclusivity makes attribution harder. Companies still
+struggle to detect Cobalt Strike also due to the various defensive techniques
+it has.&lt;/p&gt;
+&lt;p&gt;This blog explains Cobalt Strike and practical steps to take if you believe
+that you are being targeted or have been compromised by Cobalt Strike. We will
+demonstrate some real world examples of Cobalt Strike delivery and steps to
+detect each.&lt;/p&gt;
+&lt;h2&gt;What is Cobalt Strike?&lt;span class="hx:absolute hx:-mt-20" id="what-is-cobalt-strike"&gt;&lt;/span&gt;
+&lt;a href="#what-is-cobalt-strike" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike is &lt;a href="https://www.cobaltstrike.com/"target="_blank" rel="noopener"&gt;marketed&lt;/a&gt; as &amp;ldquo;Software for
+Adversary Simulations and Red Team Operations.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;It is a popular platform that allows users to
+&lt;a href="https://www.cobaltstrike.com/features"target="_blank" rel="noopener"&gt;emulate&lt;/a&gt; advanced threats, perform
+reconnaissance, hide communications, escalate privileges, move laterally across
+the network, and deploy additional payloads. The main payload of Cobalt Strike
+is called &amp;ldquo;&lt;a href="https://www.cobaltstrike.com/help-beacon"target="_blank" rel="noopener"&gt;Beacon&lt;/a&gt;.&amp;rdquo; The Beacon
+payload is used to model advanced APT malware, and it can do the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Receive commands (either passively or from an interactive console)&lt;/li&gt;
+&lt;li&gt;Egress communications over HTTP, HTTPS, and DNS&lt;/li&gt;
+&lt;li&gt;Launch PowerShell&lt;/li&gt;
+&lt;li&gt;Execute binaries&lt;/li&gt;
+&lt;li&gt;Modify and query the Windows registry&lt;/li&gt;
+&lt;li&gt;Inject malicious code into legitimate processes&lt;/li&gt;
+&lt;li&gt;Log keystrokes&lt;/li&gt;
+&lt;li&gt;Take screenshots&lt;/li&gt;
+&lt;li&gt;Set up proxies&lt;/li&gt;
+&lt;li&gt;Escalate privileges&lt;/li&gt;
+&lt;li&gt;Bypass UAC&lt;/li&gt;
+&lt;li&gt;Dump password hashes&lt;/li&gt;
+&lt;li&gt;Scan ports among other abilities&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This tool is mainly used in red team operations for government agencies and
+private enterprises, but it&amp;rsquo;s also a popular tool leveraged by cybercrime and
+&lt;a href="https://www.proofpoint.com/us/blog/threat-insight/cobalt-strike-favorite-tool-apt-crimeware"target="_blank" rel="noopener"&gt;APT groups in cracked versions&lt;/a&gt;.
+It is evident why Cobalt Strike is used by organizations and threat actors
+alike because of the extensive suite of capabilities it possesses, and also due
+to its ability to bypass defenses. It also comes with the feature to generate
+&lt;a href="https://www.cobaltstrike.com/help-reporting"target="_blank" rel="noopener"&gt;reporting&lt;/a&gt; in which the attacking
+team or threat actor can continuously study and improve their campaigns.&lt;/p&gt;
+&lt;h2&gt;Why is it difficult to detect Cobalt Strike?&lt;span class="hx:absolute hx:-mt-20" id="why-is-it-difficult-to-detect-cobalt-strike"&gt;&lt;/span&gt;
+&lt;a href="#why-is-it-difficult-to-detect-cobalt-strike" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike is difficult to detect because of its several defense techniques.
+Cobalt Strike payloads are usually shellcode encrypted with a rolling XOR key.
+This makes static analysis difficult to conduct. This, combined with the
+ability to configure many parts of the payload, makes hash-based detection
+almost impossible. Cobalt Strike stagers are designed to be loaded and executed
+only in-memory. This opens up a ton of possibilities for how this shellcode is
+shipped, making signature-based detection on the delivery method a cat and
+mouse game. Depending on how the code is delivered, the code can be injected
+into other legitimate running processes, bypassing defenses that do not scan
+legitimate processes or code in-memory.&lt;/p&gt;
+&lt;h2&gt;How has Cobalt Strike been deployed?&lt;span class="hx:absolute hx:-mt-20" id="how-has-cobalt-strike-been-deployed"&gt;&lt;/span&gt;
+&lt;a href="#how-has-cobalt-strike-been-deployed" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike has many different ways for deployment. This flexibility has
+helped attackers find many unconventional and creative ways to infect victims
+with a payload. For an in-depth technical analysis of Cobalt Strike&amp;rsquo;s
+deployment options and how they differ, check out either Avast&amp;rsquo;s
+&lt;a href="https://decoded.avast.io/threatintel/decoding-cobalt-strike-understanding-payloads/"target="_blank" rel="noopener"&gt;blog&lt;/a&gt;
+or Cisco Talos'
+&lt;a href="https://talos-intelligence-site.s3.amazonaws.com/production/document_files/files/000/095/031/original/Talos_Cobalt_Strike.pdf"target="_blank" rel="noopener"&gt;white paper&lt;/a&gt;.
+Let&amp;rsquo;s take a look at some real world examples of how Cobalt Strike is being
+used in the wild. We will cover the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Macro-Laden Microsoft Office files&lt;/li&gt;
+&lt;li&gt;Supply Chain Attack&lt;/li&gt;
+&lt;li&gt;Living off the Land (LotL)&lt;/li&gt;
+&lt;li&gt;Executables (EXE) files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Macro-Laden Microsoft Office Files&lt;span class="hx:absolute hx:-mt-20" id="macro-laden-microsoft-office-files"&gt;&lt;/span&gt;
+&lt;a href="#macro-laden-microsoft-office-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;An
+&lt;a href="https://analyze.intezer.com/analyses/2eaedc79-0197-4907-b4e1-f609853bc04e"target="_blank" rel="noopener"&gt;example&lt;/a&gt;
+of a Cobalt Strike payload being delivered to victims via Microsoft Excel
+spreadsheets demonstrates that this tool is used in mass phishing campaigns,
+not just targeted APT attacks. The attack starts by sending potential victims a
+Microsoft OneDrive link from which an Excel (.xls) file is downloaded.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig1.png" title="OneDrive URLs sent to victims" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;OneDrive URLs sent to victims&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Using cloud storage links to deliver malicious files is a well-known strategy.
+It leverages the good reputation of cloud provider domains such as Microsoft,
+Amazon, and Google to bypass domain reputation-based security controls. This
+link delivers an Excel file pretending to be an Apple Store invoice requesting
+that the target &amp;ldquo;enable content to view receipt.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig2.png" title="Spreadsheet lure masquerading as an Apple Store receipt." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Spreadsheet lure masquerading as an Apple Store receipt.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Upon enablement of macros, the spreadsheet will fetch and execute the payload
+in-memory.&lt;/p&gt;
+&lt;h3&gt;How to Detect?&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This can be difficult to detect, as there are multiple degrees of separation
+before the Cobalt Strike payload is executed. Detection first requires dynamic
+analysis in order to reach the Cobalt Strike stage. When this stage is reached,
+the best ways to detect the running Cobalt Strike code are through static
+signatures or genetic code analysis.&lt;/p&gt;
+&lt;p&gt;When it comes to static signatures, it can be difficult to isolate the exact
+area in-memory that you should run the signatures over. One way this can be
+achieved is running the file through debugging tools and manually dumping
+memory to perform signature analysis. This can be extremely time consuming and
+requires a high degree of technical knowledge. Another possible way is to use a
+sandbox and download memory dumps from a finished analysis in order to run
+static analysis tools. This requires slightly less technical knowledge, but it
+still can be time consuming. We suggest taking the suspicious document and
+uploading it to Intezer Analyze to find out if Cobalt Strike is hidden
+in-memory.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig3.png" title="Intezer Analyze result for Cobalt Strike payload." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer Analyze result for Cobalt Strike payload.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Supply Chain Attack&lt;span class="hx:absolute hx:-mt-20" id="supply-chain-attack"&gt;&lt;/span&gt;
+&lt;a href="#supply-chain-attack" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;One of the biggest cybersecurity stories of 2020 was the SolarWinds supply
+chain attack that compromised high-profile entities around the world. This
+attack was done by an APT group known as NOBELIUM (UNC2452) leveraging the
+&amp;ldquo;Orion&amp;rdquo; business software to distribute malware to private and public
+organizations. Among the deployed malware was a Cobalt Strike loader dubbed
+TEARDROP by FireEye. The variant was named
+&lt;a href="https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/solarwinds-raindrop-malware"target="_blank" rel="noopener"&gt;Raindrop&lt;/a&gt;
+by Symantec. The TEARDROP dropper is a memory-only DLL that runs as a service
+spawning a thread that pulls the Cobalt Strike payload from a fake JPG file.&lt;/p&gt;
+&lt;p&gt;The Raindrop variant is built from a modified version of 7-ZIP source code. It
+uses a different custom packer than TEARDROP, also leveraging steganography to
+locate the start of the encoded payload. Once the encoded payload has been
+located, it extracts, decrypts, and decompresses the data to be executed as
+shellcode.&lt;/p&gt;
+&lt;h3&gt;How to Detect?&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect-1"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;It can often be difficult to detect if your organization has been the victim of
+a supply chain attack. It can be especially hard to collect forensic evidence
+for an attack when it could be mixed in with the code of legitimate and large
+files. Due to the nature of
+&lt;a href="https://intezer.com/blog/malware-analysis/securing-the-software-supply-chain/"target="_blank" rel="noopener"&gt;supply chain attacks&lt;/a&gt;,
+there are often a large number of machines in an organization infected at one
+time. An action you can take is to run Intezer&amp;rsquo;s
+&lt;a href="https://analyze.intezer.com/endpoint-analyses"target="_blank" rel="noopener"&gt;live endpoint scanner&lt;/a&gt; across
+all machines in the organization, to get immediate visibility over all running
+code and quickly identify infected machines by detecting any traces of
+malicious code found in-memory. An example of a machine with Raindrop loading
+Cobalt Strike is shown in the endpoint scan below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig4.png" title="Intezer Analyze endpoint scan result for Raindrop loading and executing a fileless Cobalt Strike payload." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer Analyze endpoint scan result for Raindrop loading and executing a fileless Cobalt Strike payload.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Living off the Land (LotL)&lt;span class="hx:absolute hx:-mt-20" id="living-off-the-land-lotl"&gt;&lt;/span&gt;
+&lt;a href="#living-off-the-land-lotl" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Living off the Land (LotL) is the attack process of using legitimate and signed
+tools, usually provided within the operating system, to execute malware. This
+is a powerful tactic as it can result in unauthorized code being executed
+within the memory space of a trusted process, evading malware defenses by
+flying under the radar. This type of tactic also makes incident response
+difficult, since analysts can&amp;rsquo;t just filter out known legitimate processes
+during triage. All processes must be inspected in order to find that one needle
+in the haystack.&lt;/p&gt;
+&lt;p&gt;One popular tool used for LotL operations is the Microsoft.NET framework
+utility called
+&lt;a href="https://docs.microsoft.com/en-us/visualstudio/msbuild/walkthrough-using-msbuild?view=vs-2019"target="_blank" rel="noopener"&gt;MSBuild&lt;/a&gt;.
+MSBuild is the build platform used for Microsoft and Visual Studio. Visual
+Studio relies on MSBuild to build projects for testing and releases. Attackers
+are able to pass MSBuild.exe, a project (.proj) file, to build and execute. The
+payload, usually shellcode, is injected into another process. This attack is
+effective for attackers as many sandboxing solutions are not able to handle
+project files and struggle with fileless malware. This technique was observed
+by Cisco Talos researchers in
+&lt;a href="https://blog.talosintelligence.com/2020/02/building-bypass-with-msbuild.html"target="_blank" rel="noopener"&gt;2020&lt;/a&gt;
+to deploy Cobalt Strike.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig5.png" title="Project file code." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Project file code.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;As shown above, the project file has an encoded and compressed payload. This
+payload is decrypted, decompressed, and then copied into memory. The shellcode
+is then executed in a new thread.&lt;/p&gt;
+&lt;h3&gt;How to Detect?&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect-2"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;An endpoint with a system injected with Cobalt Strike via MSBuild is shown
+below. Note the process tree at the bottom indicating the &amp;ldquo;fileless code.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig6.png" title="Intezer Analyze endpoint scan of a Cobalt Strike-infected system via LotL technique." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer Analyze endpoint scan of a Cobalt Strike-infected system via LotL technique.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Executables (EXE) Files&lt;span class="hx:absolute hx:-mt-20" id="executables-exe-files"&gt;&lt;/span&gt;
+&lt;a href="#executables-exe-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There is an acronym in the United States Armed Forces called &amp;ldquo;KISS.&amp;rdquo; KISS
+stands for &amp;ldquo;Keep it simple, stupid!&amp;rdquo; Sometimes simple is better, and another
+way for Cobalt Strike to be deployed is in a simple Windows EXE form. This
+requires either social engineering tactics to get the target to execute the
+malware or another program/script to execute the file. This process involves
+creation of a thread that sets up a named pipe for privilege escalation. Once
+the shellcode is written to the named pipe, it is decrypted and executed in a
+separate thread.&lt;/p&gt;
+&lt;h3&gt;How to Detect?&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect-3"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect-3" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;An example of one of these payloads is shown in the
+&lt;a href="https://analyze.intezer.com/files/e233fc08c1a41ed8cc7d32c8e851614aeb159f95470f4491262c818137591afc"target="_blank" rel="noopener"&gt;analysis&lt;/a&gt;
+below. Notice how the Cobalt Strike code is only shown when it is executed and
+found in-memory.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig7.png" title="Cobalt Strike found via memory analysis." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Cobalt Strike found via memory analysis.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;How can Cobalt Strike be detected and remediated?&lt;span class="hx:absolute hx:-mt-20" id="how-can-cobalt-strike-be-detected-and-remediated"&gt;&lt;/span&gt;
+&lt;a href="#how-can-cobalt-strike-be-detected-and-remediated" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Due to the many ways Cobalt Strike is deployed, detection can be hard. The use
+of shellcode, encoding, compression, obfuscated strings, process injection,
+hashing algorithms, domain fronting, different communication channels, and
+dynamically loaded libraries all give malware and network defenses a run for
+their money.&lt;/p&gt;
+&lt;h3&gt;Static Analysis&lt;span class="hx:absolute hx:-mt-20" id="static-analysis"&gt;&lt;/span&gt;
+&lt;a href="#static-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Static analysis involves examining the file using various techniques without
+actually having to execute the file itself. Static analysis can involve hashing
+the file and finding intel on it, taking a look at the strings to see if there
+are functionality or network indicators, or checking imports and running
+signatures such as YARA for the file. Although useful, static analysis on its
+own is probably not sufficient to detect Cobalt Strike.&lt;/p&gt;
+&lt;p&gt;Using hash-based identification of Cobalt Strike is insufficient, since each
+payload will be encrypted with different keys and each configuration will
+uniquely change the hash value. It is trivial to generate a new payload for
+each new target.&lt;/p&gt;
+&lt;p&gt;Checking strings may be insufficient also. Strings for pipe names are
+dynamically generated and incorporate random numbers, meaning they can change
+every time the malware is executed. Encrypted payloads will also obfuscate
+useful strings from static analysis.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.ired.team/offensive-security/defense-evasion/windows-api-hashing-in-malware"target="_blank" rel="noopener"&gt;API Hashing&lt;/a&gt;
+algorithms employed by Cobalt Strike hide imports from static analysis
+techniques. Signature-based detection is great for detecting malware, but due
+to the versatility of Cobalt Strike&amp;rsquo;s deployment using multiple stages and
+encrypted/obfuscated payloads, an analyst may only be able to detect that a
+file is going to load and execute a payload in-memory. Without dynamic
+analysis, they won&amp;rsquo;t be able to detect exactly what that payload will be.&lt;/p&gt;
+&lt;h3&gt;Dynamic Analysis&lt;span class="hx:absolute hx:-mt-20" id="dynamic-analysis"&gt;&lt;/span&gt;
+&lt;a href="#dynamic-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Dynamic analysis is the process of executing the suspect file in order to
+analyze its behavior and how it affects the environment it runs in. Dynamic
+analysis can open up new areas to explore as one can follow the malware through
+each stage of its deployment and functionality. Dynamic analysis can get the
+malware to unpack, decode, or download additional stages. These new stages are
+then subject to further dynamic analysis as well as the previously mentioned
+static analysis techniques.&lt;/p&gt;
+&lt;p&gt;Dynamic analysis does not have many limitations, although some malware includes
+functionality to detect if it is being observed or running inside a sandboxed
+environment. There is also the possibility that during dynamic analysis, areas
+of malicious code may not be intentionally executed, and thus not detected in
+the behavior. The best way to detect malicious code is via genetic code
+analysis which is done automatically in Intezer Analyze.&lt;/p&gt;
+&lt;h3&gt;Combination of Several Techniques&lt;span class="hx:absolute hx:-mt-20" id="combination-of-several-techniques"&gt;&lt;/span&gt;
+&lt;a href="#combination-of-several-techniques" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The best way to detect Cobalt Strike code is through a combination of dynamic,
+static, and genetic analysis. Let&amp;rsquo;s take a suspicious looking document from an
+unknown entity as an example. Before opening the document, we submit it to
+Intezer Analyze and get the verdict, as shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig8.png" title="Intezer Analyze result showing in-memory Cobalt Strike code." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer Analyze result showing in-memory Cobalt Strike code.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The document drops and executes Cobalt Strike in the memory space of
+&lt;code&gt;rundll32.exe&lt;/code&gt;. Signatures are leveraged to show capabilities and file
+characteristics. Under the &amp;ldquo;TTPs&amp;rdquo; tab the user can see the
+techniques/capabilities employed by the malicious document.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig9.png" title="TTPs section showing capabilities detected during execution." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;TTPs section showing capabilities detected during execution.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The document displays interesting techniques such as macros with
+auto-execution, network activity with a unique user agent, office process
+starting martian subprocess, and process injection. You can also dive deeper
+into capabilities specific to the injected Cobalt Strike process.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The &amp;ldquo;IoCs&amp;rdquo; tab in Intezer Analyze shows indicators that can help you pivot and
+search in your environment during investigations to map out the scope of an
+attack. IoCs provides you with file hashes and network indicators such as URLs,
+and IP addresses being contacted through irregular ports.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig11.png" title="IoCs tab showing file and network indicators." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;IoCs tab showing file and network indicators.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The &amp;ldquo;Behavior&amp;rdquo; tab shows a more in-depth analysis of the file&amp;rsquo;s behavior, where
+you can see the process tree, network activity, screenshots and file/registry
+activity.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig12.png" title="Behavior tab showing observed behavior during sandbox execution." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Behavior tab showing observed behavior during sandbox execution.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;The Only Abused Pen Testing Tool?&lt;span class="hx:absolute hx:-mt-20" id="the-only-abused-pen-testing-tool"&gt;&lt;/span&gt;
+&lt;a href="#the-only-abused-pen-testing-tool" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike is
+&lt;a href="../../../2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/"&gt;not the only&lt;/a&gt;
+penetration testing or legitimate tool that has been co-opted and abused by
+threat actors. In the past, tools such as
+&lt;a href="https://github.com/a0rtega/pafish"target="_blank" rel="noopener"&gt;Pafish&lt;/a&gt; (Paranoid Fish) have been
+&lt;a href="https://cdn2.hubspot.net/hubfs/1903456/Whitepapers/CopyKittens.pdf"target="_blank" rel="noopener"&gt;used by&lt;/a&gt;
+Iranian actors in their tooling for virtual machine (VM) detection. The
+&amp;ldquo;Sysinternals&amp;rdquo; suite has been used extensively by threat actors. Most notably,
+&lt;a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec"target="_blank" rel="noopener"&gt;PsExec&lt;/a&gt; has
+been used in high-profile attacks such as the 2017
+&lt;a href="https://www.theregister.com/2017/06/28/petya_notpetya_ransomware/"target="_blank" rel="noopener"&gt;NotPetya&lt;/a&gt;
+global ransomware outbreak.&lt;/p&gt;
+&lt;p&gt;More recently, legitimate and penetration testing tools for the cloud have been
+used by threat actors. The threat actor TeamTNT has
+&lt;a href="../../../2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/"&gt;used&lt;/a&gt;
+Weave Scope, a trusted tool which gives the user full access to their cloud
+environment, and is integrated with Docker, Kubernetes, the Distributed Cloud
+Operating System (DC/OS), and AWS Elastic Compute Cloud (EC2). The attacker
+installs this tool in order to map the cloud environment of their victim and
+execute system commands without needing to deploy malicious code on the server.
+The same group has also been
+&lt;a href="https://www.cadosecurity.com/post/botnet-deploys-cloud-and-container-attack-techniques"target="_blank" rel="noopener"&gt;documented&lt;/a&gt;
+using the penetration testing tool
+&lt;a href="https://github.com/brompwnie/botb"target="_blank" rel="noopener"&gt;Break Out The Box&lt;/a&gt; (BOTB) for cloud and
+containerized environments.&lt;/p&gt;
+&lt;h2&gt;Get Started for Free&lt;span class="hx:absolute hx:-mt-20" id="get-started-for-free"&gt;&lt;/span&gt;
+&lt;a href="#get-started-for-free" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;With &lt;a href="https://analyze.intezer.com/"target="_blank" rel="noopener"&gt;Intezer Analyze&lt;/a&gt;, you can analyze any
+suspicious files that you encounter, including non-executable files such as
+Microsoft Office documents, scripts, archives, and more. Stay on top of
+analyzing and classifying Cobalt Strike among other threats.
+&lt;a href="https://analyze.intezer.com/create-account"target="_blank" rel="noopener"&gt;Get started&lt;/a&gt; for free and start
+with 50 file uploads per month.&lt;/p&gt;</description></item><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
+&lt;p&gt;Enterprises today rely on a wide range of cloud services—infrastructure as a
+service (IaaS), platform as a service (PaaS), software as a service (SaaS), and
+more—to meet their business needs. But the growing popularity of cloud has also
+led to an increase in attacks on cloud infrastructure, and thus the need for
+companies to develop strong security and incident response skills. Before we
+dive into incident response in the cloud, however, it&amp;rsquo;s important to
+distinguish between the responsibility of the cloud service provider (CSP) and
+that of the cloud consumer. According to the &amp;ldquo;shared responsibility model,&amp;rdquo; the
+CSP is responsible for securing the cloud, while security in the cloud falls on
+the customer. This means it&amp;rsquo;s the client&amp;rsquo;s job to protect their workloads
+(including applications, systems, and code) running on the CSP&amp;rsquo;s platform. With
+this responsibility placed on the customer, how they respond to an attack can
+have a significant impact on the mitigation of security breaches. But incidents
+in the cloud, such as those involving your EC2s, differ from those occurring
+on-premises (e.g., involving endpoints). This poses new challenges for incident
+response teams and requires different approaches. In this blog, we cover the
+differences between cloud forensics and forensics in on-premises systems. We
+also take a look at the incident response process for a real attack that was
+spotted in the wild.&lt;/p&gt;
+&lt;h2&gt;Incident Response: Cloud vs. Endpoint&lt;span class="hx:absolute hx:-mt-20" id="incident-response-cloud-vs-endpoint"&gt;&lt;/span&gt;
+&lt;a href="#incident-response-cloud-vs-endpoint" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The incident response process involves a skilled response or security team
+gathering the information needed in order to conduct a thorough investigation
+of the incident. But incident response in the cloud presents obstacles that
+don&amp;rsquo;t exist when investigating standard endpoints. The main difference between
+cloud and on-premises systems is the degree of access and control a user has
+over resources. On-premises systems provide users full access to both hardware
+and software, while access in the cloud is limited depending on the type of
+service being used and the service provider. Because cloud systems are
+distributed, the forensic evidence may be spread out across the globe, making
+it difficult to gather all of the information needed to investigate. These
+factors need to be taken into consideration. The challenges of incident
+response in the cloud can be divided into six categories, each of which are
+covered below.&lt;/p&gt;
+&lt;h3&gt;Collecting Forensic Evidence&lt;span class="hx:absolute hx:-mt-20" id="collecting-forensic-evidence"&gt;&lt;/span&gt;
+&lt;a href="#collecting-forensic-evidence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When investigating incidents on endpoint or on-premises systems, the
+investigator has full access to all of the resources, including logs, memory
+dumps, hard drives, and more. But this isn&amp;rsquo;t the case in a cloud environment.
+First, access to the forensics data depends on the cloud model. For instance,
+IaaS customers will have access to more data relative to SaaS customers. For
+example, let&amp;rsquo;s assume attackers gained access to a messaging application (SaaS)
+used by company employees and stole sensitive data. In order to obtain the
+compromised/malicious account information (e.g., IP addresses and logs), the
+company would have to contact the messaging application and ask them to provide
+this information. On the other hand, if attackers gained access to an EC2
+(IaaS) instance, as long as you have basic logging and monitoring capabilities,
+you&amp;rsquo;d be able to access more information on your own, without the help of the
+CSP.
+&lt;a href="https://link.springer.com/content/pdf/10.1007%2F978-3-319-07881-6_19.pdf"target="_blank" rel="noopener"&gt;CSPs are not inclined to provide logs and data&lt;/a&gt;
+for fear of exposing sensitive information that could compromise them or their
+customers. In other cases, they may be reluctant to do so because they simply
+don&amp;rsquo;t know how to handle the event. If customers of service models like PaaS
+and SaaS depend on their CSP for logs, they may not have access to important
+information needed in order to conduct a thorough investigation. On the other
+hand, customers using IaaS have greater control and the ability to set up
+different logs. Customers should therefore configure logs and especially what
+to log. But logging everything isn&amp;rsquo;t the best solution, since this results in a
+huge amount of information that needs to be filtered, analyzed, and stored.
+Sifting through such large amounts of data during an investigation can be
+overwhelming and time-consuming. While CSPs provide logging services, the more
+logs your system produces, the more expensive it will be. The cost will also
+depend on whether you&amp;rsquo;re using
+&lt;a href="https://aws.amazon.com/cloudwatch/pricing/"target="_blank" rel="noopener"&gt;AWS&lt;/a&gt;,
+&lt;a href="https://azure.microsoft.com/en-us/pricing/details/monitor/"target="_blank" rel="noopener"&gt;Azure&lt;/a&gt;, or
+&lt;a href="https://cloud.google.com/stackdriver/pricing"target="_blank" rel="noopener"&gt;GCP&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Data is Volatile or Not Saved&lt;span class="hx:absolute hx:-mt-20" id="data-is-volatile-or-not-saved"&gt;&lt;/span&gt;
+&lt;a href="#data-is-volatile-or-not-saved" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The incident response process is based on collecting information, including
+events that happened prior to the incident. CSPs provide clients with many
+tools that need to be configured according to your organization&amp;rsquo;s needs. This
+means the amount of data you can collect depends on what you choose to log and
+store, as well as the time period for which the data is stored. In an IaaS like
+AWS, the data stored on the instances is lost after termination of the machine.
+As a result,
+&lt;a href="https://aws.amazon.com/premiumsupport/knowledge-center/recovery-terminated-instance/"target="_blank" rel="noopener"&gt;important evidence is lost&lt;/a&gt;,
+including commands, scripts, processes, and files. Attackers can take advantage
+of this data loss to hide their malicious activity once they&amp;rsquo;ve completed their
+task.&lt;/p&gt;
+&lt;h3&gt;No Physical Evidence&lt;span class="hx:absolute hx:-mt-20" id="no-physical-evidence"&gt;&lt;/span&gt;
+&lt;a href="#no-physical-evidence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In the cloud, systems are distributed, and the physical components on which the
+data is stored may be in different geographic locations. This can make it
+nearly impossible to acquire the physical evidence or to perform physical
+forensics. Since each country has different laws, the process of seizing
+hardware involves collaboration between different governing legal authorities,
+which is a long and complicated process, with no guarantee the drives can be
+retrieved. Without access to the physical drives, investigators need to ensure
+they&amp;rsquo;re using the appropriate forensics tools, since many rely on access to
+hardware. This has created a real need for new tools developed specifically for
+cloud forensics.&lt;/p&gt;
+&lt;h3&gt;Chain of Custody and Privacy Laws&lt;span class="hx:absolute hx:-mt-20" id="chain-of-custody-and-privacy-laws"&gt;&lt;/span&gt;
+&lt;a href="#chain-of-custody-and-privacy-laws" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Due to the nature of cloud computing and the way data is stored, a single
+physical hard drive may contain the information of multiple customers. CSPs
+must notify clients that their data is protected and logically segmented from
+other tenants so they know other tenants can&amp;rsquo;t access their information—and
+vice versa. This makes collecting data from the hard drive complicated, and
+ultimately, only the CSP will be able to do so. If evidence is presented in a
+court of law, the investigators must maintain the chain of custody of that
+evidence throughout the investigation. This becomes a major challenge due to
+multi-jurisdictional laws, further compounded when CSPs and other third-party
+companies join in the evidence collection process.&lt;/p&gt;
+&lt;h3&gt;CSP Limitations&lt;span class="hx:absolute hx:-mt-20" id="csp-limitations"&gt;&lt;/span&gt;
+&lt;a href="#csp-limitations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When an incident occurs, especially in SaaS and PaaS infrastructures,
+investigators must rely on the CSP to assist in the investigation. Another
+challenge is the dependency between CSPs and third parties. For example, a
+provider of email services may use a third-party platform to host its
+infrastructure. In the event of an incident, the investigators would have to
+collaborate with all of the entities in this chain of dependencies, each with
+their own incident response approaches and methods. Once again, this
+prolongates the
+&lt;a href="https://intezer.com/blog/malware-analysis/save-incident-response-time-intezer-analyze/"target="_blank" rel="noopener"&gt;incident response time&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Service-Level Agreement (SLA)&lt;span class="hx:absolute hx:-mt-20" id="service-level-agreement-sla"&gt;&lt;/span&gt;
+&lt;a href="#service-level-agreement-sla" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When it comes to SLAs, important terms related to forensics are often missing.
+This is due to both the failure of CSPs to provide full transparency in this
+regard as well as a lack of customer awareness on the matter. In the case of an
+incident, this creates an additional barrier for customers attempting to
+collect all the evidence needed for the investigation process.&lt;/p&gt;
+&lt;h2&gt;Overcoming the Challenges of Incident Response in the Cloud&lt;span class="hx:absolute hx:-mt-20" id="overcoming-the-challenges-of-incident-response-in-the-cloud"&gt;&lt;/span&gt;
+&lt;a href="#overcoming-the-challenges-of-incident-response-in-the-cloud" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The
+&lt;a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf"target="_blank" rel="noopener"&gt;incident response lifecycle&lt;/a&gt;
+can be broken down into four phases, as outlined by the National Institute of
+Standards and Technology (NIST). As visible from Figure 1, the process is
+cyclical, meaning it is an ongoing learning process whereby organizations can
+continue to improve their prevention and response methods.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig1.png" title="Figure 1: Cycle of incident response (Source: The National Institute of Standards and Technology)" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Cycle of incident response (Source: The National Institute of Standards and Technology)&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The challenges of incident response in the cloud are complex, and not all can
+be solved at once. However, there are actions that can be taken in the various
+stages of the process to help you better handle and investigate incidents.&lt;/p&gt;
+&lt;h3&gt;Preparation Stage&lt;span class="hx:absolute hx:-mt-20" id="preparation-stage"&gt;&lt;/span&gt;
+&lt;a href="#preparation-stage" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Preparation is the most important stage. When your systems are well configured
+and your software is up to date, your response team will be prepared. This
+reduces incident handling time and even prevents attacks from happening in the
+first place.&lt;/p&gt;
+&lt;h4&gt;Setting Logs&lt;span class="hx:absolute hx:-mt-20" id="setting-logs"&gt;&lt;/span&gt;
+&lt;a href="#setting-logs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Logging events in the cloud is the key to proper incident handling. If your
+cloud provider offers logging options, you should use them. Just remember,
+logging everything isn&amp;rsquo;t ideal; instead, carefully choose which events and
+resources should be logged. For example, in order to set notifications for
+suspicious activities such as unusual access to secrets in your company&amp;rsquo;s cloud
+account, you can configure
+&lt;a href="https://docs.aws.amazon.com/cloudtrail/index.html"target="_blank" rel="noopener"&gt;CloudTrail&lt;/a&gt; to log these
+events. Each provider has its own set of recommendations, so be sure to follow
+the CIS benchmark best practices for the CSP you are using, whether
+&lt;a href="https://docs.aws.amazon.com/config/latest/developerguide/operational-best-practices-for-cis_aws_benchmark_level_1.html"target="_blank" rel="noopener"&gt;AWS&lt;/a&gt;,
+&lt;a href="https://docs.microsoft.com/en-us/azure/security/fundamentals/operational-best-practices"target="_blank" rel="noopener"&gt;Azure&lt;/a&gt;,
+or &lt;a href="https://cloud.google.com/security/best-practices"target="_blank" rel="noopener"&gt;GCP&lt;/a&gt;.&lt;/p&gt;
+&lt;h4&gt;Rules and Permissions&lt;span class="hx:absolute hx:-mt-20" id="rules-and-permissions"&gt;&lt;/span&gt;
+&lt;a href="#rules-and-permissions" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Set permissions and rules for each user and group based on the principle of
+least privilege policy, where a user is given the minimum level of access and
+permissions they need to do their job. For example, each development team
+should only have access to the repositories and servers relevant to their
+specific departments, and developers should have permissions to add new code
+only to projects they are currently working on. But members of the finance
+department—or any other department that doesn&amp;rsquo;t require it—shouldn&amp;rsquo;t have
+access to any of these resources.&lt;/p&gt;
+&lt;h4&gt;Zero Trust&lt;span class="hx:absolute hx:-mt-20" id="zero-trust"&gt;&lt;/span&gt;
+&lt;a href="#zero-trust" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Use the zero trust approach when configuring your network. Based on this
+concept, no device is trusted until its integrity and identity are verified.
+There are many ways to apply this model:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Implement a network and logical segmentation on the VPC in
+&lt;a href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html"target="_blank" rel="noopener"&gt;AWS&lt;/a&gt;,
+&lt;a href="https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview"target="_blank" rel="noopener"&gt;Azure Virtual Network&lt;/a&gt;
+(VNet), or &lt;a href="https://cloud.google.com/vpc"target="_blank" rel="noopener"&gt;GCP&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;For access control:
+&lt;ul&gt;
+&lt;li&gt;Identify all of the company&amp;rsquo;s employees and configure roles for each of
+them.&lt;/li&gt;
+&lt;li&gt;Manage company devices (e.g., laptops) and verify their integrity using
+&lt;a href="https://www.manageengine.com/mobile-device-management/what-is-mdm.html"target="_blank" rel="noopener"&gt;MDM&lt;/a&gt;
+solutions such as
+&lt;a href="https://jumpcloud.com/blog/hosted-mdm-solution"target="_blank" rel="noopener"&gt;JumpCloud&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Map permissions for each asset to each role in the company.&lt;/li&gt;
+&lt;li&gt;Map the application employees need to use and implement SSO authentication.&lt;/li&gt;
+&lt;li&gt;Implement two-factor authentication (2FA).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Notifications&lt;span class="hx:absolute hx:-mt-20" id="notifications"&gt;&lt;/span&gt;
+&lt;a href="#notifications" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Add alarms and notifications for specific events, but try to minimize false
+positive alerts. There are two types of alerts; those that are triggered by a
+user&amp;rsquo;s actions and those that come from system and metrics events. It&amp;rsquo;s
+important to configure both types, but the configuration of events that will
+trigger alerts also depends on your company&amp;rsquo;s organizational behavior. Examples
+include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;User alerts: If all of your company employees use the same VPN configuration,
+setting a geolocation login alert will notify you of any suspicious login
+attempts that do not originate from your VPN.&lt;/li&gt;
+&lt;li&gt;System alerts: If your cloud infrastructure doesn&amp;rsquo;t typically require high
+CPU and memory usage, setting an alert for high usage will allow you to
+address any anomalies in the system.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Prepare in Advance for Different Types of Attacks&lt;span class="hx:absolute hx:-mt-20" id="prepare-in-advance-for-different-types-of-attacks"&gt;&lt;/span&gt;
+&lt;a href="#prepare-in-advance-for-different-types-of-attacks" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Make sure you&amp;rsquo;re ready for whatever type of attack comes your way:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Backup and recovery: Develop a recovery plan and maintain up-to-date backups
+of your organization&amp;rsquo;s most valuable data. Using cloud backups, which employs
+versioning to make copies of all your files, will ensure continuous backup
+and make it easier to restore data after any attacks.&lt;/li&gt;
+&lt;li&gt;Playbooks: Prepare a playbook of routines and the actions for different
+incident scenarios.&lt;/li&gt;
+&lt;li&gt;Recovery drills: Prepare a recovery drill to test your backups so you&amp;rsquo;re
+fully prepared to use them when they are most needed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These preparations can help with many different incidents, such as DDoS attacks
+that prevent customers from accessing your system, or ransomware attacks that
+encrypt all the files in your environment. Following the principles of chaos
+engineering, you can use automated tools like
+&lt;a href="https://github.com/Netflix/chaosmonkey"target="_blank" rel="noopener"&gt;Chaos Monkey&lt;/a&gt; to test your system&amp;rsquo;s
+resilience. Last, define the impacts and prioritize risks for every component
+in your environment, so you know where to put your best efforts during an
+incident.&lt;/p&gt;
+&lt;h4&gt;Know Your Runtime&lt;span class="hx:absolute hx:-mt-20" id="know-your-runtime"&gt;&lt;/span&gt;
+&lt;a href="#know-your-runtime" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Knowing what code is being executed in your environment makes it easy to detect
+any unauthorized code that could be part of an attack. A cloud workload
+protection platform (CWPP) that monitors your runtime and alerts you on the
+execution of code that deviates from your known code baseline will help you
+identify and stop attacks in their earliest stages.&lt;/p&gt;
+&lt;h4&gt;Fix Misconfigurations&lt;span class="hx:absolute hx:-mt-20" id="fix-misconfigurations"&gt;&lt;/span&gt;
+&lt;a href="#fix-misconfigurations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Cloud infrastructure can be complex, with many components and services that
+need to be configured. This increases your opportunity for error. Scanning your
+cloud environment for misconfigurations is important, because attackers are
+scanning as well. And if they find it before you do, the consequences can be
+catastrophic. There are many cloud security posture management (CSPM) tools
+that can be used for misconfiguration scanning. A few examples include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GCP&amp;rsquo;s
+&lt;a href="https://cloud.google.com/security-command-center/"target="_blank" rel="noopener"&gt;Security Command Center&lt;/a&gt;
+(SCC).&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://cloudsploit.com/opensource"target="_blank" rel="noopener"&gt;CloudSploit&lt;/a&gt;, an open-source project
+that finds security misconfigurations in cloud infrastructures.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/OpenCSPM/opencspm"target="_blank" rel="noopener"&gt;OpenCSPM&lt;/a&gt;, an open-source project that
+provides visibility over the configuration of the cloud infrastructure.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Patch Vulnerabilities and Install System Updates&lt;span class="hx:absolute hx:-mt-20" id="patch-vulnerabilities-and-install-system-updates"&gt;&lt;/span&gt;
+&lt;a href="#patch-vulnerabilities-and-install-system-updates" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Keeping all the components of your cloud environment updated and patched can
+prevent attacks from happening in the first place. There are several
+open-source projects, such as &lt;a href="https://github.com/future-architect/vuls"target="_blank" rel="noopener"&gt;Vuls&lt;/a&gt;,
+&lt;a href="https://www.openvas.org/"target="_blank" rel="noopener"&gt;OpenVAS&lt;/a&gt;, and
+&lt;a href="https://github.com/XTLS/Xray-core"target="_blank" rel="noopener"&gt;Xray&lt;/a&gt;, that can be used for vulnerability
+scanning.&lt;/p&gt;
+&lt;h3&gt;Detection and Analysis&lt;span class="hx:absolute hx:-mt-20" id="detection-and-analysis"&gt;&lt;/span&gt;
+&lt;a href="#detection-and-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;So if you&amp;rsquo;ve done everything you can to reduce the likelihood of an attack,
+where do you start when one happens? First, collect all of the information that
+indicates that an incident is occurring in the system, including logs, IP
+addresses, affected accounts, virtual images of the victim hosts, commands and
+scripts that are being executed, and so on. Next, analyze the evidence to
+better understand the incident and how you should respond to it. For example,
+let&amp;rsquo;s assume you got an alert on the creation of several new AWS instances. The
+first thing to check is the CloudTrial logs, where you&amp;rsquo;ll find RunInstances
+events as shown in Figure 2 below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig2.png" title="Figure 2: AWS CloudTrail logs showing RunInstances events" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: AWS CloudTrail logs showing RunInstances events&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;After you isolate the instances and connect securely (not from your personal
+computer), you find a suspicious file in the &lt;code&gt;/tmp/kdevtmpfsi&lt;/code&gt; directory. After
+extracting the file from the machine either you or the threat analysis team
+will analyze the file and the events that led to the execution of the malware
+in an attempt to understand the threat and the damage to the environment. This
+process may take a long time especially for sophisticated threats.&lt;/p&gt;
+&lt;h3&gt;Containment, Eradication, and Recovery&lt;span class="hx:absolute hx:-mt-20" id="containment-eradication-and-recovery"&gt;&lt;/span&gt;
+&lt;a href="#containment-eradication-and-recovery" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The next stage in the process involves:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Identifying and isolating the hosts or containers that were attacked to
+prevent the attack from spreading in the network.&lt;/li&gt;
+&lt;li&gt;Making a snapshot/copy of the instance and the volume that was attacked to
+preserve the evidence. Preserving the evidence is important for investigation
+of the incident. It will help you learn how the attackers got into the
+system, find compromised hosts, and understand the attack flow.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Post Incident&lt;span class="hx:absolute hx:-mt-20" id="post-incident"&gt;&lt;/span&gt;
+&lt;a href="#post-incident" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Once the incident is over:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Complete an incident response report and share it with relevant stakeholders
+in the organization so they can read and understand it. It&amp;rsquo;s important to
+document the investigation and findings to prevent similar events in the
+future, improve the incident response process, and to fix and add security
+measures.&lt;/li&gt;
+&lt;li&gt;Learn the kill chain of the attack based on the evidence you gathered, and
+monitor your systems for post-incident activity.&lt;/li&gt;
+&lt;li&gt;If the incident was caused by misconfigurations or vulnerabilities, make sure
+to patch and fix them.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Getting Started&lt;span class="hx:absolute hx:-mt-20" id="getting-started"&gt;&lt;/span&gt;
+&lt;a href="#getting-started" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Developing a reliable incident response process in cloud environments is a
+complicated and challenging task, with many factors that need to be taken into
+account. Even with the precautions detailed in this blog, breaches still
+happen—whether due to unknown vulnerabilities/misconfigurations, unauthorized
+access, or supply chain attacks. Having strong runtime threat detection and
+response capabilities is crucial.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Special thanks to Aner Izraeli for contributing to this post.&lt;/em&gt;&lt;/p&gt;</description></item><item><title>New Attacks on Kubernetes via Misconfigured Argo Workflows</title><link>https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/</link><pubDate>Tue, 20 Jul 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/</guid><description>
+&lt;h2&gt;Key Points&lt;span class="hx:absolute hx:-mt-20" id="key-points"&gt;&lt;/span&gt;
+&lt;a href="#key-points" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Intezer has detected a new attack vector against Kubernetes (K8s) clusters
+via misconfigured Argo Workflows instances.&lt;/li&gt;
+&lt;li&gt;Attackers are already taking advantage of this vector as we detected
+operators dropping cryptominers using this method in the wild.&lt;/li&gt;
+&lt;li&gt;We have identified infected nodes and there is the potential for larger scale
+attacks due to hundreds of misconfigured deployments. We have detected
+exposed instances of Argo Workflows that belong to companies from different
+sectors including technology, finance and logistics.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/argoproj/argo-workflows"target="_blank" rel="noopener"&gt;Argo Workflows&lt;/a&gt; is an
+open-source, container-native workflow engine designed to run on K8s
+clusters.&lt;/li&gt;
+&lt;li&gt;Argo Workflows instances with misconfigured permissions allow threat actors
+to run unauthorized code on the victim&amp;rsquo;s environment.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Overview&lt;span class="hx:absolute hx:-mt-20" id="overview"&gt;&lt;/span&gt;
+&lt;a href="#overview" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Kubernetes (K8s) is revolutionizing the cloud computing environment, having
+become the most popular platform for container orchestration. It is also one of
+the most popular repositories on
+&lt;a href="https://github.com/kubernetes/kubernetes"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt;, with over 100,000 commits
+and over 3,000 contributors. Each year there is a steady increase in
+enterprises using Kubernetes and the number of clusters they deploy. According
+to the Cloud Native Computing Foundation (CNCF)
+&lt;a href="https://www.cncf.io//srv/htdocs/wp-content/uploads/2020/11/CNCF_Survey_Report_2020.pdf"target="_blank" rel="noopener"&gt;2020 survey&lt;/a&gt;,
+91% of respondents are using Kubernetes, compared to 78% in 2019 and 58% in
+2018. In the same survey, it was reported that among the top challenges of
+using and deploying containers were complexity, security and lack of training.&lt;/p&gt;
+&lt;p&gt;With these challenges that enterprises face using containers and K8s clusters,
+there has never been a greater opportunity for attackers to exploit weaknesses
+in security. Applications such as &amp;ldquo;Argo Workflows&amp;rdquo; orchestrate parallel jobs in
+Kubernetes by providing a friendly user interface and the ability to run CI/CD
+pipelines without having to configure &amp;ldquo;complex software development products.&amp;rdquo;
+The application is &lt;a href="https://argoproj.github.io/argo-workflows/"target="_blank" rel="noopener"&gt;marketed&lt;/a&gt; to
+&amp;ldquo;Easily run compute intensive jobs for machine learning or data processing in a
+fraction of the time using Argo Workflows on Kubernetes.&amp;rdquo; Even with products
+like Argo helping to reduce the complexity of deployment, there is still always
+the possibility of misconfiguration or exploitation.&lt;/p&gt;
+&lt;p&gt;Recently, while studying the impact of exposed Argo Workflows instances, we
+discovered a number of unprotected instances, operated by companies in several
+industries including technology, finance and logistics. Exposed instances can
+contain sensitive information such as code, credentials and private container
+image names. We also discovered that in many instances, permissions are
+configured which allow any visiting user to deploy workflows. We also detected
+that some misconfigured nodes are being targeted by threat actors. An example
+of an attack found in the wild, launching a popular cryptocurrency miner
+container, is described later in this blog.&lt;/p&gt;
+&lt;h2&gt;Argo Overview&lt;span class="hx:absolute hx:-mt-20" id="argo-overview"&gt;&lt;/span&gt;
+&lt;a href="#argo-overview" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The core resource in Argo is the &amp;ldquo;Workflow.&amp;rdquo; The workflow is defined using a
+YAML file containing a &lt;code&gt;spec&lt;/code&gt; for the type of work to be performed. Most
+commonly, each step in an Argo workflow is a container. An example &amp;ldquo;Hello
+World&amp;rdquo; workflow is shown below:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;These workflows are executed from a template or submitted directly through the
+Argo user interface, as shown below:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;How Argo is Abused by Attackers&lt;span class="hx:absolute hx:-mt-20" id="how-argo-is-abused-by-attackers"&gt;&lt;/span&gt;
+&lt;a href="#how-argo-is-abused-by-attackers" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In instances when permissions are misconfigured, it is possible for an attacker
+to access an open Argo dashboard and submit their own workflow. In one cluster,
+we noticed that a popular cryptocurrency mining container,
+&lt;code&gt;kannix/monero-miner&lt;/code&gt;, was being deployed. An example of an in the wild attack,
+still running on an exposed cluster for nine months, is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;kannix/monero-miner&lt;/code&gt; (now removed from Docker Hub) was a popular image
+which used XMRig to mine for Monero cryptocurrency. Its ease of use allowed it
+to be conveniently used by threat actors of any skill level to conduct
+cryptojacking; since all that was required was to change the address of who the
+mined cryptocurrency would be deposited to. This same container was mentioned
+in a blog post by
+&lt;a href="https://azure.microsoft.com/en-us/blog/detect-largescale-cryptocurrency-mining-attack-against-kubernetes-clusters/"target="_blank" rel="noopener"&gt;Azure Security Center&lt;/a&gt;,
+which stated that this container was used in a large-scale cryptocurrency
+mining attack against Kubernetes clusters.&lt;/p&gt;
+&lt;p&gt;In Docker Hub there are still a number of options for Monero mining that
+attackers can use. With a simple search it shows that there are at least 45
+other containers with millions of downloads.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Using another popular container, &lt;code&gt;giansalex/monero-miner&lt;/code&gt;, we detected an XMRig
+Miner running on the cluster via Argo Workflows.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Mitigation Advice&lt;span class="hx:absolute hx:-mt-20" id="mitigation-advice"&gt;&lt;/span&gt;
+&lt;a href="#mitigation-advice" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;For a quick check that an instance is misconfigured, try accessing the Argo
+Workflows dashboard from an unauthenticated incognito browser outside your
+corporate environment. Another option is to query the API of your instance and
+check the status code. Make a HTTP GET request to
+&lt;code&gt;[your.instance:port]/api/v1/info&lt;/code&gt;. A returned HTTP status code of
+&lt;code&gt;401 Unauthorized&lt;/code&gt; while being an unauthenticated user will indicate a
+correctly configured instance, whereas a successful status code of
+&lt;code&gt;200 Success&lt;/code&gt; could indicate that an unauthorized user is able to access the
+instance.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;It is critical to ensure that best practices for permissions are followed in
+order to prevent unauthorized activity in your environments. Methodologies such
+as the
+&lt;a href="https://www.cyberark.com/what-is/least-privilege/"target="_blank" rel="noopener"&gt;principle of least privilege&lt;/a&gt;
+(PoLP) should be followed and always refer to the
+&lt;a href="https://argoproj.github.io/argo-workflows/security/"target="_blank" rel="noopener"&gt;application documentation&lt;/a&gt;
+for best practices on security.&lt;/p&gt;
+&lt;p&gt;Even if your cluster is deployed on a
+&lt;a href="https://intezer.com/blog/container-security/do-you-really-need-kubernetes/"target="_blank" rel="noopener"&gt;managed cloud Kubernetes service&lt;/a&gt;
+such as Amazon Web Services (AWS), EKS or Azure Kubernetes Service (AKS), the
+shared responsibility model still states that the cloud customer, not the cloud
+provider, is responsible for taking care of all necessary security
+configurations for the applications they deploy.&lt;/p&gt;
+&lt;p&gt;If you suspect that your Argo instance has been misconfigured and exposed to
+the internet with excessive permissions, check for any suspicious activity in
+the logs and in the workflow timeline. Make sure that there are no workflows
+that have been running for an excessive amount of time. This might be an
+indicator of a cryptominer running on your cluster. You can also check out our
+article on
+&lt;a href="https://intezer.com/blog/cloud-security/best-practices-for-securing-a-kubernetes-environment/"target="_blank" rel="noopener"&gt;best practices for securing your Kubernetes environment&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Runtime Protection for Kubernetes Security&lt;span class="hx:absolute hx:-mt-20" id="runtime-protection-for-kubernetes-security"&gt;&lt;/span&gt;
+&lt;a href="#runtime-protection-for-kubernetes-security" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It is impossible to completely remove all vulnerabilities or misconfigurations
+in cloud applications deployed by any entity. New attack vectors,
+vulnerabilities and misconfigurations are being detected and exploited all the
+time. Therefore, it is important to have a safety net that can always ensure
+that only trusted code is running in your environment. In the event that an
+attacker has exploited a misconfiguration or vulnerability in your K8s cluster
+or applications running on clusters, runtime protection solutions give
+immediate visibility over all code running on your pods, nodes, and clusters,
+and help you detect and respond to attacks in your environment.&lt;/p&gt;</description></item><item><title>Targeted Phishing Attack against Ukrainian Government Expands to Georgia</title><link>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</guid><description>
 &lt;p&gt;In May 2021,
 &lt;a href="https://www.fortinet.com/blog/threat-research/spearphishing-attack-uses-covid-21-lure-to-target-ukrainian-government"target="_blank" rel="noopener"&gt;Fortinet published a report&lt;/a&gt;
 about the early stages of an ongoing phishing attack against the Ukrainian
@@ -11374,7 +12342,53 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Attackers Abusing Legitimate Cloud Monitoring Tools to Conduct Cyber Attacks</title><link>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</link><pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</guid><description>
+&lt;/div&gt;</description></item><item><title>Advanced Pasta Threat: Mapping Malware Use of Open Source Offensive Security Tools</title><link>https://intezer.github.io/community-intelligence/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/</link><pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/</guid><description>
+&lt;p&gt;The term Offensive Security Tool, also known as OST, is a controversial subject
+within the InfoSec community. It often sparks fierce debate with both sides of
+the argument weighing in on how the uncontrolled publication of offensive
+security capabilities should be treated.&lt;/p&gt;
+&lt;p&gt;On one side of the argument, typically held by more defense-oriented people,
+the free publication of OSTs is detrimental because it arms adversaries with
+free offensive capabilities and misses opportunities to exact development costs
+from threat actors.&lt;/p&gt;
+&lt;p&gt;The other side of the debate believes it&amp;rsquo;s important for OST projects to be
+released publically as they can help promote security by educating defenders,
+supplying penetration testers with up-to-date tools, and help bring new talent
+into the industry, one that is already suffering from a shortage of trained
+professionals.&lt;/p&gt;
+&lt;p&gt;While this debate has been ongoing for years now, very few evidence actually
+exists to support either viewpoint. One thing that is for certain, is more and
+more threat actors are outsourcing their offensive capabilities into
+open-source OST projects:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In a research study conducted by yours truly, I sought to add more data to the
+conversation, aiming to make it a more productive discussion.&lt;/p&gt;
+&lt;p&gt;First, I created a central map to track threat actor adoption of open source
+Offensive Security Tools. I populated it with new, previously unknown
+connections identified through code reuse, with an emphasis on open source
+Offensive Security Libraries that are typically embedded into larger tools and
+aren&amp;rsquo;t previously mentioned by vendor reports. I invite you to add new
+connections via our corresponding
+&lt;a href="https://github.com/intezer/ost-map/"target="_blank" rel="noopener"&gt;GitHub repository&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;I found numerous new connections by building a tool (now available on
+&lt;a href="https://github.com/intezer/ost-map/tree/master/vs-autocompiler"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt;!) that
+compiles dozens of OST libraries into all possible code patterns and searches
+for those patterns in Intezer&amp;rsquo;s Genome Database to detect code reuse prevalent
+among specific threat actors:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Putting discussions of ethical considerations of OSTs to the side, I focused my
+research on how we can use the trend of increasing OST adoption to create
+code-based YARA signatures to target malware adopting Open Source OST
+libraries:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This part is also covered partially in a previous Intezer
+&lt;a href="../../../2020/09/turning-open-source-against-malware"&gt;article&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Last but not least, this research will be covered in depth during my
+pre-recorded Virus Bulletin talk, which is available on demand from September
+30. &lt;a href="https://vblocalhost.com/"target="_blank" rel="noopener"&gt;Registration is free&lt;/a&gt; and I invite you to join
+the discussion. The full research report which will be made available via
+Intezer&amp;rsquo;s website following the conclusion of the conference.&lt;/p&gt;</description></item><item><title>Attackers Abusing Legitimate Cloud Monitoring Tools to Conduct Cyber Attacks</title><link>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</link><pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;TeamTNT is a cybercrime group that targets cloud environments including Docker
 and Kubernetes instances. The group has been
@@ -15413,548 +16427,4 @@ data-copied-label="Copied!"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;Pnscan source code: &lt;a href="https://github.com/ptrrkssn/pnscan"target="_blank" rel="noopener"&gt;https://github.com/ptrrkssn/pnscan&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Paleontology: The Unknown Origins of Lazarus Malware</title><link>https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/</link><pubDate>Wed, 31 Oct 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/</guid><description>
-&lt;p&gt;As seen by security researchers across the world and proven in a joint research
-by McAfee and Intezer, Lazarus, one of the groups operating from North Korea,
-has consistently reused code in their malware toolset. There is a common
-pattern among the code of the malware that researchers and reverse engineers
-alike find during their analysis. It has already been known that they have used
-open source projects, like one from CodeProject we documented in
-&lt;a href="https://intezer.com/blog/research/north-korea-iran-use-codeproject-develop-malware/"target="_blank" rel="noopener"&gt;another blog&lt;/a&gt;
-post, or open source RATs like Gh0st RAT.&lt;/p&gt;
-&lt;p&gt;This code, as described, has always been thought to be created originally by
-the DPRK since the time they are thought to have started being active in 2007
-until the present. We recently found some samples via our Vaccine feature (Yara
-signatures) on VirusTotal with very low detections dating back to 2016 which
-led us to find the origins of their toolset – an open source RAT called
-CasperPhpTrojan, available on a Chinese website for open source projects.&lt;/p&gt;
-&lt;h2&gt;CASPERTROY Malware&lt;span class="hx:absolute hx:-mt-20" id="caspertroy-malware"&gt;&lt;/span&gt;
-&lt;a href="#caspertroy-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Originally, the sample that we found in the wild, hit a Lazarus signature and
-only had 3/65 detections in VirusTotal. After checking it in Intezer Analyze,
-we saw code reuse shared with Red Gambler, as originally reported by
-&lt;a href="https://global.ahnlab.com/global/upload/download/asecreport/ASEC%20REPORT_vol.91_ENG.pdf"target="_blank" rel="noopener"&gt;AhnLab&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig1.png" title="Malware sample first compiled in 2016, with RedGambler code genes as analyzed in Intezer." alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Malware sample first compiled in 2016, with RedGambler code genes as analyzed in Intezer.&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;We can also see on the trojan that the internal name for this module is called
-“DllTroy.dll” which is known to be associated with Lazarus.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;The string reuse is where the interesting finding comes from and will soon
-reveal where we got the name CasperTroy from. The reused strings are in general
-Lazarus samples used throughout different cyber campaigns, Operation Troy, a
-Lazarus cyber campaign beginning in 2011, and Prioxer, another tool in their
-arsenal.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;We see the same overlap of strings and decided to search &lt;code&gt;7d414e351603fa&lt;/code&gt; on
-Google, resulting in only 7 results, which will bring us to the next topic of
-this research – where did DPRK’s malware toolset originate?&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;h2&gt;The Origins: CasperPHPTrojan&lt;span class="hx:absolute hx:-mt-20" id="the-origins-casperphptrojan"&gt;&lt;/span&gt;
-&lt;a href="#the-origins-casperphptrojan" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The source code to this open source trojan, CasperPhpTrojan, was originally
-posted on a Chinese open source project website pudn[.]com. We downloaded the
-source code, read through it, compiled it, and recognized similar occurrences
-in Lazarus malware. We would like to show you some of the evidence we have
-gathered by comparing the original code to the disassembly of different Lazarus
-binaries. Also, much of this evidence has been documented in a previous blog
-&lt;a href="../../../2017/12/blockbusted-lazarus-blockbuster-north-korea/"&gt;post&lt;/a&gt; where we
-spoke about strange occurrences in the code and the same code being reused
-again and again — even when the code was believed to be a mistake, like the
-third example below.&lt;/p&gt;
-&lt;p&gt;HTTP Header (various campaigns &amp;amp; malware)&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig5.png" title="CASPER.CPP" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;CASPER.CPP&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig6.png" title="Disassembly of multiple different Lazarus samples" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Disassembly of multiple different Lazarus samples&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;TrojUploader Function&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig7.png" title="casper_trojan.cpp" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;casper_trojan.cpp&lt;/figcaption&gt;
-&lt;/figure&gt; &lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig8.png" title="TDrop Sample" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;TDrop Sample&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;GetProcAddress(LoadLibrary(“Kernel32.dll”), “GetProcAddress”);&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig9.png" title="CASPER.CPP" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;CASPER.CPP&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig10.png" title="Lazarus samples from 2014 and 2017" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Lazarus samples from 2014 and 2017&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;API Resolution&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig11.png" title="casper_inject.cpp" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;casper_inject.cpp&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig12.png" title="Various Lazarus samples" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Various Lazarus samples&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h2&gt;Conslusion&lt;span class="hx:absolute hx:-mt-20" id="conslusion"&gt;&lt;/span&gt;
-&lt;a href="#conslusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Although there are many modifications Lazarus made to CasperPhpTrojan, the base
-is primarily the same and we believe that when the source code is compiled
-under the correct environment with the correct flags, we can find even more
-correlations between the compiled code and Lazarus binaries. It looks like it
-is the base of their toolset and may strengthen the reason why we found so many
-code connections between Lazarus malware in our comprehensive research with
-McAfee about the DPRK.&lt;/p&gt;
-&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
-&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;CasperTroy (2016) Droppers:&lt;/p&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;458ffcc41959599f8dab1fd4366c9a50efefa376e42971c4a436aa7fd697a396
-d1cf03fbcb6471d44b914c2720821582fb3dd81cb543f325b2780a5e95046395&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;CasperTroy (2016) RATs:&lt;/p&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;ec73fe2ecc2e0425e4aeb1f01581b50c5b1f8e85475c20ea409de798e6469608
-c62ec66e45098d2c41bfd7a674a5f76248cf4954225c2d3a2cfcd023daa93522
-926a2e8c2baa90d504d48c0d50ca73e0f400d565ee6e07ad6dafdd0d7b948b0e&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;CasperTroy C&amp;amp;Cs:&lt;/p&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;http://ready-jetkorea[.]com/data/file/pop/write_ok.php
-http://plsong[.]com/xe/addons/counter/conf/write_ok.php&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;Shared Code Examples:&lt;/p&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;TDrop f4b7b36e9c940937748d5bba3beb82b7c3636f084e5e913c7a5ad3ad623ffbc5
-MYDOOM 1b6a1320fba00dd2e56e35cf6f11f941deabcb6e4dba7ea773ded7e3d648ec54
-KoreDos 068b89e2ec5655d006f2788ea328e5f12bd57ba761ee03c4de2fb0aa01c92c7f
-DarkSeoul 4915f53221dc7786710a7a82a9cb00cf8468e0d1155a1355c9eb17e8cddfd265
-Blockbuster 6724c041fe0df61a619006bf1df4a759f4f22a65e2afda32501760ebc9ebe25d&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>APT37: Final1stspy Reaping the FreeMilk</title><link>https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</link><pubDate>Wed, 03 Oct 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</guid><description>
-&lt;p&gt;Researchers at Palo Alto Networks recently published a report regarding the
-&lt;a href="https://researchcenter.paloaltonetworks.com/2018/09/unit42-new-konni-malware-attacking-eurasia-southeast-asia/"target="_blank" rel="noopener"&gt;NOKKI&lt;/a&gt;
-malware, which has shared code with KONNI and, although not in the report by
-Palo Alto,
-&lt;a href="https://malware.lu/assets/files/articles/RAP003_KimJongRAT-Stealer_Analysis.1.0.pdf"target="_blank" rel="noopener"&gt;KimJongRAT&lt;/a&gt;
-(discovered by &lt;a href="https://twitter.com/r00tbsd"target="_blank" rel="noopener"&gt;Paul Rascagnères&lt;/a&gt; of Cisco Talos
-in 2013), and another report on how there is evidence of the
-&lt;a href="https://researchcenter.paloaltonetworks.com/2018/10/unit42-nokki-almost-ties-the-knot-with-dogcall-reaper-group-uses-new-malware-to-deploy-rat/"target="_blank" rel="noopener"&gt;NOKKI malware connecting to the North Korean threat actor&lt;/a&gt;
-known as APT37, Reaper, or Group123.&lt;/p&gt;
-&lt;p&gt;The malicious document related to NOKKI, using VBScript, downloads a newly
-discovered malware named Final1stspy, due to the PDB string inside. As noted by
-Palo Alto Networks, Final1stspy comes in 2 components, the EXE named &amp;ldquo;LoadDll&amp;rdquo;
-with the sole purpose of loading up a DLL payload, internally named
-&amp;ldquo;hadowexecute.&amp;rdquo; After collecting information about the infected computer, the
-end result is that the DOGCALL malware, also known as ROKRAT, is downloaded as
-the final payload, thus being one of the links between NOKKI and APT37.&lt;/p&gt;
-&lt;h2&gt;Links Through Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="links-through-code-reuse"&gt;&lt;/span&gt;
-&lt;a href="#links-through-code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The DLL payload component under the hash that was listed in the report was not
-available on VirusTotal. We created some YARA signatures from the code of
-“LoadDll” and did a hunt via VirusTotal. Since the EXE component shares code
-with the DLL, the YARA hunt led us to find an earlier version of the DLL
-component of Final1stspy with 2/67 detections, compilation timestamp of May 21,
-2018, and first upload to VirusTotal date of July 11, 2018. This is an earlier
-version than described in the Palo Alto report. After obtaining the
-hadowexecute DLL component, we checked to see if there was any code reuse in
-the Intezer Analyze™ system.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;We see that there is some code shared between the EXE component of Final1stspy
-and other code that has been seen before in the FreeMilk campaign which
-utilized ROKRAT.&lt;/p&gt;
-&lt;p&gt;Let’s see the shared code between ROKRAT and Final1stspy by doing comparison of
-these functions in IDA. If you take a look, there is an identical match between
-them.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/images/fig2.png" title="ROKRAT &amp;amp; Final1stspy hadowexecute function comparison" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;ROKRAT &amp;amp; Final1stspy hadowexecute function comparison&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;This function is unique code that has only been seen before in Group123’s
-ROKRAT and the DLL component of Final1stspy. The identical function gathers
-information about the operating system and stores it in the same format.&lt;/p&gt;
-&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
-&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The evidence in Group123 being the threat actor involved here does not only lie
-in the final delivered payload, but in the code itself. This code reuse
-provides more evidence towards the relationship of KimJongRAT, KONNI, NOKKI,
-Final1stspy, ROKRAT, and APT37.&lt;/p&gt;
-&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
-&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Final1stspy&lt;/p&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;2011b9aa61d280ca9397398434af94ec26ddb6ab51f5db269f1799b46cf65a76 (DLL)
-0669c71740134323793429d10518576b42941f9eee0def6057ed9a4ba87a3a9a (DLL)
-fb94a5e30de7afd1d9072ccedd90a249374f687f16170e1986d6fd43c143fb3a (EXE)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;Group 123 (FreeMilk / ROKRAT Samples)&lt;/p&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;99c1b4887d96cb94f32b280c1039b3a7e39ad996859ffa6dd011cf3cca4f1ba5
-01045aeea5198cbc893066d7e496f1362c56a154f093d1a8107cecad8d4e4df2
-26ad5f8889d10dc45dcf1d3c626416eb604f5fe4a7268e044f17a3ab6ff14e53
-65ec544841dbe666d20de086495158128ddffb8b076ddb801a3f2dc250481135
-7f35521cdbaa4e86143656ff9c52cef8d1e5e5f8245860c205364138f82c54df
-ef40f7ddff404d1193e025081780e32f88883fa4dd496f4189084d772a435cb2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Prince of Persia the Sands of Foudre</title><link>https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/</link><pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/</guid><description>
-&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
-&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the past couple years, Palo Alto Networks reported on the &amp;ldquo;Prince of Persia&amp;rdquo;
-malware campaign which is believed to be of Iranian origin and ongoing for more
-than 10 years. The original research, published in 2016, called the malware
-&lt;a href="https://researchcenter.paloaltonetworks.com/2016/05/prince-of-persia-infy-malware-active-in-decade-of-targeted-attacks/"target="_blank" rel="noopener"&gt;Infy&lt;/a&gt;
-and their second report, published in 2017, named the upgraded malware Foudre.
-The name
-&amp;ldquo;&lt;a href="https://researchcenter.paloaltonetworks.com/2017/08/unit42-prince-persia-ride-lightning-infy-returns-foudre/"target="_blank" rel="noopener"&gt;Foudre&lt;/a&gt;&amp;rdquo;
-comes from a string in the binary used to check if the computer is already
-infected. At the time of their blog post, Palo Alto Networks stated the version
-of Foudre they observed were versions 1 and 2. We have found new evidence of
-the Prince of Persia campaign active by finding a new version of the Foudre
-malware, version 8.&lt;/p&gt;
-&lt;p&gt;In this blog post, we are only going to focus on the new, unique, interesting
-features of the new version of Foudre, and its related campaign&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig1.png" title="Internal version name of Foudre v8" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Internal version name of Foudre v8&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h2&gt;No to The Forced Hijab&lt;span class="hx:absolute hx:-mt-20" id="no-to-the-forced-hijab"&gt;&lt;/span&gt;
-&lt;a href="#no-to-the-forced-hijab" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Similarly to the samples noted in previous reports, this new malware also comes
-packaged in a WinRAR SFX archive including multiple malicious binaries and a
-media file. The media file in this case is a video in the MP4 format showing a
-woman in Iran walking around and at the end pulling off her hijab. In the
-video, there is text written in Farsi with a hashtag, بنه به حجاب اجباری#,
-literally translating to &amp;ldquo;no to the forced hijab.&amp;rdquo; This hashtag is in reference
-to protesters in Iran who are protesting the mandatory use of the hijab for
-women and the video is meant to distract the victim while the Foudre malware
-gets installed in the background.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig2.png" title="Screenshot from the video bundled in the malware" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Screenshot from the video bundled in the malware&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;Foudre is a remote access tool and has the ability to remotely execute
-commands, steal information about the infected target (such as keystrokes,
-process information, etc), and auto-update itself. Most of the code and
-functionality from the previous versions of Foudre and Infy was reused and can
-be read about in the reports linked above, so we are only going to focus on the
-new, unique, interesting features and the linkage of code reuse from previous
-versions.&lt;/p&gt;
-&lt;h2&gt;Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="code-reuse"&gt;&lt;/span&gt;
-&lt;a href="#code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After uploading the WinRAR SFX to Intezer Analyze™, the files inside were
-statically extracted which reveals 3 binaries, a lockbox3 signature, and the
-video mentioned above.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;Using our new Show Code feature, we can see code overlapping with Foudre and
-Infy.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig4.png" title="Code overlap with Foudre" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Code overlap with Foudre&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig5.png" title="Code overlap with Infy" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Code overlap with Infy&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h2&gt;New Features/Changes&lt;span class="hx:absolute hx:-mt-20" id="new-featureschanges"&gt;&lt;/span&gt;
-&lt;a href="#new-featureschanges" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;First of all, the main binary of the upgraded Foudre malware is mostly
-undetected on
-&lt;a href="https://www.virustotal.com/#/file/c7279a32329ebb1ab5c1cdbfbddb5a167e1505340c3ca72e837a222ff92665a6/detection"target="_blank" rel="noopener"&gt;VirusTotal&lt;/a&gt;
-with only 3/67 detections.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;In the latest version of Foudre, there are 2 modules. One of the modules
-(i7234.dll) has the export &amp;ldquo;D1&amp;rdquo; and the other module (d388) exports &amp;ldquo;D2&amp;rdquo; as a
-function. We are going to refer to the different binaries based on their
-exports, D1 and D2. The third binary never gets launched and is still under
-investigation. We will release more details about it on a further date. The
-WinRAR SFX and D1 module only get executed once. The following features/changes
-are spread across the WinRAR SFX, D1, and D2:&lt;/p&gt;
-&lt;p&gt;WinRAR SFX Dropper:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;WinRAR SFX has icon of girl with hijab from video&lt;/li&gt;
-&lt;li&gt;Extracts files&lt;/li&gt;
-&lt;li&gt;Launches D1 (&lt;code&gt;i7234.dll&lt;/code&gt;) with rundll32 and executes export D1&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;D1:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;D1 executes the mp4 file&lt;/li&gt;
-&lt;li&gt;Checks if finds a window &amp;ldquo;TNRRDPKE2&amp;rdquo; means it’s already running&lt;/li&gt;
-&lt;li&gt;Copies D2 and key to &lt;code&gt;%APPDATA%&lt;/code&gt; with filenames a.n and p.k and creates a
-shortcut in the folder named &amp;ldquo;an.lnk&amp;rdquo;
-&lt;code&gt;C:\WINDOWS\system32\rundll32.exe a.n D2 838238125&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Deletes these files from TEMP folder&lt;/li&gt;
-&lt;li&gt;Stores name of D2 (a.n) in &lt;code&gt;HKEY_CURRENT_USER\Software\temp&lt;/code&gt; in key called
-&amp;ldquo;ran2&amp;rdquo;&lt;/li&gt;
-&lt;li&gt;Checks &lt;code&gt;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt; for
-SnailDriver&lt;/li&gt;
-&lt;li&gt;Creates autorun for an.lnk&lt;/li&gt;
-&lt;li&gt;Checks for &lt;code&gt;%PROGRAMFILES%\Kaspersky Lab&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Launches D2 with rundll32 &lt;code&gt;C:\WINDOWS\system32\rundll32.exe a.n D2 838238125&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;D2 has mostly the same features as reported in the older versions of Foudre but
-this table shows the main changes:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Foudre&lt;/th&gt;
-&lt;th&gt;Version 2&lt;/th&gt;
-&lt;th&gt;Version 8&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Browser Stealer Support&lt;/td&gt;
-&lt;td&gt;Microsoft Edge, Internet Explorer, Mozilla Firefox and, Google Chrome&lt;/td&gt;
-&lt;td&gt;Opera, Microsoft Edge, Internet Explorer, Mozilla Firefox and, Google Chrome&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Domain Generation Algorithm&lt;/td&gt;
-&lt;td&gt;Yes&lt;/td&gt;
-&lt;td&gt;Yes, different (see below)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;VirusTotal Detections&lt;/td&gt;
-&lt;td&gt;41/66&lt;/td&gt;
-&lt;td&gt;3/67&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;String Encryption&lt;/td&gt;
-&lt;td&gt;Yes&lt;/td&gt;
-&lt;td&gt;No&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Already Running Detection String&lt;/td&gt;
-&lt;td&gt;TNRRDPKE&lt;/td&gt;
-&lt;td&gt;TNRRDPKE2&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h2&gt;Domain Generation Algorithm (DGA)&lt;span class="hx:absolute hx:-mt-20" id="domain-generation-algorithm-dga"&gt;&lt;/span&gt;
-&lt;a href="#domain-generation-algorithm-dga" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The DGA used by version 8 of Foudre has only changed slightly from the previous
-versions.&lt;/p&gt;
-&lt;p&gt;In the previous versions, the DGA algorithm was calculated by the following
-algorithm (credit to &lt;a href="https://twitter.com/xedi25"target="_blank" rel="noopener"&gt;Esmid Idrizovic&lt;/a&gt;):&lt;/p&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;ToHex(CRC32(“NRV1” &amp;#43; year &amp;#43; month &amp;#43; week_number)) &amp;#43; (“.space”|”.net”|”.top”)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;There are two minor differences now when calculating the C2. NRV1 was replaced
-with NRTV1 and .dynu.net was added as suffix to the domain making the algorithm
-now:&lt;/p&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;ToHex(CRC32(“NRTV1” &amp;#43; year &amp;#43; month &amp;#43; week_number)) &amp;#43; (“.space”|”.net”|”.top”|”.dynu.net”)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;A few of the calculated domains were added to the bottom of the report in the
-IoCs section. The domains up to week of September 9, 2018 (week 35) have been
-registered in Panama and resolve to the same IP address &lt;code&gt;185[.]61[.]154[.]26&lt;/code&gt;.
-The oldest domain using this algorithm we could find that was registered was
-registered for the week of November 5, 2017.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
-&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Due to the content of the video and the information from the reports on
-previous versions of Foudre, we believe the targets are mostly Iranian
-citizens. We have registered some of the future generated domains to prevent
-the attack, and will update the post with information in regards to the
-infected victims.&lt;/p&gt;
-&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
-&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
-&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;WinRAR SFX c38533b85e4750e6f649cc407a50031de0984a8f3d5b90600824915433a5e218
-D1 DLL a02ce6768662ef250d248c158f26129dd4dfab30845d07962fbfe7aa19b16db9
-D2 DLL c7279a32329ebb1ab5c1cdbfbddb5a167e1505340c3ca72e837a222ff92665a6
-Unknown Binary cef161a220e019acc9ae79924a477c64aac2d6cc04126bb3f4a9f8452515f40f
-MP4 dbed2ca2e9c53dd72c3ed3ce60e603c6c91c80152f924d97d8514781e6d9e26f
-lockbox3 signature d2645d16e869addd099727c3c58438c2f6935d92c00f9e4b237ef498de1dad87&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
-&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;185[.]61[.]154.26
-ns1[.]cf75d89b[.]space
-ns2[.]cf75d89b[.]space
-Week 32 (Aug 5) – fe19f97f[.]space
-Week 33 (Aug 12) – 891ec9e9[.]space
-Week 34 (Sept 2) – 177a5c4a[.]space
-Week 35 (Sept 9) – 607d6cdc[.]space
-Week 36 (Sept 16) – f8b65751[.]space
-Week 37 (Sept 23) – 8fb167c7[.]space
-Week 38 (Sept 30) – 1f0e7a56[.]space
-Week 39 (Oct 7) – 68094ac0[.]space
-Week 40 (Oct 14) – 1d8bfc20[.]space&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Building Your Bullet Proof Incident Response Plan</title><link>https://intezer.github.io/community-intelligence/blog/2018/03/building-your-bullet-proof-incident-response-plan/</link><pubDate>Thu, 15 Mar 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/03/building-your-bullet-proof-incident-response-plan/</guid><description>
-&lt;p&gt;Cyber security is constantly evolving, and therefore rife with challenges.
-Whether hobbyist hackers or state-sponsored threat actors are targeting
-organizations, internal security operations center (SOC) teams must proactively
-assemble a robust incident response plan in order to strategically manage and
-ultimately eradicate attacks.&lt;/p&gt;
-&lt;p&gt;Security teams at even the largest organizations can be overwhelmed by the
-large number of attacks that need to be investigated. Meanwhile, sensitive
-information is at risk of being compromised by the proverbial needle in the
-haystack: malware hiding in plain sight among false positives.&lt;/p&gt;
-&lt;h2&gt;Malware hiding in plain sight among false positives&lt;span class="hx:absolute hx:-mt-20" id="malware-hiding-in-plain-sight-among-false-positives"&gt;&lt;/span&gt;
-&lt;a href="#malware-hiding-in-plain-sight-among-false-positives" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It’s critical to accurately detect and analyze these threats. However,
-discovering and fully understanding attacks continues to be difficult for even
-the most experienced and well equipped cyber security professionals.&lt;/p&gt;
-&lt;h2&gt;Supercharge your incident response&lt;span class="hx:absolute hx:-mt-20" id="supercharge-your-incident-response"&gt;&lt;/span&gt;
-&lt;a href="#supercharge-your-incident-response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;But what if organizations had a tool in their arsenal that could accomplish all
-of this quickly as part of their incident response plan?&lt;/p&gt;
-&lt;p&gt;Now they do, with Intezer Analyze™–the only malware analysis solution to apply
-code reuse detection.&lt;/p&gt;
-&lt;p&gt;Powered by Code Intelligence™ technology, Intezer Analyze™ is a malware
-analysis solution built by incident response professionals for incident
-response professionals. It easily integrates processes and automations, saving
-time and simplifying operations, and most importantly, provides an accurate and
-definitive report on the nature of any current attacks on an organization.
-Classification is now possible in the same breath, empowering teams to begin
-remediation efforts immediately. With nearly 70% of organizations reporting
-malware as the root cause of investigated incidents, Intezer Analyze™ is poised
-to change the odds for security leaders.&lt;/p&gt;
-&lt;p&gt;In any organization, removing the massive distraction of false positives is
-only half the battle. The other lies in capitalizing on available time and
-staff attention to address attacks before they wreak havoc on businesses.
-Intezer Analyze™ equips security professionals to do all of this and more,
-intelligently bolstering defenses and providing immunity against future
-threats.&lt;/p&gt;</description></item><item><title>Yet Another Distraction? A New Version of North Korean Ransomware Hermes Has Emerged</title><link>https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</link><pubDate>Thu, 08 Feb 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</guid><description>
-&lt;h2&gt;Detecting Reused Ransomware&lt;span class="hx:absolute hx:-mt-20" id="detecting-reused-ransomware"&gt;&lt;/span&gt;
-&lt;a href="#detecting-reused-ransomware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Whether we’re dealing with a criminal threat actor looking to steal money from
-their victims using ransomware or malware sponsored by a nation state, we can
-consistently see the reuse of code. In this specific case, we have observed a
-variant of a well-known ransomware, via a new version of Hermes from what may
-have originated from a nation state threat actor.&lt;/p&gt;
-&lt;p&gt;According to reports by researchers at
-&lt;a href="https://securingtomorrow.mcafee.com/mcafee-labs/taiwan-bank-heist-role-pseudo-ransomware/"target="_blank" rel="noopener"&gt;McAfee&lt;/a&gt;
-and
-&lt;a href="http://baesystemsai.blogspot.com/2017/10/taiwan-heist-lazarus-tools.html"target="_blank" rel="noopener"&gt;BAE Systems&lt;/a&gt;,
-a ransomware named Hermes was used as a diversion in an attack involving a bank
-heist in Taiwan. The ransomware is thought to have originated from the Lazarus
-group, a threat actor known to be affiliated with North Korea.
-(&lt;a href="../../../2017/12/blockbusted-lazarus-blockbuster-north-korea/"&gt;You can be read about them in this blog post about the Blockbuster campaign.&lt;/a&gt;).
-Security researcher
-&lt;a href="https://twitter.com/demonslay335/status/960590594707017729"target="_blank" rel="noopener"&gt;@demonslay335&lt;/a&gt;
-tweeted about the existence of a new sample Hermes 2.1, so our team decided to
-take a deeper look.&lt;/p&gt;
-&lt;h2&gt;Code Reuse Analysis of Hermes 2.1&lt;span class="hx:absolute hx:-mt-20" id="code-reuse-analysis-of-hermes-21"&gt;&lt;/span&gt;
-&lt;a href="#code-reuse-analysis-of-hermes-21" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When examining new binaries, the first step we take in our research is to take
-the binary and upload it to our Intezer Analyze™ system in order to identify
-code reuse.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig1.jpg" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;Here we can see some code reuse between the Hermes samples that were originally
-discovered as well as the latest sample. Since the sample came out mostly
-unique — indicating that much of the binary has changed — we were still able to
-catch some key parts that clearly reuse code.&lt;/p&gt;
-&lt;p&gt;Intezer Analyze™ caught these fragments, and with a deeper look into IDA Pro,
-we find an exact function-for-function match:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;In other places, although the code is not exactly the same, we can see very
-similar code to the original Hermes and techniques known to be used by Lazarus.&lt;/p&gt;
-&lt;h2&gt;An Evolving Threat&lt;span class="hx:absolute hx:-mt-20" id="an-evolving-threat"&gt;&lt;/span&gt;
-&lt;a href="#an-evolving-threat" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The last time this ransomware appeared there was a bank heist affiliated with
-it, and now it is possible that this new sample was used in an attack where the
-infected target was unaware of the intended result. It may have been used to
-cover up intellectual property theft, bank fraud, or something even more
-nefarious. At this moment in time, there is not enough information to make
-definitive conclusions about the specific intent of the Lazarus group; however,
-with the reappearance of Hermes, we can be confident that this likely won’t be
-the last time this code will be used in an attack.&lt;/p&gt;
-&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
-&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;bcb96251c3e747c0deabadfecc4e0ca4f56ca30f8985cae807ca2ff29099d818 New Sample
-851032eb03bc8ee05c381f7614a0cbf13b9a13293dfe5e4d4b7cd230970105e3 Related Sample&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description></item></channel></rss>
+&lt;p&gt;Pnscan source code: &lt;a href="https://github.com/ptrrkssn/pnscan"target="_blank" rel="noopener"&gt;https://github.com/ptrrkssn/pnscan&lt;/a&gt;&lt;/p&gt;</description></item></channel></rss>

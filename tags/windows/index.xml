@@ -793,7 +793,561 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Klingon RAT Holding on for Dear Life</title><link>https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/</link><pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/</guid><description>
+&lt;/div&gt;</description></item><item><title>Vermilion Strike: Linux and Windows Re-implementation of Cobalt Strike</title><link>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</link><pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</guid><description>
+&lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
+&lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Discovered Linux &amp;amp; Windows re-implementation of Cobalt Strike Beacon written
+from scratch&lt;/li&gt;
+&lt;li&gt;Linux malware is fully undetected by vendors&lt;/li&gt;
+&lt;li&gt;Has IoC and technical overlaps with previously discovered Windows DLL files&lt;/li&gt;
+&lt;li&gt;Highly targeted with victims including telecommunications, government and
+finance&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="../../../2021/08/cobalt-strike-detect-this-persistent-threat"&gt;Cobalt Strike&lt;/a&gt;
+is a popular red team tool for Windows which is also heavily used by threat
+actors. At the time of this writing, there is no official
+&lt;a href="https://blog.cobaltstrike.com/2016/03/23/linux-left-out-in-the-cold/"target="_blank" rel="noopener"&gt;Cobalt Strike version for Linux&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In August 2021, we at Intezer discovered a
+&lt;a href="https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc"target="_blank" rel="noopener"&gt;fully undetected ELF implementation&lt;/a&gt;
+of Cobalt Strike&amp;rsquo;s &lt;a href="https://www.cobaltstrike.com/help-beacon"target="_blank" rel="noopener"&gt;beacon&lt;/a&gt;, which we
+named &lt;strong&gt;Vermilion Strike&lt;/strong&gt;. The stealthy sample uses Cobalt Strike&amp;rsquo;s Command
+and Control (C2) protocol when communicating to the C2 server and has Remote
+Access capabilities such as uploading files, running shell commands and writing
+to files. The malware is fully undetected in VirusTotal at the time of this
+writing and was uploaded from Malaysia.&lt;/p&gt;
+&lt;p&gt;Based on telemetry with collaboration from our partners at McAfee Enterprise
+ATR, this Linux threat has been active in the wild since August targeting
+telecom companies, government agencies, IT companies, financial institutions
+and advisory companies around the world. Targeting has been limited in scope,
+suggesting that this malware is used in specific attacks rather than mass
+spreading.&lt;/p&gt;
+&lt;p&gt;After further analysis, we found Windows samples that use the same C2. The
+samples are re-implementations of Cobalt Strike Beacon. The Windows and ELF
+samples share the same functionalities.&lt;/p&gt;
+&lt;p&gt;The sophistication of this threat, its intent to conduct espionage, and the
+fact that the code hasn&amp;rsquo;t been seen before in other attacks, together with the
+fact that it targets specific entities in the wild, leads us to believe that
+this threat was developed by a skilled threat actor.&lt;/p&gt;
+&lt;p&gt;In this post we will provide a technical analysis of the samples and explain
+how you can detect and respond to this threat.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Linux File&lt;span class="hx:absolute hx:-mt-20" id="linux-file"&gt;&lt;/span&gt;
+&lt;a href="#linux-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The file was uploaded to VirusTotal from Malaysia and has no detections in
+VirusTotal at the time of this writing.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig1.png" title="294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc in VirusTotal" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc in VirusTotal&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig2.png" title="Vermilion Strike analysis in Intezer: https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Vermilion Strike analysis in Intezer: https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The file shares strings with previously seen Cobalt Strike samples and triggers
+a number of YARA rules that detect encoded Cobalt Strike configurations. The
+ELF file is built on a Red Hat Linux distribution. It uses OpenSSL via dynamic
+linking. The shared object names for OpenSSL on Red Hat-based distributions are
+different from other Linux distributions. Because of this, it can only run on
+machines with Linux distribution based on Red Hat&amp;rsquo;s code base.&lt;/p&gt;
+&lt;h3&gt;Initialization&lt;span class="hx:absolute hx:-mt-20" id="initialization"&gt;&lt;/span&gt;
+&lt;a href="#initialization" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The sample starts by forcing itself to run in the background using &lt;code&gt;daemon&lt;/code&gt;. It
+will decrypt the configuration, using the XOR key &lt;code&gt;0x69&lt;/code&gt;, shown in the
+screenshot below. The key &lt;code&gt;0x69&lt;/code&gt; is a common value used by Cobalt Strike&amp;rsquo;s
+encrypted configuration too. Vermilion Strike&amp;rsquo;s configuration format is the
+same as Cobalt Strike. Tools used for extracting Cobalt Strike configurations
+can also be used to extract Vermilion Strike configuration. The Windows
+components of the configuration are ignored for this Linux version.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig3.png" title="Decoded configuration of the beacon" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decoded configuration of the beacon&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Further decryption is performed in a heap with decoded strings, keys, and
+values required by the beacon for its operation. The beacon will then generate
+a SHA256 hash sourced from a random number seeded from the thread ID. This
+value will be used later in DNS beaconing. Next, a public RSA key will be
+imported for later use.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig4.png" title="Importing of public RSA key to encrypt machine fingerprint" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Importing of public RSA key to encrypt machine fingerprint&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The beacon will begin fingerprinting the machine. A random number will be
+generated and the process ID will be fetched. It will grab the kernel version
+of the machine using &lt;code&gt;uname&lt;/code&gt;. Next, the beacon will fingerprint network
+information through the &lt;code&gt;getifaddrs&lt;/code&gt; function. It will loop through the
+interfaces looking for IPv4 addresses. It will gather the interface with an
+address not equal to &lt;code&gt;127.0.0.1&lt;/code&gt; and stage the IPv4 address.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig5.png" title="Network interface fingerprinting" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Network interface fingerprinting&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Next, the beacon will fingerprint the entry in the local password database for
+information about the current effective user ID of the process.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig6.png" title="Fingerprinting of local password database" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Fingerprinting of local password database&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The beacon will then fingerprint the hostname of the machine. The collected
+information will be formatted into a string, encrypted with the public RSA key,
+and base64 encoded, as is standard for communication with a Cobalt Strike
+server. The stages are shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig7.png" title="Stages of formatting the machine fingerprint" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Stages of formatting the machine fingerprint&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Prepended to the fingerprint string is the value &lt;code&gt;1.0.1.LR&lt;/code&gt;. This appears to be
+an internal version string. A similar string, &lt;code&gt;W1.0.1&lt;/code&gt;, was found in a newly
+discovered Windows sample of Vermilion Strike that shares the same C2 and
+malware functionality.&lt;/p&gt;
+&lt;p&gt;The encrypted data is sent to the C2 server in a similar way that the metadata
+is sent from a Cobalt Strike beacon to the C2 server. The payload that is
+encrypted starts with the marker &lt;code&gt;0xbeef&lt;/code&gt;. The same marker is used by the
+legitimate Cobalt Strike beacon.&lt;/p&gt;
+&lt;h3&gt;Command and Control&lt;span class="hx:absolute hx:-mt-20" id="command-and-control"&gt;&lt;/span&gt;
+&lt;a href="#command-and-control" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Command and Control is primarily performed over DNS but also available over
+HTTP. This DNS-based approach for communications can help avoid traditional
+defenses that monitor HTTP traffic. Commands are received via DNS Address (A)
+and Text (TXT) records. The beacon first makes DNS requests out to hardcoded
+subdomains and gets an IP address returned. Normally, DNS requests on hostnames
+are intended to be translated into an IP address for which to visit. In this
+case, the IP address returned is not used as an IP address but for triggers to
+change the beacon behavior.&lt;/p&gt;
+&lt;p&gt;Once the beacon gets the signal to download a task, it will perform a DNS TXT
+query to the domain&amp;rsquo;s nameservers, as shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig8.png" title="Packet capture of C2 communication" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Packet capture of C2 communication&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The result of the TXT query is a base64 encoded and AES encrypted struct
+containing task information. An example of a returned task is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig9.png" title="A DNS TXT query result for a task" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;A DNS TXT query result for a task&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;A decrypted task is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig10.png" title="Decrypted command" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decrypted command&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Tasks that the beacon can perform are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Change working directory&lt;/li&gt;
+&lt;li&gt;Get current working directory&lt;/li&gt;
+&lt;li&gt;Append/write to file&lt;/li&gt;
+&lt;li&gt;Upload file to C2&lt;/li&gt;
+&lt;li&gt;Execute command via &lt;code&gt;popen&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Get disk partitions&lt;/li&gt;
+&lt;li&gt;List files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The malware uses a separate thread to execute the tasks. The tasks are
+scheduled as jobs via a semaphore to ensure not too many jobs are executed at
+once. Vermilion Strike has a third way of communicating with the C2 server via
+ICMP ping messages. The malware adds the current pid to the offset &lt;code&gt;0x4&lt;/code&gt; in the
+header and the encrypted payload is sent as data in the ICMP packet. The data
+size for an ICMP packet is limited to 65,507 bytes but the malware uses a size
+limit of 64,000 bytes for the payload. The code for sending and processing ICMP
+messages exists in the malware but the code for enabling it via the
+configuration is not present. This means it has the capability but can&amp;rsquo;t be
+configured to use it. This suggests it may be a new feature that hasn&amp;rsquo;t been
+fully developed yet.&lt;/p&gt;
+&lt;h3&gt;Links to Windows Files&lt;span class="hx:absolute hx:-mt-20" id="links-to-windows-files"&gt;&lt;/span&gt;
+&lt;a href="#links-to-windows-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When investigating this Linux file, we discovered related Windows samples. The
+first sample we noticed was:
+&lt;code&gt;3ad119d4f2f1d8ce3851181120a292f41189e4417ad20a6c86b6f45f6a9fbcfc&lt;/code&gt;. This is a
+32-bit EXE sample that shares a C2 IP address (&lt;code&gt;160.202.163[.]100&lt;/code&gt;). This is a
+stager that will fetch a DLL from the C2 over HTTP and execute it in-memory.&lt;/p&gt;
+&lt;p&gt;An example of the next stage DLL is
+&lt;code&gt;7129434afc1fec276525acfeee5bb08923ccd9b32269638a54c7b452f5493492&lt;/code&gt;. This
+sample, first noticed in 2019 by
+&lt;a href="https://twitter.com/silascutler/status/1153696870499119104"target="_blank" rel="noopener"&gt;Silas Cutler&lt;/a&gt;, is
+the Windows DLL equivalent of the ELF file. The functionality is almost exactly
+the same, except for the Windows environment. A side-by-side comparison of the
+configuration decoding function for the ELF and DLL beacons is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig11.png" title="Configuration decryption function comparison" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Configuration decryption function comparison&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The DLL has the same domains as the ELF for C2, as well as an additional
+configured domain &lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Using the stager we managed to get a new payload from the server
+(&lt;a href="https://analyze.intezer.com/files/e40370f463b4a4feb2d515a3fb64af1573523f03917b2fd9e7a9d0a741ef89a5"target="_blank" rel="noopener"&gt;e40370f463b4a4feb2d515a3fb64af1573523f03917b2fd9e7a9d0a741ef89a5&lt;/a&gt;).
+It has a lot of shared code with the sample from 2019. This sample and another
+Windows version of Vermilion Strike
+(&lt;code&gt;c49631db0b2e41125ccade68a0fe7fb70939315f1c580510e40e5b30ead868f5&lt;/code&gt;) includes a
+similar version string as the ELF version. The version string in these samples
+is &lt;code&gt;W1.0.1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig12.png" title="Internal version string in recent Windows versions" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Internal version string in recent Windows versions&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Vermilion Strike and other Linux threats remain a constant threat. The
+predominance of Linux servers in the cloud and its continued rise invites APTs
+to modify their toolsets in order to navigate the existing environment. Linux
+threats often have low detection rates compared to their Windows counterparts
+due to reasons discussed in
+&lt;a href="https://intezer.com/blog/malware-analysis/why-we-should-be-paying-more-attention-to-linux-threats/"target="_blank" rel="noopener"&gt;Why we Should be Paying More Attention to Linux Threats&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Vermilion Strike is not the only Linux port of Cobalt Strike&amp;rsquo;s Beacon. Another
+example is the open-source project &lt;a href="https://github.com/darkr4y/geacon"target="_blank" rel="noopener"&gt;geacon&lt;/a&gt;,
+a Go-based implementation. Vermilion Strike may not be the last Linux
+implementation of Beacon.&lt;/p&gt;
+&lt;h2&gt;Detection and Response&lt;span class="hx:absolute hx:-mt-20" id="detection-and-response"&gt;&lt;/span&gt;
+&lt;a href="#detection-and-response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Intezer can detect both Linux and Windows variants of Vermilion Strike, based
+on code reuse, TTPs, and strings. Shown below are the verdicts for both
+versions.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig13.png" title="Intezer verdict of Windows version of Vermilion Strike" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer verdict of Windows version of Vermilion Strike&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Intezer
+&lt;a href="https://analyze.intezer.com/files/07b815cee2b85a41820cd8157a68f35aa1ed0aa5f4093b8cb79a1d645a16273f"target="_blank" rel="noopener"&gt;verdict&lt;/a&gt;
+of Windows version of Vermilion Strike.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig14.png" title="Intezer verdict of Linux version of Vermilion Strike" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer verdict of Linux version of Vermilion Strike&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Intezer
+&lt;a href="https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc"target="_blank" rel="noopener"&gt;verdict&lt;/a&gt;
+of Linux version of Vermilion Strike.&lt;/p&gt;
+&lt;h3&gt;Detect if a Machine in Your Network Has Been Compromised&lt;span class="hx:absolute hx:-mt-20" id="detect-if-a-machine-in-your-network-has-been-compromised"&gt;&lt;/span&gt;
+&lt;a href="#detect-if-a-machine-in-your-network-has-been-compromised" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We recommend using the IoCs section below to ensure that the Vermilion Strike
+process does not exist anywhere on your system.&lt;/p&gt;
+&lt;h3&gt;Response&lt;span class="hx:absolute hx:-mt-20" id="response"&gt;&lt;/span&gt;
+&lt;a href="#response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;If you are a victim of this operation, take the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kill the process and delete all files related to the malware.&lt;/li&gt;
+&lt;li&gt;Make sure that your machine is clean and running only trusted code.&lt;/li&gt;
+&lt;li&gt;Make sure that your software is up-to-date with the latest versions and
+security patches and configured to security best practices.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Intezer would like to thank McAfee ATR for their help during the research
+process.&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;ELF&lt;span class="hx:absolute hx:-mt-20" id="elf"&gt;&lt;/span&gt;
+&lt;a href="#elf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;PE&lt;span class="hx:absolute hx:-mt-20" id="pe"&gt;&lt;/span&gt;
+&lt;a href="#pe" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Stager&lt;span class="hx:absolute hx:-mt-20" id="stager"&gt;&lt;/span&gt;
+&lt;a href="#stager" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;code&gt;3ad119d4f2f1d8ce3851181120a292f41189e4417ad20a6c86b6f45f6a9fbcfc&lt;/code&gt;&lt;/p&gt;
+&lt;h4&gt;Beacon&lt;span class="hx:absolute hx:-mt-20" id="beacon"&gt;&lt;/span&gt;
+&lt;a href="#beacon" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;code&gt;7129434afc1fec276525acfeee5bb08923ccd9b32269638a54c7b452f5493492&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;c49631db0b2e41125ccade68a0fe7fb70939315f1c580510e40e5b30ead868f5&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;07b815cee2b85a41820cd8157a68f35aa1ed0aa5f4093b8cb79a1d645a16273f&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;e40370f463b4a4feb2d515a3fb64af1573523f03917b2fd9e7a9d0a741ef89a5&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;C2&lt;span class="hx:absolute hx:-mt-20" id="c2"&gt;&lt;/span&gt;
+&lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;160.202.163.100&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;update.microsofthk[.]com&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;update.microsoftkernel[.]com&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;&lt;/p&gt;</description></item><item><title>How to Detect Cobalt Strike</title><link>https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</link><pubDate>Wed, 18 Aug 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</guid><description>
+&lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
+&lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike is a penetration testing tool created by Raphael Mudge in 2012.
+To this day, it remains extremely popular in red team activities and used for
+malicious purposes by threat actors. Cobalt Strike is popular due to its range
+of deployment options, ease of use, ability to avoid detection by security
+products, and a number of capabilities it has. It is for these reasons that
+threat actors like Cobalt Strike. Since Cobalt Strike is widely used by a range
+of actors, its lack of exclusivity makes attribution harder. Companies still
+struggle to detect Cobalt Strike also due to the various defensive techniques
+it has.&lt;/p&gt;
+&lt;p&gt;This blog explains Cobalt Strike and practical steps to take if you believe
+that you are being targeted or have been compromised by Cobalt Strike. We will
+demonstrate some real world examples of Cobalt Strike delivery and steps to
+detect each.&lt;/p&gt;
+&lt;h2&gt;What is Cobalt Strike?&lt;span class="hx:absolute hx:-mt-20" id="what-is-cobalt-strike"&gt;&lt;/span&gt;
+&lt;a href="#what-is-cobalt-strike" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike is &lt;a href="https://www.cobaltstrike.com/"target="_blank" rel="noopener"&gt;marketed&lt;/a&gt; as &amp;ldquo;Software for
+Adversary Simulations and Red Team Operations.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;It is a popular platform that allows users to
+&lt;a href="https://www.cobaltstrike.com/features"target="_blank" rel="noopener"&gt;emulate&lt;/a&gt; advanced threats, perform
+reconnaissance, hide communications, escalate privileges, move laterally across
+the network, and deploy additional payloads. The main payload of Cobalt Strike
+is called &amp;ldquo;&lt;a href="https://www.cobaltstrike.com/help-beacon"target="_blank" rel="noopener"&gt;Beacon&lt;/a&gt;.&amp;rdquo; The Beacon
+payload is used to model advanced APT malware, and it can do the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Receive commands (either passively or from an interactive console)&lt;/li&gt;
+&lt;li&gt;Egress communications over HTTP, HTTPS, and DNS&lt;/li&gt;
+&lt;li&gt;Launch PowerShell&lt;/li&gt;
+&lt;li&gt;Execute binaries&lt;/li&gt;
+&lt;li&gt;Modify and query the Windows registry&lt;/li&gt;
+&lt;li&gt;Inject malicious code into legitimate processes&lt;/li&gt;
+&lt;li&gt;Log keystrokes&lt;/li&gt;
+&lt;li&gt;Take screenshots&lt;/li&gt;
+&lt;li&gt;Set up proxies&lt;/li&gt;
+&lt;li&gt;Escalate privileges&lt;/li&gt;
+&lt;li&gt;Bypass UAC&lt;/li&gt;
+&lt;li&gt;Dump password hashes&lt;/li&gt;
+&lt;li&gt;Scan ports among other abilities&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This tool is mainly used in red team operations for government agencies and
+private enterprises, but it&amp;rsquo;s also a popular tool leveraged by cybercrime and
+&lt;a href="https://www.proofpoint.com/us/blog/threat-insight/cobalt-strike-favorite-tool-apt-crimeware"target="_blank" rel="noopener"&gt;APT groups in cracked versions&lt;/a&gt;.
+It is evident why Cobalt Strike is used by organizations and threat actors
+alike because of the extensive suite of capabilities it possesses, and also due
+to its ability to bypass defenses. It also comes with the feature to generate
+&lt;a href="https://www.cobaltstrike.com/help-reporting"target="_blank" rel="noopener"&gt;reporting&lt;/a&gt; in which the attacking
+team or threat actor can continuously study and improve their campaigns.&lt;/p&gt;
+&lt;h2&gt;Why is it difficult to detect Cobalt Strike?&lt;span class="hx:absolute hx:-mt-20" id="why-is-it-difficult-to-detect-cobalt-strike"&gt;&lt;/span&gt;
+&lt;a href="#why-is-it-difficult-to-detect-cobalt-strike" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike is difficult to detect because of its several defense techniques.
+Cobalt Strike payloads are usually shellcode encrypted with a rolling XOR key.
+This makes static analysis difficult to conduct. This, combined with the
+ability to configure many parts of the payload, makes hash-based detection
+almost impossible. Cobalt Strike stagers are designed to be loaded and executed
+only in-memory. This opens up a ton of possibilities for how this shellcode is
+shipped, making signature-based detection on the delivery method a cat and
+mouse game. Depending on how the code is delivered, the code can be injected
+into other legitimate running processes, bypassing defenses that do not scan
+legitimate processes or code in-memory.&lt;/p&gt;
+&lt;h2&gt;How has Cobalt Strike been deployed?&lt;span class="hx:absolute hx:-mt-20" id="how-has-cobalt-strike-been-deployed"&gt;&lt;/span&gt;
+&lt;a href="#how-has-cobalt-strike-been-deployed" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike has many different ways for deployment. This flexibility has
+helped attackers find many unconventional and creative ways to infect victims
+with a payload. For an in-depth technical analysis of Cobalt Strike&amp;rsquo;s
+deployment options and how they differ, check out either Avast&amp;rsquo;s
+&lt;a href="https://decoded.avast.io/threatintel/decoding-cobalt-strike-understanding-payloads/"target="_blank" rel="noopener"&gt;blog&lt;/a&gt;
+or Cisco Talos'
+&lt;a href="https://talos-intelligence-site.s3.amazonaws.com/production/document_files/files/000/095/031/original/Talos_Cobalt_Strike.pdf"target="_blank" rel="noopener"&gt;white paper&lt;/a&gt;.
+Let&amp;rsquo;s take a look at some real world examples of how Cobalt Strike is being
+used in the wild. We will cover the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Macro-Laden Microsoft Office files&lt;/li&gt;
+&lt;li&gt;Supply Chain Attack&lt;/li&gt;
+&lt;li&gt;Living off the Land (LotL)&lt;/li&gt;
+&lt;li&gt;Executables (EXE) files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Macro-Laden Microsoft Office Files&lt;span class="hx:absolute hx:-mt-20" id="macro-laden-microsoft-office-files"&gt;&lt;/span&gt;
+&lt;a href="#macro-laden-microsoft-office-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;An
+&lt;a href="https://analyze.intezer.com/analyses/2eaedc79-0197-4907-b4e1-f609853bc04e"target="_blank" rel="noopener"&gt;example&lt;/a&gt;
+of a Cobalt Strike payload being delivered to victims via Microsoft Excel
+spreadsheets demonstrates that this tool is used in mass phishing campaigns,
+not just targeted APT attacks. The attack starts by sending potential victims a
+Microsoft OneDrive link from which an Excel (.xls) file is downloaded.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig1.png" title="OneDrive URLs sent to victims" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;OneDrive URLs sent to victims&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Using cloud storage links to deliver malicious files is a well-known strategy.
+It leverages the good reputation of cloud provider domains such as Microsoft,
+Amazon, and Google to bypass domain reputation-based security controls. This
+link delivers an Excel file pretending to be an Apple Store invoice requesting
+that the target &amp;ldquo;enable content to view receipt.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig2.png" title="Spreadsheet lure masquerading as an Apple Store receipt." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Spreadsheet lure masquerading as an Apple Store receipt.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Upon enablement of macros, the spreadsheet will fetch and execute the payload
+in-memory.&lt;/p&gt;
+&lt;h3&gt;How to Detect?&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This can be difficult to detect, as there are multiple degrees of separation
+before the Cobalt Strike payload is executed. Detection first requires dynamic
+analysis in order to reach the Cobalt Strike stage. When this stage is reached,
+the best ways to detect the running Cobalt Strike code are through static
+signatures or genetic code analysis.&lt;/p&gt;
+&lt;p&gt;When it comes to static signatures, it can be difficult to isolate the exact
+area in-memory that you should run the signatures over. One way this can be
+achieved is running the file through debugging tools and manually dumping
+memory to perform signature analysis. This can be extremely time consuming and
+requires a high degree of technical knowledge. Another possible way is to use a
+sandbox and download memory dumps from a finished analysis in order to run
+static analysis tools. This requires slightly less technical knowledge, but it
+still can be time consuming. We suggest taking the suspicious document and
+uploading it to Intezer Analyze to find out if Cobalt Strike is hidden
+in-memory.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig3.png" title="Intezer Analyze result for Cobalt Strike payload." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer Analyze result for Cobalt Strike payload.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Supply Chain Attack&lt;span class="hx:absolute hx:-mt-20" id="supply-chain-attack"&gt;&lt;/span&gt;
+&lt;a href="#supply-chain-attack" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;One of the biggest cybersecurity stories of 2020 was the SolarWinds supply
+chain attack that compromised high-profile entities around the world. This
+attack was done by an APT group known as NOBELIUM (UNC2452) leveraging the
+&amp;ldquo;Orion&amp;rdquo; business software to distribute malware to private and public
+organizations. Among the deployed malware was a Cobalt Strike loader dubbed
+TEARDROP by FireEye. The variant was named
+&lt;a href="https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/solarwinds-raindrop-malware"target="_blank" rel="noopener"&gt;Raindrop&lt;/a&gt;
+by Symantec. The TEARDROP dropper is a memory-only DLL that runs as a service
+spawning a thread that pulls the Cobalt Strike payload from a fake JPG file.&lt;/p&gt;
+&lt;p&gt;The Raindrop variant is built from a modified version of 7-ZIP source code. It
+uses a different custom packer than TEARDROP, also leveraging steganography to
+locate the start of the encoded payload. Once the encoded payload has been
+located, it extracts, decrypts, and decompresses the data to be executed as
+shellcode.&lt;/p&gt;
+&lt;h3&gt;How to Detect?&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect-1"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;It can often be difficult to detect if your organization has been the victim of
+a supply chain attack. It can be especially hard to collect forensic evidence
+for an attack when it could be mixed in with the code of legitimate and large
+files. Due to the nature of
+&lt;a href="https://intezer.com/blog/malware-analysis/securing-the-software-supply-chain/"target="_blank" rel="noopener"&gt;supply chain attacks&lt;/a&gt;,
+there are often a large number of machines in an organization infected at one
+time. An action you can take is to run Intezer&amp;rsquo;s
+&lt;a href="https://analyze.intezer.com/endpoint-analyses"target="_blank" rel="noopener"&gt;live endpoint scanner&lt;/a&gt; across
+all machines in the organization, to get immediate visibility over all running
+code and quickly identify infected machines by detecting any traces of
+malicious code found in-memory. An example of a machine with Raindrop loading
+Cobalt Strike is shown in the endpoint scan below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig4.png" title="Intezer Analyze endpoint scan result for Raindrop loading and executing a fileless Cobalt Strike payload." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer Analyze endpoint scan result for Raindrop loading and executing a fileless Cobalt Strike payload.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Living off the Land (LotL)&lt;span class="hx:absolute hx:-mt-20" id="living-off-the-land-lotl"&gt;&lt;/span&gt;
+&lt;a href="#living-off-the-land-lotl" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Living off the Land (LotL) is the attack process of using legitimate and signed
+tools, usually provided within the operating system, to execute malware. This
+is a powerful tactic as it can result in unauthorized code being executed
+within the memory space of a trusted process, evading malware defenses by
+flying under the radar. This type of tactic also makes incident response
+difficult, since analysts can&amp;rsquo;t just filter out known legitimate processes
+during triage. All processes must be inspected in order to find that one needle
+in the haystack.&lt;/p&gt;
+&lt;p&gt;One popular tool used for LotL operations is the Microsoft.NET framework
+utility called
+&lt;a href="https://docs.microsoft.com/en-us/visualstudio/msbuild/walkthrough-using-msbuild?view=vs-2019"target="_blank" rel="noopener"&gt;MSBuild&lt;/a&gt;.
+MSBuild is the build platform used for Microsoft and Visual Studio. Visual
+Studio relies on MSBuild to build projects for testing and releases. Attackers
+are able to pass MSBuild.exe, a project (.proj) file, to build and execute. The
+payload, usually shellcode, is injected into another process. This attack is
+effective for attackers as many sandboxing solutions are not able to handle
+project files and struggle with fileless malware. This technique was observed
+by Cisco Talos researchers in
+&lt;a href="https://blog.talosintelligence.com/2020/02/building-bypass-with-msbuild.html"target="_blank" rel="noopener"&gt;2020&lt;/a&gt;
+to deploy Cobalt Strike.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig5.png" title="Project file code." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Project file code.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;As shown above, the project file has an encoded and compressed payload. This
+payload is decrypted, decompressed, and then copied into memory. The shellcode
+is then executed in a new thread.&lt;/p&gt;
+&lt;h3&gt;How to Detect?&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect-2"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;An endpoint with a system injected with Cobalt Strike via MSBuild is shown
+below. Note the process tree at the bottom indicating the &amp;ldquo;fileless code.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig6.png" title="Intezer Analyze endpoint scan of a Cobalt Strike-infected system via LotL technique." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer Analyze endpoint scan of a Cobalt Strike-infected system via LotL technique.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Executables (EXE) Files&lt;span class="hx:absolute hx:-mt-20" id="executables-exe-files"&gt;&lt;/span&gt;
+&lt;a href="#executables-exe-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There is an acronym in the United States Armed Forces called &amp;ldquo;KISS.&amp;rdquo; KISS
+stands for &amp;ldquo;Keep it simple, stupid!&amp;rdquo; Sometimes simple is better, and another
+way for Cobalt Strike to be deployed is in a simple Windows EXE form. This
+requires either social engineering tactics to get the target to execute the
+malware or another program/script to execute the file. This process involves
+creation of a thread that sets up a named pipe for privilege escalation. Once
+the shellcode is written to the named pipe, it is decrypted and executed in a
+separate thread.&lt;/p&gt;
+&lt;h3&gt;How to Detect?&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect-3"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect-3" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;An example of one of these payloads is shown in the
+&lt;a href="https://analyze.intezer.com/files/e233fc08c1a41ed8cc7d32c8e851614aeb159f95470f4491262c818137591afc"target="_blank" rel="noopener"&gt;analysis&lt;/a&gt;
+below. Notice how the Cobalt Strike code is only shown when it is executed and
+found in-memory.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig7.png" title="Cobalt Strike found via memory analysis." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Cobalt Strike found via memory analysis.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;How can Cobalt Strike be detected and remediated?&lt;span class="hx:absolute hx:-mt-20" id="how-can-cobalt-strike-be-detected-and-remediated"&gt;&lt;/span&gt;
+&lt;a href="#how-can-cobalt-strike-be-detected-and-remediated" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Due to the many ways Cobalt Strike is deployed, detection can be hard. The use
+of shellcode, encoding, compression, obfuscated strings, process injection,
+hashing algorithms, domain fronting, different communication channels, and
+dynamically loaded libraries all give malware and network defenses a run for
+their money.&lt;/p&gt;
+&lt;h3&gt;Static Analysis&lt;span class="hx:absolute hx:-mt-20" id="static-analysis"&gt;&lt;/span&gt;
+&lt;a href="#static-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Static analysis involves examining the file using various techniques without
+actually having to execute the file itself. Static analysis can involve hashing
+the file and finding intel on it, taking a look at the strings to see if there
+are functionality or network indicators, or checking imports and running
+signatures such as YARA for the file. Although useful, static analysis on its
+own is probably not sufficient to detect Cobalt Strike.&lt;/p&gt;
+&lt;p&gt;Using hash-based identification of Cobalt Strike is insufficient, since each
+payload will be encrypted with different keys and each configuration will
+uniquely change the hash value. It is trivial to generate a new payload for
+each new target.&lt;/p&gt;
+&lt;p&gt;Checking strings may be insufficient also. Strings for pipe names are
+dynamically generated and incorporate random numbers, meaning they can change
+every time the malware is executed. Encrypted payloads will also obfuscate
+useful strings from static analysis.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.ired.team/offensive-security/defense-evasion/windows-api-hashing-in-malware"target="_blank" rel="noopener"&gt;API Hashing&lt;/a&gt;
+algorithms employed by Cobalt Strike hide imports from static analysis
+techniques. Signature-based detection is great for detecting malware, but due
+to the versatility of Cobalt Strike&amp;rsquo;s deployment using multiple stages and
+encrypted/obfuscated payloads, an analyst may only be able to detect that a
+file is going to load and execute a payload in-memory. Without dynamic
+analysis, they won&amp;rsquo;t be able to detect exactly what that payload will be.&lt;/p&gt;
+&lt;h3&gt;Dynamic Analysis&lt;span class="hx:absolute hx:-mt-20" id="dynamic-analysis"&gt;&lt;/span&gt;
+&lt;a href="#dynamic-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Dynamic analysis is the process of executing the suspect file in order to
+analyze its behavior and how it affects the environment it runs in. Dynamic
+analysis can open up new areas to explore as one can follow the malware through
+each stage of its deployment and functionality. Dynamic analysis can get the
+malware to unpack, decode, or download additional stages. These new stages are
+then subject to further dynamic analysis as well as the previously mentioned
+static analysis techniques.&lt;/p&gt;
+&lt;p&gt;Dynamic analysis does not have many limitations, although some malware includes
+functionality to detect if it is being observed or running inside a sandboxed
+environment. There is also the possibility that during dynamic analysis, areas
+of malicious code may not be intentionally executed, and thus not detected in
+the behavior. The best way to detect malicious code is via genetic code
+analysis which is done automatically in Intezer Analyze.&lt;/p&gt;
+&lt;h3&gt;Combination of Several Techniques&lt;span class="hx:absolute hx:-mt-20" id="combination-of-several-techniques"&gt;&lt;/span&gt;
+&lt;a href="#combination-of-several-techniques" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The best way to detect Cobalt Strike code is through a combination of dynamic,
+static, and genetic analysis. Let&amp;rsquo;s take a suspicious looking document from an
+unknown entity as an example. Before opening the document, we submit it to
+Intezer Analyze and get the verdict, as shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig8.png" title="Intezer Analyze result showing in-memory Cobalt Strike code." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer Analyze result showing in-memory Cobalt Strike code.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The document drops and executes Cobalt Strike in the memory space of
+&lt;code&gt;rundll32.exe&lt;/code&gt;. Signatures are leveraged to show capabilities and file
+characteristics. Under the &amp;ldquo;TTPs&amp;rdquo; tab the user can see the
+techniques/capabilities employed by the malicious document.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig9.png" title="TTPs section showing capabilities detected during execution." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;TTPs section showing capabilities detected during execution.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The document displays interesting techniques such as macros with
+auto-execution, network activity with a unique user agent, office process
+starting martian subprocess, and process injection. You can also dive deeper
+into capabilities specific to the injected Cobalt Strike process.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The &amp;ldquo;IoCs&amp;rdquo; tab in Intezer Analyze shows indicators that can help you pivot and
+search in your environment during investigations to map out the scope of an
+attack. IoCs provides you with file hashes and network indicators such as URLs,
+and IP addresses being contacted through irregular ports.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig11.png" title="IoCs tab showing file and network indicators." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;IoCs tab showing file and network indicators.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The &amp;ldquo;Behavior&amp;rdquo; tab shows a more in-depth analysis of the file&amp;rsquo;s behavior, where
+you can see the process tree, network activity, screenshots and file/registry
+activity.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig12.png" title="Behavior tab showing observed behavior during sandbox execution." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Behavior tab showing observed behavior during sandbox execution.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;The Only Abused Pen Testing Tool?&lt;span class="hx:absolute hx:-mt-20" id="the-only-abused-pen-testing-tool"&gt;&lt;/span&gt;
+&lt;a href="#the-only-abused-pen-testing-tool" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike is
+&lt;a href="../../../2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/"&gt;not the only&lt;/a&gt;
+penetration testing or legitimate tool that has been co-opted and abused by
+threat actors. In the past, tools such as
+&lt;a href="https://github.com/a0rtega/pafish"target="_blank" rel="noopener"&gt;Pafish&lt;/a&gt; (Paranoid Fish) have been
+&lt;a href="https://cdn2.hubspot.net/hubfs/1903456/Whitepapers/CopyKittens.pdf"target="_blank" rel="noopener"&gt;used by&lt;/a&gt;
+Iranian actors in their tooling for virtual machine (VM) detection. The
+&amp;ldquo;Sysinternals&amp;rdquo; suite has been used extensively by threat actors. Most notably,
+&lt;a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec"target="_blank" rel="noopener"&gt;PsExec&lt;/a&gt; has
+been used in high-profile attacks such as the 2017
+&lt;a href="https://www.theregister.com/2017/06/28/petya_notpetya_ransomware/"target="_blank" rel="noopener"&gt;NotPetya&lt;/a&gt;
+global ransomware outbreak.&lt;/p&gt;
+&lt;p&gt;More recently, legitimate and penetration testing tools for the cloud have been
+used by threat actors. The threat actor TeamTNT has
+&lt;a href="../../../2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/"&gt;used&lt;/a&gt;
+Weave Scope, a trusted tool which gives the user full access to their cloud
+environment, and is integrated with Docker, Kubernetes, the Distributed Cloud
+Operating System (DC/OS), and AWS Elastic Compute Cloud (EC2). The attacker
+installs this tool in order to map the cloud environment of their victim and
+execute system commands without needing to deploy malicious code on the server.
+The same group has also been
+&lt;a href="https://www.cadosecurity.com/post/botnet-deploys-cloud-and-container-attack-techniques"target="_blank" rel="noopener"&gt;documented&lt;/a&gt;
+using the penetration testing tool
+&lt;a href="https://github.com/brompwnie/botb"target="_blank" rel="noopener"&gt;Break Out The Box&lt;/a&gt; (BOTB) for cloud and
+containerized environments.&lt;/p&gt;
+&lt;h2&gt;Get Started for Free&lt;span class="hx:absolute hx:-mt-20" id="get-started-for-free"&gt;&lt;/span&gt;
+&lt;a href="#get-started-for-free" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;With &lt;a href="https://analyze.intezer.com/"target="_blank" rel="noopener"&gt;Intezer Analyze&lt;/a&gt;, you can analyze any
+suspicious files that you encounter, including non-executable files such as
+Microsoft Office documents, scripts, archives, and more. Stay on top of
+analyzing and classifying Cobalt Strike among other threats.
+&lt;a href="https://analyze.intezer.com/create-account"target="_blank" rel="noopener"&gt;Get started&lt;/a&gt; for free and start
+with 50 file uploads per month.&lt;/p&gt;</description></item><item><title>Klingon RAT Holding on for Dear Life</title><link>https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/</link><pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/</guid><description>
 &lt;p&gt;With more malware written in Golang than ever before, the threat from Go-based
 Remote Access Trojans (RATs) has never been higher. Not only has the number of
 Go malware increased but also the sophistication of these threats. This is a

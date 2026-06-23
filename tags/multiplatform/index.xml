@@ -456,7 +456,249 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>HabitsRAT Used to Target Linux and Windows Servers</title><link>https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</link><pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</guid><description>
+&lt;/div&gt;</description></item><item><title>Vermilion Strike: Linux and Windows Re-implementation of Cobalt Strike</title><link>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</link><pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</guid><description>
+&lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
+&lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Discovered Linux &amp;amp; Windows re-implementation of Cobalt Strike Beacon written
+from scratch&lt;/li&gt;
+&lt;li&gt;Linux malware is fully undetected by vendors&lt;/li&gt;
+&lt;li&gt;Has IoC and technical overlaps with previously discovered Windows DLL files&lt;/li&gt;
+&lt;li&gt;Highly targeted with victims including telecommunications, government and
+finance&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href="../../../2021/08/cobalt-strike-detect-this-persistent-threat"&gt;Cobalt Strike&lt;/a&gt;
+is a popular red team tool for Windows which is also heavily used by threat
+actors. At the time of this writing, there is no official
+&lt;a href="https://blog.cobaltstrike.com/2016/03/23/linux-left-out-in-the-cold/"target="_blank" rel="noopener"&gt;Cobalt Strike version for Linux&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In August 2021, we at Intezer discovered a
+&lt;a href="https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc"target="_blank" rel="noopener"&gt;fully undetected ELF implementation&lt;/a&gt;
+of Cobalt Strike&amp;rsquo;s &lt;a href="https://www.cobaltstrike.com/help-beacon"target="_blank" rel="noopener"&gt;beacon&lt;/a&gt;, which we
+named &lt;strong&gt;Vermilion Strike&lt;/strong&gt;. The stealthy sample uses Cobalt Strike&amp;rsquo;s Command
+and Control (C2) protocol when communicating to the C2 server and has Remote
+Access capabilities such as uploading files, running shell commands and writing
+to files. The malware is fully undetected in VirusTotal at the time of this
+writing and was uploaded from Malaysia.&lt;/p&gt;
+&lt;p&gt;Based on telemetry with collaboration from our partners at McAfee Enterprise
+ATR, this Linux threat has been active in the wild since August targeting
+telecom companies, government agencies, IT companies, financial institutions
+and advisory companies around the world. Targeting has been limited in scope,
+suggesting that this malware is used in specific attacks rather than mass
+spreading.&lt;/p&gt;
+&lt;p&gt;After further analysis, we found Windows samples that use the same C2. The
+samples are re-implementations of Cobalt Strike Beacon. The Windows and ELF
+samples share the same functionalities.&lt;/p&gt;
+&lt;p&gt;The sophistication of this threat, its intent to conduct espionage, and the
+fact that the code hasn&amp;rsquo;t been seen before in other attacks, together with the
+fact that it targets specific entities in the wild, leads us to believe that
+this threat was developed by a skilled threat actor.&lt;/p&gt;
+&lt;p&gt;In this post we will provide a technical analysis of the samples and explain
+how you can detect and respond to this threat.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Linux File&lt;span class="hx:absolute hx:-mt-20" id="linux-file"&gt;&lt;/span&gt;
+&lt;a href="#linux-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The file was uploaded to VirusTotal from Malaysia and has no detections in
+VirusTotal at the time of this writing.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig1.png" title="294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc in VirusTotal" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc in VirusTotal&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig2.png" title="Vermilion Strike analysis in Intezer: https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Vermilion Strike analysis in Intezer: https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The file shares strings with previously seen Cobalt Strike samples and triggers
+a number of YARA rules that detect encoded Cobalt Strike configurations. The
+ELF file is built on a Red Hat Linux distribution. It uses OpenSSL via dynamic
+linking. The shared object names for OpenSSL on Red Hat-based distributions are
+different from other Linux distributions. Because of this, it can only run on
+machines with Linux distribution based on Red Hat&amp;rsquo;s code base.&lt;/p&gt;
+&lt;h3&gt;Initialization&lt;span class="hx:absolute hx:-mt-20" id="initialization"&gt;&lt;/span&gt;
+&lt;a href="#initialization" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The sample starts by forcing itself to run in the background using &lt;code&gt;daemon&lt;/code&gt;. It
+will decrypt the configuration, using the XOR key &lt;code&gt;0x69&lt;/code&gt;, shown in the
+screenshot below. The key &lt;code&gt;0x69&lt;/code&gt; is a common value used by Cobalt Strike&amp;rsquo;s
+encrypted configuration too. Vermilion Strike&amp;rsquo;s configuration format is the
+same as Cobalt Strike. Tools used for extracting Cobalt Strike configurations
+can also be used to extract Vermilion Strike configuration. The Windows
+components of the configuration are ignored for this Linux version.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig3.png" title="Decoded configuration of the beacon" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decoded configuration of the beacon&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Further decryption is performed in a heap with decoded strings, keys, and
+values required by the beacon for its operation. The beacon will then generate
+a SHA256 hash sourced from a random number seeded from the thread ID. This
+value will be used later in DNS beaconing. Next, a public RSA key will be
+imported for later use.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig4.png" title="Importing of public RSA key to encrypt machine fingerprint" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Importing of public RSA key to encrypt machine fingerprint&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The beacon will begin fingerprinting the machine. A random number will be
+generated and the process ID will be fetched. It will grab the kernel version
+of the machine using &lt;code&gt;uname&lt;/code&gt;. Next, the beacon will fingerprint network
+information through the &lt;code&gt;getifaddrs&lt;/code&gt; function. It will loop through the
+interfaces looking for IPv4 addresses. It will gather the interface with an
+address not equal to &lt;code&gt;127.0.0.1&lt;/code&gt; and stage the IPv4 address.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig5.png" title="Network interface fingerprinting" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Network interface fingerprinting&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Next, the beacon will fingerprint the entry in the local password database for
+information about the current effective user ID of the process.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig6.png" title="Fingerprinting of local password database" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Fingerprinting of local password database&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The beacon will then fingerprint the hostname of the machine. The collected
+information will be formatted into a string, encrypted with the public RSA key,
+and base64 encoded, as is standard for communication with a Cobalt Strike
+server. The stages are shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig7.png" title="Stages of formatting the machine fingerprint" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Stages of formatting the machine fingerprint&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Prepended to the fingerprint string is the value &lt;code&gt;1.0.1.LR&lt;/code&gt;. This appears to be
+an internal version string. A similar string, &lt;code&gt;W1.0.1&lt;/code&gt;, was found in a newly
+discovered Windows sample of Vermilion Strike that shares the same C2 and
+malware functionality.&lt;/p&gt;
+&lt;p&gt;The encrypted data is sent to the C2 server in a similar way that the metadata
+is sent from a Cobalt Strike beacon to the C2 server. The payload that is
+encrypted starts with the marker &lt;code&gt;0xbeef&lt;/code&gt;. The same marker is used by the
+legitimate Cobalt Strike beacon.&lt;/p&gt;
+&lt;h3&gt;Command and Control&lt;span class="hx:absolute hx:-mt-20" id="command-and-control"&gt;&lt;/span&gt;
+&lt;a href="#command-and-control" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Command and Control is primarily performed over DNS but also available over
+HTTP. This DNS-based approach for communications can help avoid traditional
+defenses that monitor HTTP traffic. Commands are received via DNS Address (A)
+and Text (TXT) records. The beacon first makes DNS requests out to hardcoded
+subdomains and gets an IP address returned. Normally, DNS requests on hostnames
+are intended to be translated into an IP address for which to visit. In this
+case, the IP address returned is not used as an IP address but for triggers to
+change the beacon behavior.&lt;/p&gt;
+&lt;p&gt;Once the beacon gets the signal to download a task, it will perform a DNS TXT
+query to the domain&amp;rsquo;s nameservers, as shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig8.png" title="Packet capture of C2 communication" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Packet capture of C2 communication&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The result of the TXT query is a base64 encoded and AES encrypted struct
+containing task information. An example of a returned task is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig9.png" title="A DNS TXT query result for a task" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;A DNS TXT query result for a task&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;A decrypted task is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig10.png" title="Decrypted command" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decrypted command&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Tasks that the beacon can perform are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Change working directory&lt;/li&gt;
+&lt;li&gt;Get current working directory&lt;/li&gt;
+&lt;li&gt;Append/write to file&lt;/li&gt;
+&lt;li&gt;Upload file to C2&lt;/li&gt;
+&lt;li&gt;Execute command via &lt;code&gt;popen&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Get disk partitions&lt;/li&gt;
+&lt;li&gt;List files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The malware uses a separate thread to execute the tasks. The tasks are
+scheduled as jobs via a semaphore to ensure not too many jobs are executed at
+once. Vermilion Strike has a third way of communicating with the C2 server via
+ICMP ping messages. The malware adds the current pid to the offset &lt;code&gt;0x4&lt;/code&gt; in the
+header and the encrypted payload is sent as data in the ICMP packet. The data
+size for an ICMP packet is limited to 65,507 bytes but the malware uses a size
+limit of 64,000 bytes for the payload. The code for sending and processing ICMP
+messages exists in the malware but the code for enabling it via the
+configuration is not present. This means it has the capability but can&amp;rsquo;t be
+configured to use it. This suggests it may be a new feature that hasn&amp;rsquo;t been
+fully developed yet.&lt;/p&gt;
+&lt;h3&gt;Links to Windows Files&lt;span class="hx:absolute hx:-mt-20" id="links-to-windows-files"&gt;&lt;/span&gt;
+&lt;a href="#links-to-windows-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When investigating this Linux file, we discovered related Windows samples. The
+first sample we noticed was:
+&lt;code&gt;3ad119d4f2f1d8ce3851181120a292f41189e4417ad20a6c86b6f45f6a9fbcfc&lt;/code&gt;. This is a
+32-bit EXE sample that shares a C2 IP address (&lt;code&gt;160.202.163[.]100&lt;/code&gt;). This is a
+stager that will fetch a DLL from the C2 over HTTP and execute it in-memory.&lt;/p&gt;
+&lt;p&gt;An example of the next stage DLL is
+&lt;code&gt;7129434afc1fec276525acfeee5bb08923ccd9b32269638a54c7b452f5493492&lt;/code&gt;. This
+sample, first noticed in 2019 by
+&lt;a href="https://twitter.com/silascutler/status/1153696870499119104"target="_blank" rel="noopener"&gt;Silas Cutler&lt;/a&gt;, is
+the Windows DLL equivalent of the ELF file. The functionality is almost exactly
+the same, except for the Windows environment. A side-by-side comparison of the
+configuration decoding function for the ELF and DLL beacons is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig11.png" title="Configuration decryption function comparison" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Configuration decryption function comparison&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The DLL has the same domains as the ELF for C2, as well as an additional
+configured domain &lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Using the stager we managed to get a new payload from the server
+(&lt;a href="https://analyze.intezer.com/files/e40370f463b4a4feb2d515a3fb64af1573523f03917b2fd9e7a9d0a741ef89a5"target="_blank" rel="noopener"&gt;e40370f463b4a4feb2d515a3fb64af1573523f03917b2fd9e7a9d0a741ef89a5&lt;/a&gt;).
+It has a lot of shared code with the sample from 2019. This sample and another
+Windows version of Vermilion Strike
+(&lt;code&gt;c49631db0b2e41125ccade68a0fe7fb70939315f1c580510e40e5b30ead868f5&lt;/code&gt;) includes a
+similar version string as the ELF version. The version string in these samples
+is &lt;code&gt;W1.0.1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig12.png" title="Internal version string in recent Windows versions" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Internal version string in recent Windows versions&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Vermilion Strike and other Linux threats remain a constant threat. The
+predominance of Linux servers in the cloud and its continued rise invites APTs
+to modify their toolsets in order to navigate the existing environment. Linux
+threats often have low detection rates compared to their Windows counterparts
+due to reasons discussed in
+&lt;a href="https://intezer.com/blog/malware-analysis/why-we-should-be-paying-more-attention-to-linux-threats/"target="_blank" rel="noopener"&gt;Why we Should be Paying More Attention to Linux Threats&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Vermilion Strike is not the only Linux port of Cobalt Strike&amp;rsquo;s Beacon. Another
+example is the open-source project &lt;a href="https://github.com/darkr4y/geacon"target="_blank" rel="noopener"&gt;geacon&lt;/a&gt;,
+a Go-based implementation. Vermilion Strike may not be the last Linux
+implementation of Beacon.&lt;/p&gt;
+&lt;h2&gt;Detection and Response&lt;span class="hx:absolute hx:-mt-20" id="detection-and-response"&gt;&lt;/span&gt;
+&lt;a href="#detection-and-response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Intezer can detect both Linux and Windows variants of Vermilion Strike, based
+on code reuse, TTPs, and strings. Shown below are the verdicts for both
+versions.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig13.png" title="Intezer verdict of Windows version of Vermilion Strike" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer verdict of Windows version of Vermilion Strike&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Intezer
+&lt;a href="https://analyze.intezer.com/files/07b815cee2b85a41820cd8157a68f35aa1ed0aa5f4093b8cb79a1d645a16273f"target="_blank" rel="noopener"&gt;verdict&lt;/a&gt;
+of Windows version of Vermilion Strike.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig14.png" title="Intezer verdict of Linux version of Vermilion Strike" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer verdict of Linux version of Vermilion Strike&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Intezer
+&lt;a href="https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc"target="_blank" rel="noopener"&gt;verdict&lt;/a&gt;
+of Linux version of Vermilion Strike.&lt;/p&gt;
+&lt;h3&gt;Detect if a Machine in Your Network Has Been Compromised&lt;span class="hx:absolute hx:-mt-20" id="detect-if-a-machine-in-your-network-has-been-compromised"&gt;&lt;/span&gt;
+&lt;a href="#detect-if-a-machine-in-your-network-has-been-compromised" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We recommend using the IoCs section below to ensure that the Vermilion Strike
+process does not exist anywhere on your system.&lt;/p&gt;
+&lt;h3&gt;Response&lt;span class="hx:absolute hx:-mt-20" id="response"&gt;&lt;/span&gt;
+&lt;a href="#response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;If you are a victim of this operation, take the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kill the process and delete all files related to the malware.&lt;/li&gt;
+&lt;li&gt;Make sure that your machine is clean and running only trusted code.&lt;/li&gt;
+&lt;li&gt;Make sure that your software is up-to-date with the latest versions and
+security patches and configured to security best practices.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Intezer would like to thank McAfee ATR for their help during the research
+process.&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;ELF&lt;span class="hx:absolute hx:-mt-20" id="elf"&gt;&lt;/span&gt;
+&lt;a href="#elf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;PE&lt;span class="hx:absolute hx:-mt-20" id="pe"&gt;&lt;/span&gt;
+&lt;a href="#pe" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Stager&lt;span class="hx:absolute hx:-mt-20" id="stager"&gt;&lt;/span&gt;
+&lt;a href="#stager" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;code&gt;3ad119d4f2f1d8ce3851181120a292f41189e4417ad20a6c86b6f45f6a9fbcfc&lt;/code&gt;&lt;/p&gt;
+&lt;h4&gt;Beacon&lt;span class="hx:absolute hx:-mt-20" id="beacon"&gt;&lt;/span&gt;
+&lt;a href="#beacon" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;code&gt;7129434afc1fec276525acfeee5bb08923ccd9b32269638a54c7b452f5493492&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;c49631db0b2e41125ccade68a0fe7fb70939315f1c580510e40e5b30ead868f5&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;07b815cee2b85a41820cd8157a68f35aa1ed0aa5f4093b8cb79a1d645a16273f&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;e40370f463b4a4feb2d515a3fb64af1573523f03917b2fd9e7a9d0a741ef89a5&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;C2&lt;span class="hx:absolute hx:-mt-20" id="c2"&gt;&lt;/span&gt;
+&lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;160.202.163.100&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;update.microsofthk[.]com&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;update.microsoftkernel[.]com&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;&lt;/p&gt;</description></item><item><title>HabitsRAT Used to Target Linux and Windows Servers</title><link>https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</link><pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</guid><description>
 &lt;p&gt;We have discovered a new malware written in Go, which we are calling HabitsRAT,
 targeting both Windows and Linux machines. The Windows version of the malware
 was first reported on by
