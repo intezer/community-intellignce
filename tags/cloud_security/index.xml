@@ -1,4 +1,364 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cloud_security</title><link>https://intezer.github.io/community-intelligence/tags/cloud_security/</link><description>Recent content in Cloud_security on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 11 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cloud_security/index.xml" rel="self" type="application/rss+xml"/><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cloud_security</title><link>https://intezer.github.io/community-intelligence/tags/cloud_security/</link><description>Recent content in Cloud_security on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 26 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cloud_security/index.xml" rel="self" type="application/rss+xml"/><item><title>Exposed Prefect Workflows Could Lead to Disruptive Attacks</title><link>https://intezer.github.io/community-intelligence/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/</link><pubDate>Tue, 26 Oct 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Workflow management platforms are powerful tools for automating and managing
+complex tasks. Integrating workflow platforms can help companies coordinate and
+ease their business processes as well as increase the productivity of their
+teams. When the instances are misconfigured, they can expose the systems to
+potential attacks and data loss. This is why it&amp;rsquo;s crucial to properly set up
+these instances. Companies recently learned this the hard way when
+misconfiguring popular open-source workflow platforms
+&lt;a href="../../../2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/"&gt;Argo&lt;/a&gt;
+and
+&lt;a href="../../../2021/10/misconfigured-airflows-leak-credentials/"&gt;Airflow&lt;/a&gt;.
+This post will focus on misconfigurations in the Prefect workflow platform. We
+have identified hundreds of misconfigured Prefect instances which could be the
+target of disruptive attacks. By using Prefect&amp;rsquo;s web UI and API function,
+attackers can potentially modify and delete workflows, tasks, and agents,
+including the history logs of previous executions, belonging to companies with
+exposed instances. Disruptive attacks can cause data loss and business delays
+affecting teams that integrate workflows into their daily routines and the
+clients that depend on these workflows functioning properly. We did not find
+any evidence of Prefect users having their information leaked as of yet.
+Prefect users should verify that their instances are not exposed to the
+internet and enable multi-factor authentication.&lt;/p&gt;
+&lt;h2&gt;What is Prefect?&lt;span class="hx:absolute hx:-mt-20" id="what-is-prefect"&gt;&lt;/span&gt;
+&lt;a href="#what-is-prefect" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Prefect is a workflow management platform launched in 2018 and powered by the
+open-source Prefect Core workflow engine. It&amp;rsquo;s a popular platform marked by its
+7.6K stars on &lt;a href="https://github.com/prefecthq/prefect"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt;. There are two
+ways to set up Prefect: 1) Using the
+&lt;a href="https://www.prefect.io/cloud/"target="_blank" rel="noopener"&gt;Prefect Cloud&lt;/a&gt; engine or 2) Setting up a local
+&lt;a href="https://github.com/prefecthq/server"target="_blank" rel="noopener"&gt;Prefect server&lt;/a&gt;. The main difference
+between the two options is Prefect Cloud has everything already configured and
+ready to use while the latter option requires users to put more effort into
+configuring the infrastructure. Prefect uses a full
+&lt;a href="https://docs.prefect.io/orchestration/ui/interactive-api.html"target="_blank" rel="noopener"&gt;GraphQL API&lt;/a&gt;
+for interacting with the platform and easily accessing all of the information
+stored in the platform. The API can be accessed using the web UI or through a
+Python client. When using Prefect Cloud, authentication is required to access
+the platform. However, when using the Prefect server, authentication is not
+required by default, meaning that anyone with access to the server can get
+information from the Prefect platform. For companies that have instances
+exposed to the internet and which don&amp;rsquo;t incorporate authentication, essentially
+this means that anyone can view the information stored by those companies on
+Prefect. This includes flows, tasks, agents and projects. Unlike
+&lt;a href="../../../2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/"&gt;Argo&lt;/a&gt;
+and
+&lt;a href="../../../2021/10/misconfigured-airflows-leak-credentials/"&gt;Airflow&lt;/a&gt;,
+Prefect is a much more secure platform and we did not find any evidence of
+companies that use Prefect having their information leaked. We examined the
+functions exposed by the API and the actions that users can make in the web UI.
+There are several functions in the web UI and GraphQL API that can be used by
+attackers to delete elements in the workflow platform and launch disruptive
+attacks on the companies that own the exposed instances.&lt;/p&gt;
+&lt;h2&gt;How is the Attack Executed?&lt;span class="hx:absolute hx:-mt-20" id="how-is-the-attack-executed"&gt;&lt;/span&gt;
+&lt;a href="#how-is-the-attack-executed" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Workflows can be deleted with a single button click in the web UI as shown
+below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/images/fig1.png" title="Deleting a workflow in the web UI." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Deleting a workflow in the web UI.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Another way to delete workflows, as well as projects, tasks and agents, is by
+using queries from the GraphQL API, which is available in the web UI or on port
+4200 of the server that runs the Prefect platform. Using a simple query, an
+attacker can retrieve the ID of the elements they plan to delete and then use
+the suitable API functions to delete the elements. Those elements are
+&lt;code&gt;delete_task&lt;/code&gt;, &lt;code&gt;delete_flow&lt;/code&gt;, &lt;code&gt;delete_project&lt;/code&gt; or &lt;code&gt;delete_agent&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/images/fig2.png" title="Obtaining the ID of a task using GraphQL API." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Obtaining the ID of a task using GraphQL API.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/images/fig3.png" title="Deleting a task which has a specific ID." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Deleting a task which has a specific ID.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;The Risk of Exposed Prefect Instances&lt;span class="hx:absolute hx:-mt-20" id="the-risk-of-exposed-prefect-instances"&gt;&lt;/span&gt;
+&lt;a href="#the-risk-of-exposed-prefect-instances" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Prefect instances exposed to the internet don&amp;rsquo;t enable authentication by
+default, allowing attackers to delete elements in the platform and disrupt the
+everyday work of the organization. This type of attack can affect an
+organization in several ways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Data loss – losing information about workflows, tasks and data from previous
+deployments&lt;/li&gt;
+&lt;li&gt;Disruption – workflows are a key utility leveraged by different teams to
+accomplish tasks. Damage in a company&amp;rsquo;s Prefect instance affects all of the
+teams from that company that use the platform and the clients that depend on
+the service(s) provided by the victim company. For example, a company that
+uses workflows to automate its purchasing process could be blocked from
+making transactions until the issue is resolved. Another example is the
+disruption of client onboarding processes powered by automated workflows&lt;/li&gt;
+&lt;li&gt;Delays in project deployment – teams and customers relying on workflows to
+accomplish tasks most likely would experience delays since it takes time to
+restore the platform or even set up a new one. For example, a business that
+uses automated workflows to send emails to its customers could experience
+delays. In addition, disruption of a service could tarnish a company&amp;rsquo;s brand
+and reputation resulting in financial loss&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Stay Secure&lt;span class="hx:absolute hx:-mt-20" id="stay-secure"&gt;&lt;/span&gt;
+&lt;a href="#stay-secure" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Misconfigurations are the number one cause of security breaches in the cloud
+today. Companies exposing their instances to the internet without enforcing
+authentication is always a bad idea, especially if the platform provides a
+powerful API that can also be leveraged by attackers. While Prefect is more
+secure than workflow platforms like Argo and Airflow, exposed Prefect
+deployments are still candidates for disruptive attacks in which attackers can
+alter the workflow environment and greatly damage the company that uses the
+platform. We advise on adding firewall rules to hide the instance from the
+internet and ensure that authentication is configured. If the application does
+not offer sufficient authentication mechanisms, consider leveraging tools
+provisioned by the cloud provider to implement your own authentication such as
+GCP&amp;rsquo;s Identity-Aware Proxy or AWS&amp;rsquo;s Session Manager.&lt;/p&gt;</description></item><item><title>Misconfigured Airflows Leak Thousands of Credentials from Popular Services</title><link>https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/</link><pubDate>Mon, 04 Oct 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/</guid><description>
+&lt;p&gt;&lt;em&gt;This research refers to misconfigured Apache Airflow managed by individuals or
+organizations (&amp;lsquo;users&amp;rsquo;). As a result of the misconfiguration, the credentials
+of users are exposed, including their own credentials to the different
+platforms, applications and services mentioned in this article. This article
+doesn&amp;rsquo;t refer to exposed credentials of the entities behind the development of
+the platforms, applications and services themselves.&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;Apache Airflow is the #1 starred open-source workflows application on GitHub&lt;span class="hx:absolute hx:-mt-20" id="apache-airflow-is-the-1-starred-open-source-workflows-application-on-github"&gt;&lt;/span&gt;
+&lt;a href="#apache-airflow-is-the-1-starred-open-source-workflows-application-on-github" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Workflow management platforms are an indispensable tool for automating business
+and IT tasks. These platforms make it easier to create, schedule and monitor
+workflows. They are typically hosted on the cloud to provide increased
+accessibility and scalability. On the flip side, misconfigured instances that
+allow internet-wide access make these platforms ideal candidates for
+exploitation by attackers.&lt;/p&gt;
+&lt;p&gt;While researching a misconfiguration in the popular workflow platform, Apache
+Airflow, we discovered a number of unprotected instances. These unsecured
+instances expose sensitive information of companies across the media, finance,
+manufacturing, information technology (IT), biotech, e-commerce, health,
+energy, cybersecurity, and transportation industries. In the vulnerable
+Airflows, we see exposed credentials for popular platforms and services such as
+Slack, PayPal, AWS and more.&lt;/p&gt;
+&lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
+&lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;A number of misconfigured Airflow instances have exposed the credentials of
+popular services including cloud hosting providers, payment processing, and
+social media platforms.&lt;/li&gt;
+&lt;li&gt;Exposing secrets such as user credentials can cause data leakage or provide
+attackers with the ability to spread further in the system.&lt;/li&gt;
+&lt;li&gt;Customer data exposed as a result of a data leak can lead to violation of
+data protection laws and the possibility of legal action.&lt;/li&gt;
+&lt;li&gt;There is also the possibility that malicious code execution and malware can
+be launched on the exposed production environments and even on Apache Airflow
+itself.&lt;/li&gt;
+&lt;li&gt;We have notified the identified entities to fix their misconfigured Airflow
+instances as part of the responsible disclosure policy.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All Apache Airflow users are urged to update to the latest version immediately
+and make sure their deployments are only accessible to authorized users. In
+addition, adopt &lt;a href="#secure-coding-practices"&gt;secure coding practices&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;What is Apache Airflow?&lt;span class="hx:absolute hx:-mt-20" id="what-is-apache-airflow"&gt;&lt;/span&gt;
+&lt;a href="#what-is-apache-airflow" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Apache Airflow is an open-source workflow management platform. The platform
+simplifies the process of creating and managing complex workflows. Airflow
+provides plug-and-play integrations with many technologies. Its
+&lt;a href="https://github.com/apache/airflow/"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt; repository has 22.8K stars, making
+it the world&amp;rsquo;s most
+&lt;a href="https://www.datarevenue.com/en-blog/airflow-vs-luigi-vs-argo-vs-mlflow-vs-kubeflow"target="_blank" rel="noopener"&gt;popular&lt;/a&gt;
+open-source workflow project.&lt;/p&gt;
+&lt;p&gt;Airflow uses standard Python to create and schedule workflows, providing users
+with a dynamic and convenient way to work with the platform. There are several
+concepts and features in Airflow that make it flexible and popular among users:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Directed Acyclic Graph (DAG) – the primary concept in Airflow that represents
+a collection of tasks with defined dependencies and relationships.&lt;/li&gt;
+&lt;li&gt;Task – the basic unit of execution in Airflow, with each node in the DAG
+represented by a task.&lt;/li&gt;
+&lt;li&gt;Variables – a way to store content and settings in a key value storage,
+including passwords and API keys that are stored as masked strings. Airflow
+also supports variable encryption using
+&lt;a href="https://airflow.apache.org/docs/apache-airflow/stable/security/secrets/fernet.html#security-fernet"target="_blank" rel="noopener"&gt;Fernet&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Connections – A feature that stores parameters (username, password, host)
+needed to connect to external systems.&lt;/li&gt;
+&lt;li&gt;Logs – Airflow supports logging mechanisms as well as the ability to emit
+metrics.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Version 1 of Airflow was released in
+&lt;a href="https://github.com/apache/airflow/releases/tag/1.0.0"target="_blank" rel="noopener"&gt;2015&lt;/a&gt;. From the new web
+server UI from version 1.10.0 many security changes were included, for
+instance, removing the dangerous Ad Hoc query. In December 2020, version 2.0.0
+was released and included many changes in functionality, performance, UI, and
+security of the platform.&lt;/p&gt;
+&lt;p&gt;Version 2 presents a new REST API that requires authentication for all
+operations, including logging into the platform. Additionally, the logs do not
+not contain sensitive information and specification of the Fernet key is
+required for variable encryption. Finally, the configuration is adapted. This
+means that several fields are deprecated and other settings require explicit
+values rather than using default values. Most of our research is focused on the
+older, less secure versions of Apache Airflow, which also emphasizes the risks
+associated with procrastinating on making software updates.&lt;/p&gt;
+&lt;h2&gt;Misconfiguration Risk&lt;span class="hx:absolute hx:-mt-20" id="misconfiguration-risk"&gt;&lt;/span&gt;
+&lt;a href="#misconfiguration-risk" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Credential Exposure&lt;span class="hx:absolute hx:-mt-20" id="credential-exposure"&gt;&lt;/span&gt;
+&lt;a href="#credential-exposure" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;One of the main risks of a misconfigured Airflow instance is the credentials
+that are exposed with it. These credentials can give a threat actor access to
+legitimate accounts and databases, with the ability to perform lateral
+movement. If a large number of passwords are visible, a threat actor can also
+use this data to detect patterns and common words to infer other passwords.
+These can be leveraged in dictionary or brute-force-style attacks against other
+platforms. Popular platforms that we found with exposed credentials as a result
+of misconfigured Airflow instances include database passwords, API keys, and
+cloud credentials. These include but are not limited to:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Most of these credentials are exposed through insecure coding practices. We
+document some of the ways in which the credentials have been exposed below.&lt;/p&gt;
+&lt;h4&gt;Insecure Coding Practices&lt;span class="hx:absolute hx:-mt-20" id="insecure-coding-practices"&gt;&lt;/span&gt;
+&lt;a href="#insecure-coding-practices" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The most common way to leak credentials in Airflow is through insecure coding
+practices. We discovered many instances with hardcoded passwords inside the
+Python DAG code. An example of a hardcoded password for a production PostgreSQL
+database is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig2.png" title="Hardcoded PostgreSQL password in DAG code." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Hardcoded PostgreSQL password in DAG code.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h4&gt;Variables&lt;span class="hx:absolute hx:-mt-20" id="variables"&gt;&lt;/span&gt;
+&lt;a href="#variables" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The next most common way for credentials to be leaked is through the
+&amp;lsquo;variables&amp;rsquo; feature in Airflow. The variables feature allows a user to define a
+variable value that is able to be globally used across all DAG scripts. It is
+very common to see hardcoded passwords in these variables. An example of a
+Slack token used in a variable is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig3.png" title="Hardcoded Slack token in variables." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Hardcoded Slack token in variables.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h4&gt;Connections&lt;span class="hx:absolute hx:-mt-20" id="connections"&gt;&lt;/span&gt;
+&lt;a href="#connections" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Connections are the correct way to store credentials in Airflow. When a
+connection with a password or token is added to Airflow, the password is
+&lt;a href="https://airflow.apache.org/docs/apache-airflow/stable/howto/connection.html#securing-connections"target="_blank" rel="noopener"&gt;securely encrypted&lt;/a&gt;
+in a database using the Fernet key. In some cases, this feature is misused and
+the credentials are stored in the &lt;code&gt;Extra&lt;/code&gt; field of the connection in plaintext.
+This means that they are not encrypted and can be viewed by anyone. An example
+with an AWS key stored in the extra field is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig4.png" title="AWS key located in misused connection." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;AWS key located in misused connection.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h4&gt;Logs&lt;span class="hx:absolute hx:-mt-20" id="logs"&gt;&lt;/span&gt;
+&lt;a href="#logs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;In versions of Airflow prior to 1.10.13, credentials added via the
+&lt;a href="https://airflow.apache.org/docs/apache-airflow/stable/howto/connection.html#creating-a-connection-from-the-cli"target="_blank" rel="noopener"&gt;command line interface (CLI)&lt;/a&gt;
+would be logged in plaintext in the logs section; now registered as
+&lt;a href="https://www.cvedetails.com/cve/CVE-2020-17511/"target="_blank" rel="noopener"&gt;CVE-2020-17511&lt;/a&gt;. Below shows a
+log entry for a SQL Lakehouse platform.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig5.png" title="Password located in logs." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Password located in logs.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h4&gt;Configuration&lt;span class="hx:absolute hx:-mt-20" id="configuration"&gt;&lt;/span&gt;
+&lt;a href="#configuration" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The configuration file (airflow.cfg) is created when Airflow is first started.
+It contains Airflow&amp;rsquo;s configuration and it is able to be changed. This file can
+contain sensitive information such as passwords and keys. If the setting in the
+file &lt;code&gt;expose_config&lt;/code&gt; is set to &lt;code&gt;True&lt;/code&gt;, anyone can access the configuration from
+the web server UI. Accessing from the UI can expose credentials. It is common
+to see plaintext fernet keys in these files as shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig6.png" title="Key located in exposed configuration file." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Key located in exposed configuration file.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Leakage of Sensitive Data&lt;span class="hx:absolute hx:-mt-20" id="leakage-of-sensitive-data"&gt;&lt;/span&gt;
+&lt;a href="#leakage-of-sensitive-data" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Many Airflow instances contain sensitive information. When these instances are
+exposed to the internet the information becomes accessible to everyone, since
+the authentication is disabled.&lt;/p&gt;
+&lt;p&gt;Leakage of sensitive data essentially means that attackers have access to
+information on the organization that owns the exposed server. They can steal
+and use the information in many ways. For example, attackers can use leaked
+information to gather more information about the organization (reconnaissance
+stage as defined in
+&lt;a href="https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html"target="_blank" rel="noopener"&gt;The Cyber Kill Chain®&lt;/a&gt;)
+and launch an attack that is tailored towards that organization. Leaked
+information can also reveal details about the compromised organization&amp;rsquo;s
+clients. The consequences of data leakage can lead to serious reputational
+damage for the company and the potential loss of existing and potential new
+clients.&lt;/p&gt;
+&lt;p&gt;In versions prior to v1.10 of Airflow, there is a feature that lets users run
+Ad Hoc database queries and get results from the database. While this feature
+can be handy, it is also very dangerous because on top of there being no
+authentication, anyone with access to the server can get information from the
+database.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig7.png" title="Screenshot of the Ad Hoc Query feature in Airflow UI." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Screenshot of the Ad Hoc Query feature in Airflow UI.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Many exposed Airflow instances that we found revealed information about the
+services and platforms that companies are using in their software development
+environments. For example, several instances included the private names of
+Docker images or internal dependencies used in the workflow. Exposing
+information about tools and packages used in the organization&amp;rsquo;s infrastructure
+can jeopardize the organization and also be leveraged by threat actors in
+supply chain attacks. This can lead to attacks that leverage dependency or
+image short names to deliver malicious code instead of the intended code. A
+really good example of this type of attack is covered
+&lt;a href="https://medium.com/@alex.birsan/dependency-confusion-4a5d60fec610"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig8.png" title="Private container registry." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Private container registry.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Legal Action&lt;span class="hx:absolute hx:-mt-20" id="legal-action"&gt;&lt;/span&gt;
+&lt;a href="#legal-action" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Exposing customer information can also lead to violation of data protection
+laws and the possibility of legal action. One such data protection law is
+General Data Protection Regulation (GDPR), which applies to organizations
+handling the data of European citizens or any entities located in the European
+Union (EU). Violating this law by leaking sensitive customer information can
+lead to sizable administrative fines.&lt;/p&gt;
+&lt;p&gt;Disruption of clients&amp;rsquo; operations through poor cybersecurity practices can also
+result in legal action such as class action lawsuits. In the May 2021 Colonial
+Pipeline hack, consumers that had their business disrupted
+&lt;a href="https://www.washingtonpost.com/technology/2021/07/25/ransomware-class-action-lawsuit/"target="_blank" rel="noopener"&gt;filed class action lawsuits&lt;/a&gt;
+against Colonial Pipeline.&lt;/p&gt;
+&lt;h3&gt;Malware&lt;span class="hx:absolute hx:-mt-20" id="malware"&gt;&lt;/span&gt;
+&lt;a href="#malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;There is also the possibility that Airflow plugins or features can be abused to
+run malicious code. An example of how an attacker can abuse a native
+&amp;lsquo;Variables&amp;rsquo; feature in Airflow is if any code or images placed in the variables
+form is used to build evaluated code strings.&lt;/p&gt;
+&lt;p&gt;Variables are able to be edited by any visiting user which means that malicious
+code could be injected. One entity we observed was using variables to store
+internal container image names to execute. These container image variables
+could be edited and swapped out with an image containing and running
+unauthorized or malicious code.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig9.png" title="Image name variables vulnerable to exploitation." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Image name variables vulnerable to exploitation.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Another possible route for malicious code execution can come through unofficial
+third-party plugins. In some instances, we noticed that the plugin
+&lt;a href="https://github.com/andreax79/airflow-code-editor"target="_blank" rel="noopener"&gt;&lt;code&gt;airflow-code-editor&lt;/code&gt;&lt;/a&gt; was
+being used. This can be leveraged to edit DAGs to include malicious code that
+can then be triggered from the UI. Of all the exposed instances, we noted only
+a small percentage using these types of vulnerable plugins.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig10.png" title="Vulnerable code editor plugin." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Vulnerable code editor plugin.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Mitigation&lt;span class="hx:absolute hx:-mt-20" id="mitigation"&gt;&lt;/span&gt;
+&lt;a href="#mitigation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Versioning&lt;span class="hx:absolute hx:-mt-20" id="versioning"&gt;&lt;/span&gt;
+&lt;a href="#versioning" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Airflow made great progress in terms of security features implemented in
+version 2.0. The changes included the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The dangerous Ad Hoc query was removed from the GUI.&lt;/li&gt;
+&lt;li&gt;The logs do not leak information.&lt;/li&gt;
+&lt;li&gt;Enforced login and authentication required for all operations in the REST
+API.&lt;/li&gt;
+&lt;li&gt;Security tab was added to the dashboard. It provides information about users
+and the permissions they have for each menu in the dashboard.&lt;/li&gt;
+&lt;li&gt;The configuration file is more strict and requires explicit specifications of
+configuration values rather than using default values.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In light of the major changes made in version 2, it is strongly recommended to
+update the version of all Airflow instances to the latest version. Make sure
+that only authorized users can connect.&lt;/p&gt;
+&lt;h3&gt;Secure Coding Practices&lt;span class="hx:absolute hx:-mt-20" id="secure-coding-practices"&gt;&lt;/span&gt;
+&lt;a href="#secure-coding-practices" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Secure coding practices should be adopted whenever possible. Passwords should
+not be hardcoded and the long names of images and dependencies should be
+utilized. You will not be protected when using poor coding practices even if
+you believe the application is firewalled off to the internet.&lt;/p&gt;
+&lt;p&gt;The connections should be utilized in the proper way specified by Airflow for
+maximum security. That process for managing connections is documented
+&lt;a href="https://airflow.apache.org/docs/apache-airflow/stable/howto/connection.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If there is sensitive information that can not be placed within the
+connections, consider using environment variables instead.&lt;/p&gt;
+&lt;h2&gt;Detecting Attackers Exploiting Misconfigurations&lt;span class="hx:absolute hx:-mt-20" id="detecting-attackers-exploiting-misconfigurations"&gt;&lt;/span&gt;
+&lt;a href="#detecting-attackers-exploiting-misconfigurations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Misconfigurations and broken access control are among the top reasons for
+access to unauthorized functionality and data. If you don&amp;rsquo;t believe us, check
+out our research about misconfigurations in another popular workflow platform
+called
+&lt;a href="https://intezer.com/blog/container-security/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/"target="_blank" rel="noopener"&gt;Argo Workflows&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In the event that an attacker has already exploited a misconfiguration or
+vulnerability, you will need to detect and terminate the malicious or
+unauthorized code in your production environment as soon as it is executed.&lt;/p&gt;</description></item><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
 &lt;p&gt;Enterprises today rely on a wide range of cloud services—infrastructure as a
 service (IaaS), platform as a service (PaaS), software as a service (SaaS), and
 more—to meet their business needs. But the growing popularity of cloud has also

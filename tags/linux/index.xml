@@ -2158,7 +2158,126 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Vermilion Strike: Linux and Windows Re-implementation of Cobalt Strike</title><link>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</link><pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</guid><description>
+&lt;/div&gt;</description></item><item><title>Conducting Digital Forensics Incident Response (DFIR) on an Infected GitLab Server</title><link>https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/</link><pubDate>Thu, 04 Nov 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/</guid><description>
+&lt;h2&gt;GitLab servers are under attack with a now-patched critical vulnerability&lt;span class="hx:absolute hx:-mt-20" id="gitlab-servers-are-under-attack-with-a-now-patched-critical-vulnerability"&gt;&lt;/span&gt;
+&lt;a href="#gitlab-servers-are-under-attack-with-a-now-patched-critical-vulnerability" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Earlier this week we investigated an incident that occurred on a user&amp;rsquo;s GitLab
+server. After the user installed a sensor on their server, an initial runtime
+scan was performed. An alert was immediately triggered on the execution of a
+malicious metasploit shellcode named &lt;code&gt;gitlab.elf&lt;/code&gt;, which occurred a few days
+prior to the installation of the sensor. Several hours later another alert was
+triggered, this time upon the execution of an XMRig Miner. The malware was also
+executed several days before the sensor was installed. We notified the user and
+began our own investigation with the goal of understanding how the attacker got
+into the system and what the scope of the incident was. Consistent with our
+findings,
+&lt;a href="https://thehackernews.com/2021/11/alert-hackers-exploiting-gitlab.html"target="_blank" rel="noopener"&gt;news broke&lt;/a&gt;
+later that day that attackers were exploiting a GitLab unauthenticated remote
+code execution (RCE) vulnerability. In this post we describe the investigation
+process conducted by Intezer&amp;rsquo;s research and engineering teams using the runtime
+security sensor installed on the victim&amp;rsquo;s host.&lt;/p&gt;
+&lt;h2&gt;The Incident&lt;span class="hx:absolute hx:-mt-20" id="the-incident"&gt;&lt;/span&gt;
+&lt;a href="#the-incident" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The individual was a new user who had just installed the a sensor on a CentOS
+host. Immediately after the install, an initial scan was performed and the
+sensor identified a running shellcode inside a container on the user&amp;rsquo;s host.
+The alert presented important information about the execution of the process
+including the process tree, execution path, details about the user&amp;rsquo;s host, and
+the files containing malware. Using this information, we were able to get more
+details about the malicious process:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The process was executed inside a container based on a
+&lt;code&gt;gitlab/gitlab-ce:12.10.10-ce.0&lt;/code&gt; Docker image&lt;/li&gt;
+&lt;li&gt;The path and filename of the malicious process is
+&lt;code&gt;/var/opt/gitlab/gitlab-workhorse/gitlab.elf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;EUID of the process is 998&lt;/li&gt;
+&lt;li&gt;The process connected to &lt;code&gt;172.96.190[.]95:904&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;The alert also
+&lt;a href="https://analyze.intezer.com/files/cd54a34dbd7d345a7fd7fd8744feb5c956825317e9225edb002c3258683947f1"target="_blank" rel="noopener"&gt;links&lt;/a&gt;
+to Intezer, which identifies the shellcode as a metasploit.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;During this time, the second alert appeared, shown below, notifying the user
+that an XMRig Miner was executed inside the container. The name of the file
+that contains the malware was &lt;code&gt;syslogd64&lt;/code&gt;. Using the parent process ID (PPID)
+information from the alert, we were able to determine that it was executed by a
+script called &lt;code&gt;okk.sh&lt;/code&gt;. The shellcode in &lt;code&gt;gitlab.elf&lt;/code&gt; provides a reverse TCP
+shell that delivers &lt;code&gt;okk.sh&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We inspected the events that occurred on the victim&amp;rsquo;s host and found a curl
+command executed inside the container. Shown below are Events which can be
+accessed from the sensor dashboard. A curl command is seen which uses the
+whoami value as part of the target&amp;rsquo;s hostname.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig1.png" title="Curl command seen under Events." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Curl command seen under Events.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We were also able to find another script called &lt;code&gt;tmp.sh&lt;/code&gt; under the Events tab.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The scripts install an XMRig Miner and implement persistence by creating a
+systemd service while adding the malware to a &lt;code&gt;.profile&lt;/code&gt; file in the user&amp;rsquo;s
+home folder.&lt;/li&gt;
+&lt;li&gt;Another wallet ID is used in this script:
+&lt;code&gt;44wrH5Y3VXn577ZJHAJwZG8pLMNQXURsGKnNfbwUNmv3fJdHcedednZSna9hbFU5ojBkF83beV5CJYnqh9jnZNNdTJ4oXor&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig2.png" title="View of tmp.sh execution event from the sensor." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;View of tmp.sh execution event from the sensor.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig3.png" title="Tmp.sh execution event." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Tmp.sh execution event.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We examined &lt;code&gt;okk.sh&lt;/code&gt; and got the following details:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The script removes previously installed cryptominers.&lt;/li&gt;
+&lt;li&gt;The script tries to remove the malware that is executed in this attack but it
+doesn&amp;rsquo;t seem to work.&lt;/li&gt;
+&lt;li&gt;The installation command, Install XMRig miner, is copied from the pool&amp;rsquo;s
+setup documentation page, shown in the image below.&lt;/li&gt;
+&lt;li&gt;The wallet ID used by the attacker is
+&lt;code&gt;45P62r6YsHWagiRZ6K5tGeKPy2tFFwfYvdfatsKHCC7wATRrsKqqSFySocLVtrKFzYj1RzYu2mSD9HXBofYusbfdAiSCkvM&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig4.png" title="Installation command for the cryptominer" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Installation command for the cryptominer&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The victim&amp;rsquo;s host exposed the GitLab authentication page on port 8080. We can
+assume that the breach happened due to weak credentials picked up by the
+attacker, or by abusing the recently discovered RCE vulnerability
+(&lt;a href="https://nvd.nist.gov/vuln/detail/CVE-2021-22205"target="_blank" rel="noopener"&gt;CVE-2021-22205&lt;/a&gt;) in GitLab.&lt;/p&gt;
+&lt;h2&gt;Looking Inside the Wallets&lt;span class="hx:absolute hx:-mt-20" id="looking-inside-the-wallets"&gt;&lt;/span&gt;
+&lt;a href="#looking-inside-the-wallets" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We were able to view the status of the wallets in the pool&amp;rsquo;s dashboard. Each
+wallet was using hundreds of workers at the time of this post. The images below
+show details of the wallets including their hash rates and activity of the
+cryptominers.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig5.png" title="Hash rates of the wallet." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Hash rates of the wallet.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig6.png" title="Hash rates of the second wallet." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Hash rates of the second wallet.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Threat Detection and Response&lt;span class="hx:absolute hx:-mt-20" id="threat-detection-and-response"&gt;&lt;/span&gt;
+&lt;a href="#threat-detection-and-response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Attackers are constantly searching for internet-facing instances and
+applications that are vulnerable, misconfigured, or have weak credentials.
+Users should always install the latest security updates, patch their systems,
+avoid exposing applications to the internet when they can, and enforce
+multi-factor authentication. While it&amp;rsquo;s important to implement all the right
+security policies and to keep systems up to date, zero-days are bound to
+happen. Runtime protection solutions come in handy for detecting when the
+attacker has already compromised the environment and launched malware. This
+post was a joint effort between Intezer&amp;rsquo;s research and engineering teams.
+Special thanks to Adir Shemesh.&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Gitlab.elf&lt;span class="hx:absolute hx:-mt-20" id="gitlabelf"&gt;&lt;/span&gt;
+&lt;a href="#gitlabelf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;cd54a34dbd7d345a7fd7fd8744feb5c956825317e9225edb002c3258683947f1&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Syslogd64&lt;span class="hx:absolute hx:-mt-20" id="syslogd64"&gt;&lt;/span&gt;
+&lt;a href="#syslogd64" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;be6ac1ac095545af4a192c55b259f882933269fc7abf06f283b07487b6253ea7&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Okk.sh&lt;span class="hx:absolute hx:-mt-20" id="okksh"&gt;&lt;/span&gt;
+&lt;a href="#okksh" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;7d9adc0b7caebe60ab3e5709e1e6de48b6455f352afff61acf53620f9999139f&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Tmp.sh&lt;span class="hx:absolute hx:-mt-20" id="tmpsh"&gt;&lt;/span&gt;
+&lt;a href="#tmpsh" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;00fc15eadd33b1055cd3f30869363c6498d2668b8f1e244e82ba1a9abff58bf1&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Wallet IDs&lt;span class="hx:absolute hx:-mt-20" id="wallet-ids"&gt;&lt;/span&gt;
+&lt;a href="#wallet-ids" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;44wrH5Y3VXn577ZJHAJwZG8pLMNQXURsGKnNfbwUNmv3fJdHcedednZSna9hbFU5ojBkF83beV5CJYnqh9jnZNNdTJ4oXor&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;45P62r6YsHWagiRZ6K5tGeKPy2tFFwfYvdfatsKHCC7wATRrsKqqSFySocLVtrKFzYj1RzYu2mSD9HXBofYusbfdAiSCkvM&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Vermilion Strike: Linux and Windows Re-implementation of Cobalt Strike</title><link>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</link><pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</guid><description>
 &lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
 &lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Discovered Linux &amp;amp; Windows re-implementation of Cobalt Strike Beacon written

@@ -1,0 +1,450 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Tools</title><link>https://intezer.github.io/community-intelligence/tags/tools/</link><description>Recent content in Tools on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 02 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/tools/index.xml" rel="self" type="application/rss+xml"/><item><title>All Your Go Binaries are Belong to Us</title><link>https://intezer.github.io/community-intelligence/blog/2021/12/all-your-go-binaries-are-belong-to-us/</link><pubDate>Thu, 02 Dec 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/12/all-your-go-binaries-are-belong-to-us/</guid><description>
+&lt;p&gt;The skillset of performing binary analysis may to some appear to be limited to
+a few undeadly souls. While it may look like a form of dark arts when someone
+can read data structures in a raw hex dump, it shouldn&amp;rsquo;t even qualify as a
+party trick. To quote
+&lt;a href="https://twitter.com/lizthedeveloper/status/1431039239249178627"target="_blank" rel="noopener"&gt;@BizTheDeveloper&amp;rsquo;s mother&lt;/a&gt;,
+&amp;ldquo;…reading a hex dump is not that hard…&amp;rdquo; Now, the goal of this post is not to
+turn the reader into a hex dump magician. Instead, I want to show that binary
+analysis is all about data parsing. If you are a Go developer and are not
+interested in the analysis of Go binaries, this post will still have something
+for you. Did you know that &amp;ldquo;Go binary analysts&amp;rdquo; know if you organize your
+source code neatly or just dump everything into one file? In this post, we will
+see how we can extract some of the available hidden metadata in the binaries
+produced by the Go compiler. With the extracted data, we will see a few use
+cases including how it can be used to determine if the application uses a
+vulnerable dependency. The goal is to be able to perform this on &amp;ldquo;production
+builds&amp;rdquo; so we are targeting support for stripped binaries. This means we can&amp;rsquo;t
+depend on debug information or symbols that normally are included in binaries
+produced by the compiler. This may look like something we would need but in
+fact, we actually don&amp;rsquo;t. Finally, let&amp;rsquo;s limit us to only using the standard
+library and optionally a &amp;ldquo;golang x&amp;rdquo; package.&lt;/p&gt;
+&lt;h2&gt;The Debug Package&lt;span class="hx:absolute hx:-mt-20" id="the-debug-package"&gt;&lt;/span&gt;
+&lt;a href="#the-debug-package" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A package that everyone who wants to do some analysis of Go binaries should
+know about is the &lt;a href="https://pkg.go.dev/debug"target="_blank" rel="noopener"&gt;&lt;code&gt;debug&lt;/code&gt;&lt;/a&gt; package in the standard
+library. The package provides sub-packages to parse ELF (Linux and Unix), PE
+(Windows), and Mach-O (macOS) files. In addition to this, it also has useful
+functions for parsing some of the data structures we need to process. One good
+thing with these functions is that they are not dependent on debug information
+or symbols, which means we can use them for stripped &amp;ldquo;production builds.&amp;rdquo;
+Finding the structures is a bit harder but unfortunately not something we can
+work around. The metadata table we are going to focus on in this section is the
+&lt;code&gt;PCLNTAB&lt;/code&gt;. The &lt;code&gt;PCLNTAB&lt;/code&gt; was added in Go 1.2 and holds data needed for Go&amp;rsquo;s
+panic messages. The table is used to map between the program counter (location
+of an assembly instruction) and the source code file and line number, allowing
+a more developer-friendly panic message as it includes where in the source code
+the panic occurred. What is also part of this table is a list of all the
+function information, including functions that have been eliminated by the
+compiler as part of the dead code elimination step. The goal of parsing this
+table is to recover all the packages in the Go binary. Before we can process
+the table, we need to first find it. This is very easy for ELF and Mach-O files
+because the table is located in its own section called &lt;code&gt;.gopclntab&lt;/code&gt;. When it
+comes to PE files, the process is a bit less straightforward. The table is
+usually located in the &lt;code&gt;.rdata&lt;/code&gt; or &lt;code&gt;.text&lt;/code&gt; section of the PE file. The table
+starts with a magic value that can be used to locate the start of the table.
+For Go binaries compiled with 1.2 up to excluding 1.16 of the compiler, the
+magic value is &lt;code&gt;0xfffffffb&lt;/code&gt;. For files compiled with 1.16 and later the magic
+value is &lt;code&gt;0xfffffffa&lt;/code&gt;. To ensure the match is correct we can use
+&lt;a href="https://cs.opensource.google/go/go/&amp;#43;/refs/tags/go1.17.3:src/debug/gosym/pclntab.go"target="_blank" rel="noopener"&gt;the same checks&lt;/a&gt;
+that the parser function uses to check the table. To parse the table, we will
+use the &lt;code&gt;debug/gosym&lt;/code&gt; package. First, we need to create a &lt;code&gt;LineTable&lt;/code&gt; with the
+function &lt;a href="https://pkg.go.dev/debug/gosym#NewLineTable"target="_blank" rel="noopener"&gt;&lt;code&gt;NewLineTable&lt;/code&gt;&lt;/a&gt;. Using
+the &lt;code&gt;LineTable&lt;/code&gt; we can create a symbol table with the function
+&lt;a href="https://pkg.go.dev/debug/gosym#NewTable"target="_blank" rel="noopener"&gt;&lt;code&gt;NewTable&lt;/code&gt;&lt;/a&gt;. The &lt;code&gt;NewTable&lt;/code&gt; function
+accepts a byte slice of the symbol table. This argument can be nil which is
+good since the symbol table is not available in stripped binaries.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;lt&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;gosym&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;NewLineTable&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;lntabBuf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;textStart&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nx"&gt;tab&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;err&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;gosym&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;NewTable&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;lt&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The definition of the structure returned is shown in the code snippet below.
+The structure has really one field which is exported, &lt;code&gt;Funcs&lt;/code&gt; which is a slice
+of &lt;a href="https://pkg.go.dev/debug/gosym#Func"target="_blank" rel="noopener"&gt;&lt;code&gt;Func&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Table&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Syms&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="nx"&gt;Sym&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// nil for Go 1.3 and later binaries&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Funcs&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="nx"&gt;Func&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Files&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;map&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;Obj&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// for Go 1.2 and later all files map to one Obj&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Objs&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="nx"&gt;Obj&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// for Go 1.2 and later only one Obj in slice&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// contains filtered or unexported fields&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The &lt;a href="https://pkg.go.dev/debug/gosym#Func"target="_blank" rel="noopener"&gt;&lt;code&gt;Func&lt;/code&gt;&lt;/a&gt; type holds information about
+a single function which includes the entry point and where it ends. These
+addresses are the memory locations when the file is loaded into memory for
+execution and not the offset from the beginning of the file. If the function
+has been eliminated by the compiler, the entry has a value of &lt;code&gt;uint64(0)&lt;/code&gt;. The
+&lt;code&gt;Func&lt;/code&gt; structure also includes a pointer to the underlying symbol. Via the
+&lt;a href="https://pkg.go.dev/debug/gosym#Sym"target="_blank" rel="noopener"&gt;&lt;code&gt;Sym&lt;/code&gt;&lt;/a&gt;, we can access the name of the
+function via the method
+&lt;a href="https://pkg.go.dev/debug/gosym#Sym.BaseName"target="_blank" rel="noopener"&gt;&lt;code&gt;BaseName&lt;/code&gt;&lt;/a&gt; and the package it
+belongs to via the method
+&lt;a href="https://pkg.go.dev/debug/gosym#Sym.PackageName"target="_blank" rel="noopener"&gt;&lt;code&gt;PackageName&lt;/code&gt;&lt;/a&gt;. If the &lt;code&gt;Func&lt;/code&gt;
+is a method attached to a type, the method
+&lt;a href="https://pkg.go.dev/debug/gosym#Sym.ReceiverName"target="_blank" rel="noopener"&gt;&lt;code&gt;ReceiverName&lt;/code&gt;&lt;/a&gt; returns the
+string name of the receiver. Otherwise, it returns an empty string. Using this
+information, we can iterate through all functions to discover which packages
+are used and which functions are reachable (according to the Go compiler&amp;rsquo;s dead
+code elimination logic). Additional logic based on heuristics to determine if
+the package is part of the standard library, a dependency, or the main module
+can be used to sort the packages.&lt;/p&gt;
+&lt;h2&gt;Build Information&lt;span class="hx:absolute hx:-mt-20" id="build-information"&gt;&lt;/span&gt;
+&lt;a href="#build-information" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;With the introduction of the module system, there is another way of enumerating
+the packages used when compiling a Go program. While this information is only
+available in binaries compiled with &lt;code&gt;go mod&lt;/code&gt; enabled, the data is richer. The
+build info structure is available as a separate section in ELF and Mach-O
+files. The section name is &lt;code&gt;.go.buildinfo&lt;/code&gt;. For PE files this data is stored
+inside one of the data sections. It&amp;rsquo;s a small data structure of 32-bytes. An
+example is shown in the code snippet below. The first 16-bytes is the structure
+header. It starts with a 14-byte magic value of &lt;code&gt;0xff Go buildinf:&lt;/code&gt;. The next
+byte is either &lt;code&gt;0x4&lt;/code&gt; or &lt;code&gt;0x8&lt;/code&gt; and gives the pointer size in bytes. The last
+byte in the header indicates the bit-endianness, a &lt;code&gt;0x0&lt;/code&gt; means little-endian
+while a &lt;code&gt;0x1&lt;/code&gt; means big-endian.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;- offset - 0 1 2 3 4 5 6 7 8 9 A B C D E F 0123456789ABCDEF
+0x0086e000 ff20 476f 2062 7569 6c64 696e 663a 0800 . Go buildinf:..
+0x0086e010 30a3 8800 0000 0000 70a3 8800 0000 0000 0.......p.......&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Following the header are two pointers to two Go strings. Under the hood, a Go
+string is a structure with a pointer to the start of the data as the first
+field and a length of the data as the second field. The first string is the
+version of the compiler that was used to compile the binary. The second string
+is the build information. This string is only available if the project was
+compiled with go modules enabled. The &lt;code&gt;runtime&lt;/code&gt; package has the logic to
+&lt;a href="https://github.com/golang/go/blob/4d8db00641cc9ff4f44de7df9b8c4f4a4f9416ee/src/runtime/debug/mod.go#L37"target="_blank" rel="noopener"&gt;parse&lt;/a&gt;
+the build info string into the &lt;code&gt;BuildInfo&lt;/code&gt; structure shown in the snippet
+below. The structure essentially holds the information from the &lt;code&gt;go.mod&lt;/code&gt; file
+plus the checksums from &lt;code&gt;go.sum&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// BuildInfo represents the build information read from&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="c1"&gt;// the running binary.&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;BuildInfo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Path&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// The main package path&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Module&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// The module containing the main package&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Deps&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;Module&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// Module dependencies&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="c1"&gt;// Module represents a module.&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Module&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Path&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// module path&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Version&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// module version&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Sum&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// checksum&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Replace&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;Module&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// replaced by this module&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The code in the
+&lt;a href="https://github.com/golang/go/blob/master/src/runtime/debug/mod.go"target="_blank" rel="noopener"&gt;runtime&lt;/a&gt;
+for parsing out this data structure has seen some changes in the last couple of
+months. The logic has also been added as part of a sub-package in the
+&lt;a href="https://github.com/golang/go/blob/master/src/debug/buildinfo/buildinfo.go"target="_blank" rel="noopener"&gt;&lt;code&gt;debug&lt;/code&gt;&lt;/a&gt;
+package that can be assumed to be part of release Go 1.18. One thing that has
+&lt;a href="https://github.com/golang/go/blob/5337e53dfa3f5fde73b8f505ec3a91c628e8f648/src/runtime/debug/mod.go#L40"target="_blank" rel="noopener"&gt;changed&lt;/a&gt;
+with the structure is the addition of the &lt;code&gt;Settings&lt;/code&gt; field to hold more
+information about the build environment.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// BuildInfo represents the build information read from a Go binary.&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;BuildInfo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;GoVersion&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// Version of Go that produced this binary.&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Path&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// The main package path&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Module&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// The module containing the main package&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Deps&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;Module&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// Module dependencies&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="nx"&gt;BuildSetting&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// Other information about the build.&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="c1"&gt;// Module represents a module.&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Module&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Path&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// module path&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Version&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// module version&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Sum&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// checksum&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Replace&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;Module&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// replaced by this module&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="c1"&gt;// BuildSetting describes a setting that may be used to understand how the&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="c1"&gt;// binary was built. For example, VCS commit and dirty status is stored here.&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;BuildSetting&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// Key and Value describe the build setting. They must not contain tabs&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// or newlines.&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Value&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Until Go 1.18 is released, we can just copy the code from the runtime and use
+it to parse the string into a useful data structure. With this information, we
+get the versions and can easily detect which packages are part of a dependency
+module.&lt;/p&gt;
+&lt;h2&gt;Vulnerability Scanner&lt;span class="hx:absolute hx:-mt-20" id="vulnerability-scanner"&gt;&lt;/span&gt;
+&lt;a href="#vulnerability-scanner" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In this section, we are going to see how the extracted information can be used
+to design a vulnerability scanner. There is currently a project of developing a
+&lt;a href="https://golang.org/x/vuln"target="_blank" rel="noopener"&gt;vulnerability database&lt;/a&gt; and code for checking
+against it. The goal with this scanner is instead of working with the source
+code, it is to work with the compiled artifacts allowing users of a Go
+application to check it for vulnerability. For our
+&lt;a href="https://github.com/golang/vulndb/blob/master/reports/GO-2021-0061.yaml"target="_blank" rel="noopener"&gt;example&lt;/a&gt;,
+we will use a vulnerability reported in the &lt;code&gt;gopkg.in/yaml.v2&lt;/code&gt; module. The code
+snippet below shows the data available in the vulnerability database.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;module&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;gopkg.in/yaml.v2&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;additional_packages&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c"&gt;# all of the incompatible versions of github.com/go-yaml/yaml&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c"&gt;# are affected&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;module&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;github.com/go-yaml/yaml&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;symbols&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;decoder.unmarshal&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;versions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;- &lt;span class="nt"&gt;fixed&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;v2.2.3&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;description&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="sd"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="sd"&gt; Due to unbounded alias chasing, a maliciously crafted YAML file
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="sd"&gt; can cause the system to consume significant system resources. If
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="sd"&gt; parsing user input, this may be used as a denial of service vector.&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;published&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ld"&gt;2021-04-14T12:00:00Z&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;credit&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;@simonferquel&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;symbols&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;- &lt;span class="l"&gt;decoder.unmarshal&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;links&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;pr&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;https://github.com/go-yaml/yaml/pull/375&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;commit&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;https://github.com/go-yaml/yaml/commit/bb4e33bf68bf89cad44d386192cbed201f35b241&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;In addition to the module name &lt;code&gt;gopkg.in/yaml.v2&lt;/code&gt; we also have the fixed
+version &lt;code&gt;v2.2.3&lt;/code&gt; and the affected symbol &lt;code&gt;decoder.unmarshal&lt;/code&gt;. What we can
+decipher from this is that the &lt;code&gt;unmarshal&lt;/code&gt; method on the &lt;code&gt;decoder&lt;/code&gt; type prior
+to &lt;code&gt;v2.2.3&lt;/code&gt; is vulnerable. With this information we can construct the following
+logic to check for this vulnerability:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Extract the build information to see if the binary uses a version earlier
+than &lt;code&gt;v2.2.3&lt;/code&gt;. If not, report as not vulnerable.&lt;/li&gt;
+&lt;li&gt;Search for a function with the package name of &lt;code&gt;gopkg.in/yaml.v2&lt;/code&gt;, the
+receiver of &lt;code&gt;decoder&lt;/code&gt;, and the name of &lt;code&gt;unmarshal&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Check if the found function has a non-nil &lt;code&gt;Entry&lt;/code&gt; field. If it does, report
+as vulnerable. Otherwise, report as not vulnerable.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Now, this approach is not perfect. We are standing on the shoulders of the Go
+compiler&amp;rsquo;s dead-code elimination logic to remove code that&amp;rsquo;s not reachable. It
+is possible that the code is never executed in the binary but the compiler
+failed to eliminate it, which would result in a false positive. It is possible
+to reduce this false positive further but it would need to create call graphs
+to see if the code is reachable. This is out of scope for this post.&lt;/p&gt;
+&lt;h2&gt;Source Code Map&lt;span class="hx:absolute hx:-mt-20" id="source-code-map"&gt;&lt;/span&gt;
+&lt;a href="#source-code-map" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;With the data extracted using the &lt;code&gt;debug&lt;/code&gt; package, there are some other
+interesting things we can do. Remember that the PCLN table is used to map a
+process counter to a specific line in a source code file. This means that the
+binary has information about the structure of the source code. What we just
+need to do is extract it and present it in a friendlier way. As I have
+described the process in a
+&lt;a href="https://tcm1911.github.io/posts/pclntab-function-recovery/"target="_blank" rel="noopener"&gt;previous blog post&lt;/a&gt;,
+this will be a summarized version. In an earlier section, the &lt;code&gt;Func&lt;/code&gt; type was
+introduced that holds symbol information about a function. Two of the fields
+are pointers to where the code of the function starts and ends. This means we
+know where the first instruction starts and the last instruction ends for the
+method. The &lt;code&gt;Table&lt;/code&gt; structure has a method for resolving a process counter to
+both a line number and a source code file name. This gives us of way to
+determine the first and last line number of a function in the source code. One
+may naively assume that we can just put the entry and the end field values into
+the function and it will return what we want. Unfortunately, this is not the
+case. The entry works fine but issues sometimes occur with the last
+instruction. The compiler adds code to the end of each function (this code
+requests more stack space) which can throw off the information. So the best we
+can do is to estimate where the end is by checking all instructions in the
+function and assuming that the largest line number in the same file as the
+starting line is the end of the function. This method isn&amp;rsquo;t perfect as inline
+functions can break this assertion. The next step is to get the location of
+each instruction in the function. For x86 this isn&amp;rsquo;t straightforward because
+they can be one to 15 bytes long. This means that the only way of getting the
+location of each instruction is to disassemble it. The Go team maintains a
+package named &lt;a href="https://pkg.go.dev/golang.org/x/arch"target="_blank" rel="noopener"&gt;&lt;code&gt;arch&lt;/code&gt;&lt;/a&gt; that can
+disassemble x86, ARM, and PowerPC. The package is used by the Go tool
+&lt;code&gt;objdump&lt;/code&gt;. Another hack that can be used is to just assume that each
+instruction is say for example four bytes long and resolve the line for every
+four-bytes. The process counter to line mapping function does not care if the
+passed in process counter is right in the middle of an instruction… With the
+file names and line numbers extracted we can just organize the data and present
+it. Here is for example the extracted data for a &lt;code&gt;gofmt&lt;/code&gt; binary. It only shows
+the data for the main module. The first line gives the name of the package and
+the path to the folder when it was compiled. Next, each file is listed. Under
+each file, the function is listed in the sorted order of the starting line
+number. The function line also includes an estimated ending line of the
+function and estimated lines of code; the first line is the function
+definition. In the code snippet below we can see that one file is named
+&lt;code&gt;&amp;lt;autogenerated&amp;gt;&lt;/code&gt;. This is for code generated by the compiler. Another thing we
+can see in the output is some functions with &lt;code&gt;dwrap&lt;/code&gt; in the name, for example,
+&lt;code&gt;processFile·dwrap·1&lt;/code&gt;. These are functions generated by the compiler for
+&lt;a href="https://github.com/golang/go/blob/f58c78a5771570667b26e8c74faa017bd4c2c448/src/cmd/gofmt/gofmt.go#L90"target="_blank" rel="noopener"&gt;defer calls&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Package main: /usr/lib/go/src/cmd/gofmt
+File: &amp;lt;autogenerated&amp;gt;
+(*simplifier)Visit Lines: 1 to 1 (0)
+File: gofmt.go
+init Lines: 29 to 53 (24)
+usage Lines: 64 to 76 (12)
+isGoFile Lines: 76 to 83 (7)
+processFile Lines: 83 to 163 (80)
+processFile·dwrap·1 Lines: 90 to 166 (76)
+visitFile Lines: 166 to 176 (10)
+main Lines: 176 to 184 (8)
+gofmtMain Lines: 184 to 232 (48)
+gofmtMain·dwrap·2 Lines: 195 to 234 (39)
+diffWithReplaceTempFile Lines: 234 to 251 (17)
+replaceTempFilename Lines: 251 to 276 (25)
+backupFile Lines: 276 to 298 (22)
+File: internal.go
+parse Lines: 23 to 94 (71)
+parsefunc1 Lines: 45 to 69 (24)
+parsefunc2 Lines: 69 to 80 (11)
+format Lines: 94 to 175 (81)
+File: rewrite.go
+initRewrite Lines: 19 to 32 (13)
+initRewritefunc1 Lines: 31 to 38 (7)
+parseExpr Lines: 38 to 57 (19)
+rewriteFile Lines: 57 to 81 (24)
+rewriteFilefunc1 Lines: 64 to 85 (21)
+set Lines: 85 to 117 (32)
+setfunc1 Lines: 90 to 99 (9)
+apply Lines: 117 to 152 (35)
+isWildcard Lines: 152 to 160 (8)
+match Lines: 160 to 248 (88)
+subst Lines: 248 to 308 (60)
+File: simplify.go
+simplifierVisit Lines: 15 to 130 (115)
+simplifiersimplifyLiteral Lines: 102 to 133 (31)
+simplify Lines: 133 to 141 (8)
+removeEmptyDeclGroups Lines: 141 to 152 (11)
+isEmpty Lines: 152 to 164 (12)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;One may wonder what this information can be used for. One thing it can be used
+for is to detect changes in Go applications. Another place where it is useful
+is for the analysis of suspicious Go binaries by for example identifying if the
+application is an open-source program or malware. The snippet below is from a
+ransomware called Snatch that has been around for a few years. From the
+function names, we can get an idea of what the binary might be doing. We see
+both function names that suggest scanning folders for files and encrypting. One
+thing that this ransomware does is to install itself as a Windows service that
+is started in &lt;em&gt;Safe boot mode&lt;/em&gt;. After it has installed itself as a service, it
+reboots the machine into safe mode. We can see function names in the output
+that suggest this behavior.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Package main: /home/go/src/locker
+File: config.go
+init Lines: 39 to 246 (207)
+File: dirs.go
+scanDir Lines: 10 to 85 (75)
+scanDirfunc1 Lines: 11 to 13 (2)
+File: files.go
+encryptFile Lines: 13 to 120 (107)
+encryptFilefunc1 Lines: 14 to 16 (2)
+File: main.go
+main Lines: 24 to 91 (67)
+runInstance Lines: 91 to 107 (16)
+File: misc.go
+decodeString Lines: 15 to 37 (22)
+makeFile Lines: 37 to 60 (23)
+makeFilefunc1 Lines: 43 to 68 (25)
+makeBatFile Lines: 60 to 67 (7)
+runBatFile Lines: 67 to 92 (25)
+runBatFilefunc1 Lines: 68 to 70 (2)
+isSafeBoot Lines: 92 to 115 (23)
+deleteShadowCopy Lines: 115 to 135 (20)
+selfRemove Lines: 135 to 158 (23)
+randomBatFileName Lines: 158 to 171 (13)
+Copy Lines: 171 to 188 (17)
+File: queue.go
+(*Queue)Push Lines: 20 to 33 (13)
+(*Queue)Pop Lines: 33 to 45 (12)
+runWorkers Lines: 45 to 64 (19)
+File: services.go
+(*myService)Execute Lines: 13 to 56 (43)
+getServicesNamesList Lines: 56 to 88 (32)
+stopServices Lines: 88 to 113 (25)
+setupServiceSafeBoot Lines: 113 to 138 (25)
+safeModeEnabled Lines: 138 to 161 (23)
+installService Lines: 161 to 188 (27)
+reboot Lines: 188 to 204 (16)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Wrap-up&lt;span class="hx:absolute hx:-mt-20" id="wrap-up"&gt;&lt;/span&gt;
+&lt;a href="#wrap-up" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There is much more metadata, for example,
+&lt;a href="https://tcm1911.github.io/posts/extracting-go-types/"target="_blank" rel="noopener"&gt;types&lt;/a&gt; and the build-id,
+that can be extracted from Go binaries. If we were to cover all of it, this
+post would be way too long. Hopefully, this has shown that Go binaries are rich
+with metadata and that binary analysis isn&amp;rsquo;t that bad. For readers that would
+like to do some of their own binary analysis but do not want to write all the
+code to extract the data, there are libraries available. The
+&lt;a href="https://github.com/goretk"target="_blank" rel="noopener"&gt;Go Reverse Engineering Tool Kit&lt;/a&gt; can extract all
+the data covered in this post, allowing just your imagination with what to do
+with the data.&lt;/p&gt;</description></item></channel></rss>

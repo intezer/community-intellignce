@@ -1,4 +1,685 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Tool</title><link>https://intezer.github.io/community-intelligence/tags/tool/</link><description>Recent content in Tool on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 14 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>MoP – "Master of Puppets" – Advanced malware tracking framework revealed at BlackHat Arsenal 2019</title><link>https://intezer.github.io/community-intelligence/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</link><pubDate>Wed, 14 Aug 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Tool</title><link>https://intezer.github.io/community-intelligence/tags/tool/</link><description>Recent content in Tool on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 08 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>Radare Plugin is Here for Intezer Community</title><link>https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/</link><pubDate>Tue, 08 Feb 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/</guid><description>
+&lt;p&gt;When you reverse engineer code as part of an incident response team, you want to quickly get information about what kind of threat you&amp;rsquo;re dealing with.&lt;/p&gt;
+&lt;p&gt;A while back we released Intezer Analyze plugins both for &lt;a href="https://intezer.com/blog/malware-analysis/ida-pro-plugin-now-available-to-the-community/"target="_blank" rel="noopener"&gt;IDA Pro&lt;/a&gt; and &lt;a href="https://intezer.com/blog/malware-analysis/community-ghidra-plugin-is-here/"target="_blank" rel="noopener"&gt;Ghidra&lt;/a&gt; to help you zero in on a file&amp;rsquo;s malicious and unique code. Now it is Radare&amp;rsquo;s turn. &lt;a href="https://rada.re/n/radare2.html"target="_blank" rel="noopener"&gt;Radare2&lt;/a&gt; (r2) is an open-source tool chain for reverse engineering and forensics. With the release of the community plugin &lt;code&gt;r2analyze&lt;/code&gt;, r2 users can now supercharge their reversing session with code genomics from Intezer to attribute the malware family or threat actor.&lt;/p&gt;
+&lt;h2&gt;The Radare Plugin for Reverse Engineering&lt;span class="hx:absolute hx:-mt-20" id="the-radare-plugin-for-reverse-engineering"&gt;&lt;/span&gt;
+&lt;a href="#the-radare-plugin-for-reverse-engineering" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;How to get started:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Make sure you have an Intezer Analyze community account, or a paid team account. (If not, register &lt;a href="https://analyze.intezer.com/"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.)&lt;/li&gt;
+&lt;li&gt;Submit the file to Intezer Analyze.&lt;/li&gt;
+&lt;li&gt;Install the plugin via pip: &lt;code&gt;pip install r2analyze&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Add your API key as an environment variable named &lt;code&gt;INTEZER_API_KEY&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Open the file in r2 and perform an initial analysis (&lt;code&gt;aaa&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Run the plugin as a r2pipe command (&lt;code&gt;#!pipe r2analyze&lt;/code&gt;).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Here is an example using a ScarCruft sample (&lt;a href="https://analyze.intezer.com/files/7c82689142a415b0a34553478e445988980f48705735939d6d33c17e4e8dac94"target="_blank" rel="noopener"&gt;&lt;code&gt;7c82689142a415b0a34553478e445988980f48705735939d6d33c17e4e8dac94&lt;/code&gt;&lt;/a&gt;). The &lt;a href="https://analyze.intezer.com/files/7c82689142a415b0a34553478e445988980f48705735939d6d33c17e4e8dac94"target="_blank" rel="noopener"&gt;result&lt;/a&gt; from Intezer Analyze is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig1.png" title="Intezer Analyze result for a ScarCruft sample." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer Analyze result for a ScarCruft sample.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;If you open the sample and run the plugin, you can see below that four items in the flag space called &lt;code&gt;gene&lt;/code&gt; have been created.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig2.png" title="Executing r2analyze as a r2pipe plugin." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Executing r2analyze as a r2pipe plugin.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;If selecting only that flag space and listing all the flags, you can see that four functions have been identified as unique to ScarCruft.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig3.png" title="Listing detected functions." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Listing detected functions.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;If Radare2 is your preferred framework for reverse-engineering and analyzing binaries, now you can use this Intezer Analyze plugin to save time and get additional insights for your incident response team.&lt;/p&gt;
+&lt;p&gt;Intezer automates the malware analysis process to quickly identify and classify malware families. Analyze malware and unknown files for free at &lt;a href="https://analyze.intezer.com/"target="_blank" rel="noopener"&gt;analyze.intezer.com&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Additional Resources&lt;span class="hx:absolute hx:-mt-20" id="additional-resources"&gt;&lt;/span&gt;
+&lt;a href="#additional-resources" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://intezer.com/blog/malware-analysis/ida-pro-plugin-now-available-to-the-community/"target="_blank" rel="noopener"&gt;IDA Pro plugin&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://intezer.com/blog/malware-analysis/community-ghidra-plugin-is-here/"target="_blank" rel="noopener"&gt;Ghidra plugin&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Make your First Malware Honeypot in Under 20 Minutes</title><link>https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/</link><pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/</guid><description>
+&lt;p&gt;&lt;em&gt;For a free honeypot, you can use one of the several open-source options listed below.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;A &amp;ldquo;honeypot&amp;rdquo; is a metaphor that references using honey as bait for a lure or trap. Honeypots have served many purposes in history, including recruiting spies and catching criminals in real life. Honeypots have also long made their way into computing as a way to gather information about potential threats targeting public facing assets.&lt;/p&gt;
+&lt;p&gt;Honeypots are a powerful tool for threat intelligence researchers, security engineers, and malware analysts. Honeypots come in many forms, collecting different information and serving distinct purposes. Honeypots can be used to collect:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;New malware or rampant malware to analyze over time&lt;/li&gt;
+&lt;li&gt;Indicators of compromise (IoCs) of malicious IP addresses conducting attacks&lt;/li&gt;
+&lt;li&gt;New exploits targeting applications&lt;/li&gt;
+&lt;li&gt;They can even be used as a way to waste an attacker&amp;rsquo;s time through deception&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Honeypots serve a powerful purpose for threat intelligence. Having the ability to collect information from attackers in a controlled environment is an important intelligence asset which can help you always stay one step ahead of stopping real attacks before they happen.&lt;/p&gt;
+&lt;h2&gt;What&amp;rsquo;s the Difference Between a High and Low Interaction Honeypot?&lt;span class="hx:absolute hx:-mt-20" id="whats-the-difference-between-a-high-and-low-interaction-honeypot"&gt;&lt;/span&gt;
+&lt;a href="#whats-the-difference-between-a-high-and-low-interaction-honeypot" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Honeypots come in different tiers of interactivity. A low interaction honeypot is a honeypot that provides very limited access to the system, with just enough to log the initial request of an attack but no more. Usually, low interaction honeypots are just a network service that logs all requests coming into it.&lt;/p&gt;
+&lt;p&gt;A high interaction honeypot is able to do much more. Rather than just providing an emulated service to probe, a high interaction honeypot provides a system for the attacker to perform post-exploitation activities on. This lets security researchers and malware analysts discover the tools and techniques that are being performed on the system after exploitation. This information is extremely valuable as it can bring to light emerging malware and campaigns targeting services hosted on the internet. A lot more IoCs and artifacts can be gathered this way, making intelligence stronger.&lt;/p&gt;
+&lt;h2&gt;Setting up your Cloud Environment&lt;span class="hx:absolute hx:-mt-20" id="setting-up-your-cloud-environment"&gt;&lt;/span&gt;
+&lt;a href="#setting-up-your-cloud-environment" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The cloud is the perfect place to host your honeypot because it&amp;rsquo;s cheap, quick, and flexible. Many cloud providers offer a free tier that includes a free virtual machine or an allowance to spend on cloud resources. A virtual machine is a virtual computer that is able to be developed on a physical server through code. Virtual computers can easily host a service which can be used for the honeypot.&lt;/p&gt;
+&lt;p&gt;For this tutorial, we will &lt;a href="https://docs.aws.amazon.com/efs/latest/ug/gs-step-one-create-ec2-resources.html"target="_blank" rel="noopener"&gt;create a virtual machine&lt;/a&gt; via the AWS console. Start by searching for the EC2 service in AWS. If you already have your infrastructure set up for your honeypot, you can skip this step.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig1.png" title="EC2 service in the Management Console." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;EC2 service in the Management Console.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Click Launch instance on the EC2 Dashboard. This will begin the process of setting up a virtual machine.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig2.png" title="Launch instance button is located on the dashboard." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Launch instance button is located on the dashboard.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;On the next page you will be presented with a number of Amazon Machine Images (AMI) and architecture options. These machine images are the software that will be used in the virtual machine, such as the operating system and applications.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig3.png" title="Amazon machine images to choose from." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Amazon machine images to choose from.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s choose Amazon Linux 2. The next page you will be asked to choose the size of the instance type. This decides the amount of CPU cores and RAM your virtual machine will have and also the &lt;a href="https://aws.amazon.com/ec2/pricing/on-demand/"target="_blank" rel="noopener"&gt;price&lt;/a&gt;. There is a free tier option in AWS.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig4.png" title="Instance Type choices in AWS." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Instance Type choices in AWS.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Once you have decided on the size of the virtual machine, you will configure the instance and its networking. It&amp;rsquo;s best to add a name tag to help identify the instance and to configure your security group to only allow inbound SSH access from your router or VPN. This means that only you can access the SSH port while the wider internet will not be able to reach it. This way, you can test deploying your honeypot service without having it attacked before you are ready.&lt;/p&gt;
+&lt;p&gt;To use just your own IP address, click the dropdown box under Source and choose My IP. This will place your own IP address into the field using a &lt;a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing"target="_blank" rel="noopener"&gt;CIDR&lt;/a&gt; of 32, which restricts it to just that one IP.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig5.png" title="Security Group configuration." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Security Group configuration.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This group will be changed later to expose your honeypot after it is set up. As you finish the configuration and click Launch at the review page, you will be prompted to choose a key pair for the SSH communication. A key pair is a set of asymmetric keys, usually &lt;a href="https://asecuritysite.com/rsa/"target="_blank" rel="noopener"&gt;RSA&lt;/a&gt;, that is used as a way to authenticate to the virtual machine over the internet. You can generate a new key pair quickly using the prompt and download the private key (.pem) to your computer.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig6.png" title="Creation of a new RSA key pair." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Creation of a new RSA key pair.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The instance will take a short time to boot. You will then see a lot of information about the machine, which includes its public IPv4 address. This is the address that will be used to reach the services set up:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;To SSH to the terminal, use the terminal in Mac/Linux, or use a SSH client like &lt;a href="https://www.putty.org/"target="_blank" rel="noopener"&gt;PuTTY&lt;/a&gt; for Windows. The command to SSH to your instance is:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;ssh -i [Path to RSA-Key] ec2-user@[Public IP]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig8.png" title="SSH command to log into the EC2 instance." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;SSH command to log into the EC2 instance.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;If you set up the configuration properly, then you will be able to reach your virtual machine over SSH. Depending on how your permissions are configured on Mac and Linux machines, you &lt;a href="https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error"target="_blank" rel="noopener"&gt;might&lt;/a&gt; have to configure the permissions on the downloaded private key before use. Once you SSH into your machine, it&amp;rsquo;s time to set up the honeypot software.&lt;/p&gt;
+&lt;h2&gt;Your Choice of Honeypot&lt;span class="hx:absolute hx:-mt-20" id="your-choice-of-honeypot"&gt;&lt;/span&gt;
+&lt;a href="#your-choice-of-honeypot" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It&amp;rsquo;s now time to decide your choice for the honeypot technology. First we want to highlight open-source honeypots that are the result of great work by the security community. A good resource to look at is the &lt;a href="https://github.com/paralax/awesome-honeypots"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt; page for &lt;a href="https://github.com/paralax/awesome-honeypots"target="_blank" rel="noopener"&gt;Awesome Honeypots&lt;/a&gt;. Awesome Honeypots is a curated list of open-source honeypots and honeypot management tools. It contains links to honeypot projects for popular applications and services such as databases, content management systems, and web applications.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig9.png" title="Awesome Honeypots on GitHub." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Awesome Honeypots on GitHub.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Many popular applications are covered in this list, especially other free and open-source software options for finishing your honeypot.&lt;/p&gt;
+&lt;h2&gt;Setting Up Your Application&lt;span class="hx:absolute hx:-mt-20" id="setting-up-your-application"&gt;&lt;/span&gt;
+&lt;a href="#setting-up-your-application" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Now, you need to set up the application that you will use as the honeypot. Approximatly 80% of honeypots are attacked within a day of them being set up according to a &lt;a href="https://www.scmagazine.com/brief/cloud-security/misconfigured-cloud-services-quickly-compromised"target="_blank" rel="noopener"&gt;report&lt;/a&gt; from Palo Alto Networks. You can set up any application that you want as the honeypot. This application could be an exposed version of software that your organization uses or develops. Any application can be attacked by threat actors. If you are unsure of what to deploy, below we outline how to deploy a simple honeypot application using Docker.&lt;/p&gt;
+&lt;p&gt;A great way to deploy applications is through &lt;a href="https://docs.docker.com/get-started/overview/"target="_blank" rel="noopener"&gt;Docker&lt;/a&gt;. Docker is a platform that delivers software through images that are run in environments called containers. It is simple to deploy an application with Docker, but Docker itself can also be an application worth targeting. Let&amp;rsquo;s set up a honeypot using a misconfigured Docker API. &lt;a href="https://intezer.com/blog/container-security/fix-your-misconfigured-docker-api-ports/"target="_blank" rel="noopener"&gt;Misconfigured Docker APIs&lt;/a&gt; are a favorite for threat actors to target because of their simplicity to exploit to run malicious code. In order to misconfigure Docker, you need to install it first. This can be achieved very quickly on &lt;a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html"target="_blank" rel="noopener"&gt;Amazon Linux 2&lt;/a&gt;. Start by updating the installed packages on the instance.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;sudo yum update -y&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Then, install the Docker Engine package.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;sudo amazon-linux-extras install docker&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Next, start the Docker service.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;sudo service docker start&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Add the user to the docker group so that you can execute Docker commands without the need for sudo.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;sudo usermod -a -G docker ec2-user&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;You will need to log out and log back in for the group changes to be picked up in your SSH terminal session. Now that Docker is installed and running, you can use it as a honeypot by misconfiguring the API. Let&amp;rsquo;s use the tutorial from &lt;a href="https://medium.com/@riccardo.ancarani94/attacking-docker-exposed-api-3e01ffc3c124"target="_blank" rel="noopener"&gt;here&lt;/a&gt;. Start by creating a file with the following content:&lt;/p&gt;
+&lt;p&gt;File: &lt;code&gt;/etc/systemd/system/docker.service.d/override.conf&lt;/code&gt;&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This will configure the Docker daemon to listen for Docker Engine API requests on port 2375 over TCP. The default setting provides unauthenticated direct access to the Docker daemon, which means it can be exploited by attackers to run malicious code with ease. Once the file is created, reload the unit files and restart the Docker service by running the following commands:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;sudo systemctl daemon-reload
+sudo systemctl restart docker.service&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;One can use netstat to confirm that the daemon is listening on port 2375.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;To check that your attack vector is working in a test environment, try to create a container remotely from your own terminal, outside the SSH tunnel. Start by reconfiguring the security group in AWS to allow inbound access to your API port from your router or VPN IP address.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig12.png" title="Edited security group to allow access to Docker API port." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Edited security group to allow access to Docker API port.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;You can test by running Docker commands from your terminal with the -H flag specifying the public IP address of the EC2 instance and the port of the Docker API.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;docker -H : info&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;You can also test by creating a container to test. We will run an Alpine container.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig13.png" title="Creation of a container from a remote system." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Creation of a container from a remote system.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig14.png" title="Docker image information." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Docker image information.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig15.png" title="Alert integration options." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Alert integration options.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;You&amp;rsquo;ve Been Attacked! Now What?&lt;span class="hx:absolute hx:-mt-20" id="youve-been-attacked-now-what"&gt;&lt;/span&gt;
+&lt;a href="#youve-been-attacked-now-what" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The above screen grab shows the first half of the malicious activity. Even though you can see in the alerts that the bash history was tampered with, you can still see all the events that have happened on the instance. Important information and a timeline of the attack can be gathered from the events listed here.&lt;/p&gt;
+&lt;p&gt;Starting from the bottom and working our way up, we see that a new container image &lt;a href="https://hub.docker.com/r/docker72590/alpine/tags"target="_blank" rel="noopener"&gt;&lt;code&gt;docker72590/alpine:latest&lt;/code&gt;&lt;/a&gt; was executed. This container was documented in a blog by &lt;a href="https://www.lacework.com/blog/teamtnt-continues-to-target-exposed-docker-api/"target="_blank" rel="noopener"&gt;Lacework&lt;/a&gt; and it is from a group pretending to be the threat actor TeamTNT. Many files are executed, including creating SSH keys with the name TeamTNT. We can see that a bash script has been downloaded from &lt;code&gt;104.192.82[.]138//s3f1015/b/a.sh&lt;/code&gt;. This is a great place to start collecting IoCs. Now, let&amp;rsquo;s take a look at the Docker image that was executed. Go to your honeypot under Hosts and click on Images.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig18.png" title="Running containers on the honeypot." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Running containers on the honeypot.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig19.png" title="Malicious container code." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Malicious container code.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig20.png" title="XMRig Miner alert." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;XMRig Miner alert.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig21.png" title="Network and container details." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Network and container details.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig22.png" title="Genetic analysis of the cryptominer in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Genetic analysis of the cryptominer in Intezer Analyze.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig23.png" title="Related samples based on shared code genes." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Related samples based on shared code genes.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Start Making Your Own Honeypot&lt;span class="hx:absolute hx:-mt-20" id="start-making-your-own-honeypot"&gt;&lt;/span&gt;
+&lt;a href="#start-making-your-own-honeypot" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Try it for yourself. Honeypots are a powerful asset for any organization looking to harvest the power of threat intelligence. They can gather critical information, deceive attackers, and test the security configuration of cloud assets. Honeypots have a long history and an active community that creates &lt;a href="https://github.com/paralax/awesome-honeypots"target="_blank" rel="noopener"&gt;open-source honeypots&lt;/a&gt; and frameworks to help protect those hosting critical cloud assets.&lt;/p&gt;
+&lt;h2&gt;IoCs Observed in this Honeypot&lt;span class="hx:absolute hx:-mt-20" id="iocs-observed-in-this-honeypot"&gt;&lt;/span&gt;
+&lt;a href="#iocs-observed-in-this-honeypot" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;File Hashes&lt;span class="hx:absolute hx:-mt-20" id="file-hashes"&gt;&lt;/span&gt;
+&lt;a href="#file-hashes" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Hash&lt;/th&gt;
+&lt;th&gt;Malware Family&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;c64f7d22262caee9a8b59474ba1bd299b27332b9fb5fa30751c8caffe596fc29&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Coinminer&lt;/td&gt;
+&lt;td&gt;Cryptominer&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;e03cf2af46ad1fe590e63f0020243c6e8ae94f074e65ace18c6d568283343dac&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;XMRig Miner&lt;/td&gt;
+&lt;td&gt;Cryptominer&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;da3e84f5dc117cb8fb942e54839efe9fe847778d393cdac0d0d9ce9c1f548bfe&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Coinminer&lt;/td&gt;
+&lt;td&gt;Cryptominer&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;9aaa27d3aa6bd327d0cb707250fba565372cc3678436043ee6a619842011dc43&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Coinminer&lt;/td&gt;
+&lt;td&gt;Cryptominer&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;c0fd1716d95184b960a5141b1340f55be359bd9a9d56811cf0e1e38254cb6e69&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Masscan&lt;/td&gt;
+&lt;td&gt;Port Scanning Tool&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;fb86120a4a1b13b29957eb5f95f7857cf9e469514fc20d25fad02ae87bf99091&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;XMRig Miner&lt;/td&gt;
+&lt;td&gt;Cryptominer&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;8daa9b62df448daafe4c764f7b02253a91d3af4d0d2556861408d5e02a73fe22&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Miner Launcher&lt;/td&gt;
+&lt;td&gt;Ensures the miners stay running&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;05e614cf49029d6fdff15c77909ff7d7109184fbad4434aba6248bfdbc2cfcf3&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Miner Launcher&lt;/td&gt;
+&lt;td&gt;Ensures the miners stay running&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;7f3d989fec5eb1fbce46bce1777266334f385881b2adda6aa73cce238019bceb&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;zgrab&lt;/td&gt;
+&lt;td&gt;Port Scanning Tool&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
+&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;104.192.82[.]138&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Crypto Wallet&lt;span class="hx:absolute hx:-mt-20" id="crypto-wallet"&gt;&lt;/span&gt;
+&lt;a href="#crypto-wallet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;85X7JcgPpwQdZXaK2TKJb8baQAXc3zBsnW7JuY7MLi9VYSamf4bFwa7SEAK9Hgp2P53npV19w1zuaK5bft5m2NN71CmNLoh&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Detection Rules for Sysjoker (and How to Make Them With Osquery)</title><link>https://intezer.github.io/community-intelligence/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</link><pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</guid><description>
+&lt;p&gt;On January 11, 2022, we released a blog post on a new malware called &lt;a href="../../../2022/01/new-backdoor-sysjoker"&gt;SysJoker&lt;/a&gt;. SysJoker is a malware targeting Windows, macOS, and Linux. At the time of the publication, the Linux and macOS versions were not detected by any scanning engines on VirusTotal. As a consequence to this, we decided to release a followup blog posting showing how the information we released can be used to investigate whether you have been affected.&lt;/p&gt;
+&lt;p&gt;There are many tools available to gather system information and to perform threat hunting within an organization. We decided to use &lt;a href="https://osquery.io"target="_blank" rel="noopener"&gt;osquery&lt;/a&gt; in this blog post. The reason for choosing osquery is that it is supported for all the affected operating systems that SysJoker targets and it is open source allowing essentially anyone to follow along in this tutorial.&lt;/p&gt;
+&lt;h2&gt;Information Gathering with Osquery&lt;span class="hx:absolute hx:-mt-20" id="information-gathering-with-osquery"&gt;&lt;/span&gt;
+&lt;a href="#information-gathering-with-osquery" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Osquery runs as an agent on machines and is designed to provide endpoint visibility in a performant way. The data is collected by the agent and exposed via SQL queries.&lt;/p&gt;
+&lt;p&gt;There are two ways of running osquery, as a daemon via osqueryd or interactively via osqueryi. The daemon takes a configuration file where the queries are defined and executes them at a given interval. Data is continuously collected by the daemon and the difference since the last execution is logged to a result log. The interactive binary allows for ad-hoc queries and we will use it in this tutorial to construct queries that can be added to the daemon&amp;rsquo;s configuration. The queries will be added to a &lt;a href="https://osquery.readthedocs.io/en/stable/deployment/configuration/#query-packs"target="_blank" rel="noopener"&gt;query-pack&lt;/a&gt; to make it easier to manage.&lt;/p&gt;
+&lt;h3&gt;File Artifacts&lt;span class="hx:absolute hx:-mt-20" id="file-artifacts"&gt;&lt;/span&gt;
+&lt;a href="#file-artifacts" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The report highlights files and folders created by the &lt;a href="../../../2022/01/new-backdoor-sysjoker"&gt;SysJoker malware&lt;/a&gt;. We can use these to write hunting or detection queries. Since the Windows version is well detected by antivirus engines and Patrick Wardle released a &lt;a href="https://objective-see.com/blog/blog_0x6C.html"target="_blank" rel="noopener"&gt;great blog post&lt;/a&gt; on how his free macOS security tools can detect the macOS variant, we will put most focus on the Linux variant. Since osquery abstracts the differences between all the operating systems into SQL, the queries we produce for Linux can easily be translated to the other operating systems.&lt;/p&gt;
+&lt;p&gt;If we look at the report, we can see that all of the files are created under a folder named &lt;code&gt;/.Library&lt;/code&gt;. This is a very unusual folder that is not expected to exist on a normal Linux install. We can use the osquery table file to monitor for files under this folder. According to the schema for this table, we can get which user created it, when the file was created, modified, and last accessed. To enrich the data, we join the uid with the &lt;a href="https://osquery.io/schema/5.1.0/#users"target="_blank" rel="noopener"&gt;users&lt;/a&gt; table and the gid with the groups table. This allows us to get the username and the group name instead of just the id numbers.&lt;/p&gt;
+&lt;p&gt;Another thing that is useful is the file hash for the files. This can be obtained by joining with the hash table on the path. This allow us to construct a query like this:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;groupname&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mtime&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ctime&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;atime&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;md5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sha1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sha256&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;JOIN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;users&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;using&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;uid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;JOIN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;hash&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;using&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;JOIN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;groups&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;using&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;gid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/.Library&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;For macOS we can use the same logic by just changing the directory to the one from the report: &lt;code&gt;/Library/MacOsServices&lt;/code&gt;. This also is not a standard folder.&lt;/p&gt;
+&lt;p&gt;On Windows, the malware uses two folders under the hidden ProgramData folder. We can search for files under these two folders. With this information we can create the following queries for our pack. In the pack we are using an interval of 60 seconds.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;linux-artifacts&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;SELECT path, filename, username, groupname, mtime, ctime, atime, md5, sha1, sha256 FROM file
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN users using (uid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN hash using (path)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN groups using (gid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; WHERE file.directory in (&amp;#39;/.Library&amp;#39;);&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/malware-analysis/new-backdoor-sysjoker/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;linux&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible sysjoker Linux files&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;macos-artifacts&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;SELECT path, filename, username, groupname, mtime, ctime, atime, md5, sha1, sha256 FROM file
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN users using (uid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN hash using (path)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN groups using (gid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; WHERE file.directory in (&amp;#39;/Library/MacOsServices&amp;#39;);&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/malware-analysis/new-backdoor-sysjoker/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;darwin&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible sysjoker macOS files&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="err"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;windows-artifacts&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;SELECT path, filename, username, groupname, mtime, ctime, atime, md5, sha1, sha256 FROM file
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN users using (uid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN hash using (path)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN groups using (gid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; WHERE file.directory in (&amp;#39;C:\ProgramData\RecoverySystem&amp;#39;, &amp;#39;C:\ProgramData\SystemData&amp;#39;);&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/malware-analysis/new-backdoor-sysjoker/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;windows&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible sysjoker Windows files&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Persistence&lt;span class="hx:absolute hx:-mt-20" id="persistence"&gt;&lt;/span&gt;
+&lt;a href="#persistence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;If we look at the persistence documented in the report, we can see that it uses different techniques for the different operating systems: cron job on Linux, launchd entry on macOS, and registry run key on Windows. While they are different, luckily osquery has tables for these that can be used.&lt;/p&gt;
+&lt;p&gt;The cron job is executed on reboot. This allow us to query the cron table for job that runs at a reboot event with a command including the name of the malware file:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;crontab&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;@reboot&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;command&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;%/updateSystem);&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;On macOS we can use the launchd table to query for entries with a similar name to the name used by SysJoker:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;launchd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;%com.apple.update.plist;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Finally on Windows we can query the registry table for keys similar to the registry key in the report:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;registry&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;HKEY_LOCAL_MACHINESoftwareMicrosoftWindowsCurrentVersionRun&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;igfxCUIService&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Next Steps&lt;span class="hx:absolute hx:-mt-20" id="next-steps"&gt;&lt;/span&gt;
+&lt;a href="#next-steps" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The next step is to tell the osquery daemon to load the query pack we created. This can be done by adding a pack entry to the daemon&amp;rsquo;s configuration file:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;packs&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;sysjoker&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/path/to/pack/sysjoker.json&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Once the pack has been loaded the daemon will log result to the result log. To get alerts when matches have been found, the logs can be forward to a SIEM. (The process of configuring log forwarding to a SIEM is out of scope of this and will not be covered.)&lt;/p&gt;
+&lt;p&gt;When using packs the name of the query will be prepended by the pack name, making it easy to create an alert. For example in this tutorial, all queries with a result will have a name starting with &lt;code&gt;pack_sysjoker&lt;/code&gt;. If you don&amp;rsquo;t want to create a pack from scratch, you can use the pack provided in the appendix below.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2&gt;Appendix A – sysjoker.json Pack&lt;span class="hx:absolute hx:-mt-20" id="appendix-a--sysjokerjson-pack"&gt;&lt;/span&gt;
+&lt;a href="#appendix-a--sysjokerjson-pack" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;queries&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;linux-artifacts&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;SELECT path, filename, username, groupname, mtime, ctime, atime, md5, sha1, sha256 FROM file
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN users using (uid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN hash using (path)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN groups using (gid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; WHERE file.directory in (&amp;#39;/.Library&amp;#39;);&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/malware-analysis/new-backdoor-sysjoker/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;linux&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible SysJoker Linux files&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;macos-artifacts&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;SELECT path, filename, username, groupname, mtime, ctime, atime, md5, sha1, sha256 FROM file
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN users using (uid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN hash using (path)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN groups using (gid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; WHERE file.directory in (&amp;#39;/Library/MacOsServices&amp;#39;);&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/malware-analysis/new-backdoor-sysjoker/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;darwin&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible SysJoker macOS files&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;windows-artifacts&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;SELECT path, filename, username, groupname, mtime, ctime, atime, md5, sha1, sha256 FROM file
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN users using (uid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN hash using (path)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN groups using (gid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; WHERE file.directory in (&amp;#39;C:\ProgramData\RecoverySystem&amp;#39;, &amp;#39;C:\ProgramData\SystemData&amp;#39;);&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/malware-analysis/new-backdoor-sysjoker/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;windows&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible SysJoker Windows files&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;linux-cron&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;SELECT * FROM crontab
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; WHERE command LIKE &amp;#39;@reboot%&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; AND command LIKE &amp;#39;%updateSystem)&amp;#39;;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/malware-analysis/new-backdoor-sysjoker/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;linux&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible SysJoker crontab entry&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;macos-plist&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;select * from launchd where path like &amp;#39;%com.apple.update.plist&amp;#39;;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/malware-analysis/new-backdoor-sysjoker/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;darwin&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible SysJoker macOS plist entry&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;win-registry&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;SELECT * FROM registry WHERE key LIKE &amp;#39;HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run&amp;#39; AND name = &amp;#39;igfxCUIService&amp;#39;;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/malware-analysis/new-backdoor-sysjoker/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;windows&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible SysJoker Windows registry entry&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Teaching Capa New Tricks: Analyzing Capabilities in PE and ELF Files</title><link>https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</link><pubDate>Wed, 15 Sep 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When analyzing malware, one of the goals in addition to identifying what
+malware it is, is to understand what it does when it runs on a machine. There
+are multiple ways of achieving this by either manual analysis, which requires
+reverse engineering skills, or automated analysis. With Intezer Analyze we
+provide a tool that aids both advanced reverse engineers and entry-level
+analysts with the task of analyzing any suspicious file. Earlier this year we
+&lt;a href="https://intezer.com/blog/get-more-context-with-ttps/"target="_blank" rel="noopener"&gt;announced&lt;/a&gt; a new feature
+in Intezer Analyze that extracts the capabilities of a file. From the
+capabilities, you can map these to known Tactics, Techniques, and Procedures
+(TTPs). Under the hood, the functionality is powered by an open-source project
+from FireEye called &lt;a href="https://github.com/fireeye/capa"target="_blank" rel="noopener"&gt;capa&lt;/a&gt;. Capa analyzes
+Windows portable executable (PE) files and matches the findings against a rule
+set to determine a file&amp;rsquo;s capability. Intezer Analyze is not limited to PE
+files. It can also detect code reuse between Executable and Linkable Format
+(ELF) files. With this in mind, we wanted to provide similar information for
+ELF files. To achieve this, we extended capa support to ELF files and also
+created rules for Linux ELFs. Since capa is an open-source project, we
+&lt;a href="https://www.fireeye.com/blog/threat-research/2021/09/elfant-in-the-room-capa-v3.html"target="_blank" rel="noopener"&gt;submitted the changes&lt;/a&gt;
+to the capa project to allow not only users of Analyze to take advantage of
+this new functionality but also users of capa. So let&amp;rsquo;s explore how we can use
+these new features in Intezer Analyze when investigating both PE and ELF files.&lt;/p&gt;
+&lt;h2&gt;Supercharge Code Reuse with Capabilities&lt;span class="hx:absolute hx:-mt-20" id="supercharge-code-reuse-with-capabilities"&gt;&lt;/span&gt;
+&lt;a href="#supercharge-code-reuse-with-capabilities" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;One beautiful marriage is the use of capabilities extracted by capa and
+malicious code reuse (aka code genes) detected by Intezer Analyze. At Intezer,
+we have a vast gene database of both known malicious code and code from trusted
+vendors. This allows for the detection of different malware versions but also
+detects when code is shared between different malware families. This can be
+used to attribute new malware to previously known threats. Another strength of
+code genes is that it allows for the determination of which functionality is
+shared between different malware via code reuse. In biology, genes serve as the
+blueprint for proteins and the proteins affect what a cell will do. A parallel
+can be drawn to computer code. What a file will do, is dependent on its
+capability. The capabilities are &amp;ldquo;codified&amp;rdquo; in its code genes. What this means
+is that by connecting capabilities to code genes, we can detect that a
+capability is shared between different malware families, thus making a strong
+connection between them. To see this in action, let&amp;rsquo;s look at a practical
+example. The following example uses one of the Olympic Destroyer samples
+(&lt;a href="https://analyze.intezer.com/files/3e27b6b287f0b9f7e85bfe18901d961110ae969d58b44af15b1d75be749022c2"target="_blank" rel="noopener"&gt;&lt;code&gt;3e27b6b287f0b9f7e85bfe18901d961110ae969d58b44af15b1d75be749022c2&lt;/code&gt;&lt;/a&gt;)
+that was part of Cisco Talos'
+&lt;a href="https://blog.talosintelligence.com/2018/02/olympic-destroyer.html"target="_blank" rel="noopener"&gt;report&lt;/a&gt;.
+Olympic Destroyer is a good example because of all the false flags planted by
+the threat actor. If we analyze the sample, you can see that it drops a number
+of other files. The analysis of one of these files is shown in Figure 1.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig1.png" title="Figure 1: Analysis of one of the dropped files by the Olympic Destroyer sample (3e27b6b287f0b9f7e85bfe18901d961110ae969d58b44af15b1d75be749022c2)." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Analysis of one of the dropped files by the Olympic Destroyer sample (3e27b6b287f0b9f7e85bfe18901d961110ae969d58b44af15b1d75be749022c2).&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The gene summary shows that the file shares code with Olympic Destroyer and
+TeleBots. Looking at the related samples to Olympic Destroyer, Figure 2, is the
+&amp;ldquo;System Stealer&amp;rdquo; from the Cisco Talos report. According to the report, the
+stealer attempts to obtain credentials from LSASS. The technique used is
+similar to Mimikatz. From the gene summary, we can see that it does not share
+code with Mimikatz.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig2.png" title="Figure 2: Olympic Destroyer related sample found is the system stealer (f188abc33d351c2254d794b525c5a8b79ea78acd3050cd8d27d3ecfc568c2936) from the original Cisco Talos report." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: Olympic Destroyer related sample found is the system stealer (f188abc33d351c2254d794b525c5a8b79ea78acd3050cd8d27d3ecfc568c2936) from the original Cisco Talos report.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;If we look at the related TeleBots samples, we can see (Figure 3) that they
+share code with a sample labeled XData. XData was a ransomware that targeted
+Ukraine a month before the
+&lt;a href="../../../2021/09/notpetya-returns-bad-rabbit/"&gt;NotPetya&lt;/a&gt; incident. According
+to an ESET
+&lt;a href="https://www.welivesecurity.com/2017/06/30/telebots-back-supply-chain-attacks-against-ukraine/"target="_blank" rel="noopener"&gt;report&lt;/a&gt;,
+the malware was launched just after M.E.Doc had been executed on the machine,
+suggesting that the same supply chain vector as NotPetya was used. XData,
+according to ESET, had an embedded DLL that performed credential harvesting
+like Mimikatz.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig3.png" title="Figure 3: TeleBots related samples show that the samples share code with an XData sample." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: TeleBots related samples show that the samples share code with an XData sample.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The connection between the two malware families can be made stronger by looking
+at the functionality of the code that was reused. This you can do in Intezer
+Analyze by looking at the capabilities that share genes between the TeleBots
+sample and the Olympic Destroyer sample. The result is shown in Figure 4, where
+you can see that the shared code is for the allocation of read-write-execute
+memory. This is used by malware, for example, as part of unpacking or
+decrypting payloads or for injecting into another process. What this is telling
+us is that XData and Olympic Destroyer share a unique code that is used as part
+of the allocation of read-write-execute memory.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig4.png" title="Figure 4: Capabilities with shared code genes between the Olympic Destroyer sample and XData." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: Capabilities with shared code genes between the Olympic Destroyer sample and XData.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Analyzing Capabilities of ELF Files&lt;span class="hx:absolute hx:-mt-20" id="analyzing-capabilities-of-elf-files"&gt;&lt;/span&gt;
+&lt;a href="#analyzing-capabilities-of-elf-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Capa is a great tool for extracting capabilities of files and until now it only
+supported PE files. To provide the same functionality for ELF files in Intezer
+Analyze, we expanded capa&amp;rsquo;s functionality. Intezer Analyze has been supporting
+ELFs for some time now but with the release of
+&lt;a href="https://www.fireeye.com/blog/threat-research/2021/09/elfant-in-the-room-capa-v3.html"target="_blank" rel="noopener"&gt;capa v3.0&lt;/a&gt;,
+which includes our improvements and rules for Linux ELFs, similar capability
+extraction can be performed by using capa. As with Windows PE capability
+detection, Intezer Analyze also correlates detected capabilities to code genes
+for ELFs. This means a similar approach can be applied as documented above when
+it comes to analyzing code reuse and capabilities. Figure 5 shows the
+capabilities detected for a RedXOR sample that we released a
+&lt;a href="../../../2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/"&gt;report&lt;/a&gt;
+on earlier this year. From what we can see in the table under the TTPs tab, the
+way the capabilities have been implemented is unique to RedXOR.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig5.png" title="Figure 5: Capabilities of a RedXOR sample detected by capa." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: Capabilities of a RedXOR sample detected by capa.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;ELF malware are sometimes statically linked. This means that libraries used by
+the malware are included in the binary. That way, the malware doesn&amp;rsquo;t have to
+depend on the infected machine to have the correct version of the library that
+the malware expects, which allows the malware to run on multiple Linux
+distributions. This can cause some detection of capabilities that are part of a
+shared library and not the actual malware. This can be detected in the
+capabilities table under TTPs in Intezer Analyze. Figure 6 shows some of the
+capabilities detected for a malware called TSCookie. TSCookie is a backdoor
+used by BlackTech and the Linux version was first
+&lt;a href="https://blogs.jpcert.or.jp/en/2020/03/elf-tscookie.html"target="_blank" rel="noopener"&gt;reported&lt;/a&gt; on by
+JPCert. The table shows the detection of &amp;ldquo;calculate modulo 256 via x86
+assembly&amp;rdquo; and that the same genes are shared between BlackTech, Bifrost, and
+libc. What this allows analysts to deduce is that the shared genes between
+BlackTech and Bifrost exist because their malware has been statically linked
+against the same libc version.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig6.png" title="Figure 6: Some of the capabilities for a TSCookie sample." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: Some of the capabilities for a TSCookie sample.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Code gene analysis is a great way to find shared code between different malware
+families. By correlating code genes to the capabilities of a file, you can add
+another dimension to your malware analysis. In addition to Windows PE files,
+Intezer Analyze now allows this to be performed on Linux ELF files. This was
+possible by extending the functionality of an open-source project called capa.
+We are grateful that FireEye open-sourced capa as it allowed us to extend its
+functionality to support ELF files. As we are not only users of open-source, we
+also enjoy providing improvements and bug fixes to open-source projects.
+Additionally, we also have
+&lt;a href="https://github.com/intezer"target="_blank" rel="noopener"&gt;released some of our own&lt;/a&gt;. Check out FireEye&amp;rsquo;s
+blog post on capa v3.0 release
+&lt;a href="https://www.fireeye.com/blog/threat-research/2021/09/elfant-in-the-room-capa-v3.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>MoP – "Master of Puppets" – Advanced malware tracking framework revealed at BlackHat Arsenal 2019</title><link>https://intezer.github.io/community-intelligence/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</link><pubDate>Wed, 14 Aug 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</guid><description>
 &lt;p&gt;At BlackHat Arsenal 2019 Intezer’s researcher, Omri Ben-Bassat, revealed
 open-source tool called MoP (“Master of Puppets”) which is a framework for
 reverse engineers who wish to create and operate trackers for new malware found

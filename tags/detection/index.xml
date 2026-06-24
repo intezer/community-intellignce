@@ -1,0 +1,365 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Detection</title><link>https://intezer.github.io/community-intelligence/tags/detection/</link><description>Recent content in Detection on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 01 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/detection/index.xml" rel="self" type="application/rss+xml"/><item><title>Boost Your SOC Skills: How to Detect Good Apps Gone Bad</title><link>https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</link><pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</guid><description>
+&lt;p&gt;Threat actors have a wide range of tools and techniques they can use in cyber
+attacks including: malware-as-a-service, open-source tools and malware code,
+red team or admin tools. Besides, there is an extended variety of legitimate
+tools and features that can be handy for regular users but extremely dangerous
+when used by attackers. Trusted applications and signed binaries are beneficial
+for attackers because they provide them with stealthy code execution, sometimes
+even with high integrity privileges. For an untrained eye the execution of
+trusted applications by attackers might go under the radar and not ring the
+alarm.&lt;/p&gt;
+&lt;p&gt;It is very challenging to detect the usage of legitimate applications by
+attackers while avoiding false positive alerts and alert fatigue. Since these
+applications are frequently used by the system and endpoint users, it is harder
+to detect when an application is exploited by attackers and issue an alert.&lt;/p&gt;
+&lt;p&gt;Don&amp;rsquo;t give up, there is a solution. First, as a SOC analyst you need to be
+familiar with how trusted tools are used by attackers. Second, you need to know
+which detection methods will be effective in your environment and trigger
+alerts when attackers are using legitimate tools.&lt;/p&gt;
+&lt;p&gt;In this blog we will present several examples of legitimate Windows
+applications and utilities that were exploited by threat actors in real-life
+attacks. For each tool we will explain how SOC analysts can detect and identify
+the usage of these applications by attackers. For each tool we mention, we
+suggest or create a basic detection rule that can be compiled to fit your log
+source and SIEM platform. Please note that you may need to slightly modify the
+rule to better suit your specific log source or SIEM fields in order to use for
+your organization.&lt;/p&gt;
+&lt;p&gt;On March 16th, we will host a livestream where we will present these and other
+techniques including live examples.
+&lt;a href="https://www.twitch.tv/intezerlabs"target="_blank" rel="noopener"&gt;Follow us on Twitch to get notified when the livestream starts.&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Legitimate Tools Used in Attacks by Threat Actors&lt;span class="hx:absolute hx:-mt-20" id="legitimate-tools-used-in-attacks-by-threat-actors"&gt;&lt;/span&gt;
+&lt;a href="#legitimate-tools-used-in-attacks-by-threat-actors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Technique Name: PsExec&lt;span class="hx:absolute hx:-mt-20" id="technique-name-psexec"&gt;&lt;/span&gt;
+&lt;a href="#technique-name-psexec" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Analysis&lt;span class="hx:absolute hx:-mt-20" id="analysis"&gt;&lt;/span&gt;
+&lt;a href="#analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;PsExec is a command-line utility that is used to execute processes on remote
+systems and also redirect the output of console applications. It is part of the
+Sysinternals'
+&lt;a href="https://docs.microsoft.com/en-us/sysinternals/downloads/pstools"target="_blank" rel="noopener"&gt;PsTools suite&lt;/a&gt;
+created by Mark Russinovich. Although intended as a tool to be used only by
+administrators. PsExec has been used also by malicious actors. PsExec executes
+processes in the following syntax.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;psexec \RemotePCName [-u username[-p password]] command [arguments]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The process connects to the remote computer over the SMB ports 445 (TCP) or 139
+(UDP), and copies over a service file that is run to set up data transfer
+between the remote machine and the PsExec process. When the action is
+completed, PsExec stops the service and removes the file.&lt;/p&gt;
+&lt;h4&gt;Real Life Example&lt;span class="hx:absolute hx:-mt-20" id="real-life-example"&gt;&lt;/span&gt;
+&lt;a href="#real-life-example" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;a href="../../../2017/10/notpetya-returns-bad-rabbit"&gt;NotPetya&lt;/a&gt; was a famous
+ransomware attack that occurred in 2017. It infected thousands of
+organizations, with over 80% of the victims located in Ukraine, causing
+billions of dollars worth of damage. NotPetya contained an
+&lt;a href="https://www.crowdstrike.com/blog/petrwrap-ransomware-technical-analysis-triple-threat-file-encryption-mft-encryption-credential-theft/"target="_blank" rel="noopener"&gt;embedded modified version&lt;/a&gt;
+of PsExec. PsExec was used for remote execution and lateral movement across
+networks. The credentials were gathered by a credential theft module that was
+able to extract usernames and passwords from the LSASS process.&lt;/p&gt;
+&lt;p&gt;The Russian threat group APT29 (Cozy Bear) has also
+&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2019/10/ESET_Operation_Ghost_Dukes.pdf"target="_blank" rel="noopener"&gt;used&lt;/a&gt;
+PsExec to laterally move across networks and deploy their custom backdoor
+FatDuke.&lt;/p&gt;
+&lt;h4&gt;How to Detect&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;One way to detect PsExec is to detect the creation of a new service. A new
+service created in Windows will generate an event in the Windows Security logs
+with the code of 7045. The default name for the PsExec service is PSEXESVC. We
+created a Sigma rule that will alert when an Event ID 7045 will be triggered by
+a service with the name PSEXESVC.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;title: Generic PSEXESVC Service Execution or Creation
+author: Intezer
+logsource:
+product: windows
+service: system
+detection:
+service_installation:
+EventID: 7045
+Provider_Name: &amp;#39;Service Control Manager&amp;#39;
+ServiceName: &amp;#39;PSEXESVC&amp;#39;
+ServiceFileName|endswith: &amp;#39;PSEXESVC.exe&amp;#39;
+service_execution:
+EventID: 7036
+Provider_Name: &amp;#39;Service Control Manager&amp;#39;
+param1: &amp;#39;PSEXESVC&amp;#39;
+param2: &amp;#39;running&amp;#39;
+condition: service_installation or service_execution&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Another way to detect is the creation of named pipes, created by the service,
+that is set up to facilitate communication between the PsExec process and the
+service on the remote host. There are multiple formats that can be created:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;PSEXESVC-&amp;lt;computer_name&amp;gt;-&amp;lt;random_digits&amp;gt;-&amp;lt;stdin|stdout|stderr&amp;gt;
+PSEXESVC&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Creation of a PsExec named pipe can be detected through the following Sigma
+rule:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;title: PsExec Service Named Pipe Creation
+author: Intezer
+logsource:
+product: windows
+category: pipe_created
+detection:
+selection_PSEXESVC:
+PipeName|contains|all:
+- &amp;#39;PSEXESVC&amp;#39;
+selection_stdin:
+PipeName|endswith: &amp;#39;-stdin&amp;#39;
+selection_stdout:
+PipeName|endswith: &amp;#39;-stdout&amp;#39;
+selection_stderr:
+PipeName|endswith: &amp;#39;-stderr&amp;#39;
+condition: selection_PSEXESVC and 1 of selection_std*&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The above rules may help if PsExec is not a tool in use by your organization,
+but if it is in common use, there are other rules that may help detect
+malicious variants. To detect the use of a renamed or variant of PsExec, you
+can use this Sigma rule:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/SigmaHQ/sigma/blob/eb382c4a59b6d87e186ee269805fe2db2acf250e/rules/windows/builtin/security/win_susp_psexec.yml"target="_blank" rel="noopener"&gt;https://github.com/SigmaHQ/sigma/blob/eb382c4a59b6d87e186ee269805fe2db2acf250e/rules/windows/builtin/security/win_susp_psexec.yml&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;Technique Name: MSHTA&lt;span class="hx:absolute hx:-mt-20" id="technique-name-mshta"&gt;&lt;/span&gt;
+&lt;a href="#technique-name-mshta" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Analysis&lt;span class="hx:absolute hx:-mt-20" id="analysis-1"&gt;&lt;/span&gt;
+&lt;a href="#analysis-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;mshta.exe is a Windows-native binary that executes VBScript or JavaScript
+embedded within Microsoft HTML Application (HTA) files. Using a legitimate and
+signed binary as mshta gives attackers the means to execute arbitrary code
+stored on a remote server while bypassing browser security settings. When
+mashta is leveraged by attackers it is invoked through files such as lnk files
+and the malicious payload is executed using inline command line arguments or
+files that are stored on a remote server.&lt;/p&gt;
+&lt;h4&gt;Real Life Example&lt;span class="hx:absolute hx:-mt-20" id="real-life-example-1"&gt;&lt;/span&gt;
+&lt;a href="#real-life-example-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;a href="https://cdn2.hubspot.net/hubfs/3354902/Cybereason%20Labs%20Analysis%20Operation%20Cobalt%20Kitty.pdf"target="_blank" rel="noopener"&gt;Operation Cobalt Kitty&lt;/a&gt;
+(APT 32) used mshta to execute Cobalt Strike beacons for the
+reconnaissancereconsense stage and download further payloads.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.fortinet.com/blog/threat-research/phishing-campaign-targeting-korean-to-deliver-agent-tesla-new-variant"target="_blank" rel="noopener"&gt;Agen Tesla&lt;/a&gt;
+uses decoy documents containing VBA macro that calls mshta to download the
+first stage of the attack. Afterwards the malware creates a scheduled task to
+download and execute a new version of the malware using mshta.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://unit42.paloaltonetworks.com/new-babyshark-malware-targets-u-s-national-security-think-tanks/"target="_blank" rel="noopener"&gt;BabyShark&lt;/a&gt;
+malware, associated with North Korean threat actors, in the first stage of the
+attack they used a decoy document with VBA macro code that used mshta to
+download from a remote server HTA file that will execute the first stage of the
+attack. Later they used mshta in the persistence logic to execute further
+commands from the command and control server (C2).&lt;/p&gt;
+&lt;h4&gt;How to detect&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect-1"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;When mshta is used by threat actors it can be invoked by different legitimate
+applications. For example phishing documents will execute mshta directly or
+using other processes such as powershell or cmd.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/images/fig1.png" title="Screenshot of process hacker when mshta is executed by a malicious Microsoft Word document." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Screenshot of process hacker when mshta is executed by a malicious Microsoft Word document.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;To identify the usage of mshta by threat actors we need to monitor and alert
+upon execution of mshta by suspicious processes and execution of suspicious
+processes by mshta (such as wscript). You can use the Sigma rule below to
+detect this type of execution:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;title: Suspicious process execution for mshta
+author: Intezer
+logsource:
+category: process_creation
+product: windows
+detection:
+selection1:
+Image: &amp;#39;*mshta.exe&amp;#39;
+ParentImage|endswith:
+- &amp;#39;winword.exe&amp;#39;
+- &amp;#39;excel.exe&amp;#39;
+- &amp;#39;powerpnt.exe&amp;#39;
+- &amp;#39;cmd.exe&amp;#39;
+- &amp;#39;powershell.exe&amp;#39;
+- &amp;#39;wscript.exe&amp;#39;
+- &amp;#39;cscript.exe&amp;#39;
+- &amp;#39;sh.exe&amp;#39;
+- &amp;#39;bash.exe&amp;#39;
+- &amp;#39;reg.exe&amp;#39;
+- &amp;#39;regsvr32.exe&amp;#39;
+- &amp;#39;BITSADMIN*&amp;#39;
+selection2:
+ParentImage: &amp;#39;*mshta.exe&amp;#39;
+Image:
+- &amp;#39;*cmd.exe&amp;#39;
+- &amp;#39;*powershell.exe&amp;#39;
+- &amp;#39;*wscript.exe&amp;#39;
+- &amp;#39;*cscript.exe&amp;#39;
+- &amp;#39;*sh.exe&amp;#39;
+- &amp;#39;*bash.exe&amp;#39;
+- &amp;#39;*reg.exe&amp;#39;
+- &amp;#39;*regsvr32.exe&amp;#39;
+- &amp;#39;*BITSADMIN*&amp;#39;
+condition: selection1 or selection2
+fields:
+- CommandLine
+- ParentCommandLine&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Attackers masquerade the usage of mshta by
+&lt;a href="https://attack.mitre.org/techniques/T1036/003/"target="_blank" rel="noopener"&gt;renaming&lt;/a&gt; the binary to
+something less obvious and suspicious, so you should monitor events of changes
+in the path or the name of system utilities. In our signature we are using the
+process image name.&lt;/p&gt;
+&lt;p&gt;Usually mshtaat execution contains command line arguments and url pointing to
+remote hosting servers in the signature. Below we look for these suspicious
+arguments:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;title: mshta execution with command line arguments
+author: Intezer
+logsource:
+category: process_creation
+product: windows
+detection:
+selection:
+Image: &amp;#39;*mshta.exe&amp;#39;
+CommandLine|contains:
+- &amp;#39;javascript&amp;#39;
+- &amp;#39;*.hta&amp;#39;
+- &amp;#39;vbscript&amp;#39;
+- &amp;#39;http&amp;#39;
+- &amp;#39;https&amp;#39;
+condition: selection&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Technique name: Squiblydoo&lt;span class="hx:absolute hx:-mt-20" id="technique-name-squiblydoo"&gt;&lt;/span&gt;
+&lt;a href="#technique-name-squiblydoo" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;MITRE: &lt;a href="https://attack.mitre.org/techniques/T1218/010/"target="_blank" rel="noopener"&gt;https://attack.mitre.org/techniques/T1218/010/&lt;/a&gt;&lt;/p&gt;
+&lt;h4&gt;Analysis&lt;span class="hx:absolute hx:-mt-20" id="analysis-2"&gt;&lt;/span&gt;
+&lt;a href="#analysis-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Regsvr32 is a command-line utility to manage the registration of DLLs and
+ActiveX controls in the Registry. Squiblydoo is a technique that was discovered
+by Casey Smith, it allows the usage of Regsvr32 to load and execute COM
+scriptlet (JScript or VBScript embedded in XML file) from a remote server.&lt;/p&gt;
+&lt;p&gt;This method is very stealthy. It doesn&amp;rsquo;t make any changes to the Registry and
+it bypasses application control and allow-lists as the code is executed under
+user permissions by Regsvr32.&lt;/p&gt;
+&lt;h4&gt;Real Life Example&lt;span class="hx:absolute hx:-mt-20" id="real-life-example-2"&gt;&lt;/span&gt;
+&lt;a href="#real-life-example-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;a href="https://www.proofpoint.com/us/threat-insight/post/leviathan-espionage-actor-spearphishes-maritime-and-defense-targets"target="_blank" rel="noopener"&gt;Leviathan&lt;/a&gt;
+is an espionage group that uses Squiblydoo to execute malicious Dlls.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.mandiant.com/resources/phished-at-the-request-of-counsel"target="_blank" rel="noopener"&gt;APT19&lt;/a&gt;
+uses Squiblydoo to bypass whitelisting and execute arbitrary code on the
+victim&amp;rsquo;s machine.&lt;/p&gt;
+&lt;h4&gt;How to detect&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect-2"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Regsvr32 has several command line
+&lt;a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/regsvr32"target="_blank" rel="noopener"&gt;arguments&lt;/a&gt;,
+there is a suspicious combination of arguments that can be a good indication
+that the binary is invoked by attackers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;/s will silently execute the command without printing messages&lt;/li&gt;
+&lt;li&gt;/i passes a command line string to
+&lt;a href="https://docs.microsoft.com/en-gb/windows/win32/api/shlwapi/nf-shlwapi-dllinstall?redirectedfrom=MSDN"target="_blank" rel="noopener"&gt;DllInstall&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In addition, this method uses scrobj.dll to execute COM scriptlet. To detect
+these suspicious process execution we made the Sigma rule below that alerts
+upon suspicious parent processes.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;title: detect Squiblydoo
+logsource:
+product: windows
+category: process_creation
+detection:
+selection:
+Image|endswith: &amp;#39;regsvr32.exe&amp;#39;
+CommandLine|contains|all:
+- &amp;#39;/i:&amp;#39;
+- &amp;#39;/s&amp;#39;
+CommandLine|contains:
+- &amp;#39;http&amp;#39;
+- &amp;#39;https&amp;#39;
+- &amp;#39;ftp&amp;#39;
+CommandLine|endswith: &amp;#39;scrobj.dll&amp;#39;
+condition: selection&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;To check if a scriptlet file implements this Squiblydoo, use
+&lt;a href="https://github.com/mikesxrs/Open-Source-YARA-rules/blob/master/RSA/Squiblydoo.yar"target="_blank" rel="noopener"&gt;this&lt;/a&gt;
+YARA rule to detect files that may potentially use this technique.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/images/fig2.png" title="Yara rule for detecting possible Squiblydoo scriptlet." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Yara rule for detecting possible Squiblydoo scriptlet.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Technique Name: Windows Management Instrumentation (WMI)&lt;span class="hx:absolute hx:-mt-20" id="technique-name-windows-management-instrumentation-wmi"&gt;&lt;/span&gt;
+&lt;a href="#technique-name-windows-management-instrumentation-wmi" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;Analysis&lt;span class="hx:absolute hx:-mt-20" id="analysis-3"&gt;&lt;/span&gt;
+&lt;a href="#analysis-3" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Windows Management Instrumentation (WMI) is an interface through which a
+program or script can perform operations or manage data on a Windows operating
+&lt;a href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-start-page"target="_blank" rel="noopener"&gt;system&lt;/a&gt;.
+WMI gives access to many Windows components, and is therefore heavily leveraged
+by threat actors to execute behaviors for gathering information, executing
+additional payloads, and lateral movement.&lt;/p&gt;
+&lt;p&gt;WMI is often used in VBScript. To connect to a WMI namespace in VBScript, the
+function GetObject can be used with a WMI object path that specifies the
+namespace that holds the desired classes that you wish to use. The most popular
+are located in the rootcimv2 namespace.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;strComputer = &amp;#34;.&amp;#34;
+Set objWMIService = GetObject(&amp;#34;winmgmts:\ &amp;amp; strComputer &amp;amp; &amp;#34;&amp;#34;rootcimv2&amp;#34;&amp;#34;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>
