@@ -1,4 +1,576 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research –</title><link>https://intezer.github.io/community-intelligence/</link><description>Recent content on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 14 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/index.xml" rel="self" type="application/rss+xml"/><item><title>OrBit (Re)turns: Tracking an Open-Source Linux Rootkit Across Four Years of Forks and Deployments</title><link>https://intezer.github.io/community-intelligence/blog/2026/05/orbit-returns/</link><pubDate>Thu, 14 May 2026 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2026/05/orbit-returns/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research –</title><link>https://intezer.github.io/community-intelligence/</link><description>Recent content on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 03 Jun 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/index.xml" rel="self" type="application/rss+xml"/><item><title>How attackers are gaining access to LLM inference</title><link>https://intezer.github.io/community-intelligence/blog/2026/06/how-attackers-access-llm-inference/</link><pubDate>Wed, 03 Jun 2026 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2026/06/how-attackers-access-llm-inference/</guid><description>
+&lt;p&gt;&lt;em&gt;This article is based on joint research with Eran Segal, researcher at
+&lt;a href="https://www.kodemsecurity.com/"target="_blank" rel="noopener"&gt;Kodem Security&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The most capable commercial AI models are now useful enough to attackers that
+they have become an integral part of their kill chain, in multiple steps. The
+&lt;a href="https://cybench.github.io/"target="_blank" rel="noopener"&gt;Cybench&lt;/a&gt; benchmark tests models on offensive cyber
+tasks. Its current top performers (Claude Opus 4.6, Claude Sonnet 4.5, Grok 4)
+can write functional exploit code, reason through credential chains, and
+sustain complex reconnaissance workflows: multi-step offensive work that
+previously required human expertise. Malware families are already using this.
+Instead of generating a payload offline and shipping it, they wire a live LLM
+API into the malware itself so it can adapt its behavior at runtime on the
+infected host.&lt;/p&gt;
+&lt;p&gt;Commercial providers run abuse detection and terminate accounts linked to
+malicious activity. A payment method creates a paper trail that investigators
+can follow. So attackers solve the access problem the same way they solve any
+resource problem: they steal it, find it free, or find it unguarded.&lt;/p&gt;
+&lt;p&gt;This post covers five routes threat actors use to reach LLM inference without
+paying for it: buying offensive models on underground forums, using front-end
+models using 3rd party LLM service that allows paying in bitcoin, using
+free-tier or keyless public APIs, hunting for leaked API keys in developer
+artifacts, and exploiting self-hosted LLM servers left open on the internet.&lt;/p&gt;
+&lt;h2&gt;Method 1: Offensive LLMs and Anonymous Payment&lt;span class="hx:absolute hx:-mt-20" id="method-1-offensive-llms-and-anonymous-payment"&gt;&lt;/span&gt;
+&lt;a href="#method-1-offensive-llms-and-anonymous-payment" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cyber-oriented LLMs sold on underground forums are the most visible route.
+WormGPT, GhostGPT, KawaiiGPT, and Xanthorox are the most cited examples,
+covered in depth by
+&lt;a href="https://unit42.paloaltonetworks.com/dilemma-of-ai-malicious-llms/"target="_blank" rel="noopener"&gt;Unit 42&lt;/a&gt;.
+These are returned open-weight models or jailbroken wrappers over commercial
+APIs, marketed specifically as having no content filter. They solve the
+moderation problem but not the cost problem: access is sold on a subscription
+basis, and the capability ceiling sits well below that of frontier commercial
+models. So they are useful for generating phishing content or simple malware
+stubs, but less so for the kind of autonomous multi-step offensive work that
+the frontier models in the Cybench ranking are capable of.&lt;/p&gt;
+&lt;h2&gt;Method 2: Using Frontier Models Through a Third-Party Service&lt;span class="hx:absolute hx:-mt-20" id="method-2-using-frontier-models-through-a-third-party-service"&gt;&lt;/span&gt;
+&lt;a href="#method-2-using-frontier-models-through-a-third-party-service" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;If a threat actor would like to use the frontier models to achieve top
+performance, they can still use these models using 3rd party services such as
+PayWithMoon and AIMLAPI.&lt;/p&gt;
+&lt;p&gt;These services sit between the attacker and a commercial LLM provider,
+accepting cryptocurrency without identity verification and then funding a
+legitimate provider account on the attacker&amp;rsquo;s behalf. The account itself
+reaches frontier models, but the funding trail stops at the middleman. The
+account will still get burned once abuse detection triggers, but replacing it
+is cheap. The upstream provider has no usable identity to pursue. This is how
+attackers buy frontier-model access while skipping the paper trail a normal
+commercial account would leave behind.&lt;/p&gt;
+&lt;h2&gt;Method 3: Free-Tier and Keyless Public Inference APIs&lt;span class="hx:absolute hx:-mt-20" id="method-3-free-tier-and-keyless-public-inference-apis"&gt;&lt;/span&gt;
+&lt;a href="#method-3-free-tier-and-keyless-public-inference-apis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A cheaper alternative to underground subscriptions exists in plain sight. Most
+major inference providers publish permanent free tiers that require nothing
+more than a disposable email address, and a handful of services accept requests
+with no credentials at all. An attacker who registers for a pool of free-tier
+accounts gets as meny tokens as he wishes without paying a dime.&lt;/p&gt;
+&lt;p&gt;The scale of the free-tier ecosystem is easy to measure because the community
+has cataloged it. Public curated lists such as
+&lt;a href="https://github.com/cheahjs/free-llm-api-resources"target="_blank" rel="noopener"&gt;cheahjs/free-llm-api-resources&lt;/a&gt;
+and
+&lt;a href="https://github.com/mnfst/awesome-free-llm-apis"target="_blank" rel="noopener"&gt;mnfst/awesome-free-llm-apis&lt;/a&gt;
+explicitly filter for providers that offer a permanent (not trial-credit) free
+tier with no credit card. Representative entries, with numbers pulled from each
+provider&amp;rsquo;s own rate-limit documentation:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://console.groq.com/docs/rate-limits"target="_blank" rel="noopener"&gt;Groq&lt;/a&gt;: 30 requests/minute (RPM)
+on all free-tier models, with requests/day (RPD) caps ranging from 1,000 (for
+the 70B llama) to 14,400 (for the 8B llama).&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://inference-docs.cerebras.ai/support/rate-limits"target="_blank" rel="noopener"&gt;Cerebras&lt;/a&gt;: 30 RPM,
+14,400 RPD, and roughly 1M tokens/day on three of the four free-tier models
+(&lt;code&gt;gpt-oss-120b&lt;/code&gt;, &lt;code&gt;llama3.1-8b&lt;/code&gt;, &lt;code&gt;qwen-3-235b&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.cohere.com/docs/rate-limits"target="_blank" rel="noopener"&gt;Cohere&lt;/a&gt;: 20 RPM on the Chat API
+and a hard cap of 1,000 total API calls/month on a trial key.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.mistral.ai/deployment/ai-studio/tier"target="_blank" rel="noopener"&gt;Mistral La Plateforme&lt;/a&gt;:
+1B tokens/month on the Experiment plan. No credit card is required, but a
+verified phone number is required, which is the highest sign-up friction in
+this group.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://huggingface.co/docs/hub/rate-limits"target="_blank" rel="noopener"&gt;HuggingFace&lt;/a&gt;: Free accounts are
+rate-limited on both the Hub API and the Inference API per 5-minute window.
+Anonymous per-IP access exists but is stricter than the free-account path.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://openrouter.ai/docs/api/reference/limits"target="_blank" rel="noopener"&gt;OpenRouter&lt;/a&gt;: 50 free model
+RPD with no deposit at all, and 1,000 RPD after a one-time $10 top-up that is
+never spent against model usage.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://cloud.sambanova.ai/plans/pricing"target="_blank" rel="noopener"&gt;SambaNova&lt;/a&gt;: 20 RPM and 20 RPD,
+with a 200,000 tokens/day cap. The tightest daily request ceiling in this
+group by a wide margin.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These providers differ in rate limits, models, and throughput. What they share
+is that a usable credential requires nothing more than a disposable email
+address (a phone number in Mistral&amp;rsquo;s case) and no payment method. Credentials
+can simply be rotated when limits are reached.&lt;/p&gt;
+&lt;p&gt;The fully keyless end of the spectrum is thinner, but it exists.
+&lt;a href="https://pollinations.ai"target="_blank" rel="noopener"&gt;Pollinations.ai&lt;/a&gt; exposes an OpenAI-compatible
+endpoint that accepts requests with no authentication for basic use.
+&lt;a href="https://duckduckgo.com/duckduckgo-help-pages/duckai"target="_blank" rel="noopener"&gt;DuckDuckGo&amp;rsquo;s Duck.ai&lt;/a&gt;
+anonymizes browser-based access to Claude 3.5 Haiku, Llama 4 Scout, Mistral
+Small 3, GPT-5 mini, and GPT-4o mini with no account at all. These services are
+not designed for bulk programmatic use, but they are reachable from any HTTP
+client, and the only cost is rate-limit friction.&lt;/p&gt;
+&lt;p&gt;Among the malware families in the intro table, LameHug/PROMPTSTEAL is the
+cleanest example of this route in the wild: it calls HuggingFace&amp;rsquo;s Inference
+API for &lt;code&gt;Qwen 2.5-Coder-32B-Instruct&lt;/code&gt; to drive reconnaissance and data theft,
+with no embedded credentials reported by
+&lt;a href="https://www.splunk.com/en_us/blog/security/lamehug-ai-driven-malware-llm-cyber-intrusion-analysis.html"target="_blank" rel="noopener"&gt;Splunk&lt;/a&gt;.
+Whether the malware carries a token or registers one at runtime is not
+established, but either way, the enabling property is HuggingFace&amp;rsquo;s
+no-credit-card free tier.&lt;/p&gt;
+&lt;h2&gt;Method 4: Exposed API Keys&lt;span class="hx:absolute hx:-mt-20" id="method-4-exposed-api-keys"&gt;&lt;/span&gt;
+&lt;a href="#method-4-exposed-api-keys" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The fourth route to free model access doesn&amp;rsquo;t require finding an exposed server
+at all. Developers routinely hardcode credentials directly into apps, config
+files, and scripts. These credentials can be found in GitHub in open-source
+projects, while closed-source projects contain the credentials in the app
+itself. These artifacts are submitted to VirusTotal when apps are submitted for
+malware analysis. It can be an APK, ELF, EXE, or any type of artifact shipped
+with the product.&lt;/p&gt;
+&lt;p&gt;To find them systematically, we wrote a YARA rule targeting the key formats of
+the major AI providers: Google Gemini (&lt;code&gt;AIzaSy…&lt;/code&gt;), OpenAI (&lt;code&gt;sk-…&lt;/code&gt;), Anthropic
+(&lt;code&gt;sk-ant-…&lt;/code&gt;), HuggingFace (&lt;code&gt;hf_…&lt;/code&gt;), Replicate, Mistral, Cohere, Groq, and
+several others. We ran the rule as a retrohunting query across the VirusTotal
+corpus, collected the matching sample hashes, then pulled the raw files and ran
+a regex extraction pass to extract every key-value pair, provider, and
+surrounding code context. From there, we enriched each sample with VirusTotal
+metadata to understand detection rates and file types. The final step was
+validation: a lightweight GET request against each provider&amp;rsquo;s model-list or
+whoami endpoint. No prompts sent, just a check of whether the key
+authenticates.&lt;/p&gt;
+&lt;p&gt;The corpus yielded 647 unique keys across all providers. Roughly 62% were
+Google Gemini (&lt;code&gt;AIzaSy…&lt;/code&gt;) keys. That concentration traces back to the Android
+developer ecosystem, where apps built for translation, search, or chatbot
+features commonly bundle the key directly in compiled resources or Java code.
+HuggingFace keys made up about 11%, Replicate about 8%, OpenAI &lt;code&gt;sk-&lt;/code&gt; keys about
+7%, and the remaining share was split across Voyage (5%), Mistral (3%), and
+Cohere (3%), with trace amounts of Anthropic, Groq, and OpenAI
+environment-style keys. The Mistral and Cohere keys concentrated heavily in a
+single file: a cracked &amp;ldquo;Collins Italian Dictionary MOD&amp;rdquo; Android APK that
+bundled 20 Mistral keys and 15 Cohere keys alongside 2 Gemini keys, with the
+small remainder scattered across two versions of a Ubisoft game APK.&lt;/p&gt;
+&lt;p&gt;About 65% of the 659 unique samples are confirmed Android by VirusTotal&amp;rsquo;s type
+classification. Another 18% are ZIP archives that follow the same submission
+pattern but were not explicitly tagged as Android. The true APK share sits
+between 65% and 84%. The remainder consisted of Windows PE files (5%), HTML
+pages, Python scripts, plain-text credential dumps, and a handful of Mach-O and
+ELF binaries. That Android skew isn&amp;rsquo;t surprising. APKs are frequently submitted
+to VirusTotal for modding and repackaging, and their keys remain intact after
+decompilation.&lt;/p&gt;
+&lt;p&gt;We submitted research samples to Intezer Analyze for code-based attribution,
+and three entries stand out. Four samples whose filenames suggested Akira
+ransomware are three Mimikatz binaries
+(&lt;a href="https://analyze.intezer.com/analyses/a7cac75b-37b7-4824-96e3-0f667cda7372"target="_blank" rel="noopener"&gt;1&lt;/a&gt;,
+&lt;a href="https://analyze.intezer.com/analyses/dd53f33a-88a8-4ad9-9e41-cc370af46167"target="_blank" rel="noopener"&gt;2&lt;/a&gt;,
+&lt;a href="https://analyze.intezer.com/analyses/396acd43-b1fc-4719-947e-8d368f7801c1"target="_blank" rel="noopener"&gt;3&lt;/a&gt;)
+and one
+&lt;a href="https://analyze.intezer.com/analyses/30ae2211-20a9-47c8-bbf4-9f2f56176684"target="_blank" rel="noopener"&gt;malicious binary without family attribution&lt;/a&gt;,
+all credential-dumping tools that happened to carry API keys. The sample with a
+HuggingFace key is
+&lt;a href="https://analyze.intezer.com/analyses/f646aa6c-b788-400a-b9f6-5cfcc7f619b9"target="_blank" rel="noopener"&gt;SolarMarker&lt;/a&gt;,
+an SEO-poisoning backdoor with infostealer capability. A Windows binary named
+&lt;code&gt;SystemSettings.exe&lt;/code&gt; contained OpenAI, Replicate, and Voyage keys; the
+multi-key combination is more consistent with theft from a developer&amp;rsquo;s machine
+than with intentional hardcoding.&lt;/p&gt;
+&lt;p&gt;When we ran the validation, almost all the keys were dead. The revocation rate
+was approximately 99.5%, consistent with a corpus skewed toward older samples
+that had been on VirusTotal long enough to be detected, rotated, or simply
+expired. The small fraction that remained live consisted entirely of Google
+Gemini keys from Android APKs. All appeared to be genuine developer mistakes
+rather than exfiltrated credentials: a key embedded in a &lt;code&gt;const&lt;/code&gt; in bundled
+JavaScript, one in a logging module in a compiled Android class, and one in a
+utility app&amp;rsquo;s APK resources. Those three keys have been reported to Google.&lt;/p&gt;
+&lt;p&gt;The method also illustrates why embedding API keys in client software is a
+particularly bad idea. Extracting a key from an APK requires a decompiler, and
+APKs have a reliable path to VirusTotal: users submit them for malware checks,
+repackaged versions circulate through third-party stores, and cracked builds
+get flagged automatically. The near-total revocation rate strongly suggests
+that LLM providers scan VirusTotal for their own key formats and automatically
+revoke matches. The three keys that were still live were all recent
+submissions, not yet caught by that sweep. If that pipeline exists, embedding a
+key in client-side code is not just a security mistake, but a futile one, and
+the key will likely be dead before it can be abused at scale.&lt;/p&gt;
+&lt;p&gt;The takeaway for an attacker is that hunting VirusTotal for hardcoded keys is
+low-effort but low-yield. The more durable access method is the exposed LLM
+server. A server running vLLM (a popular open-source LLM inference framework)
+or an open Ollama instance requires no authentication, doesn&amp;rsquo;t rotate anything
+while in use, and the owner usually doesn&amp;rsquo;t know it&amp;rsquo;s happening.&lt;/p&gt;
+&lt;h2&gt;Method 5: Hack Public LLM Hosting Servers&lt;span class="hx:absolute hx:-mt-20" id="method-5-hack-public-llm-hosting-servers"&gt;&lt;/span&gt;
+&lt;a href="#method-5-hack-public-llm-hosting-servers" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Self-hosted LLM platforms make it easy to run your own models on your
+infrastructure, and that same ease extends to anyone who can access the port.
+Most ships have no authentication by default and expose administrative
+endpoints that let a stranger list installed models, queue inference jobs, load
+new models from remote URLs, or, in several cases, execute code on the host.
+When the server is exposed to the public internet, the attacker does not need a
+stolen key or a forum subscription. The victim is paying the GPU bill, carrying
+the API-key spend, or hosting the RCE.&lt;/p&gt;
+&lt;p&gt;We scanned roughly 4,500 hosts across eleven of them. Every service had open
+instances, and 14 LocalAI hosts showed active compromise based on
+attacker-loaded model names consistent with a single automated campaign. The
+sections below cover what each platform is, how exposure gets abused, and what
+the scan found in the wild.&lt;/p&gt;
+&lt;h3&gt;Ollama&lt;span class="hx:absolute hx:-mt-20" id="ollama"&gt;&lt;/span&gt;
+&lt;a href="#ollama" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Ollama runs open-weight LLMs locally. By default, it binds to &lt;code&gt;127.0.0.1&lt;/code&gt;, and
+the authentication is disabled. But setting &lt;code&gt;OLLAMA_HOST=0.0.0.0&lt;/code&gt; is a common
+step when accessing it from another machine on the network or from a frontend
+app running in a separate container. It exposes all interfaces, and anyone
+reaching it&amp;rsquo;s port gets full API, model management, and hardware access.
+&lt;a href="https://www.sentinelone.com/labs/silent-brothers-ollama-hosts-form-anonymous-ai-network-beyond-platform-guardrails/"target="_blank" rel="noopener"&gt;SentinelOne Labs and Censys already published the definitive survey&lt;/a&gt;,
+documenting 175,000+ hosts chained into anonymous AI networks for free text,
+embedding, and bulk content generation on victim hardware. That pattern is now
+commercialized by
+&lt;a href="https://www.pillar.security/blog/operation-bizarre-bazaar-first-attributed-llmjacking-campaign-with-commercial-marketplace-monetization"target="_blank" rel="noopener"&gt;Operation Bizarre Bazaar&lt;/a&gt;,
+which sells subscription access to a unified LLM gateway fronted by stolen
+Ollama endpoints, turning ad-hoc LLMjacking into a growing concern.&lt;/p&gt;
+&lt;h3&gt;LocalAI&lt;span class="hx:absolute hx:-mt-20" id="localai"&gt;&lt;/span&gt;
+&lt;a href="#localai" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;LocalAI is an OpenAI API-compatible model server supporting LLMs, image
+generation, speech, and transcription.
+&lt;a href="https://localai.io/features/authentication/"target="_blank" rel="noopener"&gt;Authentication is disabled by default.&lt;/a&gt;
+It also supports remote model installation, P2P distributed serving, and a
+built-in agent platform with support for MCP. Of all the services in this
+research, it has the widest attack surface.&lt;/p&gt;
+&lt;p&gt;Of all the hosts scanned, 55% were confirmed open, the highest absolute count
+in this group. About 24% are API proxies with live upstream keys for OpenAI,
+Anthropic, and Google accessible to anyone who can reach the host.&lt;/p&gt;
+&lt;p&gt;The most striking finding is evidence of automated exploitation at scale. About
+21% of confirmed hosts carry model names with a consistent signature tied to
+&lt;a href="https://projectdiscovery.io/nuclei"target="_blank" rel="noopener"&gt;ProjectDiscovery&amp;rsquo;s nuclei&lt;/a&gt; scanner
+templates, with per-run timestamps mapping to late March and early April 2026.
+The pattern is consistent with automated scanning for an unauthenticated remote
+code execution path, in which a malicious URL supplied during model
+installation triggers server-side code execution. The exploit payload appears
+to load a small publicly available Italian-language model as a &amp;ldquo;hello world&amp;rdquo;
+confirmation, which recurs on every affected host. The markers not being
+cleaned up argue against mature attacker tradecraft. Operators running LocalAI
+can open &lt;code&gt;/v1/models&lt;/code&gt; on their own host: any &lt;code&gt;nuclei-rce-*&lt;/code&gt; or
+&lt;code&gt;rce_&amp;lt;timestamp&amp;gt;&lt;/code&gt; identifier is not human-chosen and indicates this campaign
+hit them.&lt;/p&gt;
+&lt;h3&gt;Langflow&lt;span class="hx:absolute hx:-mt-20" id="langflow"&gt;&lt;/span&gt;
+&lt;a href="#langflow" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Langflow is a visual builder for multi-agent AI pipelines, widely used to
+prototype RAG systems and chatbots. Flows routinely embed hardcoded
+credentials: OpenAI and Anthropic API keys, database connection strings, Slack
+tokens, and webhook secrets. Anyone who can reach the host and read a flow
+config has all of them. Unlike the previous examples, this app does not have a
+known major misconfiguration, but it does not prevent attackers from being able
+to hack and gain access to this service. For example, two unauthenticated RCE
+bugs make reaching the config trivial:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://nvd.nist.gov/vuln/detail/CVE-2025-3248"target="_blank" rel="noopener"&gt;CVE-2025-3248&lt;/a&gt;: on the CISA
+KEV list, reliably patched only in 1.6.4+&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.sysdig.com/blog/cve-2026-33017-how-attackers-compromised-langflow-ai-pipelines-in-20-hours"target="_blank" rel="noopener"&gt;CVE-2026-33017&lt;/a&gt;:
+fixed in 1.9.0, exploited in the wild within 20 hours of disclosure.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Every confirmed host in our scan ran a version vulnerable to CVE-2026-33017;
+about 72% were also vulnerable to CVE-2025-3248. Several hosts didn&amp;rsquo;t
+authenticate at all, with flows, credentials, and both RCE paths openly
+accessible. Code execution on the Langflow host is the small prize. The keys
+inside the flows pivot to everything the workflows connect to.&lt;/p&gt;
+&lt;h3&gt;n8n&lt;span class="hx:absolute hx:-mt-20" id="n8n"&gt;&lt;/span&gt;
+&lt;a href="#n8n" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;n8n is a low-code workflow automation platform with 400+ service connectors and
+code execution nodes (workflow steps that run arbitrary scripts). It has the
+strongest default auth posture of any service in this research: User Management
+is enforced on fresh installs.&lt;/p&gt;
+&lt;p&gt;But it does not prevent attackers from actively gaining access to n8n.
+Vulnerabilities such as
+&lt;a href="https://nvd.nist.gov/vuln/detail/CVE-2026-21858"target="_blank" rel="noopener"&gt;CVE-2026-21858&lt;/a&gt; (&amp;ldquo;Ni8mare&amp;rdquo;,
+CVSS 10.0, fixed in 1.121.0), which is a vulnerability in the web hooks request
+handling that turns exposed endpoints into a full unauthenticated RCE surface
+via content-type confusion, with a
+&lt;a href="https://github.com/Chocapikk/CVE-2026-21858"target="_blank" rel="noopener"&gt;public PoC&lt;/a&gt; already out. Prior
+research estimates the exposed n8n population at tens of thousands of hosts.&lt;/p&gt;
+&lt;p&gt;The post-exploitation story mirrors Langflow. Workflows carry hardcoded API
+keys, database connection strings, and webhook secrets. RCE on the n8n host
+effectively gives access to every system the automations touch.&lt;/p&gt;
+&lt;h3&gt;vLLM&lt;span class="hx:absolute hx:-mt-20" id="vllm"&gt;&lt;/span&gt;
+&lt;a href="#vllm" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;vLLM is a high-throughput LLM serving engine with GPU acceleration, commonly
+used to self-host open-weight models in production. It exposes an
+OpenAI-compatible REST API. Authentication requires an explicit &lt;code&gt;--api-key&lt;/code&gt;
+flag; without it, the API is open.&lt;/p&gt;
+&lt;p&gt;The interesting finding from our scan was not vLLM itself but the adjacent
+deployments surfaced by the same query: OpenAI-compatible HTTP proxies,
+specifically LiteLLM-style gateways that aggregate multiple paid providers
+behind a single endpoint. These proxies store live API keys for OpenAI,
+Anthropic, Google, Groq, and Cohere. None had protection on the model list
+endpoint. One host exposed 35 models across multiple providers; several listed
+exclusively Anthropic Claude models. A proxy returns a model list only when the
+upstream provider authenticates, so every successful response confirms the
+underlying keys are live and billable.&lt;/p&gt;
+&lt;p&gt;The abuse path is trivial: point any standard OpenAI SDK client at the proxy,
+enumerate the models, and, on hosts where prompt submission is also
+unprotected, send requests billed to the operator&amp;rsquo;s accounts. It is the same
+credential-pivot pattern as Langflow and n8n.&lt;/p&gt;
+&lt;h3&gt;ComfyUI&lt;span class="hx:absolute hx:-mt-20" id="comfyui"&gt;&lt;/span&gt;
+&lt;a href="#comfyui" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;ComfyUI is a node-based workflow UI for Stable Diffusion, video generation, and
+multimodal image models. It runs on high-end GPU hardware with no
+authentication by default, making it a direct target for attackers looking to
+steal GPU compute.&lt;/p&gt;
+&lt;p&gt;Our scan found open instances across a wide range of versions (v0.2.2 to
+0.19.0), all of which were fully unauthenticated. The hardware exposure is the
+headline finding. Open hosts reported a combined ~4.3 TB of GPU VRAM, with
+cards ranging from RTX 4090s and RTX 5090s to datacenter-grade A100S and L40S
+units, each worth tens of thousands of dollars. An attacker can queue
+generation jobs against any of them at no cost.&lt;/p&gt;
+&lt;p&gt;Beyond compute theft, 95% of open hosts expose a job history endpoint that
+leaks previously executed workflows, local file paths, and prior user content.
+About 12% advertise URL-loading nodes that act as server-side request forgery
+primitives: usable for internal network reconnaissance or cloud metadata
+credential theft.&lt;/p&gt;
+&lt;h3&gt;llama.cpp server&lt;span class="hx:absolute hx:-mt-20" id="llamacpp-server"&gt;&lt;/span&gt;
+&lt;a href="#llamacpp-server" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;llama-server&lt;/code&gt; is the HTTP server shipped with llama.cpp, commonly used to
+serve a single open-weight model in production. It has no authentication by
+default, no access controls on the inference endpoint, and a metadata endpoint
+that advertises exactly what the host is running. Anyone who reaches the port
+can submit prompts, watch active jobs, and burn the operator&amp;rsquo;s GPU on their own
+workload. Classic LLMjacking, with the bonus of knowing exactly which model
+they are running.&lt;/p&gt;
+&lt;p&gt;Of scanned hosts, 59% were confirmed open, more than any other platform in the
+scan. Everyone exposed its model name and hardware configuration, and about 37%
+also leaked real-time job state, confirming the host was actively serving users
+at the time of the scan. The models observed were standard open-weight builds
+rather than anything exotic, which is the point. An attacker is not looking for
+a rare model, just an unattended GPU.&lt;/p&gt;
+&lt;h3&gt;Jan&lt;span class="hx:absolute hx:-mt-20" id="jan"&gt;&lt;/span&gt;
+&lt;a href="#jan" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Jan is an Electron desktop AI app with an optional OpenAI-compatible API server
+on port 1337. When enabled, it binds to all interfaces with no authentication.
+Jan is a useful example of how exposure surfaces unexpected content rather than
+how common it is. Our scan confirmed only two genuine Jan hosts. Both had gone
+offline by the rescan a week later. While one was live, it exposed a 35-model
+library that included &lt;code&gt;miqu-70b&lt;/code&gt;; a
+&lt;a href="https://the-decoder.com/unintentional-ai-leak-from-mistral-becomes-an-unexpected-powerhouse/"target="_blank" rel="noopener"&gt;leaked Mistral Medium prototype&lt;/a&gt;
+that was never officially released. When a desktop app binds its API server to
+the public internet, whatever model (or file path metadata) sits on the
+operator&amp;rsquo;s disk becomes visible.&lt;/p&gt;
+&lt;h3&gt;Gradio&lt;span class="hx:absolute hx:-mt-20" id="gradio"&gt;&lt;/span&gt;
+&lt;a href="#gradio" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Gradio is a Python framework for building ML demo apps: image classifiers, code
+interpreters, document Q&amp;amp;A, or anything a researcher can wrap in a web UI.
+Exposure risk depends entirely on what the underlying app does. A
+sentiment-analysis demo is low-stakes. An app that accepts file uploads, runs
+user code, or queries a database is a direct path to exploitation. The Gradio
+queue keeps processing submitted requests whether the operator is watching or
+not, so abuse can run quietly for days.&lt;/p&gt;
+&lt;p&gt;Three unauthenticated bugs make unpatched instances worse:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/advisories/GHSA-g9cj-cfpp-4g2x"target="_blank" rel="noopener"&gt;CVE-2024-1561&lt;/a&gt;: arbitrary
+file read, fixed in 4.13.0&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/advisories/GHSA-f3h9-8phc-6gvh"target="_blank" rel="noopener"&gt;CVE-2024-0964&lt;/a&gt;: path
+traversal, fixed in 4.9.0&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://nvd.nist.gov/vuln/detail/CVE-2024-47084"target="_blank" rel="noopener"&gt;CVE-2024-47084&lt;/a&gt;: CORS
+validation bypass, fixed in 4.44.0; a malicious website can reach a locally
+running Gradio server while the victim is still logged in&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Ranking the Five Routes&lt;span class="hx:absolute hx:-mt-20" id="ranking-the-five-routes"&gt;&lt;/span&gt;
+&lt;a href="#ranking-the-five-routes" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Each route carries operational trade-offs. The table below scores each on five
+dimensions, ranging from 0 (least favorable) to 5 (best for attacking):
+non-resistance (refusal behavior in response to offensive prompts), model
+capability (coding ability and parameter count), tool and MCP support, and
+effective token quota.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Route&lt;/th&gt;
+&lt;th&gt;Non-resistant model&lt;/th&gt;
+&lt;th&gt;Model capability&lt;/th&gt;
+&lt;th&gt;Tool / MCP support&lt;/th&gt;
+&lt;th&gt;Token quota&lt;/th&gt;
+&lt;th&gt;Cost&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Offensive LLMs (WormGPT, GhostGPT, crypto middlemen)&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Crypto payment for frontier&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Free-tier and keyless public APIs&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Stolen or leaked API keys&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Exposed LLM servers&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Offensive LLMs score highest on non-resistance. But the underground-forum
+variants sit well below frontier models in capability and tool support, and
+subscriptions cap the quota. The crypto-middleman variant reaches frontier
+models via real provider accounts, but those accounts burn quickly once abuse
+is detected.&lt;/p&gt;
+&lt;p&gt;Crypto payment for frontier models is for sure the best way to gain access for
+the most capable models with the ability to connect the model to any interface,
+such as MCPs, but it comes with some risks that the model might resist the
+action or the user will be blocked.&lt;/p&gt;
+&lt;p&gt;Free-tier and keyless public APIs score well in capability and tool support,
+with full-function calling across most providers. The per-account quota is
+modest, tens of RPM, thousands of RPD, but trivial account rotation pushes the
+effective quota well above the face value.&lt;/p&gt;
+&lt;p&gt;Stolen or leaked API keys, in principle, offer the best combination of
+capability and tool support; the retrohunt&amp;rsquo;s 0.5% live rate shows the
+real-world quota is near zero.&lt;/p&gt;
+&lt;p&gt;Exposed LLM servers score highest on non-resistance and token quota.
+Non-resistance is unconstrained: the attacker controls model selection, and our
+scan found at least one LM Studio host actively serving
+&lt;code&gt;llama3.3-8b-instruct-thinking-heretic-uncensored-claude-4.5-opus-high-reasoning-i1&lt;/code&gt;.
+Token quota is equally unconstrained, bounded only by the victim&amp;rsquo;s hardware
+rather than a billing cap. Capability and tool support vary by host, but that
+variance is what makes the route durable at scale. No individual host needs to
+run a frontier model.&lt;/p&gt;
+&lt;p&gt;The scoring explains why exposed servers are the most durable route, even
+though they don&amp;rsquo;t top every dimension. They are the only route where
+non-resistance and token quota both max out. The other three are each
+compromised on at least one of those two axes.&lt;/p&gt;
+&lt;h2&gt;Cases Found in the Wild&lt;span class="hx:absolute hx:-mt-20" id="cases-found-in-the-wild"&gt;&lt;/span&gt;
+&lt;a href="#cases-found-in-the-wild" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Threat actors are now wiring malware to live LLM APIs, using them to generate
+malicious logic at runtime rather than embedding static code in the payload.
+Instead of scripting separate execution flows for different host conditions,
+the malware queries an LLM while running, determines whether the target appears
+to be a personal machine, a server, or an industrial controller, and then
+generates tailored commands or code accordingly. This shift matters because
+dynamically generated logic has no fixed signature to detect. Researchers have
+identified five malware families doing this.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Malware name&lt;/th&gt;
+&lt;th&gt;Capabilities&lt;/th&gt;
+&lt;th&gt;AI Provider&lt;/th&gt;
+&lt;th&gt;Runtime model source&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;MalTerminal&lt;/td&gt;
+&lt;td&gt;Reverse shell or ransomware generation&lt;/td&gt;
+&lt;td&gt;OpenAI GPT-4 (deprecated chat completions endpoint)&lt;/td&gt;
+&lt;td&gt;Hardcoded API key&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LameHug/PROMPTSTEAL&lt;/td&gt;
+&lt;td&gt;Reconnaissance and infostealer&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Qwen 2.5-Coder-32B-Instruct&lt;/code&gt; via HuggingFace&lt;/td&gt;
+&lt;td&gt;Public HuggingFace Inference API (no embedded key observed)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Ransomware 3.0/PROMPTLOCK&lt;/td&gt;
+&lt;td&gt;Ransomware with exfiltration and wipe capability&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;gpt-oss-20b&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Local Ollama API on the infected host&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PROMPTFLUX&lt;/td&gt;
+&lt;td&gt;Dropper with AI-driven polymorphism&lt;/td&gt;
+&lt;td&gt;Google Gemini (&lt;code&gt;gemini-1.5-flash-latest&lt;/code&gt;)&lt;/td&gt;
+&lt;td&gt;Hardcoded API key&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;QUIETVAULT&lt;/td&gt;
+&lt;td&gt;GitHub/NPM token stealer that uses AI to find additional secrets&lt;/td&gt;
+&lt;td&gt;Whatever AI CLI is installed on the victim (provider not named)&lt;/td&gt;
+&lt;td&gt;AI CLI tools already on the infected host&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;MalTerminal and PROMPTFLUX both use a hardcoded API key to connect to a
+commercial provider when needed. MalTerminal uses OpenAI GPT-4 via the
+now-retired chat-completions endpoint to create reverse shells or ransomware.
+PROMPTFLUX connects to Google &lt;code&gt;gemini-1.5-flash-latest&lt;/code&gt; to rewrite its own
+VBScript source code between runs, making it harder to detect.&lt;/p&gt;
+&lt;p&gt;LameHug, also known as PROMPTSTEAL, uses HuggingFace&amp;rsquo;s Inference API to run
+&lt;code&gt;Qwen 2.5-Coder-32B-Instruct&lt;/code&gt; for Windows commands to support reconnaissance
+and data theft. HuggingFace requires an API token for each request, but
+&lt;a href="https://huggingface.co/docs/hub/rate-limits"target="_blank" rel="noopener"&gt;free accounts&lt;/a&gt; don&amp;rsquo;t need a
+payment method and allow a few hundred requests per hour per API token.
+Attackers can easily create and rotate these API tokens, giving them the same
+access as stolen keys but with less hassle.&lt;/p&gt;
+&lt;p&gt;PROMPTLOCK is a proof-of-concept AI-powered ransomware prototype, often called
+&amp;ldquo;Ransomware 3.0,&amp;rdquo; developed by researchers at
+&lt;a href="https://engineering.nyu.edu/news/large-language-models-can-execute-complete-ransomware-attacks-autonomously-nyu-tandon-research"target="_blank" rel="noopener"&gt;NYU&amp;rsquo;s Tandon School of Engineering&lt;/a&gt;.
+The Go binary invokes &lt;code&gt;gpt-oss-20b&lt;/code&gt; via a local Ollama API running on the
+infected host to generate Lua scripts that perform file listing, encryption,
+exfiltration, and (unfinished) wipe logic. This is a bring-your-own-model: no
+outbound calls, no provider-side billing trail, and no way to scale beyond the
+victim&amp;rsquo;s own hardware.&lt;/p&gt;
+&lt;p&gt;QUIETVAULT is a credential-theft variant. The JavaScript stealer exfiltrates
+GitHub and NPM tokens to an attacker-controlled GitHub repo and then hands off
+the filesystem search for additional secrets to whatever AI CLI is already
+installed on the victim, so the stolen credentials are an active on-host AI
+session rather than a bare API key.&lt;/p&gt;
+&lt;p&gt;Looking at the four main routes discussed in this post, LameHug/PROMPTSTEAL is
+the best example of the free-tier method, since it calls HuggingFace&amp;rsquo;s
+Inference API directly. MalTerminal and PROMPTFLUX both use hardcoded API keys,
+but it&amp;rsquo;s unclear where those keys came from, so they could fit into the
+free-tier, crypto-middleman, or stolen-keys categories. QUIETVAULT is a twist
+on the stolen-credential method, using an on-host AI session instead of just a
+key. PROMPTLOCK is different because it uses a local model and only works on
+one victim at a time, so it doesn&amp;rsquo;t fit into the four main routes and isn&amp;rsquo;t
+discussed further.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Across four routes: offensive LLMs for sale, free-tier and keyless public APIs,
+hardcoded keys in distributed artifacts, and exposed LLM servers on victim
+infrastructure, the most durable access is the last one. The precondition for
+abuse is almost never a sophisticated exploit. It is an unauthenticated port
+facing the internet.&lt;/p&gt;
+&lt;p&gt;AI is the defining technology of this moment. It extends what a single person
+or small team can do and accelerates work that used to take weeks. AI is being
+integrated into more and more areas, from personal agents and email writing to
+some vulnerability research. The wow factor is real. But an LLM server is still
+a service running on a host. It listens on a port, speaks a protocol, and has
+an attack surface. The failure modes in this report; misconfiguration, leaked
+credentials, unpatched CVEs, open ports, are the same ones that produced years
+of incidents on Docker, Kubernetes, cloud storage, Redis, Elasticsearch, and
+bare Linux servers. The tooling is new. The mistakes are not.&lt;/p&gt;
+&lt;p&gt;Two things follow. The operator is still responsible for the basics:
+authenticate the service, keep it off the public internet unless there is a
+reason to expose it, patch the known CVEs, and audit what is running. These are
+not AI-specific requirements. They are the same ones we have been making for
+every networked service. An exposed Ollama instance serving a stranger&amp;rsquo;s
+prompts is not a failure of the model or the vendor that shipped it. It is a
+failure of whoever put it on the internet without a password. You broke it. You
+pay for it.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;SHA-256&lt;/th&gt;
+&lt;th&gt;Payload&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;ecd3b1a0e4832f1dc72be84c3c838ae4e29637c1cff4bfa70649cda90fa7a8ce&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Mimikatz binaries (carrying AI API keys)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;153d7cdca3cb96023a2ee8e3de49b29ced60ffc865da04c3c6ef2b445b056d8f&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;0c1a409dd791ee8f7e157c455d9c35671bd81d17b562c7acd73f9f26401533ba&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;a9dc00aeae6c245d76d873e675b555f044ecf94a5ece031a1e6ca30223beb905&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Malicious binary without family attribution (carrying AI API keys)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;99308a3f00490e8138974faafa3ea5ae089459b2500e097ccc0ed042b6a0c2af&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;SolarMarker (HuggingFace key)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;796e81c1b31f443ab3437663af97fe41b25bbf8ab7abcd0637238a568b66aa9d&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;SystemSettings.exe&lt;/code&gt; (OpenAI, Replicate, Voyage keys)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</description></item><item><title>OrBit (Re)turns: Tracking an Open-Source Linux Rootkit Across Four Years of Forks and Deployments</title><link>https://intezer.github.io/community-intelligence/blog/2026/05/orbit-returns/</link><pubDate>Thu, 14 May 2026 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2026/05/orbit-returns/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In July 2022, we
 &lt;a href="https://intezer.com/blog/orbit-new-undetected-linux-threat/"target="_blank" rel="noopener"&gt;published the first analysis&lt;/a&gt;
@@ -16487,205 +17059,4 @@ deployed in exactly the same way. If a malware is exchanged, whether to an
 affiliate or over the dark web, then the new operators may choose different
 procedures, attack vectors, and targets. They might invest considerably in the
 new malware, adding features and evasion techniques. Defenders must remain
-vigilant.&lt;/p&gt;</description></item><item><title>A Rare Look Inside a Cryptojacking Campaign and its Profit</title><link>https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/</link><pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/</guid><description>
-&lt;p&gt;&lt;a href="https://intezer.com/blog/cloud-security/top-linux-cloud-threats-of-2020/"target="_blank" rel="noopener"&gt;Linux threats&lt;/a&gt;
-are becoming more frequent and a more common type of Linux threat is
-cryptojacking, which is the unauthorized use of an IT system for the purpose of
-mining cryptocurrency. While cryptominers are well-documented, it&amp;rsquo;s not often
-that you get an inside look. It&amp;rsquo;s rare to see the dashboard of the wallets
-being used in an active cryptojacking campaign with dozens of victims, as well
-as the attacker&amp;rsquo;s profit margin.&lt;/p&gt;
-&lt;p&gt;This post details an ongoing cryptojacking campaign targeting Linux machines,
-using
-&lt;a href="https://intezer.com/blog/fix-your-misconfigured-docker-api-ports/"target="_blank" rel="noopener"&gt;exposed Docker API ports&lt;/a&gt;
-as an initial access vector to a victim&amp;rsquo;s machine. The attacker then installs a
-Golang binary, which is undetected in VirusTotal at the time of this writing.&lt;/p&gt;
-&lt;p&gt;The file serves as a Monero cryptominer installer and sets up configuration for
-the miner. The attack uses SSH to maintain superiority on the victim&amp;rsquo;s machine,
-leaving a backdoor and installing its own SSH keys on the host.&lt;/p&gt;
-&lt;p&gt;This cryptojacking campaign has been active for nearly a year. We are certain
-that each day at least one payment is passed into two wallets and there are
-currently 95 workers. Workers are victim machines whose resources are being
-used to mine cryptocurrency for the attacker. A snapshot of the active workers
-is shown in Figure 1.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig1.gif" title="Figure 1: Snapshot of workers mining cryptocurrency for the attacker" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 1: Snapshot of workers mining cryptocurrency for the attacker&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h2&gt;Cryptojacking Campaign Attack Flow&lt;span class="hx:absolute hx:-mt-20" id="cryptojacking-campaign-attack-flow"&gt;&lt;/span&gt;
-&lt;a href="#cryptojacking-campaign-attack-flow" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A new attack flow takes advantage of a known Docker misconfiguration, putting
-the host at risk for being compromised. The attacker exploits this
-misconfiguration to gain full control over the Docker daemon and creates a new
-container with access to the host&amp;rsquo;s filesystem. With access to the filesystem,
-the attacker installs malware on the Docker host.&lt;/p&gt;
-&lt;p&gt;First, the attacker establishes a stable SSH connection by adding their own SSH
-key to the host and editing the configuration of the SSH service to allow
-password authentication. These modifications remove dependency on the
-misconfiguration, giving the attacker a stable connection to the victim.&lt;/p&gt;
-&lt;p&gt;Next, they install two binary files on the host: an XMRig Miner at location
-&lt;code&gt;/usr/share/dbus-1/bin/&lt;/code&gt; and an orchestrator file at &lt;code&gt;/usr/share/color/&lt;/code&gt;. We
-analyzed this file and came to the conclusion that it&amp;rsquo;s being used to execute
-XMRig Miner and to ensure it keeps running.&lt;/p&gt;
-&lt;p&gt;The orchestrator is responsible for preparing and initializing configurations
-for the execution of the coinminer malware. Before running the coinminer, it
-verifies the path &lt;code&gt;/usr/share/dbus-1/bin&lt;/code&gt; contains two files: &lt;code&gt;systemd-host&lt;/code&gt;
-(aka the miner) and the other named IBus, the miner&amp;rsquo;s configuration file.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig2.png" title="Figure 2: The cryptojacking campaign attack flow" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 2: The cryptojacking campaign attack flow&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;The path &lt;code&gt;/usr/share&lt;/code&gt; is not commonly seen in Linux malware and is writable
-only with root privileges. The path &lt;code&gt;/tmp&lt;/code&gt; is more often seen as an
-installation path in Linux malware since it does not require root privileges.
-The attacker has root privileges because the container they escaped from has
-them and hence the attacker has access to &lt;code&gt;/usr&lt;/code&gt;. Placing the files at &lt;code&gt;/usr&lt;/code&gt;
-may imply that they are taking advantage of the high privileges they have in
-order to use this path as some sort of hiding technique that is harder to
-detect.&lt;/p&gt;
-&lt;p&gt;The configuration file reveals interesting insights about the miner and the
-cryptojacking attack campaign. From the configuration we can tell that the
-target cryptocurrency is Monero, known to be more private than other coins like
-Bitcoin. This means that the details of the transaction amounts and the
-sender/recipient identities are disguised. In addition, we found the address of
-the pools and the IDs of two wallets used in this campaign. The address of the
-pools belongs to &lt;a href="https://supportxmr.com/"target="_blank" rel="noopener"&gt;supportxmr&lt;/a&gt; domain and the wallets
-are still active at the time of this publication.&lt;/p&gt;
-&lt;h2&gt;Take a Look (or Two) at the Dashboards&lt;span class="hx:absolute hx:-mt-20" id="take-a-look-or-two-at-the-dashboards"&gt;&lt;/span&gt;
-&lt;a href="#take-a-look-or-two-at-the-dashboards" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It&amp;rsquo;s rare to find an active wallet with victim information for a few reasons.
-Management of the wallets is taken care of by another server that acts like a
-proxy so that the malware connects without providing the wallet. In some cases,
-the wallets are not active or have only a few workers. In this recent attack,
-we found a live dashboard—shown in Figure 3— that is constantly updated with
-new workers and paints the full picture of this campaign.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig3.png" title="Figure 3: Screenshot of the first cryptomining dashboard" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 3: Screenshot of the first cryptomining dashboard&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;The dashboard shows that this cryptojacking campaign has been active for almost
-a year with both wallets receiving at least one payment per day. One of the
-wallets averages 95 workers while the second wallet averages four workers,
-meaning the campaign is still operational and has about 100 victims to date.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig4.png" title="Figure 4: Screenshot of second cryptomining dashboard" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 4: Screenshot of second cryptomining dashboard&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h2&gt;Insights About the Cryptojacking Victims&lt;span class="hx:absolute hx:-mt-20" id="insights-about-the-cryptojacking-victims"&gt;&lt;/span&gt;
-&lt;a href="#insights-about-the-cryptojacking-victims" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig5.png" title="Figure 5: Screenshot of the active workers, their names and hash rates" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 5: Screenshot of the active workers, their names and hash rates&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig6.png" title="Figure 6: Screenshot from Monero benchmarks" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 6: Screenshot from Monero benchmarks&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;Using the randomx CPU benchmarks, we can cross-reference the hash rates seen in
-the dashboard (Figure 4) with the CPU type that generates them as shown in
-Figure 5. From this comparison we can see that most of the victims are not
-machines with high levels of performance but rather standard hosts similar to
-your home computer. But if we examine the rates from the wallet that has only
-three workers, we can infer its workers have more computing resources than
-those in the other wallet given their CPU power.&lt;/p&gt;
-&lt;p&gt;It&amp;rsquo;s possible that the attacker uses different wallets to separate high and low
-performance victims.&lt;/p&gt;
-&lt;p&gt;We examined the workers&amp;rsquo; names. Some of them contain a string that looks like a
-date, which we assume is the date of infection. In Figure 6, for example, the
-marked numbers can be translated into 01/11, or January 11.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig7.png" title="Figure 7: Screenshot from the dashboard disclosing the name of the worker" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 7: Screenshot from the dashboard disclosing the name of the worker&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h2&gt;Cryptojacking Mitigation&lt;span class="hx:absolute hx:-mt-20" id="cryptojacking-mitigation"&gt;&lt;/span&gt;
-&lt;a href="#cryptojacking-mitigation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Fix your Misconfigured Docker API Port&lt;span class="hx:absolute hx:-mt-20" id="fix-your-misconfigured-docker-api-port"&gt;&lt;/span&gt;
-&lt;a href="#fix-your-misconfigured-docker-api-port" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Misconfiguration of the Docker API port is one of the most common yet deadly
-mistakes users can make. Fortunately, this cryptomining operation can be easily
-avoided just by having a secure configuration.&lt;/p&gt;
-&lt;h3&gt;Docker Security Best Practices&lt;span class="hx:absolute hx:-mt-20" id="docker-security-best-practices"&gt;&lt;/span&gt;
-&lt;a href="#docker-security-best-practices" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Our article here provides a
-&lt;a href="https://intezer.com/blog/container-security-blog/best-practices-for-securing-a-docker-runtime-environment/"target="_blank" rel="noopener"&gt;checklist of Docker security best practices&lt;/a&gt;,
-from development and deployment onto the production environment. In addition,
-you can verify that other misconfigurations do not pose a risk to your
-environment via lateral movement by referencing this
-&lt;a href="https://dev-sec.io/baselines/docker/"target="_blank" rel="noopener"&gt;list of Docker misconfigurations&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;Intezer Protect for Cloud Workload Protection&lt;span class="hx:absolute hx:-mt-20" id="intezer-protect-for-cloud-workload-protection"&gt;&lt;/span&gt;
-&lt;a href="#intezer-protect-for-cloud-workload-protection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Advanced attacks like SolarWinds and Pay2KEY have shown that focusing only on
-vulnerabilities in your own code is not enough to secure your environment. It&amp;rsquo;s
-time to assume breach and detect and respond to attacks when they occur in
-production.&lt;/p&gt;
-&lt;p&gt;Intezer Protect is a Cloud Workload Protection Platform designed to protect
-Linux machines in runtime against unauthorized code. With Intezer Protect you
-can easily detect cryptominers and other threats in your cloud, as well as
-identify the misconfiguration that could have been exploited — in this case, in
-Docker.&lt;/p&gt;
-&lt;p&gt;Executing the orchestrator file will prompt an immediate alert in Intezer
-Protect as seen in Figure 8.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig8.png" title="Figure 8: Screenshot from the dashboard disclosing the name of the worker" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 8: Screenshot from the dashboard disclosing the name of the worker&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;When XMRig Miner is executed by the first file, Intezer Protect will trigger a
-second alert as seen in Figure 9.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig9.png" title="Figure 9: Intezer Protect alert triggered upon the execution of XMRig Miner" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 9: Intezer Protect alert triggered upon the execution of XMRig Miner&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig10.png" title="Figure 10: Intezer Protect reports on Docker misconfiguration with an open API port" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 10: Intezer Protect reports on Docker misconfiguration with an open API port&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h2&gt;The Bottom Line&lt;span class="hx:absolute hx:-mt-20" id="the-bottom-line"&gt;&lt;/span&gt;
-&lt;a href="#the-bottom-line" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The threat described in this post is an example of a well-detected miner that
-uses SSH to maintain connection with the victim; but also leaves a &amp;ldquo;trail&amp;rdquo; that
-privies us to information we rarely get to see from a cryptojacking campaign.&lt;/p&gt;
-&lt;p&gt;Cryptomining malware has become a familiar threat on Linux servers because it&amp;rsquo;s
-relatively cheap and easy to launch. It&amp;rsquo;s not often that you get to see how
-profitable these campaigns can be for the attacker—with access to the wallets,
-how much they earned and the dashboard as the attacker sees it.&lt;/p&gt;
-&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
-&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;XMRig Miner&lt;span class="hx:absolute hx:-mt-20" id="xmrig-miner"&gt;&lt;/span&gt;
-&lt;a href="#xmrig-miner" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;240fe01d9fcce5aae311e906b8311a1975f8c1431b83618f3d11aeaff10aede3&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h3&gt;Miner_installer&lt;span class="hx:absolute hx:-mt-20" id="miner_installer"&gt;&lt;/span&gt;
-&lt;a href="#miner_installer" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;8ecffbd4a0c3709cc98b036a895289f33b7a8650d7b000107bafd5bd0cb04db3&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h3&gt;Wallets&amp;rsquo; Addresses&lt;span class="hx:absolute hx:-mt-20" id="wallets-addresses"&gt;&lt;/span&gt;
-&lt;a href="#wallets-addresses" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;43Y5gWFUZmCS9JjkY5V4QA86to5wyAWMbZUdPYtiG7EF8ZKk4uA3BAj1eMoTns8whPJEoeaVdy55L1wcBkKn894kUpdimMq (mining pool: https://supportxmr.com/)
-49XZTjHS4aNjWgPhxbWNnDhiKnuJL4YKdE7JEyf45U1yYYe9ebTiS9PPUg8yJEL26eNHECyLH2DnUCuDgoZhhdiFVgD19kP (mining pool: https://supportxmr.com/)
-49r6Mp1fcb4fUT5FPTgaz9E47fZV7n6JiY76c4vdBZvgDm8GmWHTVYM9Azpe4MsA9oXs2RpUNPPfH7oXABr3QnwNQKaP2W7 (mining pool: https://supportxmr.com/)
-43Xbgtym2GZWBk87XiYbCpTKGPBTxYZZWi44SWrkqqvzPZV6Pfmjv3UHR6FDwvPgePJyv9N5PepeajfmKp1X71EW7jx4Tpze (mining pool: https://xmr.nanopool.org)
-82etS8QzVhqdiL6LMbb85BdEC3KgJeRGT3X1F3DQBnJa2tzgBJ54bn4aNDjuWDtpygBsRqcfGRK4gbbw3xUy3oJv7TwpUG4 (mining pool: https://www.f2pool.com)
-47PXdhiZphNHka2K1J9udPj5Nct4zpvCRUMqwVY4Rvyxf3FLmPqyR6J68hDX4fUF65jNxJa43szPM3Ni5zDerArzSkdFp1K (mining pool: https://supportxmr.com/)
-47xS7CWWZ8c7xdxBcuiqA7KLK8kRFcaLFPViKA9w3eHVe2WcKj8iaBEADzZYXGqE9sCC71cbu64qrZhZZkafzFn2VPA9xs9 (mining pool: https://minexmr.com/)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description></item></channel></rss>
+vigilant.&lt;/p&gt;</description></item></channel></rss>
