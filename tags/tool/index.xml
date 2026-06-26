@@ -1,33 +1,1123 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Tool</title><link>https://intezer.github.io/community-intelligence/tags/tool/</link><description>Recent content in Tool on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 08 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>Radare Plugin is Here for Intezer Community</title><link>https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/</link><pubDate>Tue, 08 Feb 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/</guid><description>
-&lt;p&gt;When you reverse engineer code as part of an incident response team, you want to quickly get information about what kind of threat you&amp;rsquo;re dealing with.&lt;/p&gt;
-&lt;p&gt;A while back we released Intezer Analyze plugins both for &lt;a href="https://intezer.com/blog/malware-analysis/ida-pro-plugin-now-available-to-the-community/"target="_blank" rel="noopener"&gt;IDA Pro&lt;/a&gt; and &lt;a href="https://intezer.com/blog/malware-analysis/community-ghidra-plugin-is-here/"target="_blank" rel="noopener"&gt;Ghidra&lt;/a&gt; to help you zero in on a file&amp;rsquo;s malicious and unique code. Now it is Radare&amp;rsquo;s turn. &lt;a href="https://rada.re/n/radare2.html"target="_blank" rel="noopener"&gt;Radare2&lt;/a&gt; (r2) is an open-source tool chain for reverse engineering and forensics. With the release of the community plugin &lt;code&gt;r2analyze&lt;/code&gt;, r2 users can now supercharge their reversing session with code genomics from Intezer to attribute the malware family or threat actor.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Tool</title><link>https://intezer.github.io/community-intelligence/tags/tool/</link><description>Recent content in Tool on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 03 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>Detection Rules for Lightning Framework (and How to Make Them With Osquery)</title><link>https://intezer.github.io/community-intelligence/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</link><pubDate>Wed, 03 Aug 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</guid><description>
+&lt;p&gt;On 21 July, 2022, we released a blog post about a new malware called
+&lt;a href="../../../2022/07/lightning-framework-new-linux-threat"&gt;Lightning Framework&lt;/a&gt;.
+Lightning is a modular malware framework targeting Linux. At the time of the
+publication, the Core module had one suspicious detection and the Downloader
+module was not detected by any scanning engines on VirusTotal. Due to this, we
+have again decided to release a followup blog posting showing how the
+information we released can be used to investigate whether you have been
+affected.&lt;/p&gt;
+&lt;p&gt;There are many tools available to gather system information and to perform
+threat hunting within an organization. One of our favorites is
+&lt;a href="https://osquery.io"target="_blank" rel="noopener"&gt;osquery&lt;/a&gt;. We demonstrated in a previous blog how detection
+rules created with osquery can be used to discover the multi-platform malware
+&lt;a href="../../../2022/01/new-backdoor-sysjoker"&gt;Sysjoker&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This tutorial will show how we use gathered information from the reverse
+engineering process to utilize in detection techniques that can serve as an
+indication of compromise for the Lighting Framework. There are pros and cons to
+this approach over just using file hashes. It allows us to potentially find
+other samples related to the Lightning Framework that have a different file
+hash but it can also turn up matches that are not malware. For example the
+malleable C2 profile is encoded on disk and will have a unique hash each time,
+therefore it is important to use other means of detection that are not hash
+based.&lt;/p&gt;
+&lt;h2&gt;Information Gathering with Osquery&lt;span class="hx:absolute hx:-mt-20" id="information-gathering-with-osquery"&gt;&lt;/span&gt;
+&lt;a href="#information-gathering-with-osquery" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Osquery runs as an agent on machines and is designed to provide endpoint
+visibility in a performant way. The data is collected by the agent and exposed
+via SQL queries.&lt;/p&gt;
+&lt;p&gt;There are two ways of running osquery, as a daemon via osqueryd or
+interactively via osqueryi. The daemon takes a configuration file where the
+queries are defined and executes them at a given interval. Data is continuously
+collected by the daemon and the difference since the last execution is logged
+to a result log. The interactive binary allows for ad-hoc queries and we will
+use it in this tutorial to construct queries that can be added to the daemon&amp;rsquo;s
+configuration. The queries will be added to a
+&lt;a href="https://osquery.readthedocs.io/en/stable/deployment/configuration/#query-packs"target="_blank" rel="noopener"&gt;query-pack&lt;/a&gt;
+to make it easier to manage.&lt;/p&gt;
+&lt;h2&gt;Detecting File Artifacts from Lightning Framework&lt;span class="hx:absolute hx:-mt-20" id="detecting-file-artifacts-from-lightning-framework"&gt;&lt;/span&gt;
+&lt;a href="#detecting-file-artifacts-from-lightning-framework" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Many files are created in a working directory in the Lightning Framework. We
+can use these to write threat hunting or detection queries.&lt;/p&gt;
+&lt;p&gt;If we look at the report, we can see that most of the files are created under a
+folder named &lt;code&gt;/usr/lib64/seahorses/&lt;/code&gt;. This is a folder trying to masquerade as
+the legitimate password and key manager
+&lt;a href="https://gitlab.gnome.org/GNOME/seahorse"target="_blank" rel="noopener"&gt;Seahorse&lt;/a&gt;. We can use the osquery
+table file to monitor for Lightning Framework files under this folder.
+According to the &lt;a href="https://osquery.io/schema/5.1.0/#file"target="_blank" rel="noopener"&gt;schema&lt;/a&gt; for this
+table, we can get which user created it, when the file was created, modified,
+and last accessed. To enrich the data, we join the uid with the
+&lt;a href="https://osquery.io/schema/5.1.0/#users"target="_blank" rel="noopener"&gt;users&lt;/a&gt; table and the gid with the
+&lt;a href="https://osquery.io/schema/5.1.0/#groups"target="_blank" rel="noopener"&gt;groups&lt;/a&gt; table. This allows us to get
+the username and the group name instead of just the ID numbers.&lt;/p&gt;
+&lt;p&gt;Another thing that is useful is the file hash for the Lightning files. This can
+be obtained by joining with the &lt;a href="https://osquery.io/schema/5.1.0/#hash"target="_blank" rel="noopener"&gt;hash&lt;/a&gt;
+table on the path. This allow us to construct a query like this:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;groupname&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mtime&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ctime&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;atime&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;md5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sha1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sha256&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;JOIN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;users&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;using&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;uid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;JOIN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;hash&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;using&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;JOIN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;groups&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;using&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;gid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;directory&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/usr/lib64/seahorses/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;An example of a query that shows the malware artifacts is shown below:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/08/lightning-framework-linux-detection-rules-osquery/images/fig1.png" title="Successfully finding Lightning Framework files using osquery." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Successfully finding Lightning Framework files using osquery.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Detecting Persistence of Lightning Framework&lt;span class="hx:absolute hx:-mt-20" id="detecting-persistence-of-lightning-framework"&gt;&lt;/span&gt;
+&lt;a href="#detecting-persistence-of-lightning-framework" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;If we look at the persistence documented in the report, we can see that the
+framework maintains persistence by creating a startup script for the Downloader
+module. We can find this by querying the
+&lt;a href="https://osquery.io/schema/5.1.0/#startup_items"target="_blank" rel="noopener"&gt;startup_items table&lt;/a&gt; and
+looking for the misspelled term &lt;code&gt;elastisearch&lt;/code&gt; (As opposed to the correct
+application it is trying to mimic
+&amp;ldquo;&lt;a href="https://www.elastic.co/elasticsearch/"target="_blank" rel="noopener"&gt;Elasticsearch&lt;/a&gt;&amp;rdquo;).&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;startup_items&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;elastisearch&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Detecting RootKits Installed by Lightning Framework&lt;span class="hx:absolute hx:-mt-20" id="detecting-rootkits-installed-by-lightning-framework"&gt;&lt;/span&gt;
+&lt;a href="#detecting-rootkits-installed-by-lightning-framework" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Lightning Framework is able to install a Linux kernel module (LKM) rootkit. The
+rootkit is used to hide process IDs and ports related to running processes of
+the framework. Similarly to the startup item. The kernel module also has the
+same misspelled &lt;code&gt;elastisearch&lt;/code&gt; name. To check whether it is installed on your
+machine, run the following:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;kernel_modules&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;elastisearch&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Next Steps for Your Lightning Detection Rules&lt;span class="hx:absolute hx:-mt-20" id="next-steps-for-your-lightning-detection-rules"&gt;&lt;/span&gt;
+&lt;a href="#next-steps-for-your-lightning-detection-rules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After this we can tell the osquery daemon to load the query pack. This can be
+done by adding a pack entry to the daemon&amp;rsquo;s configuration file:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;packs&amp;#34;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;lightning_framework&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/path/to/pack/lightning.json&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;To get alerting for this, it is best to forward the logs to your SIEM and
+create alerts there. We&amp;rsquo;re curious to see more samples of Lightning Framework –
+let us know if you uncover more samples or are able to take the research on it
+further!&lt;/p&gt;
+&lt;h2&gt;Appendix A – lightning.json Pack&lt;span class="hx:absolute hx:-mt-20" id="appendix-a--lightningjson-pack"&gt;&lt;/span&gt;
+&lt;a href="#appendix-a--lightningjson-pack" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;queries&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;linux-artifacts&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;SELECT path, filename, username, groupname, mtime, ctime, atime, md5, sha1, sha256 FROM file
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN users using (uid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN hash using (path)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; JOIN groups using (gid)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt; WHERE file.directory in (&amp;#39;/usr/lib64/seahorses/&amp;#39;);&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/research/lightning-framework-new-linux-threat/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;linux&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible Lightning Framework files&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;linux-startup-item&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;SELECT * FROM startup_items WHERE name = &amp;#39;elastisearch&amp;#39;;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/research/lightning-framework-new-linux-threat/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;linux&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible Lightning Framework startup item&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;linux-kernel-module&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;query&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;SELECT * FROM kernel_modules WHERE name = &amp;#39;elastisearch&amp;#39;;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;interval&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;60&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://intezer.com/blog/research/lightning-framework-new-linux-threat/&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;platform&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;darwin&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;value&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Possible Lightning Framework rootkit&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>SOC Level Up: Threat Hunting and Detection With Sigma</title><link>https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/</link><pubDate>Tue, 17 May 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/</guid><description>
+&lt;p&gt;In the last part of the SOC Level Up series, we introduced
+&lt;a href="../../../2022/03/intro-to-sigma-rules/"&gt;Sigma&lt;/a&gt; – an open-source framework to
+write one rule that can be used in multiple environments. In this blog, we will
+show how Sigma rules can be used for threat hunting and detection.&lt;/p&gt;
+&lt;p&gt;Security teams and especially SOC analysts are overwhelmed with data while
+attack surfaces are growing and cyber attackers find new ways to breach
+organizations while staying undetected, making the security team&amp;rsquo;s difficulties
+more painful. The solution might sound obvious – have a well-defined security
+posture to prevent threats from getting into the system, but with the
+constantly evolving threat landscape and existing pain points of security
+teams, this is easier said than done. Therefore, it is critical to proactively
+hunt and detect threats in the organization, for any incidents in which the
+threat bypassed all of the security measures and infiltrated the environment.&lt;/p&gt;
+&lt;h2&gt;How Sigma Can Help in Threat Hunting&lt;span class="hx:absolute hx:-mt-20" id="how-sigma-can-help-in-threat-hunting"&gt;&lt;/span&gt;
+&lt;a href="#how-sigma-can-help-in-threat-hunting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;To detect threats you need to know what is happening in the environment, which
+can be accomplished using logs and monitoring tools (which are based on logs
+too). But these days the issue is that there are too many logs – too much
+information – that SOC analysts and security teams are not capable of analyzing
+and processing them all. So SIEM platforms came to help, providing the ability
+to aggregate, query, and extract important information from the logs.
+Essentially making it possible to proactively hunt for threats inside the
+organization.&lt;/p&gt;
+&lt;p&gt;While security tools are evolving, so do cyber attackers. This progression
+makes threat detection even more significant and forces the security community
+to further evolve the hunting and detection strategy. The new and more advanced
+approach to threat hunting is
+&lt;a href="https://intezer.com/blog/threat-hunting/scale-incident-response-detection-engineering/"target="_blank" rel="noopener"&gt;detection engineering&lt;/a&gt;
+– a process of constantly evolving and tuning to detect threats before they
+cause significant damage. In a way it requires a change in the mindset, you
+need to see the traces left by a threat as detection opportunities and use them
+to detect the threat in your organization.&lt;/p&gt;
+&lt;p&gt;Sigma is a universal markup language for analyzing logs, allowing you to write
+rules for detecting a threat based on the threat&amp;rsquo;s detection opportunities. The
+flexibility of Sigma rules makes it possible to use detection rules created by
+other members of the security community and utilize them in your organization,
+since the rule can be compiled for any SIEM and log source.&lt;/p&gt;
+&lt;p&gt;Below, we will show how to identify detection opportunities in blogs or
+security tools, and how to use this information to create your own detection
+rules using Sigma.&lt;/p&gt;
+&lt;h2&gt;How to Use Sigma Rules For Threat Hunting&lt;span class="hx:absolute hx:-mt-20" id="how-to-use-sigma-rules-for-threat-hunting"&gt;&lt;/span&gt;
+&lt;a href="#how-to-use-sigma-rules-for-threat-hunting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Creating detection rules is not an easy task, for two main reasons.&lt;/p&gt;
+&lt;p&gt;First, you need to find indicators that can be used to detect the threat,
+either by performing an analysis of existing samples of the threat or by
+locating them in technical reports and threat intelligence feeds. Frequently
+the detection information is &amp;ldquo;hidden&amp;rdquo; among the rest of the details. Either
+way, it requires time and effort to find useful information that can be used in
+detection rules.&lt;/p&gt;
+&lt;p&gt;The other difficulty is making an efficient rule, one that will not trigger
+false positive alerts and is not too strict to avoid miss detection of threats.
+Detection rules are made of different indicators of compromise and behavior
+artifacts, all of which can be arranged in what is known as the
+&lt;a href="http://detect-respond.blogspot.com/2013/03/the-pyramid-of-pain.html"target="_blank" rel="noopener"&gt;Pyramid of Pain&lt;/a&gt;
+(created by David J Bianco). The idea is to organize attack indicators in
+ascending order based on the &amp;ldquo;pain&amp;rdquo; it will cause the attackers when these
+indicators are detected and denied from them by security tools. But the more
+harm it will cause the attacker, the harder it is for security teams to
+identify these indicators.&lt;/p&gt;
+&lt;p&gt;For example, a file&amp;rsquo;s hash is the easiest indicator to find and to detect but
+it is also trivial for threat actors to modify it simply by changing one bit in
+a file. On the other hand, detecting a threat based on its behavior (TTPs)
+requires more effort from the security team – they need to execute the threat
+in a sandbox and understand its execution flow. But for threat actors, it is
+also much harder to change the behavior of the threat and stay undetected.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig1.png" title="Pyramid of Pain by David J Bianco" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Pyramid of Pain by David J Bianco&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Using Sigma to Write Detection Rules for Emotet&lt;span class="hx:absolute hx:-mt-20" id="using-sigma-to-write-detection-rules-for-emotet"&gt;&lt;/span&gt;
+&lt;a href="#using-sigma-to-write-detection-rules-for-emotet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let&amp;rsquo;s take a look at
+&lt;a href="https://analyze.intezer.com/families/db6abbcc-d292-4991-bc90-207c077f5e53"target="_blank" rel="noopener"&gt;Emotet&lt;/a&gt;
+– a dangerous malware that has been operating since 2014. Despite the arrests
+and the efforts of law enforcement in
+&lt;a href="https://www.europol.europa.eu/media-press/newsroom/news/world%E2%80%99s-most-dangerous-malware-emotet-disrupted-through-global-action"target="_blank" rel="noopener"&gt;January 2021&lt;/a&gt;,
+the malware is
+&lt;a href="https://www.globenewswire.com/news-release/2022/03/09/2399720/0/en/February-2022-s-Most-Wanted-Malware-Emotet-Remains-Number-One-While-Trickbot-Slips-Even-Further-Down-the-Index.html"target="_blank" rel="noopener"&gt;still operating&lt;/a&gt;.
+Emotet started as a banking information stealer, but it kept evolving during
+its time of operation and became a full-scale cybercrime organization that is
+also able to deploy other threats into compromised systems.&lt;/p&gt;
+&lt;p&gt;Usually, the chain of execution that drops Emotet consists of a phishing email
+with attached decoy document that tricks the user to click a link or just open
+the file allowing the execution of malicious code that leads to Emotet
+execution.&lt;/p&gt;
+&lt;p&gt;Our goal is to write detection rules for Emotet, so let&amp;rsquo;s take a look at a
+recently discovered
+&lt;a href="https://analyze.intezer.com/files/6d55f25222831cce73fd9a64a8e5a63b002522dc2637bd2704f77168c7c02d88/behavior"target="_blank" rel="noopener"&gt;sample&lt;/a&gt;
+of Emotet. We will use oleid and olevba to discover the macros embedded in the
+file (for more information, check out this blog about
+&lt;a href="https://intezer.com/blog/malware-analysis/analyze-malicious-microsoft-office-files/"target="_blank" rel="noopener"&gt;analyzing malicious Office files&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;From this short analysis, we know that the malicious document will execute
+commands using cmd and it will use a signed binary called MSHTA to download and
+execute code from a given URL. Using legitimate and signed binaries is a very
+common technique used by threat actors – you can read more about
+&lt;a href="../../../2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad"&gt;how to detect MSHTA and related techniques here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In general, the process tree of the threat execution provides very useful
+detection indicators. We can get even more information by executing the sample
+in a sandbox environment and inspecting the process tree as shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig3.png" title="Process tree of the sample election in Intezer." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Process tree of the sample election in Intezer.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We will use the following information to make a basic Sigma rule:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The sample connects to the IP address &lt;code&gt;91.240.118[.]16&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;URL: &lt;code&gt;http://91.240.118[.]168/zzx/ccv/fe.html&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;The processes that are executed are excel.exe -&amp;gt; cmd.exe -&amp;gt; mshta.exe&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Emotet document execution detection&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;author&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Intezer&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;logsource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;process_creation&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;product&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;windows&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;detection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;selection1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ParentImage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;excel.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;cmd.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;CommandLine|contains&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;mshta&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;condition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;selection1&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Detection rule for Emotet based only on process execution.&lt;/p&gt;
+&lt;p&gt;This rule is based exactly on the information we have found in our analysis
+making the rule very strict (for instance we detect only the cmd process that
+was executed by Excel, so if the threat actor tries using Word instead of Excel
+we will miss the execution). In some cases we will want to keep our rule strict
+to avoid false positives, in other cases it can be useful to add relevant
+information. For example, in some cases
+&lt;a href="https://www.bleepingcomputer.com/news/security/emotet-malware-now-wants-you-to-upgrade-microsoft-word/"target="_blank" rel="noopener"&gt;Emotet uses Word documents&lt;/a&gt;
+so we can extend the rule to include detection of cmd processes that execute
+Word, Excel, and PowerPoint. This way the detection will cover other variants
+of the threat. A good example of a rule that covers more variants of shell
+execution by Office software is a rule created by Michael Haag, Florian Roth,
+Markus Neis, Elastic, FPT.EagleEye Team called
+&lt;a href="https://github.com/SigmaHQ/sigma/blob/becf3baeb4f6313bf267f7e8d6e9808fc0fc059c/rules/windows/process_creation/proc_creation_win_office_shell.yml"target="_blank" rel="noopener"&gt;proc_creation_win_office_shell.yml&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Emotet Download IP&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;author&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Intezer&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;logsource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;firewall&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;detection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;select_outgoing&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;dst_ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;91.240.118.16&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;condition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;select_outgoing&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Detection rule for Emotet server based on the IP address from the sample.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Emotet IP addresses&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;author&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Intezer&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;logsource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;webserver&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;detection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;selection1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;c-uri|contains&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http://91.240.118.168/zzx/ccv/fe.html&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;condition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;selection1&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Detection rule for Emotet based on the URL from the sample.&lt;/p&gt;
+&lt;p&gt;We used two networking indicators in our detection rule, but there are many
+resources with information that we can use to enhance our Emotet detection
+indicators (including
+&lt;a href="https://github.com/executemalware/Malware-IOCs/blob/main/2022-03-24%20Emotet%20%28E4%29%20IOCs"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt;
+and &lt;a href="https://twitter.com/hashtag/Emotet?src=hashtag_click"target="_blank" rel="noopener"&gt;Twitter&lt;/a&gt;).&lt;/p&gt;
+&lt;h3&gt;There is a &amp;ldquo;But&amp;rdquo;&lt;span class="hx:absolute hx:-mt-20" id="there-is-a-but"&gt;&lt;/span&gt;
+&lt;a href="#there-is-a-but" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Emotet is a threat that is constantly evolving not only its features but also
+its infrastructure which is based on botnets that deliver the malware to
+victims&amp;rsquo; systems, allowing the attackers to constantly change the domains and
+the IP addresses of these servers. As described in the Pyramid of Pain,
+mentioned above, it is relatively easy for attackers to change the hashes and
+IP addresses once they are detected by security tools and organizations. This
+makes some of the detection rules useless as the indicators are not relevant
+anymore.&lt;/p&gt;
+&lt;p&gt;Our goal is to have solid detection rules that will not produce false positive
+alerts and will help protect the organization. We need to make our Sigma rules
+more advanced, to catch variants within a malware family like Emotet.&lt;/p&gt;
+&lt;h2&gt;Take the Detection Opportunities a Step Further&lt;span class="hx:absolute hx:-mt-20" id="take-the-detection-opportunities-a-step-further"&gt;&lt;/span&gt;
+&lt;a href="#take-the-detection-opportunities-a-step-further" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;To be able to detect Emotet and similar threats that evolve, we need to find
+the detection indicators that are shared among the malware family. This
+detection strategy will produce alerts that are specific for a certain threat,
+because we will use indicators that are part of the threat&amp;rsquo;s behavior and were
+used more than once.&lt;/p&gt;
+&lt;p&gt;To implement this approach we will need to have information about the
+connections between samples of the same malware family, and identify detection
+indicators that are common in a specific malware family.&lt;/p&gt;
+&lt;p&gt;Intezer offers this capability, with a proprietary code reuse database that
+also extracts valuable information about the detection indicators of different
+malware samples.&lt;/p&gt;
+&lt;p&gt;In the next section here, we will show how to build Sigma rules using detection
+indicators that are shared among several samples of the same threat.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s examine another Excel
+&lt;a href="https://analyze.intezer.com/files/12315dbe67fd3db9ce3c1f520fef14e10e946b7a1d8628583c2a26949312edc5/detect-hunt"target="_blank" rel="noopener"&gt;file&lt;/a&gt;
+that delivers Emotet:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig4.png" title="Analysis of Emotet." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Analysis of Emotet.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The file was executed in Intezer&amp;rsquo;s sandbox and its behavior was analyzed
+allowing the platform to extract detection indicators. In this file we have 24
+indicators total and five of them were previously seen in other Emotet samples.
+The indicators of this file can produce good detection rules as they are based
+on the execution process, which is a key part of the malware. This reduces the
+chances of the threat actor changing these indicators (unlike file names or
+URLs that are easy to change).&lt;/p&gt;
+&lt;p&gt;We can use the information provided by Intezer to produce the following Sigma
+rule:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Emotet vbs execution detection&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;author&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Intezer&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;logsource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;process_creation&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;product&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;windows&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;detection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;selection1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ParentImage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;excel.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;wscript.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;CommandLine|contains&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;vbs&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;condition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;selection1&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Emotet detection rule based on indicators that are common in the Emotet family.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Emotet family file creation detection&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;author&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Intezer&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;logsource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;product&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;windows&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;file_event&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;detection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;TargetFilename|endswith&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;Application DataMicrosoftFormsEXCEL.box&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;condition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;filename&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Emotet detection based on indicators that are common in the Emotet family.&lt;/p&gt;
+&lt;p&gt;Both rules are based on behavior that was seen in different samples of Emotet.
+We can make the first rule even more strict by using specific commands and file
+names in the &lt;code&gt;CommandLine&lt;/code&gt; specification. The second rule is based on a file
+that is seen in Emotet samples – while it might look like a false positive,
+based on our observations this file can be used as a good indication of
+malicious activity caused by Emotet.&lt;/p&gt;
+&lt;p&gt;Recently Intezer added detection opportunities per family to allow you to stay
+ahead of emerging threats. This feature allows users to get all of the
+detection artifacts that were seen in a specific family and combined with
+&lt;a href="https://analyze.intezer.com/api/docs/documentation"target="_blank" rel="noopener"&gt;Intezer&amp;rsquo;s API&lt;/a&gt; allows
+users to extract up-to-date behavioral artifacts, so you can create rules to
+proactively hunt for the existence of a threat within your organization and
+create updated detection rules.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig5.png" title="Family page view for Emotet in an enterprise account, showing the relevant detection opportunities." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Family page view for Emotet in an enterprise account, showing the relevant detection opportunities.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Creating good and efficient detection rules is a form of art. There could be
+more than one &amp;ldquo;correct&amp;rdquo; way to write a rule from the same indicators. But at
+the end of the day, our goal is to detect threats and stop them and for that we
+need to know which indicators are unique to a specific threat and less likely
+to change among the variants of the malware.&lt;/p&gt;
+&lt;p&gt;You can get IoCs, artifacts, and other detection opportunities for creating
+Sigma rules using Intezer.&lt;/p&gt;</description></item><item><title>How to Write YARA Rules That Minimize False Positives</title><link>https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/</link><pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/</guid><description>
+&lt;h2&gt;Generate Advanced YARA Rules Based on Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="generate-advanced-yara-rules-based-on-code-reuse"&gt;&lt;/span&gt;
+&lt;a href="#generate-advanced-yara-rules-based-on-code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Incorporating YARA into daily security operations can accelerate incident
+response time, classify malware, empower threat intelligence and improve
+detection capabilities by creating custom signatures.&lt;/p&gt;
+&lt;p&gt;While YARA is a popular tool for SOC and IR teams, the main challenge is
+deciding what to base your YARA rules on for maximum effectiveness. In this
+post, we will explain how identifying code reuse between malicious files can be
+used to automatically develop advanced YARA rules to increase the accuracy of
+malware detection, reduce false positives, and improve threat hunting
+capabilities.&lt;/p&gt;
+&lt;h2&gt;What Are YARA Rules?&lt;span class="hx:absolute hx:-mt-20" id="what-are-yara-rules"&gt;&lt;/span&gt;
+&lt;a href="#what-are-yara-rules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;YARA, short for &amp;ldquo;yet another recursive acronym,&amp;rdquo; is a tool used in malware
+detection and classification. Malware researchers leverage YARA to create
+descriptions of malware families based on textual or binary patterns. Each
+description, or signature, is a YARA &amp;ldquo;rule&amp;rdquo; consisting of a set of strings and
+a boolean expression to determine its logic. When written effectively, YARA
+rules identify commonalities in malware and classify malicious files to other
+forms of malware that display similar patterns. More advanced YARA rules can be
+used to find additional variants of malware and hunt for samples.
+(&lt;a href="#example-yara-rule-for-emotet-malware"&gt;Click here to jump down to examples of code-based YARA rules.&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;While most security vendors use their own signature mechanisms, YARA is an open
+standard tool which can be used with many platforms and applied to different
+use cases. For example, YARA enables an organization to create detections of
+its own, which is relevant for identifying targeted malware that generic or
+classic signatures often struggle to detect.&lt;/p&gt;
+&lt;p&gt;This poses a significant advantage for security teams since they do not need to
+wait for signature updates from their security vendors. Security teams can
+create personalized, sophisticated YARA signatures even for targeted attacks
+and custom created malware.&lt;/p&gt;
+&lt;h3&gt;The Challenges in Writing Effective YARA Rules&lt;span class="hx:absolute hx:-mt-20" id="the-challenges-in-writing-effective-yara-rules"&gt;&lt;/span&gt;
+&lt;a href="#the-challenges-in-writing-effective-yara-rules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The vast majority of YARA rules available today are simple-based rules focused
+on string reuse found in a malware&amp;rsquo;s binary. Strings can include a log message
+or hard-coded user agent, which are criteria not guaranteed to be unique.
+Therefore they can result in false positives and can be easily replaced or
+encrypted by the adversary to avoid detection.&lt;/p&gt;
+&lt;p&gt;The most effective YARA rules are designed to achieve high detection and
+classification rates while reducing the number of false positives. Researchers
+must select the right textual or binary patterns to optimize detection results
+and accurately classify a file to its respective malware family. This is
+difficult because files share hundreds and even thousands of strings and it is
+imperative that rules are not too generic nor too specific.&lt;/p&gt;
+&lt;p&gt;For example, if a researcher is defining a YARA rule based on a file that
+contains an embedded library, and the rule is based on the generic library
+alone – which is not a malicious piece of code in itself – the researcher will
+receive a hit on every single file that uses this library, in other words
+increasing the number of false positives generated.&lt;/p&gt;
+&lt;p&gt;The ideal signature will have the right balance: broad enough to identify many
+variants of the malware but specific enough to avoid false positives.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s an example:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The above example represents a file that has been disassembled into tiny pieces
+of binary code, or genes. If a YARA rule is created based on the file&amp;rsquo;s trusted
+code (green), many false positives will be generated.&lt;/p&gt;
+&lt;p&gt;On the other hand, ensuring a YARA signature is not too specific is also
+important. Taking a piece of code as it is, for example, and developing a rule
+that contains all of the code&amp;rsquo;s addresses will make the YARA rule very specific
+to this particular file only. The rule will not likely generate hits for other
+or future variants of the malware that contain different values.&lt;/p&gt;
+&lt;h3&gt;Writing Advanced YARA Rules is Difficult to Scale&lt;span class="hx:absolute hx:-mt-20" id="writing-advanced-yara-rules-is-difficult-to-scale"&gt;&lt;/span&gt;
+&lt;a href="#writing-advanced-yara-rules-is-difficult-to-scale" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;More complex YARA rules can be created by incorporating features such as wild
+cards (a type of hexadecimal string), case-insensitive strings, and regular
+expressions. While advanced YARA rules can be powerful instruments for
+detecting malware, writing them requires a high degree of technical ability and
+an understanding of YARA, and can be a time-consuming process.&lt;/p&gt;
+&lt;p&gt;Writing advanced YARA rules and
+&lt;a href="https://intezer.com/blog/malware-analysis/the-role-of-malware-analysis-in-cybersecurity/"target="_blank" rel="noopener"&gt;malware analysis&lt;/a&gt;
+in general is difficult to scale at high volumes, especially since not every
+organization has access to a team of highly-skilled researchers or reverse
+engineers. How can a security team create advanced YARA rules and still achieve
+automation, especially if the organization is faced with a high volume of
+alerts? The answer lies in studying patterns in code reuse.&lt;/p&gt;
+&lt;h2&gt;Defining Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="defining-code-reuse"&gt;&lt;/span&gt;
+&lt;a href="#defining-code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Almost every software or malware today contains previously written code.
+Developers of trusted applications will employ code reuse to make their work
+more efficient and to bring tools to market faster. The same approach applies
+for malware authors. As attackers write more malware they will establish code
+patterns. For defenders, this provides an opportunity for attribution and
+identifying threat actor capabilities.&lt;/p&gt;
+&lt;p&gt;Genetic analysis of threats breaks down a given file into thousands of tiny
+fragments of code, or genes. Identifying code that was used in previous attacks
+can provide critical insights for security teams, including:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Accurately determining the intent of the software. For example, is the file
+trusted or malicious?&lt;/li&gt;
+&lt;li&gt;Classifying a malicious file to its relevant malware family.&lt;/li&gt;
+&lt;li&gt;Uncovering the level of sophistication and potential risk of the threat. For
+example, are you dealing with
+&lt;a href="https://intezer.com/blog/research/mitigating-emotet-the-most-common-banking-trojan/"target="_blank" rel="noopener"&gt;a common banking trojan&lt;/a&gt;,
+a sophisticated APT or a nation-state sponsored attack? The answer will shape
+your response.&lt;/li&gt;
+&lt;li&gt;Making attribution to the threat actor responsible for creating the malware.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Not only can studying patterns in code reuse identify the origin of any given
+file, it can highlight unique, never-before-seen code, which can detect new
+threats that have been written from scratch.&lt;/p&gt;
+&lt;h2&gt;Generate Automatic, Advanced YARA Rules with Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="generate-automatic-advanced-yara-rules-with-code-reuse"&gt;&lt;/span&gt;
+&lt;a href="#generate-automatic-advanced-yara-rules-with-code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Just as attackers reuse code to deploy new malware, defenders can identify
+patterns in code reuse to create advanced YARA rules. Here&amp;rsquo;s how:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;By identifying a malicious file&amp;rsquo;s unique binary code, a signature can be
+produced for detecting only those genes. This will enable detection of the
+exact same malware with high confidence and a low false positive rate.&lt;/li&gt;
+&lt;li&gt;Detecting samples of the same variants (the same opcodes with different
+addresses) can be replaced with wildcards.&lt;/li&gt;
+&lt;li&gt;Detecting different variants of the same malware family or campaign (same
+baseline of code but with different functionalities or capabilities) to look
+for a partial match.&lt;/li&gt;
+&lt;li&gt;Detecting future variants that the attacker may release based on code reuse.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Let&amp;rsquo;s look at that example again:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;As demonstrated in the previous example, creating a YARA rule based on a file&amp;rsquo;s
+trusted code will result in false positives. At the same time, developing a
+rule that contains all of the code&amp;rsquo;s addresses will make the rule very specific
+to this particular file only. The rule will not likely generate hits for other
+or future variants of the malware that contain different values.&lt;/p&gt;
+&lt;p&gt;By identifying the malicious (red) and unique code (purple), a researcher can
+create a YARA rule that will achieve very accurate results. With a YARA rule
+based on code reuse, you can expect to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Receive hits on different hashes that contain the exact same code.&lt;/li&gt;
+&lt;li&gt;Receive hits on different hashes that contain some but not all of the
+original code. This is useful for identifying new variants that are similar
+to the malware that the signature is based on.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Example YARA Rule for Emotet Malware&lt;span class="hx:absolute hx:-mt-20" id="example-yara-rule-for-emotet-malware"&gt;&lt;/span&gt;
+&lt;a href="#example-yara-rule-for-emotet-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The following example demonstrates a code-based YARA rule produced for
+&lt;a href="https://analyze.intezer.com/families/db6abbcc-d292-4991-bc90-207c077f5e53"target="_blank" rel="noopener"&gt;Emotet&lt;/a&gt;,
+a common financial trojan. With the code-based YARA signature in place, any
+future sample or variant that reuses some aspects of Emotet&amp;rsquo;s code will be
+detected.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig2.png" title="Example YARA rule, generated by Intezer to detect Emotet." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Example YARA rule, generated by Intezer to detect Emotet.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig3.png" title="Intezer analysis of Emotet, with red box highlighting the button to generate a code-based YARA signature (SHA256: 5f2aa0bb76749cce2c13c1049521a3e70389c773632245e1f915ca6c522d1402)" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer analysis of Emotet, with red box highlighting the button to generate a code-based YARA signature (SHA256: 5f2aa0bb76749cce2c13c1049521a3e70389c773632245e1f915ca6c522d1402)&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Example YARA Rule for WannaCry Variant2&lt;span class="hx:absolute hx:-mt-20" id="example-yara-rule-for-wannacry-variant2"&gt;&lt;/span&gt;
+&lt;a href="#example-yara-rule-for-wannacry-variant2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This is an example of a YARA signature that was produced via code from a
+&lt;a href="https://analyze.intezer.com/families/0b13c0d4-7779-4c06-98fa-4d33ca98f8a9"target="_blank" rel="noopener"&gt;WannaCry&lt;/a&gt;
+sample. Deployed in May 2017, WannaCry was one of the largest, high profile
+ransomware attacks in history, infecting over 200,000 computers across 150
+countries.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig4.png" title="Example YARA rule for WannaCry." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Example YARA rule for WannaCry.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig5.png" title="Genetic analysis of WannaCry in Intezer Analyze (SHA256: bf293bda73c5b4c1ec66561ad20d7e2bc6692d051282d35ce8b7b7020c753467)" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Genetic analysis of WannaCry in Intezer Analyze (SHA256: bf293bda73c5b4c1ec66561ad20d7e2bc6692d051282d35ce8b7b7020c753467)&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Generating YARA Rules with Intezer Analyze&lt;span class="hx:absolute hx:-mt-20" id="generating-yara-rules-with-intezer-analyze"&gt;&lt;/span&gt;
+&lt;a href="#generating-yara-rules-with-intezer-analyze" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Leveraging proprietary genetic code analysis technology, Intezer Analyze can
+generate automatic YARA signatures based on a file&amp;rsquo;s code, enabling users to
+improve their threat hunting capabilities by detecting future variants of the
+malware. As highlighted above, code-based YARA signatures can effectively
+reduce false positives and save precious resources in the form of time and
+analyst efforts. This is particularly valuable for organizations dealing with a
+large volume of alerts.&lt;/p&gt;
+&lt;p&gt;You can also use
+&lt;a href="https://intezer.com/blog/threat-hunting/scale-incident-response-detection-engineering/"target="_blank" rel="noopener"&gt;Detect &amp;amp; Hunt&lt;/a&gt;
+to find file-based detection opportunities for creating new YARA rules. You can
+filter these detection opportunities by the artifact type, family, and verdict.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig6.png" title="NanoCoreRAT sample, SHA256: 0689544cd227b93df10df4d99ea04270d0f9f76259aa34cb8f6707a02e70081d" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;NanoCoreRAT sample, SHA256: 0689544cd227b93df10df4d99ea04270d0f9f76259aa34cb8f6707a02e70081d&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This feature also allows for some more advanced usages. It can be used in
+several scenarios, including:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The user can adjust the thresholds of the rule. The default value is 70% of
+the entire code but it is possible to modify the rule to be more specific, or
+more flexible.&lt;/li&gt;
+&lt;li&gt;The user can combine or split different YARA signatures to build stronger
+rules to better fit his or her needs.&lt;/li&gt;
+&lt;li&gt;The user can add to the automated rules with a string reuse feature to make
+the signature even more powerful for threat hunting.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Key Takeaways for Writing Effective Rules&lt;span class="hx:absolute hx:-mt-20" id="key-takeaways-for-writing-effective-rules"&gt;&lt;/span&gt;
+&lt;a href="#key-takeaways-for-writing-effective-rules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Incorporating YARA into daily security operations can accelerate incident
+response time, classify malware, empower threat intelligence and improve
+detection capabilities by creating custom signatures.&lt;/li&gt;
+&lt;li&gt;Traditional methods for writing effective YARA signatures have their
+challenges, including being too specific or generic with respect to a file&amp;rsquo;s
+textual or binary patterns.&lt;/li&gt;
+&lt;li&gt;In today&amp;rsquo;s YARA landscape many signatures are based on string reuse. The
+challenge is to identify the &amp;ldquo;unique&amp;rdquo; strings, however even if this is
+achieved, these signatures are much less effective because strings can be
+easily manipulated, replaced or encrypted by the adversary to avoid
+detection.&lt;/li&gt;
+&lt;li&gt;Identifying malicious code seen in previous threats can be used to generate
+more accurate YARA signatures for detecting future variants or new malware.&lt;/li&gt;
+&lt;li&gt;The Intezer Analyze platform enables users to automatically generate YARA
+rules based on binary code, rather than simple strings. Code-based YARA rules
+are the most effective since they are tolerant to modifications and are more
+equipped to detect variants of the same threat.&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>SOC Level Up: Introduction to Sigma Rules</title><link>https://intezer.github.io/community-intelligence/blog/2022/03/intro-to-sigma-rules/</link><pubDate>Tue, 22 Mar 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/03/intro-to-sigma-rules/</guid><description>
+&lt;p&gt;&lt;em&gt;Sigma rules are catching on more and more for SOC teams, as a way to write one
+rule that can be used across multiple environments. By learning how Sigma rules
+work and how to create them, you can take your SOC skills to the next level.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Detecting security breaches inside an infrastructure is heavily based on
+analyzing and monitoring events using logs. There are different types of logs,
+aggregation systems, strategies and technologies that help SOC analysts in
+their day to day job. While it&amp;rsquo;s excellent that there are a wide range of tools
+SOC teams and organizations can implement in their security posture, it also
+complicates the process of sharing information and knowledge within the
+organization and the community – each SIEM has its own query syntax (or
+language) and each log has it&amp;rsquo;s own unique fields.&lt;/p&gt;
+&lt;p&gt;Often analysts create rules to detect active threats or attacks and
+organizations would want to use them to alert upon a possible breach. For
+example, we might have an excellent rule to detect the creation of a specific
+malicious process and we want to share the rule with the community, partners,
+or clients. Having said that, sharing detection rules for behavior is
+complicated because each organization has its own way to digest logs,
+infrastructure and tools, so it might be more challenging for them to
+understand the rules and to integrate them into existing infrastructures.&lt;/p&gt;
+&lt;p&gt;The solution is using Sigma rules. These rules are written in a well-defined
+format using a markup language. Sigma is used for generating queries for
+specific SIEMs and configurations. Using Sigma for writing detection rules
+makes it easier to share and integrate them in the organization, regardless of
+specific tools and logs that are used.&lt;/p&gt;
+&lt;p&gt;In this blog we will introduce you to Sigma rules: What are Sigma rules? What
+is the syntax of Sigma rules and what makes them a powerful tool that should be
+used in your organization. We will present examples of how to write rules based
+on analysis or real threats and explain the subtleties of writing these rules.
+Once you get familiar with the format you will be able to understand the rules
+and write them by yourself.&lt;/p&gt;
+&lt;p&gt;This blog is the first part of a blog series in which we are going to present
+key technologies and concepts that can be useful for SOC analysts who wish to
+improve their skills and knowledge to do a better job in their current position
+or to switch positions. In this series, we will introduce topics such as threat
+intelligence.&lt;/p&gt;
+&lt;h2&gt;What Are Sigma Rules?&lt;span class="hx:absolute hx:-mt-20" id="what-are-sigma-rules"&gt;&lt;/span&gt;
+&lt;a href="#what-are-sigma-rules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Sigma is an &lt;a href="https://github.com/SigmaHQ/sigma"target="_blank" rel="noopener"&gt;open-source&lt;/a&gt; framework that
+provides the ability to write rules to analyze logs – similar to YARA for files
+or Snort for network analysis. Sigma rules are written using a predefined
+syntax in YAML format, and then they are converted (using sigmac or
+&lt;a href="https://uncoder.io/"target="_blank" rel="noopener"&gt;online converter&lt;/a&gt;) to a format that fits the target SIEM
+or platform used in the organization. There are many supported targets such as:
+Splunk, Elasticsearch, Microsoft Defender, and many more. Sigma can be used
+with different log sources.&lt;/p&gt;
+&lt;p&gt;The agility of Sigma rules and the fact that one rule can be used in
+environments that use different configurations, makes it easier for analysts to
+write these rules and share them with colleagues and the community.&lt;/p&gt;
+&lt;p&gt;Sigma rules are a powerful tool that makes it easy to analyze different types
+of logs and find specific action or threat. It can be used in two ways:&lt;/p&gt;
+&lt;h3&gt;Identify and alert on suspicious activity&lt;span class="hx:absolute hx:-mt-20" id="identify-and-alert-on-suspicious-activity"&gt;&lt;/span&gt;
+&lt;a href="#identify-and-alert-on-suspicious-activity" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Sigma rules can be integrated into SIEM platforms and detect different events
+as they happen thus helping to detect and stop them before any further damage.
+For example we can create †rules to detect: unauthorized actions, web/resource
+access, file modification, process creation and much more.&lt;/p&gt;
+&lt;h3&gt;Threat Hunting&lt;span class="hx:absolute hx:-mt-20" id="threat-hunting"&gt;&lt;/span&gt;
+&lt;a href="#threat-hunting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Sigma rules can be used to hunt for threats:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Use the rules to detect when a certain attack or threat targets your
+organization.&lt;/li&gt;
+&lt;li&gt;Check if your organization was breached by applying Sigma rules to old logs
+(assuming your organization aggregates logs for at least a few months). Often
+it
+&lt;a href="https://www.upguard.com/blog/cost-of-data-breach#:~:text=In%202021%2C%20the,the%20damage%20costs."target="_blank" rel="noopener"&gt;takes an organization several months&lt;/a&gt;
+before they discover that an attacker is already in the system. By analyzing
+the logs for suspicious activity you increase the chances of discovering a
+security breach and starting an incident response process sooner.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Sigma Rules Syntax&lt;span class="hx:absolute hx:-mt-20" id="sigma-rules-syntax"&gt;&lt;/span&gt;
+&lt;a href="#sigma-rules-syntax" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/intro-to-sigma-rules/images/fig1.png" title="Source: Sigma repo" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Source: Sigma repo&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The structure of Sigma rules is made of optional and mandatory parts as can be
+seen in the picture above.&lt;/p&gt;
+&lt;h3&gt;Metadata&lt;span class="hx:absolute hx:-mt-20" id="metadata"&gt;&lt;/span&gt;
+&lt;a href="#metadata" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;These fields provide information about the rule and add informative comments
+and notes. While it&amp;rsquo;s not mandatory, it is especially important to add this
+information if you plan to share the rule with other people. There are a number
+of fields that can be used here:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Title of the rule&lt;/li&gt;
+&lt;li&gt;Author (optional)&lt;/li&gt;
+&lt;li&gt;Date (optional)&lt;/li&gt;
+&lt;li&gt;Unique ID (optional)&lt;/li&gt;
+&lt;li&gt;License (optional) – it is recommended to add this field if you plan to share
+the rule. By default the distribution is very strict, you can choose to
+change it using &lt;a href="https://spdx.dev/ids/"target="_blank" rel="noopener"&gt;SPDX&lt;/a&gt; standard.&lt;/li&gt;
+&lt;li&gt;Tag (optional) – For example, associate the rule with a technique from the
+MITRE ATT&amp;amp;CK framework.&lt;/li&gt;
+&lt;li&gt;Status (optional) – possible values can be experimental or test, to indicate
+that the rule might need further tuning and testing.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Log Source&lt;span class="hx:absolute hx:-mt-20" id="log-source"&gt;&lt;/span&gt;
+&lt;a href="#log-source" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The log source section describes which logs should be searched and analyzed.
+There are several optional fields that specify which type of logs are relevant
+for the Sigma rule. While these fields are optional a rule should include at
+least one of them as it provides vital information relevant to the detection
+and will help the user of the rule integrate the rule in his infrastructure.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Category: specify the logs from a group of products. For example: firewall,
+process_creation, file_event.&lt;/li&gt;
+&lt;li&gt;Product: a specific software or service. For example: Windows, Apache, Zeek.&lt;/li&gt;
+&lt;li&gt;Service: select subset from the product.&lt;/li&gt;
+&lt;li&gt;Definition: a place for comments and additional information regarding the
+log.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Detection&lt;span class="hx:absolute hx:-mt-20" id="detection"&gt;&lt;/span&gt;
+&lt;a href="#detection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In this section, we define what we are looking for in the logs. This section
+will contain one or more blocks usually called &lt;code&gt;selection&lt;/code&gt; or &lt;code&gt;filter&lt;/code&gt; but it
+can have any other name. Each block will contain the relevant fields and
+information that are needed for the detection of a specific event. When looking
+for a match we can look for a specific string, event id, or a combination of
+them, using the following fields and properties. Let&amp;rsquo;s look at the example
+below:&lt;/p&gt;
+&lt;p&gt;A rule to detect mshta execution where the process&amp;rsquo;s parent image ends with
+&lt;code&gt;svchost.exe&lt;/code&gt; and the image of the process ends with &lt;code&gt;mshta.exe&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;logsource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;process_creation&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;product&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;windows&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;detection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;selection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ParentImage|endswith&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;svchost.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;cmd.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;powershell.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;Image|endswith&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;mshta.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;condition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;selection&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Based on what we learned from the previous section we know that this rule can
+be used to scan logs of process creation on Windows OS.&lt;/p&gt;
+&lt;p&gt;Next, there is a block called &lt;code&gt;selection&lt;/code&gt; which is a
+&lt;a href="https://github.com/SigmaHQ/sigma/wiki/Specification#maps"target="_blank" rel="noopener"&gt;map&lt;/a&gt; (or directory)
+that contains pairs of keys and values. In the example above there are two
+keys: &lt;code&gt;ParentImage&lt;/code&gt; and &lt;code&gt;Image&lt;/code&gt;. The elements of the map are linked with
+logical AND meaning we are looking for a match for both the image of the
+process and its parent&amp;rsquo;s image.&lt;/p&gt;
+&lt;p&gt;For the parent image the strings are in a
+&lt;a href="https://github.com/SigmaHQ/sigma/wiki/Specification#lists"target="_blank" rel="noopener"&gt;list&lt;/a&gt; format – they
+are linked with OR and we need at least 1 match in the end (because of
+&lt;code&gt;endswith&lt;/code&gt;) of the path :&lt;code&gt;svchost.exe&lt;/code&gt;, &lt;code&gt;cmd.exe&lt;/code&gt; or &lt;code&gt;powershell.exe&lt;/code&gt;. In SIGMA
+a string is:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Case insensitive.&lt;/li&gt;
+&lt;li&gt;Can contain
+&lt;a href="https://github.com/SigmaHQ/sigma/wiki/Specification#general"target="_blank" rel="noopener"&gt;regular expressions&lt;/a&gt;
+(regex) – in this case it will be case sensitive.&lt;/li&gt;
+&lt;li&gt;Wildcards can be used (* and ? ) in the detection. If needed these
+characters can be escaped using the backslash.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Note that the value uses a modifier: &lt;code&gt;endswith&lt;/code&gt; – it specifies where the string
+should be found; there are
+&lt;a href="https://github.com/SigmaHQ/sigma/wiki/Specification#value-modifiers"target="_blank" rel="noopener"&gt;many other&lt;/a&gt;
+modifiers that can be used. In the examples, the image of the process needs to
+end with &lt;code&gt;mshta.exe&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Lastly, the condition specifies which conditions have to be fulfilled in order
+to identify an event and trigger an alert if needed. When a rule has several
+sections they can be linked with different logical operations such as AND, OR,
+NOT and &lt;a href="https://github.com/SigmaHQ/sigma/wiki/Specification"target="_blank" rel="noopener"&gt;more&lt;/a&gt;. We can use
+the condition to create more detailed rules, filter out certain matches and
+tune the rule to avoid false positives. In our example the detection will
+happen when a log would contain the specified image paths.&lt;/p&gt;
+&lt;h2&gt;Compiling Sigma Rules&lt;span class="hx:absolute hx:-mt-20" id="compiling-sigma-rules"&gt;&lt;/span&gt;
+&lt;a href="#compiling-sigma-rules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After we write the rule we need to save the file and use sigmac (available in
+the
+&lt;a href="https://github.com/SigmaHQ/sigma/tree/0889a1fc3b1a950fab00a5334f1fef3cd8ba0cb2/tools"target="_blank" rel="noopener"&gt;repo&lt;/a&gt;)
+to compile the rule. The command will look like this:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;./sigmac -t &amp;lt;target&amp;gt; -c &amp;lt;path to configuration file&amp;gt; &amp;lt;path to the rule&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;To compile a rule you must specify the target SIEM, provide a configuration
+file and the path to the rule. Each argument is very significant for a
+successful compilation of the rule and the integration of the rule in SIEM
+systems. We will explain each argument in the command.&lt;/p&gt;
+&lt;h3&gt;Target&lt;span class="hx:absolute hx:-mt-20" id="target"&gt;&lt;/span&gt;
+&lt;a href="#target" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Target is the SIEM or the system that will analyze the logs: it can be splunk,
+stix, sysmon, etc. Each system has its own syntax so the output will differ.&lt;/p&gt;
+&lt;p&gt;We will continue using our example for detecting mshta from the previous
+section, let&amp;rsquo;s compile it for splunk:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;./sigmac -t splunk -c config/generic/windows-services.yml
+sigma_rules/detect_mshta.yml
+((ParentImage=&amp;#34;*\svchost.exe&amp;#34; OR ParentImage=&amp;#34;*cmd.exe&amp;#34; OR
+ParentImage=&amp;#34;*powershell.exe&amp;#34;) (Image=&amp;#34;*\mshta.exe&amp;#34;))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;And now for sqlite:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;./sigmac -t sqlite -c config/generic/windows-services.yml
+sigma_rules/detect_mshta.yml
+SELECT * FROM eventlog WHERE ((ParentImage LIKE &amp;#39;%\svchost.exe&amp;#39; ESCAPE &amp;#39;&amp;#39;
+OR ParentImage LIKE &amp;#39;%cmd.exe&amp;#39; ESCAPE &amp;#39;&amp;#39; OR ParentImage LIKE
+&amp;#39;%powershell.exe&amp;#39; ESCAPE &amp;#39;&amp;#39;) AND (Image LIKE &amp;#39;%\mshta.exe&amp;#39; ESCAPE &amp;#39;&amp;#39;))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;We wrote one rule that can be easily integrated into two entirely different
+environments and that&amp;rsquo;s the power of Sigma rules. You can run sigmac –list to
+view the full list of supported targets.&lt;/p&gt;
+&lt;h3&gt;Configuration File&lt;span class="hx:absolute hx:-mt-20" id="configuration-file"&gt;&lt;/span&gt;
+&lt;a href="#configuration-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Each environment and organization can use different log sources or index the
+logs differently. To make Sigma rules relevant and usable in environments
+regardless of the logs they use, Sigma relies on configuration files. A
+configuration file contains the mapping of the logs and the fields that are
+being used in the environment to the fields used in the rules. We can think of
+it as a translation between the rule and our environment.&lt;/p&gt;
+&lt;p&gt;Valid log source definition must contain at least one category, service or
+product specification that exactly corresponds to the same fields in the rule&amp;rsquo;s
+logsource section.&lt;/p&gt;
+&lt;p&gt;Sigma Git repository contains many
+&lt;a href="https://github.com/SigmaHQ/sigma/tree/0889a1fc3b1a950fab00a5334f1fef3cd8ba0cb2/tools/config"target="_blank" rel="noopener"&gt;configuration files&lt;/a&gt;
+for the different log sources and SIEM systems. Note that in order to use the
+configuration file in your environment you might need to modify it a bit and
+adjust the mapping, but for a simple testing environment they should be good
+enough.&lt;/p&gt;
+&lt;p&gt;For example this is the output of our example rule when using windows-services
+logs for splunk:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;./sigmac -t splunk -c config/generic/windows-services.yml
+sigma_rules/detect_mshta.yml
+((ParentImage=&amp;#34;*\svchost.exe&amp;#34; OR ParentImage=&amp;#34;*cmd.exe&amp;#34; OR
+ParentImage=&amp;#34;*powershell.exe&amp;#34;) (Image=&amp;#34;*\mshta.exe&amp;#34;))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a href="https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon"target="_blank" rel="noopener"&gt;Sysmon&lt;/a&gt; is a
+service that is part of sysinternals, it monitors and logs a wide range of
+events and activities, the output can be viewed in the Windows event log
+viewer. This is the output of the example rule for sysmon for splunk:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;./sigmac -t splunk -c config/generic/sysmon.yml
+sigma_rules/detect_mshta.yml
+(EventID=&amp;#34;1&amp;#34; (ParentImage=&amp;#34;*\svchost.exe&amp;#34; OR ParentImage=&amp;#34;*cmd.exe&amp;#34; OR
+ParentImage=&amp;#34;*powershell.exe&amp;#34;) (Image=&amp;#34;*\mshta.exe&amp;#34;))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Let&amp;rsquo;s check the
+&lt;a href="https://github.com/SigmaHQ/sigma/blob/0889a1fc3b1a950fab00a5334f1fef3cd8ba0cb2/tools/config/generic/sysmon.yml"target="_blank" rel="noopener"&gt;configuration&lt;/a&gt;
+for Sysmon. Below is a snippet of the configuration:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;logsources&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;process_creation&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;process_creation&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;product&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;windows&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;conditions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;EventID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;rewrite&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;product&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;windows&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;sysmon&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;process_creation_linux&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;process_creation&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;product&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;linux&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;conditions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;EventID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;rewrite&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;product&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;linux&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;sysmon&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The configuration file specifies the fields that will be used in a Sigma rule
+and how they will be defined or where they are located in logs that are
+generated by sysmon. The way the fields are defined in the rule must fully
+match the to the values set in the configuration file.&lt;/p&gt;
+&lt;p&gt;The configuration above tells sigmac that for rules that contain logsource with
+category process_creation and product windows replace these fields with product
+windows and service sysmon. Depending on the OS targeted by the rule, the
+compiled output will define the product type. EventID: 1 is added with a
+logical AND to the query outputted by sigmac, meaning only events with this
+event ID are applicable to this rule. This way rules that didn&amp;rsquo;t use sysmon as
+a log source could be integrated into infrastructure that uses sysmon in their
+logging and use this rule.&lt;/p&gt;
+&lt;p&gt;You might ask yourself why we didn&amp;rsquo;t write the rule with Sysmon as a logsource
+from the beginning – and the answer is that we could have done that! There
+might be more than one way to write a Sigma rule. We can make the rule target
+sysmon logs, so if the users of the rule use sysmon in their environment they
+will need minimal effort on their part to integrate it.&lt;/p&gt;
+&lt;p&gt;Our mshta rule for sysmon:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;logsource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;product&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;windows&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;sysmon&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;detection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;selection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;EventID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ParentImage|endswith&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;svchost.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;cmd.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;powershell.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;Image|endswith&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;mshta.exe&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;condition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;selection&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The original example of our mshta rule uses a more &amp;ldquo;general&amp;rdquo; approach: we
+didn&amp;rsquo;t specify which logsource to use and the user can convert the rule to fit
+his environment by mapping the fields in his configuration file. In the first
+example it is up to the user to tune the rule and adjust the rule or the
+configuration file while in the last option, we specifically mention which log
+source and fields the rules use. Both rules will achieve the same result.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In this blog we presented Sigma rules – a well-defined and formatted structure
+for writing detection rules, that can be used in all types of operating systems
+and environments. Sigma allows you to share information but also consume it,
+making it easier to integrate new detection rules and protect your environment.&lt;/p&gt;</description></item><item><title>Radare Plugin is Here for Intezer Community</title><link>https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/</link><pubDate>Tue, 08 Feb 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/</guid><description>
+&lt;p&gt;When you reverse engineer code as part of an incident response team, you want
+to quickly get information about what kind of threat you&amp;rsquo;re dealing with.&lt;/p&gt;
+&lt;p&gt;A while back we released Intezer Analyze plugins both for
+&lt;a href="https://intezer.com/blog/malware-analysis/ida-pro-plugin-now-available-to-the-community/"target="_blank" rel="noopener"&gt;IDA Pro&lt;/a&gt;
+and
+&lt;a href="https://intezer.com/blog/malware-analysis/community-ghidra-plugin-is-here/"target="_blank" rel="noopener"&gt;Ghidra&lt;/a&gt;
+to help you zero in on a file&amp;rsquo;s malicious and unique code. Now it is Radare&amp;rsquo;s
+turn. &lt;a href="https://rada.re/n/radare2.html"target="_blank" rel="noopener"&gt;Radare2&lt;/a&gt; (r2) is an open-source tool
+chain for reverse engineering and forensics. With the release of the community
+plugin &lt;code&gt;r2analyze&lt;/code&gt;, r2 users can now supercharge their reversing session with
+code genomics from Intezer to attribute the malware family or threat actor.&lt;/p&gt;
 &lt;h2&gt;The Radare Plugin for Reverse Engineering&lt;span class="hx:absolute hx:-mt-20" id="the-radare-plugin-for-reverse-engineering"&gt;&lt;/span&gt;
 &lt;a href="#the-radare-plugin-for-reverse-engineering" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;How to get started:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;Make sure you have an Intezer Analyze community account, or a paid team account. (If not, register &lt;a href="https://analyze.intezer.com/"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.)&lt;/li&gt;
+&lt;li&gt;Make sure you have an Intezer Analyze community account, or a paid team
+account. (If not, register &lt;a href="https://analyze.intezer.com/"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.)&lt;/li&gt;
 &lt;li&gt;Submit the file to Intezer Analyze.&lt;/li&gt;
 &lt;li&gt;Install the plugin via pip: &lt;code&gt;pip install r2analyze&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Add your API key as an environment variable named &lt;code&gt;INTEZER_API_KEY&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Open the file in r2 and perform an initial analysis (&lt;code&gt;aaa&lt;/code&gt;).&lt;/li&gt;
 &lt;li&gt;Run the plugin as a r2pipe command (&lt;code&gt;#!pipe r2analyze&lt;/code&gt;).&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;Here is an example using a ScarCruft sample (&lt;a href="https://analyze.intezer.com/files/7c82689142a415b0a34553478e445988980f48705735939d6d33c17e4e8dac94"target="_blank" rel="noopener"&gt;&lt;code&gt;7c82689142a415b0a34553478e445988980f48705735939d6d33c17e4e8dac94&lt;/code&gt;&lt;/a&gt;). The &lt;a href="https://analyze.intezer.com/files/7c82689142a415b0a34553478e445988980f48705735939d6d33c17e4e8dac94"target="_blank" rel="noopener"&gt;result&lt;/a&gt; from Intezer Analyze is shown below.&lt;/p&gt;
+&lt;p&gt;Here is an example using a ScarCruft sample
+(&lt;a href="https://analyze.intezer.com/files/7c82689142a415b0a34553478e445988980f48705735939d6d33c17e4e8dac94"target="_blank" rel="noopener"&gt;&lt;code&gt;7c82689142a415b0a34553478e445988980f48705735939d6d33c17e4e8dac94&lt;/code&gt;&lt;/a&gt;).
+The
+&lt;a href="https://analyze.intezer.com/files/7c82689142a415b0a34553478e445988980f48705735939d6d33c17e4e8dac94"target="_blank" rel="noopener"&gt;result&lt;/a&gt;
+from Intezer Analyze is shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig1.png" title="Intezer Analyze result for a ScarCruft sample." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Intezer Analyze result for a ScarCruft sample.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;If you open the sample and run the plugin, you can see below that four items in the flag space called &lt;code&gt;gene&lt;/code&gt; have been created.&lt;/p&gt;
+&lt;p&gt;If you open the sample and run the plugin, you can see below that four items in
+the flag space called &lt;code&gt;gene&lt;/code&gt; have been created.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig2.png" title="Executing r2analyze as a r2pipe plugin." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Executing r2analyze as a r2pipe plugin.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;If selecting only that flag space and listing all the flags, you can see that four functions have been identified as unique to ScarCruft.&lt;/p&gt;
+&lt;p&gt;If selecting only that flag space and listing all the flags, you can see that
+four functions have been identified as unique to ScarCruft.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig3.png" title="Listing detected functions." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Listing detected functions.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;If Radare2 is your preferred framework for reverse-engineering and analyzing binaries, now you can use this Intezer Analyze plugin to save time and get additional insights for your incident response team.&lt;/p&gt;
-&lt;p&gt;Intezer automates the malware analysis process to quickly identify and classify malware families. Analyze malware and unknown files for free at &lt;a href="https://analyze.intezer.com/"target="_blank" rel="noopener"&gt;analyze.intezer.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;If Radare2 is your preferred framework for reverse-engineering and analyzing
+binaries, now you can use this Intezer Analyze plugin to save time and get
+additional insights for your incident response team.&lt;/p&gt;
+&lt;p&gt;Intezer automates the malware analysis process to quickly identify and classify
+malware families. Analyze malware and unknown files for free at
+&lt;a href="https://analyze.intezer.com/"target="_blank" rel="noopener"&gt;analyze.intezer.com&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;Additional Resources&lt;span class="hx:absolute hx:-mt-20" id="additional-resources"&gt;&lt;/span&gt;
 &lt;a href="#additional-resources" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://intezer.com/blog/malware-analysis/ida-pro-plugin-now-available-to-the-community/"target="_blank" rel="noopener"&gt;IDA Pro plugin&lt;/a&gt;&lt;/li&gt;

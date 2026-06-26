@@ -1,4 +1,877 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Backdoor</title><link>https://intezer.github.io/community-intelligence/tags/backdoor/</link><description>Recent content in Backdoor on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 22 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/backdoor/index.xml" rel="self" type="application/rss+xml"/><item><title>Symbiote: Analysis of a New, Nearly-Impossible-to-Detect Linux Threat</title><link>https://intezer.github.io/community-intelligence/blog/2022/06/new-linux-threat-symbiote/</link><pubDate>Wed, 22 Jun 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/06/new-linux-threat-symbiote/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Backdoor</title><link>https://intezer.github.io/community-intelligence/tags/backdoor/</link><description>Recent content in Backdoor on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 21 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/backdoor/index.xml" rel="self" type="application/rss+xml"/><item><title>Lightning Framework: New Undetected "Swiss Army Knife" Linux Malware ⚡</title><link>https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/</link><pubDate>Thu, 21 Jul 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/</guid><description>
+&lt;p&gt;&lt;em&gt;Lightning Framework is a new undetected Swiss Army Knife-like Linux malware
+that has modular plugins and the ability to install rootkits.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Year after year Linux environments increasingly become the target of malware
+due to continued threat actor interest in the space. Malware targeting Linux
+environments surged in 2021, with a large amount of innovation
+&lt;a href="https://www.ibm.com/downloads/cas/ADLMYLAZ"target="_blank" rel="noopener"&gt;resulting in new malicious code&lt;/a&gt;,
+especially in ransomwares, trojans, and botnets. With the rise in use of the
+cloud, it is no wonder that malware innovation is still accelerating at
+breakneck speed in this realm.&lt;/p&gt;
+&lt;p&gt;This is a technical analysis of a previously undocumented and undetected Linux
+threat called the Lightning Framework. It is rare to see such an intricate
+framework developed for targeting Linux systems. Lightning is a modular
+framework we discovered that has a plethora of capabilities, and the ability to
+install multiple types of rootkit, as well as the capability to run plugins.
+The framework has both passive and active capabilities for communication with
+the threat actor, including opening up SSH on an infected machine, and a
+polymorphic malleable command and control configuration. We are releasing this
+blog for informational purposes. We do not have all the files that are
+referenced in the framework, but hope that this release will help others if
+they possess other pieces of the jigsaw puzzle. We have not observed this
+malware being used in attacks in the wild.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis of Lightning Framework&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis-of-lightning-framework"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis-of-lightning-framework" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The framework consists of a downloader and core module, with a number of
+plugins. Some of the plugins used by the malware are open-source tools. Below
+is a figure of the framework layout:&lt;/p&gt;
+&lt;h3&gt;Overview of the Modules&lt;span class="hx:absolute hx:-mt-20" id="overview-of-the-modules"&gt;&lt;/span&gt;
+&lt;a href="#overview-of-the-modules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Name&lt;/th&gt;
+&lt;th&gt;Name on Disk&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Lightning.Downloader&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;kbioset&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;The persistent module that downloads the core module and its plugins&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Lightning.Core&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;kkdmflush&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;The main module of the Lightning Framework&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Linux.Plugin.Lightning.SsHijacker&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;soss&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;There is a reference to this module but no sample found in the wild yet.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Linux.Plugin.Lightning.Sshd&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;sshod&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;OpenSSH with hardcoded private and host keys&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Linux.Plugin.Lightning.Nethogs&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;nethoogs&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;There is a reference to this module but no sample found in the wild yet. Presumably the software &lt;a href="https://github.com/raboof/nethogs"target="_blank" rel="noopener"&gt;Nethogs&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Linux.Plugin.Lightning.iftop&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;iftoop&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;There is a reference to this module but no sample found in the wild yet. Presumably the software &lt;a href="https://linux.die.net/man/8/iftop"target="_blank" rel="noopener"&gt;iftop&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Linux.Plugin.Lightning.iptraf&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;iptraof&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;There is a reference to this module but no sample found in the wild yet. Presumably the software &lt;a href="http://iptraf.seul.org/"target="_blank" rel="noopener"&gt;IPTraf&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Linux.Plugin.RootkieHide&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;libsystemd.so.2&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;There is a reference to this module but no sample found in the wild yet. LD_PRELOAD Rootkit&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Linux.Plugin.Kernel&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;elastisearch.ko&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;There is a reference to this module but no sample found in the wild yet. LKM Rootkit&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Lightning.Downloader&lt;span class="hx:absolute hx:-mt-20" id="lightningdownloader"&gt;&lt;/span&gt;
+&lt;a href="#lightningdownloader" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The main function of the downloader module is to fetch the other components and
+execute the core module.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig1.png" title="Lightning Downloader result in Intezer Analyze" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Lightning Downloader result in Intezer Analyze&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The downloader module starts by checking if it is located in the working
+directory &lt;code&gt;/usr/lib64/seahorses/&lt;/code&gt; under the name &lt;code&gt;kbioset&lt;/code&gt;. The framework makes
+heavy use of typosquatting and masquerading in order to remain undetected. The
+reference to &lt;code&gt;seahorses&lt;/code&gt; masquerades the password and key manager software
+&lt;a href="https://gitlab.gnome.org/GNOME/seahorse"target="_blank" rel="noopener"&gt;seahorse&lt;/a&gt;. If not it will relocate
+itself to that working directory and execute that copy. The downloader will
+fingerprint the host name and network adapters to generate a GUID, which will
+be sent to the command and control (C2) server.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig2.png" title="Building the GUID" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Building the GUID&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The downloader will then contact the C2 to fetch the following modules and
+plugins:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Linux.Plugin.Lightning.SsHijacker&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Linux.Plugin.Lightning.Sshd&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Linux.Plugin.Lightning.Nethogs&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Linux.Plugin.Lightning.iftop&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Linux.Plugin.Lightning.iptraf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Lightning.Core&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig3.png" title="Resources fetched from the C2" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Resources fetched from the C2&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The method of contacting the C2 will be described below in the malleable C2
+section (click here to jump to that section). The downloader will then execute
+the core module (&lt;code&gt;kkdmflush&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig4.png" title="Execution of the core module" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Execution of the core module&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Lightning.Core&lt;span class="hx:absolute hx:-mt-20" id="lightningcore"&gt;&lt;/span&gt;
+&lt;a href="#lightningcore" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The core module is the main module in this framework, it is able to receive
+commands from the C2 and execute the plugin modules. The module has many
+capabilities and uses a number of techniques to
+&lt;a href="https://attack.mitre.org/techniques/T1564/"target="_blank" rel="noopener"&gt;hide artifacts&lt;/a&gt; to remain running
+under the radar.&lt;/p&gt;
+&lt;p&gt;The core module modifies the name of the calling thread of the module to
+&lt;code&gt;kdmflush&lt;/code&gt;, to make it appear that it is a kernel thread.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig5.png" title="Using prctl to modify calling thread name" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Using prctl to modify calling thread name&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Next the core module sets up persistence by creating a script that is executed
+upon system &lt;a href="https://attack.mitre.org/techniques/T1037/"target="_blank" rel="noopener"&gt;boot&lt;/a&gt;. This is
+achieved by first creating a file located at &lt;code&gt;/etc/rc.d/init.d/elastisearch&lt;/code&gt;.
+The name appears to typosquat elasticsearch. The following contents are written
+to the file:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&lt;/span&gt;&lt;span class="c1"&gt;# chkconfig:2345 90 20&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;/usr/lib64/seahorses/kbioset &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This script will execute the downloader module upon boot. The service is then
+added using the &lt;code&gt;chkconfig&lt;/code&gt; utility.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig6.png" title="Creation of the init.d script and service" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Creation of the init.d script and service&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The timestamp of the file is modified to hide artifacts, a technique known as
+&amp;ldquo;&lt;a href="https://attack.mitre.org/techniques/T1070/006/"target="_blank" rel="noopener"&gt;timestomping&lt;/a&gt;&amp;rdquo;. The file has
+its last modified time edited to match that of either &lt;code&gt;whoami&lt;/code&gt;, &lt;code&gt;find&lt;/code&gt;, or
+&lt;code&gt;su&lt;/code&gt;. It will look for each file respectively until it finds one. This
+technique is used for most of the files that the framework creates.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig7.png" title="File timestamp modification function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;File timestamp modification function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The malware will attempt to hide its Process ID (PID) and any related network
+ports. This is achieved by writing the frameworks running PIDs to two files:
+&lt;code&gt;hpi&lt;/code&gt; and &lt;code&gt;hpo&lt;/code&gt;. These files are parsed and then the existence of the file
+&lt;code&gt;proc/y.y&lt;/code&gt; is checked. If the file exists, it means that a rootkit has been
+installed. The PIDs are written to &lt;code&gt;proc/y.y&lt;/code&gt; for use by the rootkit, which may
+scrub any reference to files running in the framework from commands such as
+&lt;code&gt;ps&lt;/code&gt; and &lt;code&gt;netstat&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig8.png" title="Writing PID to proc/y.y if it exists (Indication that rootkit exists)" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Writing PID to proc/y.y if it exists (Indication that rootkit exists)&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The core module will generate a GUID in the same manner as the downloader and
+contact the C2. The response is parsed and the command is executed. The core
+module has the following commands:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Command&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;SystemInfo&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Fingerprints the machine&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;PureShellCommand&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Runs Shell command&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;RunShellPure&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Starts the &lt;code&gt;Linux.Plugin.Lightning.Sshd&lt;/code&gt; (SSH Daemon) plugin&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;CloseShellPure&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Terminates the &lt;code&gt;Linux.Plugin.Lightning.Sshd&lt;/code&gt; plugin&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Disconnect&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Exits the Core module&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;GetRemotePathInfo&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Collects the summary of given path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;KeepAlive&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;No action, connection remains alive&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;UploadFileHeader&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Checks access of file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;FileEdit&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Gets contents of file and time meta&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;TryPassSSH&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Adds a public key to the &lt;code&gt;root/.ssh/authorized_keys&lt;/code&gt; file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;DeleteVecFile&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Deletes the specified file or path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;PreDownloadFile&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Calculates a checksum of the file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;DownloadFile&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Sends a file to the C2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;DeleteGuid&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Removes the framework&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;UpdateVersion&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Calls the Downloader module to update the framework&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;UpdateRemoteVersion&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Updates the framework including the downloader&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Socks5&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Sets up a Socks5 proxy&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;RestorePlug&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;The same as &lt;code&gt;UpdateVersion&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;GetDomainSetting&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Fetches the contents of the malleable C2 configuration file (&lt;code&gt;cpc&lt;/code&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;SetDomainSetting&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Updates the contents of the malleable C2 configuration file (&lt;code&gt;cpc&lt;/code&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;InstallKernelHide&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Fetches the OS release&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;RemoveKernelHide&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Removes kernel module&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;UpdateKernelVersion&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Removes the kernel module and runs &lt;code&gt;uname -r&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;OverrideFile&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Overwrites specified file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;UploadFileContent&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Writes data sent from server to file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;LocalPluginRequest&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Either write the LD_PRELOAD rootkit or LKM rootkit&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Network Communication&lt;span class="hx:absolute hx:-mt-20" id="network-communication"&gt;&lt;/span&gt;
+&lt;a href="#network-communication" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Network communication in the Core and Downloader modules are performed over TCP
+sockets. The data is structured in JSON. The C2 is stored in a polymorphic
+encoded configuration file that is unique for every single creation. This means
+that configuration files will not be able to be detected through techniques
+such as hashes. The key is built into the start of the encoded file.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig9.png" title="Encoded malleable C2 configuration profile" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Encoded malleable C2 configuration profile&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig10.png" title="The dynamic XOR decoding routine" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The dynamic XOR decoding routine&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The decoded configuration is structured in JSON. The default configuration in
+the analyzed sample uses a local IP address &lt;code&gt;10.2.22[.]67&lt;/code&gt; with the port
+&lt;code&gt;33229&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig11.png" title="Decoded default configuration" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decoded default configuration&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;There is a passive mode of communication available if the actor executes the
+&lt;code&gt;RunShellPure&lt;/code&gt; command. This starts an SSH service on the infected machine with
+the &lt;code&gt;Linux.Plugin.Lightning.Sshd&lt;/code&gt; plugin. The plugin is an OpenSSH daemon that
+has hardcoded private and host keys, allowing the attacker to SSH into the
+machine with their own SSH key, creating a secondary backdoor.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/lightning-framework-new-linux-threat/images/fig12.png" title="Hardcoded keys inside the modified OpenSSH daemon" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Hardcoded keys inside the modified OpenSSH daemon&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Summary&lt;span class="hx:absolute hx:-mt-20" id="summary"&gt;&lt;/span&gt;
+&lt;a href="#summary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Lightning Framework is an interesting malware as it is not common to see
+such a large framework developed for targeting Linux. Although we do not have
+all the files, we can infer some of the missing functionality based on strings
+and code of the modules that we do possess. Check out our next blog here about
+&lt;a href="../../../2022/08/lightning-framework-linux-detection-rules-osquery"&gt;detection opportunities for Lightning Framework using osquery&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;We would like to extend a huge thanks to our friends and partners at IBM and
+SentinelOne for their help during investigating this threat.&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;IOCs for Lightning Framework&lt;span class="hx:absolute hx:-mt-20" id="iocs-for-lightning-framework"&gt;&lt;/span&gt;
+&lt;a href="#iocs-for-lightning-framework" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Hashes&lt;span class="hx:absolute hx:-mt-20" id="hashes"&gt;&lt;/span&gt;
+&lt;a href="#hashes" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;File&lt;/th&gt;
+&lt;th&gt;SHA256&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Lightning.Downloader&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://analyze.intezer.com/files/48f9471c20316b295704e6f8feb2196dd619799edec5835734fc24051f45c5b7"target="_blank" rel="noopener"&gt;&lt;code&gt;48f9471c20316b295704e6f8feb2196dd619799edec5835734fc24051f45c5b7&lt;/code&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Lightning.Core&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://analyze.intezer.com/files/fd285c2fb4d42dde23590118dba016bf5b846625da3abdbe48773530a07bcd1e"target="_blank" rel="noopener"&gt;&lt;code&gt;fd285c2fb4d42dde23590118dba016bf5b846625da3abdbe48773530a07bcd1e&lt;/code&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Linux.Plugin.Lightning.Sshd&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://analyze.intezer.com/files/ad16989a3ebf0b416681f8db31af098e02eabd25452f8d781383547ead395237"target="_blank" rel="noopener"&gt;&lt;code&gt;ad16989a3ebf0b416681f8db31af098e02eabd25452f8d781383547ead395237&lt;/code&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Sigma Detection Rules&lt;span class="hx:absolute hx:-mt-20" id="sigma-detection-rules"&gt;&lt;/span&gt;
+&lt;a href="#sigma-detection-rules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Lightning Framework File Path&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;status&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;experimental&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;description&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Detects creation of files related to Lightning Framework.&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;author&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Intezer&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;references&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;https://intezer.com&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;logsource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;product&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;linux&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;file_create&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;detection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;selection1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;TargetFilename|startswith&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;/usr/lib64/seahorses/&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;selection2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;TargetFilename|contains&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;kbioset&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;cpc&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;kkdmflush&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;soss&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;sshod&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;nethoogs&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;iftoop&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s1"&gt;&amp;#39;iptraof&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;condition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;selection1 and selection2&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;falsepositives&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;Unknown.&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Lightning Default C2 Communication&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;status&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;experimental&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;description&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Detects communication to default local ip for Lightning Framework&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;author&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Intezer&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;references&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;https://intezer.com&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;logsource&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;category&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;firewall&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;detection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;select_outgoing&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;dst_ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10.2.22.67&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;dst_port&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;33229&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;condition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;select_outgoing&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;&lt;/span&gt;&lt;span class="nt"&gt;falsepositives&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;Unknown.&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;MITRE ATT&amp;amp;CK&lt;span class="hx:absolute hx:-mt-20" id="mitre-attck"&gt;&lt;/span&gt;
+&lt;a href="#mitre-attck" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Tactic&lt;/th&gt;
+&lt;th&gt;Technique&lt;/th&gt;
+&lt;th&gt;ID&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Persistence&lt;/td&gt;
+&lt;td&gt;Boot or Logon Initialization Scripts&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1037/"target="_blank" rel="noopener"&gt;T1037&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;An init.d script is used for persistence of downloader module&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Persistence&lt;/td&gt;
+&lt;td&gt;SSH Authorized Keys&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1098/004/"target="_blank" rel="noopener"&gt;T1098.004&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;SSH keys can be added to the authorized_keys file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;Obfuscated Files or Information&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1027/"target="_blank" rel="noopener"&gt;T1027&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;The C2 profile is encoded on disk&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;Deobfuscate/Decode Files or Information&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1140/"target="_blank" rel="noopener"&gt;T1140&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;The C2 profile is decoded with a dynamic XOR algorithm&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;Hide Artifacts&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1564/"target="_blank" rel="noopener"&gt;T1564&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Many artifacts are hidden including ports, PIDs, and file timestamps&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;Masquerading&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1036/"target="_blank" rel="noopener"&gt;T1036&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Many files are masqueraded as other files or tasks&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;Rootkit&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1014/"target="_blank" rel="noopener"&gt;T1014&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;LKM and LD_PRELOAD rootkits are used&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;Timestomp&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1070/006/"target="_blank" rel="noopener"&gt;T1070.006&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Files created by Lightning are modified to match that of other utilities&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;File Deletion&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1070/004/"target="_blank" rel="noopener"&gt;T1070.004&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;The framework has the ability to remove itself&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Discovery&lt;/td&gt;
+&lt;td&gt;File and Directory Discovery&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1083/"target="_blank" rel="noopener"&gt;T1083&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;The framework can list files and directories on infected systems&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Discovery&lt;/td&gt;
+&lt;td&gt;Network Service Discovery&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1046/"target="_blank" rel="noopener"&gt;T1046&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Multiple plugins can be used to perform network service discovery&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Discovery&lt;/td&gt;
+&lt;td&gt;Network Sniffing&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1040/"target="_blank" rel="noopener"&gt;T1040&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Multiple plugins can be used to perform network sniffing&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Discovery&lt;/td&gt;
+&lt;td&gt;System Information Discovery&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1082/"target="_blank" rel="noopener"&gt;T1082&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Lightning can perform detailed system fingerprinting&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Command and Control&lt;/td&gt;
+&lt;td&gt;Data Encoding&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1132/"target="_blank" rel="noopener"&gt;T1132&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Data from the C2 is encoded&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Command and Control&lt;/td&gt;
+&lt;td&gt;Non-Application Layer Protocol&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1095/"target="_blank" rel="noopener"&gt;T1095&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Communication with the C2 is performed over TCP&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Command and Control&lt;/td&gt;
+&lt;td&gt;Proxy&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1090/"target="_blank" rel="noopener"&gt;T1090&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;The framework has the ability to start a Socks5 proxy&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Command and Control&lt;/td&gt;
+&lt;td&gt;Exfiltration Over C2 Channel&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1041/"target="_blank" rel="noopener"&gt;T1041&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Data can be exfiltrated&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</description></item><item><title>OrBit: New Undetected Linux Threat Uses Unique Hijack of Execution Flow</title><link>https://intezer.github.io/community-intelligence/blog/2022/07/orbit-new-undetected-linux-threat/</link><pubDate>Wed, 06 Jul 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/07/orbit-new-undetected-linux-threat/</guid><description>
+&lt;p&gt;Linux is a popular operating system for servers and cloud infrastructures, and
+as such it&amp;rsquo;s not a surprise that it attracts threat actors&amp;rsquo; interest and we see
+a &lt;a href="https://www.ibm.com/downloads/cas/ADLMYLAZ"target="_blank" rel="noopener"&gt;continued growth&lt;/a&gt; and innovation
+of malware that targets Linux, such as the recent
+&lt;a href="../../../2022/06/new-linux-threat-symbiote"&gt;Symbiote&lt;/a&gt; malware that was
+discovered by our research team.&lt;/p&gt;
+&lt;p&gt;In this blog we will provide a deep technical analysis of a new and fully
+undetected Linux threat we named OrBit, because this is one of the filenames
+that is being used by the malware to temporarily store the output of executed
+commands. It can be installed either with persistence capabilities or as a
+volatile implant. The malware implements advanced evasion techniques and gains
+persistence on the machine by hooking key functions, provides the threat actors
+with remote access capabilities over SSH, harvests credentials, and logs TTY
+commands. Once the malware is installed it will infect all of the running
+processes, including new processes, that are running on the machine.&lt;/p&gt;
+&lt;p&gt;Unlike other threats that hijack shared libraries by modifying the environment
+variable &lt;code&gt;LD_PRELOAD&lt;/code&gt;, this malware uses 2 different ways to load the malicious
+library. The first way is by adding the shared object to the configuration file
+that is used by the loader. The second way is by patching the binary of the
+loader itself so it will load the malicious shared object.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;The OrBit Dropper&lt;span class="hx:absolute hx:-mt-20" id="the-orbit-dropper"&gt;&lt;/span&gt;
+&lt;a href="#the-orbit-dropper" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/orbit-new-undetected-linux-threat/images/fig1.png" title="The dropper sample on VT 67048a69a007c37f8be5d01a95f6a026" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The dropper sample on VT 67048a69a007c37f8be5d01a95f6a026&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The dropper installs the payload and prepares the environment for the malware
+execution. The malware can be installed as a volatile module or with
+persistence capabilities. It receives command line arguments and based on them
+it extracts the payload to one of the locations. Using the command line
+arguments the installation path can be swapped and the content of the payload
+can be updated or entirely uninstalled. From here on in the report, we will
+simply use &lt;code&gt;MALWARE_FOLDER&lt;/code&gt; as referring to the location where the malware has
+been installed.&lt;/p&gt;
+&lt;p&gt;To install the payload and add it to the shared libraries that are being loaded
+by the dynamic linker, the dropper calls a function called &lt;code&gt;patch_ld&lt;/code&gt;. First,
+it reads the symbolic link of the dynamic linker &lt;code&gt;/lib64/ld-linux-x86-64.so.2&lt;/code&gt;
+and checks if the malicious payload is already loaded by searching for the path
+used by the malware. If it is found the function can swap it with the other
+location. Otherwise, it looks for &lt;code&gt;/etc/ld.so.preload&lt;/code&gt; and replaces it with a
+symbolic link to the location of malicious library: &lt;code&gt;/lib/libntpVnQE6mk/.l&lt;/code&gt; or
+&lt;code&gt;/dev/shm/ldx/.l&lt;/code&gt; (depending on the on the argument passed to the dropper).
+Lastly, it will append &lt;code&gt;/etc/ld.so.preload&lt;/code&gt; to the end of the temp file to make
+sure that the malicious library will be loaded first.&lt;/p&gt;
+&lt;p&gt;Before it loads the malicious library to the dynamic linker, the dropper makes
+sure to save a copy of the legitimate dynamic linker into
+&lt;code&gt;MALWARE_FOLDER/.backup_ld.so&lt;/code&gt; so it if needed it can restore the environment
+and to use the legitimate data to hide the malware (more about in the next
+section).&lt;/p&gt;
+&lt;p&gt;The preparation of the environment is achieved by setting a unique group ID
+(GID) to the path that is used by the malware. In the sample we analyzed the
+value is &lt;code&gt;0xE0B2E&lt;/code&gt;, the same GID will be used by the payload. In addition, the
+dropper copies &lt;code&gt;python&lt;/code&gt; (from &lt;code&gt;/usr/bin/python&lt;/code&gt;) to the &lt;code&gt;MALWARE_FOLDER&lt;/code&gt; and
+creates 4 additional files that will be used by the malware:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;/lib/libntpVnQE6mk/.logpam
+/lib/libntpVnQE6mk/sshpass.txt
+/lib/libntpVnQE6mk/sshpass2.txt
+/lib/libntpVnQE6mk/.ports&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;And the dropper writes the following 2 files, to grant the threat actors remote
+access.&lt;/p&gt;
+&lt;p&gt;The payload below is saved in &lt;code&gt;MALWARE_FOLDER/bin/escalator&lt;/code&gt;&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;import os
+os.setreuid(0,0)
+os.execv(&amp;#34;/bin/bash&amp;#34;, (&amp;#34;/bin/bash&amp;#34;, &amp;#34;-i&amp;#34;))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The payload below is saved in &lt;code&gt;MALWARE_FOLDER/.profile&lt;/code&gt;&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;#!/bin/bash
+if [ &amp;#34;$(id -u)&amp;#34; -ne 0 ] ; then
+echo &amp;#34;Welcome to $(hostname). You are GID $(id -g), UID $(id -u) and about to be escalated to UID 0.&amp;#34;
+exec ~/bin/python ~/bin/escalator
+fi&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;The OrBit Payload&lt;span class="hx:absolute hx:-mt-20" id="the-orbit-payload"&gt;&lt;/span&gt;
+&lt;a href="#the-orbit-payload" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/orbit-new-undetected-linux-threat/images/fig2.png" title="The payload sample on VT ac89d638cb6912b58de47ac2a274b2fb" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The payload sample on VT ac89d638cb6912b58de47ac2a274b2fb&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The payload is a shared object (.SO file) that can be placed either in
+persistent storage, for example &lt;code&gt;/lib/libntpVnQE6mk/&lt;/code&gt;, or in shim-memory under
+&lt;code&gt;/dev/shm/ldx/&lt;/code&gt;. If it&amp;rsquo;s placed in the first path the malware will be
+persistent, otherwise it is volatile.&lt;/p&gt;
+&lt;p&gt;The shared object hooks functions from 3 libraries: libc, libcap and Pluggable
+Authentication Module (PAM). Existing processes that use these functions will
+essentially use the modified functions, and new processes will be hooked with
+the malicious library as well, allowing the malware to infect the whole machine
+and harvest credentials, evade detection, gain persistence and provide remote
+access to the attackers.&lt;/p&gt;
+&lt;p&gt;When implementing the hooking of libc functions it first calls &lt;code&gt;syscall&lt;/code&gt; with
+the corresponding system call number as can be seen in the screenshot below.
+Strings are obfuscated with simple XOR with a hardcoded key.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/orbit-new-undetected-linux-threat/images/fig3.png" title="Hooked stat function in the malware" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Hooked stat function in the malware&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h4&gt;SSH connection&lt;span class="hx:absolute hx:-mt-20" id="ssh-connection"&gt;&lt;/span&gt;
+&lt;a href="#ssh-connection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;One of the capabilities of the malware is to set up a remote connection on the
+machine, it hooks 3 functions in the Pluggable Authentication Module library:
+&lt;code&gt;pam_open_session&lt;/code&gt;, &lt;code&gt;pam_authenticate&lt;/code&gt; and &lt;code&gt;pam_acct_mgmt&lt;/code&gt;. By hooking these
+functions the malware is capable of stealing information from SSH connections
+and providing remote access to the attackers and hiding the network activity.&lt;/p&gt;
+&lt;p&gt;When the hooked &lt;code&gt;pam_authenticate&lt;/code&gt; is called it checks if the user name and the
+password equal to hardcoded values, and if that&amp;rsquo;s the case it will log the port
+that is used for the connection in &lt;code&gt;/lib/libntpVnQE6mk/.ports&lt;/code&gt; and open the SSH
+connection. In other cases, it will check if the file
+&lt;code&gt;/lib/libntpVnQE6mk/.logpam&lt;/code&gt; exists (in the sample we analyzed it was created
+by the dropper) and if so it will log the credentials to a file
+&lt;code&gt;/lib/libntpVnQE6mk/sshpass.txt&lt;/code&gt;. Essentially the first file serves as a flag.&lt;/p&gt;
+&lt;h4&gt;OrBit&amp;rsquo;s evasion techniques&lt;span class="hx:absolute hx:-mt-20" id="orbits-evasion-techniques"&gt;&lt;/span&gt;
+&lt;a href="#orbits-evasion-techniques" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;To evade detection the malware hooks multiple functions to prevent them from
+outputting information that might reveal the existence of the malicious shared
+library in the running processes or the files that are being used by the
+malware. The malware uses a hardcoded GID value (the one set by the dropper) to
+identify the files and processes that are related to the malware and based on
+that it will manipulate the behavior of the hooked functions. For example,
+&lt;code&gt;readdir&lt;/code&gt; is hooked to check the GID of the calling process, if it doesn&amp;rsquo;t
+match the hardcoded value, all of the directories with the predefined GID value
+will be omitted from the function&amp;rsquo;s output.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/orbit-new-undetected-linux-threat/images/fig4.png" title="Call getgid system call to check the GID of the process" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Call getgid system call to check the GID of the process&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The malware hooks functions that open files: &lt;code&gt;fopen&lt;/code&gt;, &lt;code&gt;open&lt;/code&gt;, &lt;code&gt;open64&lt;/code&gt;, and
+&lt;code&gt;openat&lt;/code&gt; and checks if the file that was provided to the relevant open function
+is part of the proc file system. One of the paths that is being checked is
+&lt;code&gt;/proc/net/tcp&lt;/code&gt; as it can disclose the network traffic generated by the
+backdoor. The way in which the malware handles the output of this file is
+similar to other files that are being opened and resembles the implementation
+in Symbiote. The hooked function reads the content of the file and compares the
+content, one line at a time to the content of &lt;code&gt;MALWARE_FOLDER/.ports&lt;/code&gt; which
+holds the information about port and addresses used by the malware. The malware
+creates a temp file and writes only the lines that don&amp;rsquo;t expose the malware.
+Once the file has proceeded, the malware returns the file descriptor to the
+temp file to the caller.&lt;/p&gt;
+&lt;p&gt;The following
+&lt;a href="https://man7.org/linux/man-pages/man5/proc.5.html#:~:text=where%20it%20resides.-,%2Fproc%2F%5Bpid%5D%2Fmaps,-A%20file%20containing"target="_blank" rel="noopener"&gt;file paths&lt;/a&gt;
+show the currently mapped memory regions and their access permissions:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;/proc/%PID%/maps
+/proc/%PID%/smaps
+/proc/%PID%/numa_maps&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;When a process accesses one of these files it may disclose the shared library,
+therefore the hooked open functions verify that the output doesn&amp;rsquo;t contain a
+path to the directory used by the malware, in a similar way as described above.&lt;/p&gt;
+&lt;p&gt;Another file in the proc filesystem that is being checked is &lt;code&gt;/proc/loadavg&lt;/code&gt;.
+This file is used by utilities such as &lt;code&gt;uptime&lt;/code&gt;, it provides information about
+the CPU usage and the status of currently running processes. The malware will
+process the information from this file in a similar way as the previous files.&lt;/p&gt;
+&lt;p&gt;The malware hooks &lt;code&gt;execve&lt;/code&gt; to evade detection of certain utilities, control the
+behavior of processes and to maintain its persistence by infecting new
+processes. The hooking logic checks the process name and path and compares it
+to different usulites in &lt;code&gt;/bin&lt;/code&gt;, &lt;code&gt;/usr&lt;/code&gt; and &lt;code&gt;/sbin&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The hooked &lt;code&gt;execve&lt;/code&gt; function is used by the malware to hide the network
+activity, the malware checks if the new process is &lt;code&gt;ip&lt;/code&gt; or &lt;code&gt;iptables&lt;/code&gt; utility
+(it checks both the &lt;code&gt;/usr/sbin&lt;/code&gt; and &lt;code&gt;/sbin&lt;/code&gt;) it will first execute the command
+and pipe the output to a local buffer where it will inspect the records and
+check if there is a match between the records and the information stored in
+&lt;code&gt;MALWARE_FOLDER/.net&lt;/code&gt; or &lt;code&gt;MALWARE_FOLDER/.fw&lt;/code&gt; – the record will be omitted from
+the command&amp;rsquo;s output.&lt;/p&gt;
+&lt;p&gt;When &lt;code&gt;execve&lt;/code&gt; is called with &lt;code&gt;dmesg&lt;/code&gt; the malware omits records that are equal
+to the records in &lt;code&gt;MALWARE_FOLDER/.sys/.dmesg&lt;/code&gt;, and records that contain one of
+the following keywords: zapping, &lt;code&gt;tcpdump&lt;/code&gt;, promiscuous, &lt;code&gt;libntpVnQE6mk&lt;/code&gt;,
+&lt;code&gt;libdl.so&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;execve&lt;/code&gt; checks if the function was called with the environment variable
+&lt;a href="https://man7.org/linux/man-pages/man8/ld.so.8.html"target="_blank" rel="noopener"&gt;&lt;code&gt;LD_TRACE_LOADED_OBJECTS&lt;/code&gt;&lt;/a&gt;,
+when this variable is set causes the program to list its dynamic dependencies.
+The malware saves the original (unpatched) dynamic linker in a backup file, so
+when &lt;code&gt;execve&lt;/code&gt; is called with this variable the output that will be presented is
+as if the legitimate dynamic linker was called and it will not list the
+malicious library. Essentially the following command is being executed:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;MALWARE_FOLDER/.backup_ld --list %s&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;strace&lt;/code&gt; is another utility that is being examined by the hooked &lt;code&gt;execve&lt;/code&gt;.
+Because the output of &lt;code&gt;strace&lt;/code&gt; can reveal the malicious library as one of the
+libraries that is being loaded by a traced process. &lt;code&gt;strace&lt;/code&gt; can be executed
+with the &lt;code&gt;-o&lt;/code&gt; flag that specifies a file path to which the output will be
+piped, if it&amp;rsquo;s not set in the command the malware will write the output of
+&lt;code&gt;strace&lt;/code&gt; to &lt;code&gt;/tmp/.orbit&lt;/code&gt;. Similar to other utilities, the malware executes the
+command and gets the result from the output file. Next it omits records that
+contain the symlink one of the following: the malicious library
+(&lt;code&gt;MALWARE_FOLDER/.l&lt;/code&gt;), the GID which is used by the malware (&lt;code&gt;920366&lt;/code&gt;) and its
+folder path.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/orbit-new-undetected-linux-threat/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h4&gt;Achieving Persistence&lt;span class="hx:absolute hx:-mt-20" id="achieving-persistence"&gt;&lt;/span&gt;
+&lt;a href="#achieving-persistence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The malware uses two methods to achieve persistence. The reason the malware
+uses both of the methods is to make it hard removing the malware from an
+infected machine while it&amp;rsquo;s running. The first method adds the path to the
+malware into the &lt;code&gt;/etc/ld.so.preload&lt;/code&gt; configuration file. This instructs the
+loader that the malware should be loaded first and for all new processes. In
+the case this method is prevented by, for example removing the configuration
+file on the infected machine, the malware has its second method which is
+achieved by patching the loader binary.&lt;/p&gt;
+&lt;p&gt;The malware first makes a copy of the loader&amp;rsquo;s binary so it can patch it. It
+performs a simple search in the binary for the string &lt;code&gt;/etc/ld.so.preload&lt;/code&gt;.
+Once it&amp;rsquo;s found, it replaces the string to a path to a file within the
+&lt;code&gt;%MALWARE_FOLDER%&lt;/code&gt;. The content of this file has the path to the malware
+library to act as a &lt;code&gt;ld.so.preload&lt;/code&gt; configuration file. This means when the
+patch loader is executed, it uses the file in the &lt;code&gt;%MALWARE_FOLDER%&lt;/code&gt; instead
+under &lt;code&gt;/etc&lt;/code&gt;. The malware author has set up these two methods to act as catches
+in the case one of them goes away. For example, if an administrator wants to
+stop the malware from being loaded by removing the configuration file under
+&lt;code&gt;/etc&lt;/code&gt; so the hidden files can be revealed, the patched loader who doesn&amp;rsquo;t use
+this file, will just load the malware who will recreate the configuration file.
+If the administrator instead overwrites the patched loader with a clean
+version, the clean loader loads the malware from the &lt;code&gt;ld.so.preload&lt;/code&gt;
+configuration file which repatches the loader.&lt;/p&gt;
+&lt;h4&gt;Information Stealing&lt;span class="hx:absolute hx:-mt-20" id="information-stealing"&gt;&lt;/span&gt;
+&lt;a href="#information-stealing" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The backdoor hooks the &lt;code&gt;read&lt;/code&gt; and &lt;code&gt;write&lt;/code&gt; functions to log data that is being
+written by the executed processes on the machine. The backdoor checks the flag:
+&lt;code&gt;sniff_ssh_session&lt;/code&gt; that defines whether any call to &lt;code&gt;write&lt;/code&gt; will be logged or
+only processes executed with &lt;code&gt;sudo&lt;/code&gt; or &lt;code&gt;ssh&lt;/code&gt; sessions. Appears that the
+functionality of the flag doesn&amp;rsquo;t reflect the actual flow of the &lt;code&gt;write&lt;/code&gt;
+function – when the flag is set to false the hooked function checks if the
+process was executed with &lt;code&gt;sudo&lt;/code&gt; or if the calling process is &lt;code&gt;ssh&lt;/code&gt; and logs
+the buffer that was passed to the original &lt;code&gt;write&lt;/code&gt; function, the data is stored
+at: &lt;code&gt;MALWARE_FOLDER/sshpass2.txt&lt;/code&gt;. Otherwise when the flag is set to true, the
+buffer is logged to &lt;code&gt;MALWARE_FOLDER/sniff.txt&lt;/code&gt; without verification of the
+calling process name. Once the hooked function is done it will return the
+return value of the original function call.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/07/orbit-new-undetected-linux-threat/images/fig6.png" title="Checking the flag sniff_ssh_session." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Checking the flag sniff_ssh_session.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;For &lt;code&gt;bash&lt;/code&gt; and &lt;code&gt;sh&lt;/code&gt; processes that call &lt;code&gt;execve&lt;/code&gt; the hook will log the &lt;code&gt;path&lt;/code&gt;
+argument that holds the path to the file that will be executed as a new
+process, the hooked function will append a timestamp and the full path and
+write the information into &lt;code&gt;MALWARE_FOLDER/execlog&lt;/code&gt;.&lt;/p&gt;
+&lt;h4&gt;Network Capabilities&lt;span class="hx:absolute hx:-mt-20" id="network-capabilities"&gt;&lt;/span&gt;
+&lt;a href="#network-capabilities" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The backdoor hooks function from the libpcap library to hide network activity.
+If hooks &lt;code&gt;bind&lt;/code&gt; and &lt;code&gt;connect&lt;/code&gt; functions to log the ports that are being used by
+processes with the malwar&amp;rsquo;s gid, the ports are being written to
+&lt;code&gt;MALWARE_FOLDER/.ports&lt;/code&gt;. The content of this file is used by the backdoor to
+manage the ports that are being used in sessions that were opened by the
+activity of the backdoor. When a new SSH session is created the port and IP
+address is being written to the file.&lt;/p&gt;
+&lt;p&gt;The malware hooks the &lt;code&gt;pcap_loop&lt;/code&gt; function and &lt;code&gt;pcap_packet_callback&lt;/code&gt; to filter
+out the traffic of the backdoor. To accomplish this task the hooked
+&lt;code&gt;pcap_packet_callback&lt;/code&gt; omits ports that are in &lt;code&gt;MALWARE_FOLDER/.ports&lt;/code&gt; as it
+contains all of the ports used by the backdoor.&lt;/p&gt;
+&lt;h2&gt;Comparing to other Linux threats&lt;span class="hx:absolute hx:-mt-20" id="comparing-to-other-linux-threats"&gt;&lt;/span&gt;
+&lt;a href="#comparing-to-other-linux-threats" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;While it&amp;rsquo;s common for malware to hook functions, the usual technique is by
+loading a shared library using &lt;code&gt;LD_PRELOAD&lt;/code&gt; – that was the case for Symbiote,
+&lt;a href="../../../2019/05/hiddenwasp-malware-targeting-linux-systems"&gt;HiddenWasp&lt;/a&gt; and
+other threats.&lt;/p&gt;
+&lt;p&gt;This malware uses XOR encrypted strings and steals passwords – similar to other
+Linux backdoors reported by
+&lt;a href="https://www.welivesecurity.com/2013/01/24/linux-sshdoor-a-backdoored-ssh-daemon-that-steals-passwords/"target="_blank" rel="noopener"&gt;ESET&lt;/a&gt;.
+But unlike other threats, this malware steals information from different
+commands and utilities and stores them in specific files on the machine.
+Besides, there is an extensive usage of files for storing data, something that
+was not seen before.&lt;/p&gt;
+&lt;p&gt;What makes this malware especially interesting is the almost hermetic hooking
+of libraries on the victim machine, that allows the malware to gain persistence
+and evade detection while stealing information and setting SSH backdoor.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Threats that target Linux continue to evolve while successfully staying under
+the radar of security tools, now OrBit is one more example of how evasive and
+persistent new malware can be.&lt;/p&gt;
+&lt;p&gt;I want to thank Joakim Kennedy for his contribution to this research.&lt;/p&gt;
+&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Hash&lt;/th&gt;
+&lt;th&gt;File&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href="https://analyze.intezer.com/files/f1612924814ac73339f777b48b0de28b716d606e142d4d3f4308ec648e3f56c8"target="_blank" rel="noopener"&gt;&lt;code&gt;f1612924814ac73339f777b48b0de28b716d606e142d4d3f4308ec648e3f56c8&lt;/code&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Dropper&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href="https://analyze.intezer.com/files/40b5127c8cf9d6bec4dbeb61ba766a95c7b2d0cafafcb82ede5a3a679a3e3020"target="_blank" rel="noopener"&gt;&lt;code&gt;40b5127c8cf9d6bec4dbeb61ba766a95c7b2d0cafafcb82ede5a3a679a3e3020&lt;/code&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Payload&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</description></item><item><title>Symbiote: Analysis of a New, Nearly-Impossible-to-Detect Linux Threat</title><link>https://intezer.github.io/community-intelligence/blog/2022/06/new-linux-threat-symbiote/</link><pubDate>Wed, 22 Jun 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/06/new-linux-threat-symbiote/</guid><description>
 &lt;p&gt;&lt;em&gt;This research is a joint effort between Joakim Kennedy, Security Researcher at
 Intezer, and the BlackBerry Threat Research &amp;amp; Intelligence team. It can be
 found in the BlackBerry blog here as well.&lt;/em&gt;&lt;/p&gt;
