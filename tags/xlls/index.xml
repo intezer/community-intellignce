@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Xlls</title><link>https://intezer.github.io/community-intelligence/tags/xlls/</link><description>Recent content in Xlls on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 19 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/xlls/index.xml" rel="self" type="application/rss+xml"/><item><title>Tracing a Paper Werewolf Campaign Through Ai Generated Decoys and Excel Xlls</title><link>https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</link><pubDate>Fri, 19 Dec 2025 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Xlls</title><link>https://research.intezer.com/tags/xlls/</link><description>Recent content in Xlls on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 19 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/xlls/index.xml" rel="self" type="application/rss+xml"/><item><title>Tracing a Paper Werewolf Campaign Through Ai Generated Decoys and Excel Xlls</title><link>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</link><pubDate>Fri, 19 Dec 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</guid><description>
 &lt;p&gt;An XLL is a native Windows DLL that Excel loads as an add-in, allowing it to
 execute arbitrary code through exported functions like xlAutoOpen. Since at
 least mid-2017, threat actors began abusing Microsoft Excel add-ins via the
@@ -81,7 +81,7 @@ second-stage payload to activate covertly after the sandbox times out or AV
 heuristics complete.&lt;/p&gt;
 &lt;p&gt;SHA-256: &lt;code&gt;0506a6fcee0d4bf731f1825484582180978995a8f9b84fc59b6e631f720915da&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig1.png" title="A call to the function that loads and executes the backdoor." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig1.png" title="A call to the function that loads and executes the backdoor." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;A call to the function that loads and executes the backdoor.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The embedded file is dropped as mswp.exe in &lt;code&gt;%APPDATA%\Microsoft\Windows&lt;/code&gt;, then
@@ -89,7 +89,7 @@ executed as a hidden process using CreateProcessW with CREATE_NO_WINDOW.
 Standard Output and Error is captured and redirected via anonymous pipes. If
 process creation succeeds, the function returns true otherwise, it cleans up
 and returns false.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;The backdoor: EchoGather&lt;span class="hx:absolute hx:-mt-20" id="the-backdoor-echogather"&gt;&lt;/span&gt;
 &lt;a href="#the-backdoor-echogather" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We refer to this backdoor as EchoGather due to its focus on system
 reconnaissance and repeated beaconing behavior.&lt;/p&gt;
@@ -98,7 +98,7 @@ reconnaissance and repeated beaconing behavior.&lt;/p&gt;
 address. It collects system information and communicates with the C2 over
 HTTP(S) using the WinHTTP API.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig3.png" title="Main function of EchoGather." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig3.png" title="Main function of EchoGather." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Main function of EchoGather.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The data collected by EchoGather consists of:&lt;/p&gt;
@@ -181,7 +181,7 @@ in multiple instances, and the word праздиика is a misspelled version o
 (translated as “with deep respect invites (you)”) is unnatural and not
 idiomatic in the context of formal Russian invitations.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig4.png" title="Decoy document, and invite to a concert." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig4.png" title="Decoy document, and invite to a concert." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decoy document, and invite to a concert.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h5&gt;IP Resolutions for ruzede.com&lt;span class="hx:absolute hx:-mt-20" id="ip-resolutions-for-ruzedecom"&gt;&lt;/span&gt;
@@ -210,7 +210,7 @@ include relative path traversal sequences.&lt;/p&gt;
 and extracts the hidden data streams, placing them in unintended or sensitive
 locations such as %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig5.png" title="Connected file to the domain ruzede[.]com" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig5.png" title="Connected file to the domain ruzede[.]com" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Connected file to the domain ruzede[.]com&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The phrase “письмо Мипромторг” is misspelled; the correct form is “письмо
@@ -236,14 +236,14 @@ pricing approval processes.&lt;/p&gt;
 Russian defense-industry and high-technology enterprises, and they might be the
 intended recipients of this decoy document.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig6.png" title="Page 1" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig6.png" title="Page 1" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Page 1&lt;/figcaption&gt;
 &lt;/figure&gt; &lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig7.png" title="Page 2" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig7.png" title="Page 2" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Page 2&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig8.png" title="Page 3" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/images/fig8.png" title="Page 3" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Page 3&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The same vulnerability was used by several threat actors including

@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Wildcard</title><link>https://intezer.github.io/community-intelligence/tags/wildcard/</link><description>Recent content in Wildcard on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/wildcard/index.xml" rel="self" type="application/rss+xml"/><item><title>WildCard: The APT Behind SysJoker Targets Critical Sectors in Israel</title><link>https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/</link><pubDate>Mon, 27 Nov 2023 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Wildcard</title><link>https://research.intezer.com/tags/wildcard/</link><description>Recent content in Wildcard on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/wildcard/index.xml" rel="self" type="application/rss+xml"/><item><title>WildCard: The APT Behind SysJoker Targets Critical Sectors in Israel</title><link>https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/</link><pubDate>Mon, 27 Nov 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/</guid><description>
 &lt;p&gt;&lt;em&gt;Our research team has identified a new APT group, dubbed &amp;ldquo;WildCard,&amp;rdquo; initially
 detected through its use of the SysJoker malware, which targeted Israel&amp;rsquo;s
 educational sector in 2021. WildCard has since expanded its reach, creating
@@ -37,7 +37,7 @@ sets of activity under the name WildCard. At this time, we can better describe
 WildCard&amp;rsquo;s TTPs across multiple operations and variants, but attribution
 remains elusive.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig1.png" title="Timeline of WildCard operations." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig1.png" title="Timeline of WildCard operations." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Timeline of WildCard operations.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
@@ -87,10 +87,10 @@ variants were compiled five months after our original publication.&lt;/p&gt;
 &lt;a href="#dmadevice" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Using Intezer Analyze we were able to
 &lt;a href="https://analyze.intezer.com/files/e076e9893adb0c6d0c70cd7019a266d5fd02b429c01cfe51329b2318e9239836"target="_blank" rel="noopener"&gt;identify code reuse&lt;/a&gt;
 between these samples and the original Windows SysJoker samples.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The structure of the main methods is largely similar, with some differences.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig3.png" title="Comparison between SysJoker and the DMAdevice variant." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig3.png" title="Comparison between SysJoker and the DMAdevice variant." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Comparison between SysJoker and the DMAdevice variant.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Besides the shared code, the two DMAdevice variants share a unique string with
@@ -126,7 +126,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig4.png" title="The XOR string being built on the stack." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig4.png" title="The XOR string being built on the stack." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The XOR string being built on the stack.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The hardcoded User Agent string also changes, as follows:&lt;/p&gt;
@@ -183,7 +183,7 @@ threat actor in both SysJoker and its variants. The name of the malware is
 derived from the developers, as evidenced by a leftover PDB path:&lt;/p&gt;
 &lt;p&gt;– &lt;code&gt;C:\Code\Rust\Rust\Down-Belal\target\release\deps\RustDown.pdb&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig5.png" title="RustDown PDB file path." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig5.png" title="RustDown PDB file path." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;RustDown PDB file path.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;According to the PDB file the malware developers refer to this component as
@@ -232,7 +232,7 @@ Windows operating systems. It uses OneDrive as a dead drop resolver.&lt;/p&gt;
 &lt;p&gt;RustDown implements multiple calls to the Sleep API using randomly chosen time
 durations, as seen in SysJoker.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig6.png" title="Function in RustDown that implements the Sleep functionality." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig6.png" title="Function in RustDown that implements the Sleep functionality." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Function in RustDown that implements the Sleep functionality.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Next, the backdoor copies the executable to another location and sets up
@@ -312,7 +312,7 @@ determined by using fixed offsets from a table embedded within the malware’s
 code, combined with a calculation involving hardcoded numerical values and
 bitwise operations.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig7.png" title="Decryption of strings using unique key stream." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig7.png" title="Decryption of strings using unique key stream." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decryption of strings using unique key stream.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Communication With the C2&lt;span class="hx:absolute hx:-mt-20" id="communication-with-the-c2"&gt;&lt;/span&gt;
@@ -370,7 +370,7 @@ find other C2 domains that were served by this OneDrive link.&lt;/p&gt;
 formatted in the following way: &lt;code&gt;&amp;lt;C2 domain&amp;gt;/api/&amp;lt;command&amp;gt;&lt;/code&gt;. In RustDown, we
 identified two commands attach and req.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig8.png" title="VirusTotal behavior analysis of RustDown showing the connection method to the C2." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig8.png" title="VirusTotal behavior analysis of RustDown showing the connection method to the C2." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;VirusTotal behavior analysis of RustDown showing the connection method to the C2.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Like the original version of Sysjoker, the RustDown will decode the C2 and send

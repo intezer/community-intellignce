@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Ransomware</title><link>https://intezer.github.io/community-intelligence/tags/ransomware/</link><description>Recent content in Ransomware on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 02 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/ransomware/index.xml" rel="self" type="application/rss+xml"/><item><title>When Viruses Mutate: Did SunCrypt Ransomware Evolve from QNAPCrypt?</title><link>https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/</link><pubDate>Tue, 02 Mar 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Ransomware</title><link>https://research.intezer.com/tags/ransomware/</link><description>Recent content in Ransomware on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 02 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/ransomware/index.xml" rel="self" type="application/rss+xml"/><item><title>When Viruses Mutate: Did SunCrypt Ransomware Evolve from QNAPCrypt?</title><link>https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/</link><pubDate>Tue, 02 Mar 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/</guid><description>
 &lt;p&gt;&lt;em&gt;Dov Lerner from Cybersixgill contributed to this report&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
 &lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Programmers frequently reuse code, as recycling something that is already
@@ -70,7 +70,7 @@ variant is shown in Figure 1 below. The note can be read in English, German,
 French, Spanish or Japanese. It has an input box that when the user enters the
 unique ID, sends the user to a chat interface.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig1.png" title="Figure 1: Ransom note pages for SunCrypt. Left is showing the original ransom note and right is showing the current ransom note used. Both share the same typos and structure. The current ransom note provides a link to the leak site while the original note does not." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig1.png" title="Figure 1: Ransom note pages for SunCrypt. Left is showing the original ransom note and right is showing the current ransom note used. Both share the same typos and structure. The current ransom note provides a link to the leak site while the original note does not." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: Ransom note pages for SunCrypt. Left is showing the original ransom note and right is showing the current ransom note used. Both share the same typos and structure. The current ransom note provides a link to the leak site while the original note does not.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The ransom note for the 2019 variant is very similar. It has essentially the
@@ -95,18 +95,18 @@ VirusTotal, only these three samples have the two function names. From this, we
 can conclude that the typo is unique and potentially shared code between the
 two ransomware families.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig2.png" title="Figure 2: Partial output of redress for SunCrypt 2019 variant. One of the functions has the typo EAS instead of AES." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig2.png" title="Figure 2: Partial output of redress for SunCrypt 2019 variant. One of the functions has the typo EAS instead of AES." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Partial output of redress for SunCrypt 2019 variant. One of the functions has the typo EAS instead of AES.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig3.png" title="Figure 3: Output from redress for a version of QNAPCrypt with the same typo." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig3.png" title="Figure 3: Output from redress for a version of QNAPCrypt with the same typo." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: Output from redress for a version of QNAPCrypt with the same typo.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;A deeper analysis of the function confirms that they are derived from the same
 source. A flow graph of &amp;ldquo;&lt;code&gt;EncFile&lt;/code&gt;&amp;rdquo; is shown in Figure 4 and a flow graph for
 &amp;ldquo;&lt;code&gt;EncEAS&lt;/code&gt;&amp;rdquo; is shown in Figure 5.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig4.png" title="Figure 4: Flow graphs for EncFile function. The flow is identical." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig4.png" title="Figure 4: Flow graphs for EncFile function. The flow is identical." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Flow graphs for EncFile function. The flow is identical.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The samples are compiled for different operating systems and architectures
@@ -130,7 +130,7 @@ mode. A comparison between the flow graphs is shown in Figure 5 below. As with
 the &amp;ldquo;EncFile&amp;rdquo; function, the &amp;ldquo;&lt;code&gt;EncEAS&lt;/code&gt;&amp;rdquo; function has an identical logic and it
 can be confirmed that it was compiled from a very similar source code.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig5.png" title="Figure 5: Flow graph comparison between SunCrypt and QNAPCrypt&amp;#39;s EncEAS function." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig5.png" title="Figure 5: Flow graph comparison between SunCrypt and QNAPCrypt&amp;#39;s EncEAS function." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Flow graph comparison between SunCrypt and QNAPCrypt&amp;#39;s EncEAS function.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Other Similarities&lt;span class="hx:absolute hx:-mt-20" id="other-similarities"&gt;&lt;/span&gt;
@@ -141,7 +141,7 @@ but the collection of all of them does. The presentation of them is to
 strengthen the connection indicated by the shared code. Figure 6 is showing
 functions in QNAPCrypt that share similarities with functions in SunCrypt.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig6.png" title="Figure 6: Functions with similarities between QNAPCrypt and SunCrypt. File encryption logic is identical while the key generation and the encryption of the key is very similar. Both malware use the locale of the machine and GeoIP to determine the location of the machine." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig6.png" title="Figure 6: Functions with similarities between QNAPCrypt and SunCrypt. File encryption logic is identical while the key generation and the encryption of the key is very similar. Both malware use the locale of the machine and GeoIP to determine the location of the machine." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: Functions with similarities between QNAPCrypt and SunCrypt. File encryption logic is identical while the key generation and the encryption of the key is very similar. Both malware use the locale of the machine and GeoIP to determine the location of the machine.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Both ransomware are designed to not run on some of the Commonwealth of
@@ -171,14 +171,14 @@ for generating the &amp;ldquo;password&amp;rdquo; is called, while QNAPCrypt set
 the initialization. SunCrypt also uses the function to generate a victim
 identifier.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig7.png" title="Figure 7: Generation of the encryption password. The function loops 32 times and uses rand.Intn to pick a random character from the list of valid characters. When the loop is done, the byte slice of characters is converted to a string." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig7.png" title="Figure 7: Generation of the encryption password. The function loops 32 times and uses rand.Intn to pick a random character from the list of valid characters. When the loop is done, the byte slice of characters is converted to a string." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: Generation of the encryption password. The function loops 32 times and uses rand.Intn to pick a random character from the list of valid characters. When the loop is done, the byte slice of characters is converted to a string.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The encryption password is encrypted with a public RSA key included in the
 binary. The logic for this code is similar as can be seen in Figure 8. The code
 uses the &lt;code&gt;EncryptPKCS1v15&lt;/code&gt; function that is part of the &lt;code&gt;crypto/rsa&lt;/code&gt; package.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig8.png" title="Figure 8: Encrypting of the password using the included public key in the binary." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig8.png" title="Figure 8: Encrypting of the password using the included public key in the binary." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 8: Encrypting of the password using the included public key in the binary.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Both ransomware families have command and control (C2) infrastructure hosted as
@@ -272,14 +272,14 @@ similarities end.&lt;/p&gt;
 affiliate program for a ransomware targeting Linux, Figure 9. This includes a
 diagram showing how the program works.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig9.png" title="Figure 9: Announcement post made by the eCh0raix actor on the dark web." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig9.png" title="Figure 9: Announcement post made by the eCh0raix actor on the dark web." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 9: Announcement post made by the eCh0raix actor on the dark web.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;In the post (Figure 10), eCh0raix cites research by threat researchers (from
 Anomali and Trend Micro), a marketing technique often used by RaaS providers in
 order to bolster credibility.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig10.png" title="Figure 10: The threat actor referring to public research on his ransomware." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig10.png" title="Figure 10: The threat actor referring to public research on his ransomware." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 10: The threat actor referring to public research on his ransomware.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;From this initial post until June 20, 2020, the actor posted 27 new threads on
@@ -293,7 +293,7 @@ December 25, 2019, eCh0raix offered a second service called DirBuster (Figure
 11), for scanning domains, subdomains, pages, and scripts, which appears to
 have been rebranded as Masscan a few months later:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig11.png" title="Figure 11: Forum post by the threat actor announcing port scanning service called Masscan." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig11.png" title="Figure 11: Forum post by the threat actor announcing port scanning service called Masscan." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 11: Forum post by the threat actor announcing port scanning service called Masscan.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The actor was also interested in virtualization, network access, and databases.
@@ -305,7 +305,7 @@ Shodan account from which to export IP addresses. Like every post before it,
 this post concluded with the same announcement of eCh0raix ransomware that had
 been used ten months prior.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig12.png" title="Figure 12: Final post by the threat actor." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig12.png" title="Figure 12: Final post by the threat actor." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 12: Final post by the threat actor.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Since this was posted on June 20, 2020, without any reason or indication the
@@ -317,7 +317,7 @@ first time. In a post titled &lt;code&gt;[PARTNERSHIP PROGRAM] SunCrypt Ransomwa
 call for five affiliates to spread the ransomware. The actor noted that once
 the affiliate program was full, &amp;ldquo;we will go into private again.&amp;rdquo;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig13.png" title="Figure 13: Forum post announcing the SunCrypt partnership program." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig13.png" title="Figure 13: Forum post announcing the SunCrypt partnership program." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 13: Forum post announcing the SunCrypt partnership program.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The actor posted 11 more times, all on this single thread and having to do with
@@ -328,7 +328,7 @@ September 3, they announced that a position was vacated.&lt;/p&gt;
 scammed by these scum,&amp;rdquo; and cited a Bleeping Computer article about a SunCrypt
 attack against University Hospital New Jersey (UHNJ).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig14.png" title="Figure 14: Another threat actor posts in the SunCrypt thread about how the ransomware has been used in attacks against hospitals." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig14.png" title="Figure 14: Another threat actor posts in the SunCrypt thread about how the ransomware has been used in attacks against hospitals." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 14: Another threat actor posts in the SunCrypt thread about how the ransomware has been used in attacks against hospitals.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;SunCrypt wrote defensively (Figure 15), &amp;ldquo;how can I see you are the most honest
@@ -338,14 +338,14 @@ hospital with ransomware cast the first stone.&amp;rdquo;&lt;/p&gt;
 reportedly punished, since &amp;ldquo;we don&amp;rsquo;t do hospitals, government agencies,
 airports, and so on.&amp;rdquo;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig15.png" title="Figure 15: The actor behind SunCrypt response to the hospital attack allegation." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig15.png" title="Figure 15: The actor behind SunCrypt response to the hospital attack allegation." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 15: The actor behind SunCrypt response to the hospital attack allegation.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Later that day, another actor posted a lengthy technical analysis of the
 ransomware. The SunCrypt actor angrily responded, &amp;ldquo;Tell me, why are you posting
 this here?&amp;rdquo; and requested that the moderator erase the post (Figure 16).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig16.png" title="Figure 16: The threat actor&amp;#39;s angry response to a technical analysis of the ransomware." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/03/when-viruses-mutate-did-suncrypt-ransomware-evolve-from-qnapcrypt/images/fig16.png" title="Figure 16: The threat actor&amp;#39;s angry response to a technical analysis of the ransomware." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 16: The threat actor&amp;#39;s angry response to a technical analysis of the ransomware.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;As of the date of this publication, the actor has not posted again. It is
@@ -402,7 +402,7 @@ deployed in exactly the same way. If a malware is exchanged, whether to an
 affiliate or over the dark web, then the new operators may choose different
 procedures, attack vectors, and targets. They might invest considerably in the
 new malware, adding features and evasion techniques. Defenders must remain
-vigilant.&lt;/p&gt;</description></item><item><title>PureLocker: New Ransomware-as-a-Service Being Used in Targeted Attacks Against Servers</title><link>https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</link><pubDate>Tue, 12 Nov 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</guid><description>
+vigilant.&lt;/p&gt;</description></item><item><title>PureLocker: New Ransomware-as-a-Service Being Used in Targeted Attacks Against Servers</title><link>https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</link><pubDate>Tue, 12 Nov 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/</guid><description>
 &lt;p&gt;&lt;em&gt;Analysis by Intezer and IBM X-Force points its origins to a
 Malware-as-a-Service (MaaS) provider utilized by the Cobalt Gang and FIN6
 attack groups&lt;/em&gt;&lt;/p&gt;
@@ -424,19 +424,19 @@ analysis of the malware samples.&lt;/p&gt;
 &lt;h2&gt;Initial Analysis&lt;span class="hx:absolute hx:-mt-20" id="initial-analysis"&gt;&lt;/span&gt;
 &lt;a href="#initial-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Windows sample we analyzed is a 32-bit DLL, masquerading as a C++
 cryptography library called &lt;a href="https://www.cryptopp.com/"target="_blank" rel="noopener"&gt;Crypto++&lt;/a&gt;:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In viewing the exports section we quickly noticed that something was unusual,
 as the library supposedly contains functions related to music playback.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When looking at anti-virus vendor scan results in VirusTotal, we observed that
 the file has been essentially undetected for more than three weeks now, which
 is quite rare for a malicious file:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Additionally, when we executed this file in several sandbox environments it
 didn&amp;rsquo;t exhibit any malicious or suspicious behaviors.&lt;/p&gt;
 &lt;p&gt;However, after genetically analyzing the file in Intezer Analyze we made three
 key observations:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;There is no Crypto++ code connection here, meaning the sample is not a
 Crypto++ library.&lt;/li&gt;
@@ -458,13 +458,13 @@ resides. All of the other, music related, exports have no functionality and are
 included in the ransomware for deception only.&lt;/p&gt;
 &lt;p&gt;The malware&amp;rsquo;s strings are encoded and stored as Unicode hex strings. Each
 string is decoded on demand by calling a string decoding function.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The malware&amp;rsquo;s code begins by checking if it was executed as intended by the
 attackers, and that it&amp;rsquo;s not being analyzed or debugged. If any of these checks
 fail, the malware will exit immediately, without deleting itself, likely as an
 anti-analysis method not to raise suspicion. The main function flow graph is
 presented below:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In case the malware&amp;rsquo;s payload is executed, the malware will delete itself
 immediately afterwards.&lt;/p&gt;
 &lt;h2&gt;Part of a Targeted Attack Chain&lt;span class="hx:absolute hx:-mt-20" id="part-of-a-targeted-attack-chain"&gt;&lt;/span&gt;
@@ -472,7 +472,7 @@ immediately afterwards.&lt;/p&gt;
 and multi-stage attack. The malware begins by checking whether it was executed
 with the &lt;code&gt;/s /i&lt;/code&gt; arguments, which instructs regsrv32.exe to install the DLL
 component without raising any dialogues (silent):&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Later on the malware verifies that it&amp;rsquo;s indeed executed by &lt;code&gt;regsrv32.exe&lt;/code&gt;, and
 that its file extension is either &lt;code&gt;.dll&lt;/code&gt; or &lt;code&gt;.ocx&lt;/code&gt;. It also verifies that the
 current year on the machine is 2019, and that it has administrator rights. As
@@ -492,7 +492,7 @@ user-mode hooking of ntdll functions. While it&amp;rsquo;s a known trick, it&amp
 used in ransomware.&lt;/p&gt;
 &lt;p&gt;The imports themselves are stored as 32bit hash values, and the ransomware uses
 the familiar resolve-by-hash method to obtain the function addresses.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;It&amp;rsquo;s also worth noting that the
 &lt;a href="https://intezer.com/blog/research/acbackdoor-analysis-of-a-new-multiplatform-backdoor/"target="_blank" rel="noopener"&gt;malware uses low level Windows&lt;/a&gt;
 API functions in ntdll.dll for most of its functionality—with some exceptions
@@ -512,7 +512,7 @@ particular file&amp;rsquo;s extension. The ransomware then secure-deletes the or
 files in order to prevent recovery. Once the malware has completed the
 encryption it leaves a ransom note file on the user&amp;rsquo;s desktop named
 &lt;code&gt;YOUR_FILES.txt&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;It&amp;rsquo;s worth noting that the ransom note does not ask for the payment type or for
 the monetary amount inside of the note itself, instead instructing the victim
 to contact the attacker via email. The attackers use the anonymous and
@@ -551,7 +551,7 @@ author. The lines of similarity are evident:&lt;/p&gt;
 identical evasion and anti-analysis methods&lt;/li&gt;
 &lt;li&gt;Identical string encoding and decoding methods&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;These findings strongly suggest that the MaaS provider of &amp;ldquo;more_eggs&amp;rdquo; has added
 a new malware kit to its offerings, by modifying the &amp;ldquo;more_eggs&amp;rdquo; loader&amp;rsquo;s
 payload from a JScript backdoor to a ransomware.&lt;/p&gt;
@@ -592,7 +592,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>How We Seized 15 Active Ransomware Campaigns Targeting Linux File Storage Servers</title><link>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</link><pubDate>Wed, 10 Jul 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</guid><description>
+&lt;/div&gt;</description></item><item><title>How We Seized 15 Active Ransomware Campaigns Targeting Linux File Storage Servers</title><link>https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</link><pubDate>Wed, 10 Jul 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It is rare to see ransomware being used to target the Linux operating system.
 However, cyber criminals seem to adapt to this emerging environment and use a
@@ -618,7 +618,7 @@ technical analysis of the malware and the investigation of the entire campaign.&
 &lt;li&gt;&lt;a href="https://analyze.intezer.com/#/files/3d7ebe73319a3435293838296fbb86c2e920fd0ccc9169285cc2c4d7fa3f120d"target="_blank" rel="noopener"&gt;ARM variant&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://analyze.intezer.com/#/files/076a6fa4e051c061e19b9e3e37da9c63a9bc7c1a99111ac13b32eb2f70b7fa5c"target="_blank" rel="noopener"&gt;x86 variant&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;How the Ransomware Works&lt;span class="hx:absolute hx:-mt-20" id="how-the-ransomware-works"&gt;&lt;/span&gt;
 &lt;a href="#how-the-ransomware-works" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The QNAPCrypt ransomware works similarly to other ransomware, including
 encrypting all files and delivering a ransom note. However, there are several
@@ -677,83 +677,83 @@ such as x86 / x64.&lt;/p&gt;
 &lt;p&gt;Go binaries may seem difficult to analyze when they come stripped, since trying
 to make sense of stripped statically linked binaries is usually a more
 difficult task than analyzing stripped dynamically linked binaries.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;We can observe that this binary is indeed a Go executable by looking at the
 section names in its section header table.&lt;/p&gt;
 &lt;p&gt;If we know the location of these sections, in particular the .gopclntab
 section, we will be able to reconstruct symbol names and offsets. This
 methodology is illustrated in the following diagram:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;For further insights into populating function names in Go binaries we highly
 recommend to view Tim Strazzere’s presentation and scripts in GitHub which
 document this technique.&lt;/p&gt;
 &lt;p&gt;After retrieving Go function names, analyzing the binary becomes much less
 complex since we can highlight the relevant functions of the application. Let’s
 not forget that the binary is 4MB in size.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After several cryptography algorithm initializations and parsing of arguments
 for directory whitelisting and alike functionalities, the malware will send a
 GET request to the CNC as a means to communicate that a new victim has been
 compromised and that system locking is taking place:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After sending this GET request, the malware will attempt to retrieve victim
 keys configuration using a client for the SOCKS proxy protocol version 5.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This proxy will request to connect to an onion domain name. The following
 represents the relevant packets for this connection:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After successful connection through the proxy to the onion domain, an
 additional GET request to the ransomware REST API is completed in order to
 retrieve the RSA public key that will be used to encrypt the file system—a
 unique Bitcoin wallet and the ransom note specific to the victim. All of these
 artifacts seem to be retrieved based on a specific campaign ID.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The response from the server is the following:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After victim configuration has been retrieved, the malware will proceed to
 remove itself and then it will parse the retrieved RSA public key.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This RSA public key will be used to encrypt a random sequence of bytes that
 would be used to encrypt the file system later on. This encrypted key will be
 base64 encoded and it will be written at the end of the ransom note file called
 README_FOR_DECRYPT.txt. We also noted that the ransomware distributes a
 different Bitcoin wallet per each compromised system:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After this file is created, the malware will proceed to execute the locking
 mechanism by walking the file system encrypting files using AES CFB with the
 derived encrypted key, avoiding to encrypt the ransom note just created:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The malware will target files with the following extensions:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After encryption, the malware will rename the affected files so that they will
 be prefixed with &lt;code&gt;.encrypt&lt;/code&gt;:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig15.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig15.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In order for system decryption to take place the base64 encoded random sequence
 encrypted with the RSA public key will be needed to be sent to the ransomware
 operator via the onion domain site after paying the demanded ransom:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After system locking has taken place, the ransomware will communicate that it
 has finished with the victim once again to the CNC:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Looking Outside of the Binary&lt;span class="hx:absolute hx:-mt-20" id="looking-outside-of-the-binary"&gt;&lt;/span&gt;
 &lt;a href="#looking-outside-of-the-binary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;One of our intended goals that we wanted to achieve when analyzing QNAPCrypt
 was to assess the scale of victims the ransomware was dealing with.&lt;/p&gt;
 &lt;p&gt;We were able to find a
 &lt;a href="https://www.reddit.com/r/linux/comments/bucepu/linux_ransomware/"target="_blank" rel="noopener"&gt;Reddit thread&lt;/a&gt;
 in which we contacted some of the affected victims:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;While talking to some of the victims related to the various campaigns of this
 malware, we were able to identify the initial attack vector as SSH brute force
 attacks and that they were targeting mainly NAS server providers, which
 corresponds to how the attacker has chosen to label this malware:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig19.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig19.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After making these findings we studied their infrastructure to determine if
 there was anything we could do to interact with this threat actor’s operations.&lt;/p&gt;
 &lt;p&gt;While researching the ARM instance of the malware, we observed that there was a
 request through their REST API in order to retrieve new victim configuration
 keys as previously discussed. The following diagram is a high level overview of
 the ransomware operation:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig20.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig20.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The connection to the SOCKS5 proxy is completed without any authentication
 enforced, and anyone would have the capability to connect to it.&lt;/p&gt;
 &lt;p&gt;Therefore, we decided to interact with the ransomware infrastructure in order
@@ -761,7 +761,7 @@ to retrieve configuration keys and potentially temporarily shut down the
 operation of the ransomware to prevent infection of future victims that were
 compromised by instances of the ransomware that followed the previous design
 architecture:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig21.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig21.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This idea simply abuses the fact that no authentication is enforced to connect
 to the SOCKS5 proxy as previously mentioned. Since the authors behind this
 ransomware were delivering one Bitcoin wallet per victim from a static pool of
@@ -831,14 +831,14 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;p&gt;We were able to collect a total of 1,091 unique wallets meant to be delivered
 to new victims distributed among 15 different campaigns.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig22.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig22.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Furthermore, by depleting the attacker’s stored Bitcoin wallets we were able to
 stop this malware from infecting new victims temporarily, since if there is a
 failure to parse the RSA public key the client will just exit:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig23.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig23.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The following screenshot shows the packets that the onion domain will retrieve
 after the entire static Bitcoin wallet pool was depleted:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig24.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig24.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The HTTP request returns a 200 but with a content length of 0, therefore
 failing to retrieve configuration, and thus the ransomware client stops
 execution. This implies that we were able to identify an easy method to prevent
@@ -847,7 +847,7 @@ bitcoin wallet pool.&lt;/p&gt;
 &lt;h2&gt;Attribution and Attackers Reaction&lt;span class="hx:absolute hx:-mt-20" id="attribution-and-attackers-reaction"&gt;&lt;/span&gt;
 &lt;a href="#attribution-and-attackers-reaction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After several days of continuously DoS&amp;rsquo;ing QNAPCrypt clients, we encountered
 another QNAPCrypt sample—but this time targeting x86 systems.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig25.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig25.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Based on Genetic Malware Analysis, we observed that this specific implant
 reused a large portion of code with old instances of x86 Linux.Rex builds.
 Linux.Rex is known for deploying
@@ -856,17 +856,17 @@ against Drupal servers in 2016, in order to conduct ransomware and DDoS
 operations.&lt;/p&gt;
 &lt;p&gt;The following represents some of the code similarities between Linux.Rex and
 newer QNAPCrypt variants:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig26.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig26.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Although both implants implement different functionality, it is noticeable that
 both were written in a similar manner.&lt;/p&gt;
 &lt;p&gt;Furthermore, we can observe similarities with the ARM instance of QNAPCrypt but
 with a major difference—the RSA public key, Bitcoin wallet and ransom note are
 hardcoded in the binary:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig27.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig27.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;We can also see that the hardcoded onion domain is exactly the same as in the
 ARM variant, and the site design to pay the ransom is also the same, although
 the demanded ransom in Bitcoin seems to be lower than in previous variants:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig28.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig28.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;We interpret the discovery of these newer instances with hardcoded
 configuration to be a response from the threat actors behind this campaign to
 attempt to circumvent the DoS that their non connectionless instances were
@@ -895,7 +895,7 @@ If you have a suspicious file that you suspect to be QNAPCrypt or other malware
 from the Rex group, you can upload it to Intezer Analyze to detect code reuse
 to this threat family and many others.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig29.png" title="Genetic Analysis of the QNAPCrypt ARM variant" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig29.png" title="Genetic Analysis of the QNAPCrypt ARM variant" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Genetic Analysis of the QNAPCrypt ARM variant&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
@@ -914,7 +914,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Yet Another Distraction? A New Version of North Korean Ransomware Hermes Has Emerged</title><link>https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</link><pubDate>Thu, 08 Feb 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</guid><description>
+&lt;/div&gt;</description></item><item><title>Yet Another Distraction? A New Version of North Korean Ransomware Hermes Has Emerged</title><link>https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</link><pubDate>Thu, 08 Feb 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</guid><description>
 &lt;h2&gt;Detecting Reused Ransomware&lt;span class="hx:absolute hx:-mt-20" id="detecting-reused-ransomware"&gt;&lt;/span&gt;
 &lt;a href="#detecting-reused-ransomware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Whether we’re dealing with a criminal threat actor looking to steal money from
 their victims using ransomware or malware sponsored by a nation state, we can
@@ -937,14 +937,14 @@ take a deeper look.&lt;/p&gt;
 &lt;a href="#code-reuse-analysis-of-hermes-21" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When examining new binaries, the first step we take in our research is to take
 the binary and upload it to our Intezer Analyze™ system in order to identify
 code reuse.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig1.jpg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig1.jpg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Here we can see some code reuse between the Hermes samples that were originally
 discovered as well as the latest sample. Since the sample came out mostly
 unique — indicating that much of the binary has changed — we were still able to
 catch some key parts that clearly reuse code.&lt;/p&gt;
 &lt;p&gt;Intezer Analyze™ caught these fragments, and with a deeper look into IDA Pro,
 we find an exact function-for-function match:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In other places, although the code is not exactly the same, we can see very
 similar code to the original Hermes and techniques known to be used by Lazarus.&lt;/p&gt;
 &lt;h2&gt;An Evolving Threat&lt;span class="hx:absolute hx:-mt-20" id="an-evolving-threat"&gt;&lt;/span&gt;
@@ -970,7 +970,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>NotPetya Returns as Bad Rabbit</title><link>https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/</link><pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/</guid><description>
+&lt;/div&gt;</description></item><item><title>NotPetya Returns as Bad Rabbit</title><link>https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/</link><pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/</guid><description>
 &lt;p&gt;Large scale cyber attacks seem to be happening once a month these days.
 Originally discovered by
 &lt;a href="https://www.welivesecurity.com/2017/10/24/kiev-metro-hit-new-variant-infamous-diskcoder-ransomware/"target="_blank" rel="noopener"&gt;ESET&lt;/a&gt;,
@@ -980,7 +980,7 @@ believed to have originated from compromised webpages with a fake popup for
 updating Adobe Flash Player. It has been reported that much of the behavior of
 Bad Rabbit has been similar to a previous ransomware known as NotPetya.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig1.png" title="Screenshot from ESET report, after ransomware has infected a computer" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig1.png" title="Screenshot from ESET report, after ransomware has infected a computer" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Screenshot from ESET report, after ransomware has infected a computer&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Using Intezer Analyze™, we have found code reuse from NotPetya throughout
@@ -993,15 +993,15 @@ did not contain any code from any Adobe product but does contain code from
 NotPetya. In fact, we find that 27% of the code in the loader has been seen in
 only NotPetya samples. Find the public report
 &lt;a href="https://analyze.intezer.com/#/analyses/6ba279af-8ce2-46c6-8b86-5fa65a5ed42a"target="_blank" rel="noopener"&gt;here&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Below is a direct comparison of function (&lt;code&gt;0x1000C244&lt;/code&gt;) of NotPetya
 (&lt;code&gt;027cc450ef5f8c5f653329641ec1fed91f694e0d229928963b30f6b0d7d3a745&lt;/code&gt;) and
 function (&lt;code&gt;0x4033B4&lt;/code&gt;) of the Bad Rabbit loader
 (&lt;code&gt;630325cac09ac3fab908f903e3b00d0dadd5fdaa0875ed8496fcbb97a558d0da&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Another example of code reuse in the loader from a function that seems to
 initialize some type of struct.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;#BadRabbit (#NotPetya v2) unpacked DLL: infpub.dat : &lt;a href="https://t.co/Ey5Yffsn74"target="_blank" rel="noopener"&gt;https://t.co/Ey5Yffsn74&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;— hasherezade (@hasherezade)
@@ -1018,11 +1018,11 @@ report with the unpacked sample: &lt;a href="https://t.co/NOIul4yLVT"target="_bl
 &lt;p&gt;— Jay Rosenberg (@jaytezer)
 &lt;a href="https://x.com/jaytezer/status/922875751174758400?ref_src=twsrc%5Etfw"target="_blank" rel="noopener"&gt;October 24, 2017&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Below is a screenshot comparing a function (&lt;code&gt;0x1000777B&lt;/code&gt;) of NotPetya (&lt;code&gt;027cc450ef5f8c5f653329641ec1fed91f694e0d229928963b30f6b0d7d3a745&lt;/code&gt;) and a function (&lt;code&gt;0x1000733&lt;/code&gt;C) of the encryptor module of Bad Rabbit (&lt;code&gt;579fd8a0385482fb4c789561a30b09f25671e86422f40ef5cca2036b28f99648&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The next screenshot is of another matching function between the two samples.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;As you can see in this attack, and in many other cases, malware authors constantly reuse their code. By recognizing code reuse, you force malware authors to rewrite code and come up with new techniques to avoid detection. This changes the playing field and makes it far less cost effective for malware authors and cyber crime organizations.&lt;/p&gt;
 &lt;p&gt;IOCs:&lt;/p&gt;
 &lt;ul&gt;

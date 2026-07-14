@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Go</title><link>https://intezer.github.io/community-intelligence/tags/go/</link><description>Recent content in Go on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 04 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/go/index.xml" rel="self" type="application/rss+xml"/><item><title>Elephant Framework Delivered in Phishing Attacks Against Ukrainian Organizations</title><link>https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</link><pubDate>Mon, 04 Apr 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Go</title><link>https://research.intezer.com/tags/go/</link><description>Recent content in Go on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 04 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/go/index.xml" rel="self" type="application/rss+xml"/><item><title>Elephant Framework Delivered in Phishing Attacks Against Ukrainian Organizations</title><link>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</link><pubDate>Mon, 04 Apr 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</guid><description>
 &lt;p&gt;A recently developed malware framework called Elephant is being delivered in
 targeted spear phishing campaigns using spoofed Ukrainian governmental email
 addresses. The four malware components delivered are used for stealing
@@ -104,7 +104,7 @@ allowed to send emails using that domain name. Some email providers do warn
 when they receive an email from an address that doesn&amp;rsquo;t have an SPF record. The
 screenshot below shows the warning message displayed in GMail when reading such
 email.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Our theory is that the threat actor exploited this vulnerability to send
 spoofed phishing emails to their targets. We reported the issue to CERT-UA.&lt;/p&gt;
 &lt;p&gt;We
@@ -123,7 +123,7 @@ components have been organized. The location of the implant&amp;rsquo;s entrypoi
 unknown and has been guessed to be in the root folder. As there are also server
 components to the framework, we hypothesize that there are more folders for the
 two servers used by the framework.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Dropper Component&lt;span class="hx:absolute hx:-mt-20" id="dropper-component"&gt;&lt;/span&gt;
 &lt;a href="#dropper-component" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;While called the dropper in the framework, this component does not have an
 embedded payload. Instead it is technically a downloader that fetches the next
@@ -141,7 +141,7 @@ between this component and the others is that this one is using code from the
 &lt;a href="https://github.com/redcode-labs/Coldfire"target="_blank" rel="noopener"&gt;ColdFire project on GitHub&lt;/a&gt;. The
 screenshot below shows the malware using the &lt;code&gt;Wait&lt;/code&gt; function to sleep for 10
 seconds before allocating 200 mb of garbage data.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Persistence is established by adding a new key entry with the name &lt;code&gt;Java-3DK&lt;/code&gt;
 to the registry key &lt;code&gt;SoftwareMicrosoftWindowsCurrentVersionRun&lt;/code&gt;. After this,
 the malware checks if a new binary exists by comparing its MD5 hash with a hash
@@ -182,7 +182,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig4.png" title="Analysis of the Elephant downloader (https://analyze.intezer.com/files/8ffe7f2eeb0cbfbe158b77bbff3e0055d2ef7138f481b4fac8ade6bfb9b2b0a1)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig4.png" title="Analysis of the Elephant downloader (https://analyze.intezer.com/files/8ffe7f2eeb0cbfbe158b77bbff3e0055d2ef7138f481b4fac8ade6bfb9b2b0a1)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Analysis of the Elephant downloader (https://analyze.intezer.com/files/8ffe7f2eeb0cbfbe158b77bbff3e0055d2ef7138f481b4fac8ade6bfb9b2b0a1)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Implant Component (GrimPlant)&lt;span class="hx:absolute hx:-mt-20" id="implant-component-grimplant"&gt;&lt;/span&gt;
@@ -192,7 +192,7 @@ set of functionality, for example it doesn&amp;rsquo;t have any persistence func
 on its own. When the malware first is executed, it allocates 200 mb and sleeps
 for 10 seconds, the function shown in the screenshot below. This is an
 anti-emulation technique that has been found in other malware written in Go.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The Command and Control (C2) address is not included in the binary. Instead it
 is passed in to the malware via the command line flag &lt;code&gt;-addr&lt;/code&gt;. The address is
 not provided as a plain string. Instead it has been encrypted with AES in
@@ -324,7 +324,7 @@ Zservers and still returned Elephant components as of April 2022. The
 components retrieved from the server are very similar to the samples used at
 the end of March. The other hosting providers used by the threat actor are PQ
 Hosting and Serverion.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The threat actor has chosen to sprinkle some French connections within their
 infrastructure. The certificates use French location information and the domain
 name &lt;code&gt;forkscenter[.]fr&lt;/code&gt;. We don&amp;rsquo;t know if the decision to name it Elephant is a
@@ -376,7 +376,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>All Your Go Binaries are Belong to Us</title><link>https://intezer.github.io/community-intelligence/blog/2021/12/all-your-go-binaries-are-belong-to-us/</link><pubDate>Thu, 02 Dec 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/12/all-your-go-binaries-are-belong-to-us/</guid><description>
+&lt;/div&gt;</description></item><item><title>All Your Go Binaries are Belong to Us</title><link>https://research.intezer.com/blog/2021/12/all-your-go-binaries-are-belong-to-us/</link><pubDate>Thu, 02 Dec 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/12/all-your-go-binaries-are-belong-to-us/</guid><description>
 &lt;p&gt;The skillset of performing binary analysis may to some appear to be limited to
 a few undeadly souls. While it may look like a form of dark arts when someone
 can read data structures in a raw hex dump, it shouldn&amp;rsquo;t even qualify as a
@@ -825,7 +825,7 @@ like to do some of their own binary analysis but do not want to write all the
 code to extract the data, there are libraries available. The
 &lt;a href="https://github.com/goretk"target="_blank" rel="noopener"&gt;Go Reverse Engineering Tool Kit&lt;/a&gt; can extract all
 the data covered in this post, allowing just your imagination with what to do
-with the data.&lt;/p&gt;</description></item><item><title>New Type of Supply Chain Attack Could Put Popular Admin Tools at Risk</title><link>https://intezer.github.io/community-intelligence/blog/2021/11/chainjacking-supply-chain-attack-puts-popular-admin-tools-at-risk/</link><pubDate>Tue, 16 Nov 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/11/chainjacking-supply-chain-attack-puts-popular-admin-tools-at-risk/</guid><description>
+with the data.&lt;/p&gt;</description></item><item><title>New Type of Supply Chain Attack Could Put Popular Admin Tools at Risk</title><link>https://research.intezer.com/blog/2021/11/chainjacking-supply-chain-attack-puts-popular-admin-tools-at-risk/</link><pubDate>Tue, 16 Nov 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/11/chainjacking-supply-chain-attack-puts-popular-admin-tools-at-risk/</guid><description>
 &lt;p&gt;Research between Intezer and &lt;a href="https://checkmarx.com/"target="_blank" rel="noopener"&gt;Checkmarx&lt;/a&gt; describes
 ChainJacking, a type of software supply chain attack that could be potentially
 exploited by threat actors and puts common admin tools at risk.&lt;/p&gt;

@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Apt_iran</title><link>https://intezer.github.io/community-intelligence/tags/apt_iran/</link><description>Recent content in Apt_iran on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Aug 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/apt_iran/index.xml" rel="self" type="application/rss+xml"/><item><title>Prince of Persia the Sands of Foudre</title><link>https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/</link><pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Apt_iran</title><link>https://research.intezer.com/tags/apt_iran/</link><description>Recent content in Apt_iran on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Aug 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/apt_iran/index.xml" rel="self" type="application/rss+xml"/><item><title>Prince of Persia the Sands of Foudre</title><link>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</link><pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the past couple years, Palo Alto Networks reported on the &amp;ldquo;Prince of Persia&amp;rdquo;
 malware campaign which is believed to be of Iranian origin and ongoing for more
@@ -15,7 +15,7 @@ malware, version 8.&lt;/p&gt;
 &lt;p&gt;In this blog post, we are only going to focus on the new, unique, interesting
 features of the new version of Foudre, and its related campaign&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig1.png" title="Internal version name of Foudre v8" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig1.png" title="Internal version name of Foudre v8" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Internal version name of Foudre v8&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;No to The Forced Hijab&lt;span class="hx:absolute hx:-mt-20" id="no-to-the-forced-hijab"&gt;&lt;/span&gt;
@@ -29,7 +29,7 @@ to protesters in Iran who are protesting the mandatory use of the hijab for
 women and the video is meant to distract the victim while the Foudre malware
 gets installed in the background.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig2.png" title="Screenshot from the video bundled in the malware" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig2.png" title="Screenshot from the video bundled in the malware" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Screenshot from the video bundled in the malware&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Foudre is a remote access tool and has the ability to remotely execute
@@ -43,15 +43,15 @@ versions.&lt;/p&gt;
 &lt;a href="#code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After uploading the WinRAR SFX to Intezer Analyze™, the files inside were
 statically extracted which reveals 3 binaries, a lockbox3 signature, and the
 video mentioned above.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Using our new Show Code feature, we can see code overlapping with Foudre and
 Infy.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig4.png" title="Code overlap with Foudre" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig4.png" title="Code overlap with Foudre" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Code overlap with Foudre&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig5.png" title="Code overlap with Infy" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig5.png" title="Code overlap with Infy" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Code overlap with Infy&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;New Features/Changes&lt;span class="hx:absolute hx:-mt-20" id="new-featureschanges"&gt;&lt;/span&gt;
@@ -59,7 +59,7 @@ Infy.&lt;/p&gt;
 undetected on
 &lt;a href="https://www.virustotal.com/#/file/c7279a32329ebb1ab5c1cdbfbddb5a167e1505340c3ca72e837a222ff92665a6/detection"target="_blank" rel="noopener"&gt;VirusTotal&lt;/a&gt;
 with only 3/67 detections.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In the latest version of Foudre, there are 2 modules. One of the modules
 (i7234.dll) has the export &amp;ldquo;D1&amp;rdquo; and the other module (d388) exports &amp;ldquo;D2&amp;rdquo; as a
 function. We are going to refer to the different binaries based on their
@@ -166,7 +166,7 @@ IoCs section. The domains up to week of September 9, 2018 (week 35) have been
 registered in Panama and resolve to the same IP address &lt;code&gt;185[.]61[.]154[.]26&lt;/code&gt;.
 The oldest domain using this algorithm we could find that was registered was
 registered for the week of November 5, 2017.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Due to the content of the video and the information from the reports on
 previous versions of Foudre, we believe the targets are mostly Iranian

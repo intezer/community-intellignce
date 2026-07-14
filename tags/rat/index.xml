@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Rat</title><link>https://intezer.github.io/community-intelligence/tags/rat/</link><description>Recent content in Rat on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 17 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/rat/index.xml" rel="self" type="application/rss+xml"/><item><title>Klingon RAT Holding on for Dear Life</title><link>https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/</link><pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Rat</title><link>https://research.intezer.com/tags/rat/</link><description>Recent content in Rat on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 17 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/rat/index.xml" rel="self" type="application/rss+xml"/><item><title>Klingon RAT Holding on for Dear Life</title><link>https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/</link><pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/</guid><description>
 &lt;p&gt;With more malware written in Golang than ever before, the threat from Go-based
 Remote Access Trojans (RATs) has never been higher. Not only has the number of
 Go malware increased but also the sophistication of these threats. This is a
@@ -20,7 +20,7 @@ It communicates encrypted with its Command and Control (C2) server using TLS
 and can receive commands allowing the attacker to fully control the infected
 machine.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig1.png" title="Figure 1: Old analysis with unique code" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig1.png" title="Figure 1: Old analysis with unique code" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: Old analysis with unique code&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Initialization&lt;span class="hx:absolute hx:-mt-20" id="initialization"&gt;&lt;/span&gt;
@@ -40,7 +40,7 @@ Finally in this function, it will fetch the machine ID from the registry key
 &lt;code&gt;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography&lt;/code&gt; as shown in Figure 2. This
 ID will later be sent in a beacon to the Command and Control (C2) server.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig2.png" title="Figure 2: Function that fetches the key" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig2.png" title="Figure 2: Function that fetches the key" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Function that fetches the key&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Dependency Deployment&lt;span class="hx:absolute hx:-mt-20" id="dependency-deployment"&gt;&lt;/span&gt;
@@ -49,11 +49,11 @@ ID will later be sent in a beacon to the Command and Control (C2) server.&lt;/p&
 once a C2 channel has been established. The files dropped are &lt;code&gt;Foxmail&lt;/code&gt;,
 &lt;code&gt;PAExec&lt;/code&gt; and &lt;code&gt;LSASS&lt;/code&gt;, shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig3.png" title="Figure 3: Head of embedded Foxmail.exe file, Gzip compressed" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig3.png" title="Figure 3: Head of embedded Foxmail.exe file, Gzip compressed" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: Head of embedded Foxmail.exe file, Gzip compressed&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig4.png" title="Figure 4: Dropped dependencies" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig4.png" title="Figure 4: Dropped dependencies" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Dropped dependencies&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Next, the malware will check to see if it is installed at
@@ -72,7 +72,7 @@ privileges. Privilege escalation will be covered in a later section.&lt;/p&gt;
 &lt;code&gt;&amp;quot;C:\Users\{USER}\AppData\Local\Windows Update\updater10.exe&amp;quot; -1 -0&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig5.png" title="Figure 5: Registry Run Key" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig5.png" title="Figure 5: Registry Run Key" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Registry Run Key&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;Registry Run Key: Local Machine&lt;span class="hx:absolute hx:-mt-20" id="registry-run-key-local-machine"&gt;&lt;/span&gt;
@@ -132,7 +132,7 @@ data-copied-label="Copied!"
 &lt;a href="#winlogon-helper-dll" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The malware can modify the &lt;code&gt;Winlogon&lt;/code&gt; key in order to run itself during Windows
 logon. The path of the executable is appended to the &lt;code&gt;Userinit&lt;/code&gt; entry.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig6.png" title="Figure 6: Winlogon registry modified" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig6.png" title="Figure 6: Winlogon registry modified" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: Winlogon registry modified&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;Scheduled Task&lt;span class="hx:absolute hx:-mt-20" id="scheduled-task"&gt;&lt;/span&gt;
@@ -140,11 +140,11 @@ logon. The path of the executable is appended to the &lt;code&gt;Userinit&lt;/co
 persistence. The task is configured from an XML file, &lt;code&gt;elevator.xml&lt;/code&gt; dropped to
 &lt;code&gt;APPDATA&lt;/code&gt;, to trigger upon logon.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig7.png" title="Figure 7: Task configuration file" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig7.png" title="Figure 7: Task configuration file" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: Task configuration file&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig8.png" title="Figure 8: Action of triggering the task" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig8.png" title="Figure 8: Action of triggering the task" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 8: Action of triggering the task&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The file &lt;code&gt;elevator.xml&lt;/code&gt; is then removed from the disk.&lt;/p&gt;
@@ -158,7 +158,7 @@ function. If &lt;code&gt;False&lt;/code&gt;, the program will check to see if it
 by running the command &lt;code&gt;systeminfo&lt;/code&gt;, and parsing for the string
 &lt;code&gt;Microsoft Windows Server&lt;/code&gt;, as shown in Figure 9.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig9.png" title="Figure 9: Check for Windows Server" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig9.png" title="Figure 9: Check for Windows Server" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 9: Check for Windows Server&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The malware has four options for privilege escalation, one of which is not
@@ -170,7 +170,7 @@ implemented properly:&lt;/p&gt;
 &lt;code&gt;DelegateExecute&lt;/code&gt; has an empty string value added. Next, the program
 &lt;code&gt;computerdefaults.exe&lt;/code&gt; is executed to complete the exploit.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig10.png" title="Figure 10: Registry set for exploit" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig10.png" title="Figure 10: Registry set for exploit" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 10: Registry set for exploit&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The key is deleted after exploitation.&lt;/p&gt;
@@ -179,7 +179,7 @@ implemented properly:&lt;/p&gt;
 leverages the program &amp;ldquo;Features on Demand Helper&amp;rdquo; (&lt;code&gt;Fodhelper.exe&lt;/code&gt;), a binary
 with the &lt;code&gt;autoelevate&lt;/code&gt; setting set to true. The same registry entries are used.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig11.png" title="Figure 11: UAC bypass with Fodhelper.exe" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig11.png" title="Figure 11: UAC bypass with Fodhelper.exe" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 11: UAC bypass with Fodhelper.exe&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;UAC Bypass: Disk Cleanup&lt;span class="hx:absolute hx:-mt-20" id="uac-bypass-disk-cleanup"&gt;&lt;/span&gt;
@@ -187,7 +187,7 @@ with the &lt;code&gt;autoelevate&lt;/code&gt; setting set to true. The same regi
 This task runs with the highest privileges but is configured to have the
 ability to be executed by unprivileged users.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig12.png" title="Figure 12: Config for SilentCleanup" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig12.png" title="Figure 12: Config for SilentCleanup" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 12: Config for SilentCleanup&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The malware attempts to leverage the environment variable &lt;code&gt;%windir%&lt;/code&gt; to execute
@@ -195,21 +195,21 @@ itself with higher privileges. The scheduled task runs an action
 &lt;code&gt;%windir%\system32\cleanmgr.exe&lt;/code&gt;, therefore the malware tries to set the
 &lt;code&gt;windir&lt;/code&gt; variable to the path of the malware.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig13.png" title="Figure 13: Action of the scheduled task (SilentCleanup)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig13.png" title="Figure 13: Action of the scheduled task (SilentCleanup)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 13: Action of the scheduled task (SilentCleanup)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig14.png" title="Figure 14: windir variable set in the registry" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig14.png" title="Figure 14: windir variable set in the registry" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 14: windir variable set in the registry&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After setting the registry, the malware runs the scheduled task.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig15.png" title="Figure 15: Execution of the scheduled task" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig15.png" title="Figure 15: Execution of the scheduled task" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 15: Execution of the scheduled task&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The resulting process:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig16.png" title="Figure 16: The elevated process" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig16.png" title="Figure 16: The elevated process" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 16: The elevated process&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;UAC Bypass: Event Viewer&lt;span class="hx:absolute hx:-mt-20" id="uac-bypass-event-viewer"&gt;&lt;/span&gt;
@@ -217,7 +217,7 @@ itself with higher privileges. The scheduled task runs an action
 leverage the &amp;ldquo;Event Viewer&amp;rdquo; UAC bypass. But this does not appear to be properly
 implemented in the program.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig17.png" title="Figure 17: References to eventvwr in a function called by MakeAdmin parent" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig17.png" title="Figure 17: References to eventvwr in a function called by MakeAdmin parent" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 17: References to eventvwr in a function called by MakeAdmin parent&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Command and Control&lt;span class="hx:absolute hx:-mt-20" id="command-and-control"&gt;&lt;/span&gt;
@@ -245,7 +245,7 @@ data-copied-label="Copied!"
 &lt;p&gt;First, a x509 keypair is decoded from Base64 and loaded by the function
 &lt;code&gt;tls.x509KeyPair&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig18.png" title="Figure 18: Loading x509 key pair" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig18.png" title="Figure 18: Loading x509 key pair" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 18: Loading x509 key pair&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The decoded keypair is
@@ -271,13 +271,13 @@ handshake is performed with the C2 server &lt;code&gt;185.188.183[.]144&lt;/code
 system. If running as administrator, it will run the &lt;code&gt;Lsass&lt;/code&gt; binary previously
 dropped into the temp folder.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig19.png" title="Figure 19: Path of the Lsass binary to be executed" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig19.png" title="Figure 19: Path of the Lsass binary to be executed" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 19: Path of the Lsass binary to be executed&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The results are stored in a file called &lt;code&gt;Andrew.dmp&lt;/code&gt; inside the temp folder.
 This information is sent to the C2 server through a HTTP POST request.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig20.png" title="Figure 20: Location of dump file" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig20.png" title="Figure 20: Location of dump file" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 20: Location of dump file&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Another routine will take a fingerprint of the machine, concatenating the
@@ -301,7 +301,7 @@ any variant that reuses code using the Intezer Analyze
 available via the &lt;a href="https://intezer.com/pricing/"target="_blank" rel="noopener"&gt;enterprise edition&lt;/a&gt;. Running
 the scanner will classify all binary code residing in your machine&amp;rsquo;s memory.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig21.png" title="Figure 21: Endpoint scan of an infected system" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/images/fig21.png" title="Figure 21: Endpoint scan of an infected system" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 21: Endpoint scan of an infected system&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="indicators-of-compromise"&gt;&lt;/span&gt;
@@ -427,7 +427,7 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1071/001/"target="_blank" rel="noopener"&gt;Web Protocols&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>HabitsRAT Used to Target Linux and Windows Servers</title><link>https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</link><pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</guid><description>
+&lt;/table&gt;</description></item><item><title>HabitsRAT Used to Target Linux and Windows Servers</title><link>https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</link><pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</guid><description>
 &lt;p&gt;We have discovered a new malware written in Go, which we are calling HabitsRAT,
 targeting both Windows and Linux machines. The Windows version of the malware
 was first reported on by
@@ -560,7 +560,7 @@ been set up. If it hasn&amp;rsquo;t, it goes ahead and sets it up. On Linux, it 
 &amp;ldquo;systemd&amp;rdquo; unit file. The malware checks if it&amp;rsquo;s already configured by executing
 the command &lt;code&gt;systemctl status polkitd&lt;/code&gt;, as shown in Figure 1.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig1.png" title="Figure 1: Linux version of the malware checks if persistence has been configured already." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig1.png" title="Figure 1: Linux version of the malware checks if persistence has been configured already." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: Linux version of the malware checks if persistence has been configured already.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The systemd unit file is created at &lt;code&gt;/etc/systemd/system/polkitd.service&lt;/code&gt; and
@@ -664,7 +664,7 @@ a normal user or to &lt;code&gt;/usr/share/accounts-daemon/accounts-daemon.so&lt
 Windows version uses &lt;code&gt;%SystemDrive%WindowsDefenderMsMpEng.dll&lt;/code&gt; or
 &lt;code&gt;%APPDATA%Windows NTDefenderMsMpEng.dll&lt;/code&gt; instead.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig2.png" title="Figure 2: Generation of public-private key pair using the open-source library from Proton Mail." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig2.png" title="Figure 2: Generation of public-private key pair using the open-source library from Proton Mail." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Generation of public-private key pair using the open-source library from Proton Mail.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;HabitsRAT sends a &amp;ldquo;check-in&amp;rdquo; POST request to the C2 server to see if it should
@@ -813,7 +813,7 @@ can detect and mitigate threats like HabitsRAT on their Linux systems. Protect
 10 hosts &lt;a href="https://protect.intezer.com/signup"target="_blank" rel="noopener"&gt;for free&lt;/a&gt; with our community
 edition.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig3.gif" title="Figure 3: HabitsRAT detection in Intezer Protect." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig3.gif" title="Figure 3: HabitsRAT detection in Intezer Protect." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: HabitsRAT detection in Intezer Protect.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
@@ -996,7 +996,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>APT37: Final1stspy Reaping the FreeMilk</title><link>https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</link><pubDate>Wed, 03 Oct 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</guid><description>
+&lt;/div&gt;</description></item><item><title>APT37: Final1stspy Reaping the FreeMilk</title><link>https://research.intezer.com/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</link><pubDate>Wed, 03 Oct 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/</guid><description>
 &lt;p&gt;Researchers at Palo Alto Networks recently published a report regarding the
 &lt;a href="https://researchcenter.paloaltonetworks.com/2018/09/unit42-new-konni-malware-attacking-eurasia-southeast-asia/"target="_blank" rel="noopener"&gt;NOKKI&lt;/a&gt;
 malware, which has shared code with KONNI and, although not in the report by
@@ -1023,7 +1023,7 @@ component of Final1stspy with 2/67 detections, compilation timestamp of May 21,
 version than described in the Palo Alto report. After obtaining the
 hadowexecute DLL component, we checked to see if there was any code reuse in
 the Intezer Analyze™ system.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;We see that there is some code shared between the EXE component of Final1stspy
 and other code that has been seen before in the FreeMilk campaign which
 utilized ROKRAT.&lt;/p&gt;
@@ -1031,7 +1031,7 @@ utilized ROKRAT.&lt;/p&gt;
 these functions in IDA. If you take a look, there is an identical match between
 them.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/images/fig2.png" title="ROKRAT &amp;amp; Final1stspy hadowexecute function comparison" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/10/apt37-final1stspy-reaping-the-freemilk/images/fig2.png" title="ROKRAT &amp;amp; Final1stspy hadowexecute function comparison" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;ROKRAT &amp;amp; Final1stspy hadowexecute function comparison&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This function is unique code that has only been seen before in Group123’s
@@ -1077,7 +1077,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>New Variants of Agent.BTZ/ComRAT Found: The Threat That Hit The Pentagon In 2008 Still Evolving; Part 2/2</title><link>https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/</link><pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/</guid><description>
+&lt;/div&gt;</description></item><item><title>New Variants of Agent.BTZ/ComRAT Found: The Threat That Hit The Pentagon In 2008 Still Evolving; Part 2/2</title><link>https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/</link><pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/</guid><description>
 &lt;p&gt;&lt;a href="../../../2017/08/new-variants-of-agent-btz-comrat-found/"&gt;Our previous blog&lt;/a&gt;
 post was a short brief of new Agent.BTZ variants that we found. This second
 part in the series will demonstrate in greater detail exactly how we discovered
@@ -1117,7 +1117,7 @@ direct neighbors. By summing up the data in this table we can conclude that, in
 general, about ~30% of the original code has been used in every version up to
 the latest known version as of 2014 (marked in red).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig1.png" title="https://www.gdatasoftware.com/blog/2015/01/23927-evolution-of-sophisticated-spyware-from-agent-btz-to-comrat" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig1.png" title="https://www.gdatasoftware.com/blog/2015/01/23927-evolution-of-sophisticated-spyware-from-agent-btz-to-comrat" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;https://www.gdatasoftware.com/blog/2015/01/23927-evolution-of-sophisticated-spyware-from-agent-btz-to-comrat&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Obviously this 30% isn’t comprised of totally unique code made by Agent.BTZ’s
@@ -1131,7 +1131,7 @@ unique pieces of code created by the malware’s authors.&lt;/p&gt;
 &lt;a href="#mysterious-magic-number" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After filtering out all of the common and library code, we were left with
 several unique functions that can be found in every version of the malware
 since 2007. The most prominent is the following function:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In the picture you can see the two, almost identical functions from the first
 version (Ch 1.0) on the right and the latest version (Ch 3.26) of Agent.BTZ on
 the left. This function is initially reading first four bytes of a given file,
@@ -1143,7 +1143,7 @@ function shown above is the only reference to that magic number. Luckily, while
 re-reading old ThreatExpert’s Agent.BTZ analysis from 2008 we happened to
 notice the following paragraph:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig3.png" title="http://blog.threatexpert.com/2008/11/agentbtz-threat-that-hit-pentagon.html" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig3.png" title="http://blog.threatexpert.com/2008/11/agentbtz-threat-that-hit-pentagon.html" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;http://blog.threatexpert.com/2008/11/agentbtz-threat-that-hit-pentagon.html&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;So now we know that this function is used to verify thumb.dd files, which are
@@ -1152,7 +1152,7 @@ networks, like those of the Pentagon). But wait… why didn’t we found the
 function which creates these files? Because the USB-infection vector was
 removed few years earlier! &lt;strong&gt;And yet the adversary is still looking for these
 valuable thumb.dd files…&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Hunting for new variants&lt;span class="hx:absolute hx:-mt-20" id="hunting-for-new-variants"&gt;&lt;/span&gt;
 &lt;a href="#hunting-for-new-variants" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;So far, we know that this function exists, and it has stayed consistent across
 all versions of the malware; we know what it does (verify certain magic number)
@@ -1167,7 +1167,7 @@ months’ worth of file uploads. As soon as the scan finished, we dug into the
 results and &lt;strong&gt;discovered this first new variant of Agent.BTZ that wasn’t yet
 mentioned in any public report&lt;/strong&gt;:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig5.png" title="A screenshot from the Intezer Analyze™ product displaying partial code connections between new sample to old samples of Agent.BTZ(Turla group)." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig5.png" title="A screenshot from the Intezer Analyze™ product displaying partial code connections between new sample to old samples of Agent.BTZ(Turla group)." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;A screenshot from the Intezer Analyze™ product displaying partial code connections between new sample to old samples of Agent.BTZ(Turla group).&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This
@@ -1363,7 +1363,7 @@ data-copied-label="Copied!"
 &lt;li&gt;&lt;a href="https://securelist.com/the-epic-turla-operation/65545/"target="_blank" rel="noopener"&gt;https://securelist.com/the-epic-turla-operation/65545/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://artemonsecurity.com/snake_whitepaper.pdf"target="_blank" rel="noopener"&gt;http://artemonsecurity.com/snake_whitepaper.pdf&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.gdatasoftware.com/blog/2015/01/23926-analysis-of-project-cobra"target="_blank" rel="noopener"&gt;https://www.gdatasoftware.com/blog/2015/01/23926-analysis-of-project-cobra&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>New Variants of Agent.BTZ/ComRAT Found: The Threat That Hit The Pentagon In 2008 Still Evolving; Part 1/2</title><link>https://intezer.github.io/community-intelligence/blog/2017/08/new-variants-of-agent-btz-comrat-found/</link><pubDate>Mon, 07 Aug 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/08/new-variants-of-agent-btz-comrat-found/</guid><description>
+&lt;/ul&gt;</description></item><item><title>New Variants of Agent.BTZ/ComRAT Found: The Threat That Hit The Pentagon In 2008 Still Evolving; Part 1/2</title><link>https://research.intezer.com/blog/2017/08/new-variants-of-agent-btz-comrat-found/</link><pubDate>Mon, 07 Aug 2017 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2017/08/new-variants-of-agent-btz-comrat-found/</guid><description>
 &lt;p&gt;Agent.BTZ–also known as ComRAT–is one of the world’s oldest known
 state-sponsored threats, mainly known for the
 &lt;a href="http://articles.latimes.com/2008/nov/28/nation/na-cyberattack28"target="_blank" rel="noopener"&gt;2008 Pentagon breach&lt;/a&gt;.
@@ -1386,7 +1386,7 @@ technology, along with a thorough analysis of the new samples.&lt;/p&gt;
 WinRAR, the adversary tried to mimic WinRAR’s SFX installer. Resource data was
 duplicated, including icons and layouts used by the original installer, as you
 can see in the following screenshot:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/08/new-variants-of-agent-btz-comrat-found/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/08/new-variants-of-agent-btz-comrat-found/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Once executed, the dropper installs activeds.dll – a proxy dll which is loaded
 directly to explorer.exe once the machine reboots. The purpose of this proxy
 dll is to load the malware’s main payload – stdole2.tlb. The dropper then also
@@ -1422,7 +1422,7 @@ stopped using an incremental value. New variants are now using a different
 numbering system of &lt;code&gt;0.8/9.&amp;lt;RANDOM_VALUE&amp;gt;&lt;/code&gt;, making it more difficult for
 researchers to track the exact version of the samples.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/08/new-variants-of-agent-btz-comrat-found/images/fig2.png" title="Example configuration extracted from one of the samples – PVer 0.9.1528434231." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/08/new-variants-of-agent-btz-comrat-found/images/fig2.png" title="Example configuration extracted from one of the samples – PVer 0.9.1528434231." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Example configuration extracted from one of the samples – PVer 0.9.1528434231.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Even without the PVer numbering, we were able to determine using our technology

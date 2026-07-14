@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Rootkit</title><link>https://intezer.github.io/community-intelligence/tags/rootkit/</link><description>Recent content in Rootkit on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 14 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/rootkit/index.xml" rel="self" type="application/rss+xml"/><item><title>OrBit (Re)turns: Tracking an Open-Source Linux Rootkit Across Four Years of Forks and Deployments</title><link>https://intezer.github.io/community-intelligence/blog/2026/05/orbit-returns/</link><pubDate>Thu, 14 May 2026 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2026/05/orbit-returns/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Rootkit</title><link>https://research.intezer.com/tags/rootkit/</link><description>Recent content in Rootkit on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 14 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/rootkit/index.xml" rel="self" type="application/rss+xml"/><item><title>OrBit (Re)turns: Tracking an Open-Source Linux Rootkit Across Four Years of Forks and Deployments</title><link>https://research.intezer.com/blog/2026/05/orbit-returns/</link><pubDate>Thu, 14 May 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/05/orbit-returns/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In July 2022, we
 &lt;a href="https://intezer.com/blog/orbit-new-undetected-linux-threat/"target="_blank" rel="noopener"&gt;published the first analysis&lt;/a&gt;
@@ -571,11 +571,11 @@ ago can also be interpreted as an attempt to mislead researchers; therefore, we
 are not taking this evidence into account for attribution at this moment.
 However, it is worth noting that this connection exists.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2026/05/orbit-returns/images/fig1.png" title="Shared BANNER_0_HASH-IP value." alt="Screenshot from Validin showing the two IPs sharing the same banner hash." loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2026/05/orbit-returns/images/fig1.png" title="Shared BANNER_0_HASH-IP value." alt="Screenshot from Validin showing the two IPs sharing the same banner hash." loading="lazy" /&gt;
 &lt;figcaption&gt;Shared BANNER_0_HASH-IP value.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2026/05/orbit-returns/images/fig2.png" title="Resolution of http://cf0[.]pw" alt="Screenshot from Validin showing the resolution of a domain to one of the IP addresses" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2026/05/orbit-returns/images/fig2.png" title="Resolution of http://cf0[.]pw" alt="Screenshot from Validin showing the resolution of a domain to one of the IP addresses" loading="lazy" /&gt;
 &lt;figcaption&gt;Resolution of http://cf0[.]pw&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Samples From February 2026&lt;span class="hx:absolute hx:-mt-20" id="samples-from-february-2026"&gt;&lt;/span&gt;

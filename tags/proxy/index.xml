@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Proxy</title><link>https://intezer.github.io/community-intelligence/tags/proxy/</link><description>Recent content in Proxy on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 24 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/proxy/index.xml" rel="self" type="application/rss+xml"/><item><title>Stantinko's Proxy After Your Apache Server</title><link>https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/</link><pubDate>Tue, 24 Nov 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Proxy</title><link>https://research.intezer.com/tags/proxy/</link><description>Recent content in Proxy on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 24 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/proxy/index.xml" rel="self" type="application/rss+xml"/><item><title>Stantinko's Proxy After Your Apache Server</title><link>https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/</link><pubDate>Tue, 24 Nov 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/</guid><description>
 &lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
 &lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It is common for threat actors to evolve their Linux malware. BlackTech with
 their new &lt;a href="https://blogs.jpcert.or.jp/en/2020/11/elf-plead.html"target="_blank" rel="noopener"&gt;ELF_PLEAD&lt;/a&gt;
@@ -28,7 +28,7 @@ VirusTotal. The sample was uploaded on November 7, 2020 from Russia, one of
 Stantinko&amp;rsquo;s main target countries. The sample is an unstripped 64-bit ELF
 binary.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig1.png" title="Figure 1: The sample&amp;#39;s detection report in VirusTotal (7d2a840048f32e487f8a61d7fc1a0c39)." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig1.png" title="Figure 1: The sample&amp;#39;s detection report in VirusTotal (7d2a840048f32e487f8a61d7fc1a0c39)." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: The sample&amp;#39;s detection report in VirusTotal (7d2a840048f32e487f8a61d7fc1a0c39).&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Malware Flow&lt;span class="hx:absolute hx:-mt-20" id="malware-flow"&gt;&lt;/span&gt;
@@ -40,7 +40,7 @@ malware exits without conducting any additional malicious activity. Figure 2
 below is a snippet from the configuration parsing logic. The configurations are
 stored as key/value pairs.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig2.png" title="Figure 2: ParseConfigElement function is used to parse the configuration file." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig2.png" title="Figure 2: ParseConfigElement function is used to parse the configuration file." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: ParseConfigElement function is used to parse the configuration file.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The configuration file is expected to have the following keys: &lt;code&gt;proxy_ip&lt;/code&gt;,
@@ -53,7 +53,7 @@ the clients who interact with this Trojan are other infected machines that are
 part of the campaign. Figure 3 is a snippet taken from the main function,
 showing the general code flow described above.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig3.png" title="Figure 3: Main function flow snippet" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig3.png" title="Figure 3: Main function flow snippet" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: Main function flow snippet&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once a client connects to the listener, the program calls the
@@ -71,7 +71,7 @@ based on the client&amp;rsquo;s HTTP request headers and content, using the
 request to the C&amp;amp;C. Figure 4 shows a snippet from the &lt;code&gt;on_client_connect&lt;/code&gt;
 function.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig4.png" title="Figure 4: Snippet from on_client_connect function" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig4.png" title="Figure 4: Snippet from on_client_connect function" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Snippet from on_client_connect function&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The POST request is sent to one of the following paths on the C&amp;amp;C server:&lt;/p&gt;
@@ -88,7 +88,7 @@ of the campaign&amp;rsquo;s attack chain. The C&amp;amp;C IP address is stored a
 parameter in the config file. Finally, the proxy forwards the C&amp;amp;C response back
 to the client. Figure 5 emphasizes the attack flow at a high level.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig5.png" title="Figure 5: Attack Flow" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig5.png" title="Figure 5: Attack Flow" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Attack Flow&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -125,7 +125,7 @@ shares several function names with the old one. These functions, such as
 the new version. We are almost certain these functions are leftover from the
 previous variant.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig6.png" title="Figure 6: String reuse between the Linux versions" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig6.png" title="Figure 6: String reuse between the Linux versions" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: String reuse between the Linux versions&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the C&amp;amp;C paths hint at some of Stantinko&amp;rsquo;s earlier campaigns
@@ -137,7 +137,7 @@ Also, the malware&amp;rsquo;s C&amp;amp;C was hosted on &lt;code&gt;kdbmai[.]net
 directory is DRTIPROV. DRTIPROV is part of a Program Database (pdb) path from
 one of the group&amp;rsquo;s Windows malware.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig7.png" title="Figure 7: Path hard coded in the detect_proxy_script function" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig7.png" title="Figure 7: Path hard coded in the detect_proxy_script function" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: Path hard coded in the detect_proxy_script function&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Wrap-Up&lt;span class="hx:absolute hx:-mt-20" id="wrap-up"&gt;&lt;/span&gt;
@@ -149,7 +149,7 @@ and
 &lt;a href="https://securelist.com/ransomexx-trojan-attacks-linux-systems/99279/"target="_blank" rel="noopener"&gt;RansomEXX&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The code from the new Stantinko sample is now indexed in Intezer&amp;rsquo;s Genome
 Database.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;I want to thank Nicole Fishbein and Joakim Kennedy for their contributions to
 this analysis&lt;/em&gt;.&lt;/p&gt;
 &lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;

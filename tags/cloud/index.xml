@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cloud</title><link>https://intezer.github.io/community-intelligence/tags/cloud/</link><description>Recent content in Cloud on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cloud/index.xml" rel="self" type="application/rss+xml"/><item><title>Make your First Malware Honeypot in Under 20 Minutes</title><link>https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/</link><pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cloud</title><link>https://research.intezer.com/tags/cloud/</link><description>Recent content in Cloud on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/cloud/index.xml" rel="self" type="application/rss+xml"/><item><title>Make your First Malware Honeypot in Under 20 Minutes</title><link>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</link><pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</guid><description>
 &lt;p&gt;&lt;em&gt;For a free honeypot, you can use one of the several open-source options listed below.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;A &amp;ldquo;honeypot&amp;rdquo; is a metaphor that references using honey as bait for a lure or trap. Honeypots have served many purposes in history, including recruiting spies and catching criminals in real life. Honeypots have also long made their way into computing as a way to gather information about potential threats targeting public facing assets.&lt;/p&gt;
 &lt;p&gt;Honeypots are a powerful tool for threat intelligence researchers, security engineers, and malware analysts. Honeypots come in many forms, collecting different information and serving distinct purposes. Honeypots can be used to collect:&lt;/p&gt;
@@ -16,37 +16,37 @@
 &lt;a href="#setting-up-your-cloud-environment" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The cloud is the perfect place to host your honeypot because it&amp;rsquo;s cheap, quick, and flexible. Many cloud providers offer a free tier that includes a free virtual machine or an allowance to spend on cloud resources. A virtual machine is a virtual computer that is able to be developed on a physical server through code. Virtual computers can easily host a service which can be used for the honeypot.&lt;/p&gt;
 &lt;p&gt;For this tutorial, we will &lt;a href="https://docs.aws.amazon.com/efs/latest/ug/gs-step-one-create-ec2-resources.html"target="_blank" rel="noopener"&gt;create a virtual machine&lt;/a&gt; via the AWS console. Start by searching for the EC2 service in AWS. If you already have your infrastructure set up for your honeypot, you can skip this step.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig1.png" title="EC2 service in the Management Console." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig1.png" title="EC2 service in the Management Console." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;EC2 service in the Management Console.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Click Launch instance on the EC2 Dashboard. This will begin the process of setting up a virtual machine.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig2.png" title="Launch instance button is located on the dashboard." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig2.png" title="Launch instance button is located on the dashboard." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Launch instance button is located on the dashboard.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;On the next page you will be presented with a number of Amazon Machine Images (AMI) and architecture options. These machine images are the software that will be used in the virtual machine, such as the operating system and applications.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig3.png" title="Amazon machine images to choose from." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig3.png" title="Amazon machine images to choose from." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Amazon machine images to choose from.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s choose Amazon Linux 2. The next page you will be asked to choose the size of the instance type. This decides the amount of CPU cores and RAM your virtual machine will have and also the &lt;a href="https://aws.amazon.com/ec2/pricing/on-demand/"target="_blank" rel="noopener"&gt;price&lt;/a&gt;. There is a free tier option in AWS.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig4.png" title="Instance Type choices in AWS." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig4.png" title="Instance Type choices in AWS." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Instance Type choices in AWS.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once you have decided on the size of the virtual machine, you will configure the instance and its networking. It&amp;rsquo;s best to add a name tag to help identify the instance and to configure your security group to only allow inbound SSH access from your router or VPN. This means that only you can access the SSH port while the wider internet will not be able to reach it. This way, you can test deploying your honeypot service without having it attacked before you are ready.&lt;/p&gt;
 &lt;p&gt;To use just your own IP address, click the dropdown box under Source and choose My IP. This will place your own IP address into the field using a &lt;a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing"target="_blank" rel="noopener"&gt;CIDR&lt;/a&gt; of 32, which restricts it to just that one IP.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig5.png" title="Security Group configuration." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig5.png" title="Security Group configuration." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Security Group configuration.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This group will be changed later to expose your honeypot after it is set up. As you finish the configuration and click Launch at the review page, you will be prompted to choose a key pair for the SSH communication. A key pair is a set of asymmetric keys, usually &lt;a href="https://asecuritysite.com/rsa/"target="_blank" rel="noopener"&gt;RSA&lt;/a&gt;, that is used as a way to authenticate to the virtual machine over the internet. You can generate a new key pair quickly using the prompt and download the private key (.pem) to your computer.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig6.png" title="Creation of a new RSA key pair." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig6.png" title="Creation of a new RSA key pair." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Creation of a new RSA key pair.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The instance will take a short time to boot. You will then see a lot of information about the machine, which includes its public IPv4 address. This is the address that will be used to reach the services set up:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;To SSH to the terminal, use the terminal in Mac/Linux, or use a SSH client like &lt;a href="https://www.putty.org/"target="_blank" rel="noopener"&gt;PuTTY&lt;/a&gt; for Windows. The command to SSH to your instance is:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;ssh -i [Path to RSA-Key] ec2-user@[Public IP]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
@@ -62,14 +62,14 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig8.png" title="SSH command to log into the EC2 instance." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig8.png" title="SSH command to log into the EC2 instance." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;SSH command to log into the EC2 instance.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;If you set up the configuration properly, then you will be able to reach your virtual machine over SSH. Depending on how your permissions are configured on Mac and Linux machines, you &lt;a href="https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error"target="_blank" rel="noopener"&gt;might&lt;/a&gt; have to configure the permissions on the downloaded private key before use. Once you SSH into your machine, it&amp;rsquo;s time to set up the honeypot software.&lt;/p&gt;
 &lt;h2&gt;Your Choice of Honeypot&lt;span class="hx:absolute hx:-mt-20" id="your-choice-of-honeypot"&gt;&lt;/span&gt;
 &lt;a href="#your-choice-of-honeypot" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It&amp;rsquo;s now time to decide your choice for the honeypot technology. First we want to highlight open-source honeypots that are the result of great work by the security community. A good resource to look at is the &lt;a href="https://github.com/paralax/awesome-honeypots"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt; page for &lt;a href="https://github.com/paralax/awesome-honeypots"target="_blank" rel="noopener"&gt;Awesome Honeypots&lt;/a&gt;. Awesome Honeypots is a curated list of open-source honeypots and honeypot management tools. It contains links to honeypot projects for popular applications and services such as databases, content management systems, and web applications.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig9.png" title="Awesome Honeypots on GitHub." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig9.png" title="Awesome Honeypots on GitHub." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Awesome Honeypots on GitHub.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Many popular applications are covered in this list, especially other free and open-source software options for finishing your honeypot.&lt;/p&gt;
@@ -148,7 +148,7 @@ data-copied-label="Copied!"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This will configure the Docker daemon to listen for Docker Engine API requests on port 2375 over TCP. The default setting provides unauthenticated direct access to the Docker daemon, which means it can be exploited by attackers to run malicious code with ease. Once the file is created, reload the unit files and restart the Docker service by running the following commands:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;sudo systemctl daemon-reload
@@ -165,10 +165,10 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;One can use netstat to confirm that the daemon is listening on port 2375.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;To check that your attack vector is working in a test environment, try to create a container remotely from your own terminal, outside the SSH tunnel. Start by reconfiguring the security group in AWS to allow inbound access to your API port from your router or VPN IP address.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig12.png" title="Edited security group to allow access to Docker API port." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig12.png" title="Edited security group to allow access to Docker API port." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Edited security group to allow access to Docker API port.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;You can test by running Docker commands from your terminal with the -H flag specifying the public IP address of the EC2 instance and the port of the Docker API.&lt;/p&gt;
@@ -187,44 +187,44 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;p&gt;You can also test by creating a container to test. We will run an Alpine container.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig13.png" title="Creation of a container from a remote system." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig13.png" title="Creation of a container from a remote system." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Creation of a container from a remote system.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig14.png" title="Docker image information." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig14.png" title="Docker image information." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Docker image information.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig15.png" title="Alert integration options." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig15.png" title="Alert integration options." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Alert integration options.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;You&amp;rsquo;ve Been Attacked! Now What?&lt;span class="hx:absolute hx:-mt-20" id="youve-been-attacked-now-what"&gt;&lt;/span&gt;
-&lt;a href="#youve-been-attacked-now-what" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;a href="#youve-been-attacked-now-what" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The above screen grab shows the first half of the malicious activity. Even though you can see in the alerts that the bash history was tampered with, you can still see all the events that have happened on the instance. Important information and a timeline of the attack can be gathered from the events listed here.&lt;/p&gt;
 &lt;p&gt;Starting from the bottom and working our way up, we see that a new container image &lt;a href="https://hub.docker.com/r/docker72590/alpine/tags"target="_blank" rel="noopener"&gt;&lt;code&gt;docker72590/alpine:latest&lt;/code&gt;&lt;/a&gt; was executed. This container was documented in a blog by &lt;a href="https://www.lacework.com/blog/teamtnt-continues-to-target-exposed-docker-api/"target="_blank" rel="noopener"&gt;Lacework&lt;/a&gt; and it is from a group pretending to be the threat actor TeamTNT. Many files are executed, including creating SSH keys with the name TeamTNT. We can see that a bash script has been downloaded from &lt;code&gt;104.192.82[.]138//s3f1015/b/a.sh&lt;/code&gt;. This is a great place to start collecting IoCs. Now, let&amp;rsquo;s take a look at the Docker image that was executed. Go to your honeypot under Hosts and click on Images.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig18.png" title="Running containers on the honeypot." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig18.png" title="Running containers on the honeypot." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Running containers on the honeypot.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig19.png" title="Malicious container code." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig19.png" title="Malicious container code." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Malicious container code.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig20.png" title="XMRig Miner alert." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig20.png" title="XMRig Miner alert." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;XMRig Miner alert.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig21.png" title="Network and container details." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig21.png" title="Network and container details." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Network and container details.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig22.png" title="Genetic analysis of the cryptominer in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig22.png" title="Genetic analysis of the cryptominer in Intezer Analyze." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Genetic analysis of the cryptominer in Intezer Analyze.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig23.png" title="Related samples based on shared code genes." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig23.png" title="Related samples based on shared code genes." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Related samples based on shared code genes.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Start Making Your Own Honeypot&lt;span class="hx:absolute hx:-mt-20" id="start-making-your-own-honeypot"&gt;&lt;/span&gt;
@@ -290,7 +290,7 @@ data-copied-label="Copied!"
 &lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
 &lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;104.192.82[.]138&lt;/code&gt;&lt;/p&gt;
 &lt;h3&gt;Crypto Wallet&lt;span class="hx:absolute hx:-mt-20" id="crypto-wallet"&gt;&lt;/span&gt;
-&lt;a href="#crypto-wallet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;85X7JcgPpwQdZXaK2TKJb8baQAXc3zBsnW7JuY7MLi9VYSamf4bFwa7SEAK9Hgp2P53npV19w1zuaK5bft5m2NN71CmNLoh&lt;/code&gt;&lt;/p&gt;</description></item><item><title>CVE-2021-27075: Microsoft Azure Vulnerability Allows Privilege Escalation and Leak of Private Data</title><link>https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/</link><pubDate>Tue, 11 May 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/</guid><description>
+&lt;a href="#crypto-wallet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;85X7JcgPpwQdZXaK2TKJb8baQAXc3zBsnW7JuY7MLi9VYSamf4bFwa7SEAK9Hgp2P53npV19w1zuaK5bft5m2NN71CmNLoh&lt;/code&gt;&lt;/p&gt;</description></item><item><title>CVE-2021-27075: Microsoft Azure Vulnerability Allows Privilege Escalation and Leak of Private Data</title><link>https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/</link><pubDate>Tue, 11 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/</guid><description>
 &lt;p&gt;In this post I will explain how the Microsoft Azure Virtual Machine (VM)
 extension works and how we found a fatal vulnerability in the extension
 mechanism affecting Azure VM Linux systems. As part of the responsible
@@ -302,7 +302,7 @@ official Azure extension built for assisting system admins, we will demonstrate
 how this could have been used to achieve &lt;strong&gt;privilege escalation&lt;/strong&gt; and possibly
 &lt;strong&gt;lateral movement&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig1.png" title="Proof of Concept" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig1.png" title="Proof of Concept" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Proof of Concept&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Azure VM Extensions&lt;span class="hx:absolute hx:-mt-20" id="azure-vm-extensions"&gt;&lt;/span&gt;
@@ -320,7 +320,7 @@ inaccessible for non-root users as it contains extension-related secrets.&lt;/p&
 Many shared configurations are laid out in the root extension directory
 &lt;code&gt;/var/lib/waagent&lt;/code&gt;. Here is an example of the directory layout:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig2.png" title="/var/lib/waagent directory structure" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig2.png" title="/var/lib/waagent directory structure" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;/var/lib/waagent directory structure&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;When an extension is added to the VM, the extension&amp;rsquo;s configuration file is
@@ -338,27 +338,27 @@ Through some testing, we discovered that this endpoint is the same as
 IP address. The WAAgent receives the extension configuration URL by parsing the
 &amp;lsquo;GoalState.&amp;rsquo;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig3.png" title="GoalState endpoint request" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig3.png" title="GoalState endpoint request" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;GoalState endpoint request&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;A response looks like this:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig6.png" title="GoalState endpoint response" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig6.png" title="GoalState endpoint response" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;GoalState endpoint response&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The GoalState contains URLs to all relevant configurations available to the
 Wire Server. Using the GoalState we can query the &lt;code&gt;ExtensionsConfig&lt;/code&gt; file
 ourselves:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig7.png" title="ExtensionsConfig endpoint request" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig7.png" title="ExtensionsConfig endpoint request" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;ExtensionsConfig endpoint request&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Here is an example of how the LinuxDiagnostic extension configuration might
 look:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig8.png" title="ExtensionsConfig endpoint response" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig8.png" title="ExtensionsConfig endpoint response" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;ExtensionsConfig endpoint response&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The &lt;code&gt;protectedSettings&lt;/code&gt; field holds sensitive extension configurations such as
@@ -375,13 +375,13 @@ engineering the WAAgent communication with the Wire Server, we observed that
 the Certificates endpoint requires a &amp;rsquo;transport&amp;rsquo; certificate which is used to
 supply the &lt;code&gt;F542…&lt;/code&gt; extension key:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig9.png" title="Certificates endpoint request" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig9.png" title="Certificates endpoint request" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Certificates endpoint request&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The Wire Server returns an encrypted form of the extension key which can be
 decrypted via the Transport Certificate&amp;rsquo;s private key.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig10.png" title="Certificates endpoint response" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig10.png" title="Certificates endpoint response" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Certificates endpoint response&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Leaking Azure VM Extensions&amp;rsquo; Private Data&lt;span class="hx:absolute hx:-mt-20" id="leaking-azure-vm-extensions-private-data"&gt;&lt;/span&gt;
@@ -393,15 +393,15 @@ the Wire Server (in our example this is the
 &lt;code&gt;F54265F38F8D16C35C0E1FD3190882831A6C4384&lt;/code&gt; key).&lt;/p&gt;
 &lt;p&gt;Finally, the encrypted keys are decrypted via the Transport Key and the
 attacker can proceed to decrypt the &lt;code&gt;protectedSettings&lt;/code&gt;:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;To our surprise, after developing the PoC with the root user, it would not work
 with an unprivileged user. It seems that packets destined to the Wire Server
 endpoint at &lt;code&gt;168.63.129.16&lt;/code&gt; were not sent out by the server. This is because of
 an iptables rule that drops packets which aren&amp;rsquo;t from user ID 0 (root) to the
 endpoint:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig13.png" title="Azure VM IPTables" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig13.png" title="Azure VM IPTables" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Azure VM IPTables&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Flaw #2: Bypassing Wire Server Unprivileged Access Defense&lt;span class="hx:absolute hx:-mt-20" id="flaw-2-bypassing-wire-server-unprivileged-access-defense"&gt;&lt;/span&gt;
@@ -430,12 +430,12 @@ Also, in the event that the VMAccess password is shared with other Azure VMs
 (as is often the case), the attacker could perform lateral movement across the
 system. This is what the flow looks like:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig14.png" title="Vulnerability flow" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig14.png" title="Vulnerability flow" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Vulnerability flow&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;And the proof of concept:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig15.png" title="Leaking VMAccess extension data" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/images/fig15.png" title="Leaking VMAccess extension data" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Leaking VMAccess extension data&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Takeaways&lt;span class="hx:absolute hx:-mt-20" id="takeaways"&gt;&lt;/span&gt;

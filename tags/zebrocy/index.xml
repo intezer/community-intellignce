@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Zebrocy</title><link>https://intezer.github.io/community-intelligence/tags/zebrocy/</link><description>Recent content in Zebrocy on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 09 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/zebrocy/index.xml" rel="self" type="application/rss+xml"/><item><title>A Zebra in Gopher’s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy</title><link>https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</link><pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Zebrocy</title><link>https://research.intezer.com/tags/zebrocy/</link><description>Recent content in Zebrocy on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 09 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/zebrocy/index.xml" rel="self" type="application/rss+xml"/><item><title>A Zebra in Gopher’s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy</title><link>https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</link><pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</guid><description>
 &lt;h2&gt;Summary&lt;span class="hx:absolute hx:-mt-20" id="summary"&gt;&lt;/span&gt;
 &lt;a href="#summary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In November, we uncovered COVID-19 phishing lures that were used to deliver the
 Go version of
@@ -81,13 +81,13 @@ content. Figure 1 shows what the user would see if they downloaded the file to
 their desktop. According to timestamps stored in the file, the disk was created
 on November 20, 2020, 10 days before it was uploaded to VirusTotal.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig1.png" title="Figure 1: VHD phishing lure." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig1.png" title="Figure 1: VHD phishing lure." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: VHD phishing lure.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;If the user double-clicks on the file, Windows will mount the drive and it
 appears as an external hard drive. Figure 2 shows the content of the VHD.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig2.png" title="Figure 2: Content of the VHD file. It contains two files: A PDF file and an executable that is masquerading as a Microsoft Word document." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig2.png" title="Figure 2: Content of the VHD file. It contains two files: A PDF file and an executable that is masquerading as a Microsoft Word document." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Content of the VHD file. It contains two files: A PDF file and an executable that is masquerading as a Microsoft Word document.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The VHD file includes two files, a PDF document and an executable that is
@@ -95,7 +95,7 @@ masquerading as a Microsoft Word document. The PDF file consists of
 presentation slides about Sinopharm International Corporation. Figure 3
 displays a screenshot of the first slide.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig3.png" title="Figure 3: PDF of presentation slides used as part of the lure." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig3.png" title="Figure 3: PDF of presentation slides used as part of the lure." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: PDF of presentation slides used as part of the lure.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Sinopharm International Corporation is a China-based
@@ -116,11 +116,11 @@ The scan results of the executable from VirusTotal is shown in Figure 4 and
 70 antivirus engines detected the file as generic malware while Analyze
 detected the file as malware associated with Sofacy.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig4.png" title="Figure 4: VirusTotal scan results of the binary file with generic detection." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig4.png" title="Figure 4: VirusTotal scan results of the binary file with generic detection." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: VirusTotal scan results of the binary file with generic detection.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig5.png" title="Figure 5: Intezer Analyze detects the file as genetically similar to malware used by Sofacy one year ago." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig5.png" title="Figure 5: Intezer Analyze detects the file as genetically similar to malware used by Sofacy one year ago." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Intezer Analyze detects the file as genetically similar to malware used by Sofacy one year ago.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The malware is a new sample of Zebrocy written in Go. Earlier this year,
@@ -145,7 +145,7 @@ anti-debugging checks. In Figure 6, it can be seen how the malware calls the
 Windows API function &lt;code&gt;IsDebuggerPresent&lt;/code&gt;. If true is returned, it enters an
 infinite sleeping loop.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig6.png" title="Figure 6: Logic that checks if the process is being debugged. If true, it enters a sleeping loop." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig6.png" title="Figure 6: Logic that checks if the process is being debugged. If true, it enters a sleeping loop." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: Logic that checks if the process is being debugged. If true, it enters a sleeping loop.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The screenshot is uploaded to the C&amp;amp;C located at the URL:
@@ -166,7 +166,7 @@ VirusTotal from Kazakhstan on November 12. This VHD file was named
 &lt;code&gt;No.243.CB3-EVACUATION LETTER.vhd&lt;/code&gt;. The content of the file is shown in Figure
 7.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig7.png" title="Figure 7: Content of No.243.CB3-EVACUATION LETTER.vhd. The disk file includes an executable file and a PDF file." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig7.png" title="Figure 7: Content of No.243.CB3-EVACUATION LETTER.vhd. The disk file includes an executable file and a PDF file." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: Content of No.243.CB3-EVACUATION LETTER.vhd. The disk file includes an executable file and a PDF file.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The executable is another Go version of Zebrocy. It uses the same C&amp;amp;C URL. The
@@ -195,7 +195,7 @@ other VHD files, this also has a PDF file and an executable masquerading as a
 Microsoft Word Document. Instead of delivering the Go version of Zebrocy, the
 Delphi loader was used.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig8.png" title="Figure 8: Content of VHD uploaded to VirusTotal in October." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig8.png" title="Figure 8: Content of VHD uploaded to VirusTotal in October." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 8: Content of VHD uploaded to VirusTotal in October.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The PDF lure is written in Russian. The title is, according to Google
@@ -203,7 +203,7 @@ Translate: &amp;ldquo;NATIONAL LIST INDIVIDUALS AND LEGAL ENTITIES INVOLVED IN T
 AND EXTREMIST ACTIVITIES OR THE DISTRIBUTION OF WEAPONS OF MASS DESTRUCTION.&amp;rdquo;
 The content of the first page is shown in Figure 9.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig9.jpg" title="Figure 9: Redacted screenshot of PDF lure written in Russian." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig9.jpg" title="Figure 9: Redacted screenshot of PDF lure written in Russian." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 9: Redacted screenshot of PDF lure written in Russian.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;According to timestamps, the VHD was created on October 21, the day after the

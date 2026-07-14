@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Detection</title><link>https://intezer.github.io/community-intelligence/tags/detection/</link><description>Recent content in Detection on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 01 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/detection/index.xml" rel="self" type="application/rss+xml"/><item><title>Boost Your SOC Skills: How to Detect Good Apps Gone Bad</title><link>https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</link><pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Detection</title><link>https://research.intezer.com/tags/detection/</link><description>Recent content in Detection on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 01 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/detection/index.xml" rel="self" type="application/rss+xml"/><item><title>Boost Your SOC Skills: How to Detect Good Apps Gone Bad</title><link>https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</link><pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</guid><description>
 &lt;p&gt;Threat actors have a wide range of tools and techniques they can use in cyber
 attacks including: malware-as-a-service, open-source tools and malware code,
 red team or admin tools. Besides, there is an extended variety of legitimate
@@ -182,7 +182,7 @@ commands from the command and control server (C2).&lt;/p&gt;
 applications. For example phishing documents will execute mshta directly or
 using other processes such as powershell or cmd.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/images/fig1.png" title="Screenshot of process hacker when mshta is executed by a malicious Microsoft Word document." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/images/fig1.png" title="Screenshot of process hacker when mshta is executed by a malicious Microsoft Word document." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Screenshot of process hacker when mshta is executed by a malicious Microsoft Word document.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;To identify the usage of mshta by threat actors we need to monitor and alert
@@ -334,7 +334,7 @@ data-copied-label="Copied!"
 &lt;a href="https://github.com/mikesxrs/Open-Source-YARA-rules/blob/master/RSA/Squiblydoo.yar"target="_blank" rel="noopener"&gt;this&lt;/a&gt;
 YARA rule to detect files that may potentially use this technique.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/images/fig2.png" title="Yara rule for detecting possible Squiblydoo scriptlet." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/images/fig2.png" title="Yara rule for detecting possible Squiblydoo scriptlet." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Yara rule for detecting possible Squiblydoo scriptlet.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Technique Name: Windows Management Instrumentation (WMI)&lt;span class="hx:absolute hx:-mt-20" id="technique-name-windows-management-instrumentation-wmi"&gt;&lt;/span&gt;

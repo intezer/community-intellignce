@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – China</title><link>https://intezer.github.io/community-intelligence/tags/china/</link><description>Recent content in China on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 10 Sep 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/china/index.xml" rel="self" type="application/rss+xml"/><item><title>Frankenstein Variant of the Toneshell Backdoor Targeting Myanmar</title><link>https://intezer.github.io/community-intelligence/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</link><pubDate>Wed, 10 Sep 2025 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – China</title><link>https://research.intezer.com/tags/china/</link><description>Recent content in China on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 10 Sep 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/china/index.xml" rel="self" type="application/rss+xml"/><item><title>Frankenstein Variant of the Toneshell Backdoor Targeting Myanmar</title><link>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</link><pubDate>Wed, 10 Sep 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</guid><description>
 &lt;p&gt;ToneShell is a lightweight backdoor tied to the China-nexus group Mustang
 Panda. Typically delivered via DLL sideloading inside compressed archives with
 legitimate signed executables and often spread through cloud-hosted lures.
@@ -27,7 +27,7 @@ other revolutionary forces.&lt;/p&gt;
 &lt;p&gt;sha256:
 &lt;a href="https://analyze.intezer.com/files/e7b29611c789a6225aebbc9fee3710a57b51537693cb2ec16e2177c22392b546"target="_blank" rel="noopener"&gt;e7b29611c789a6225aebbc9fee3710a57b51537693cb2ec16e2177c22392b546&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig1.png" title="Code reuse with ToneShell" alt="Showing amount shared code with other ToneShell samples" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig1.png" title="Code reuse with ToneShell" alt="Showing amount shared code with other ToneShell samples" loading="lazy" /&gt;
 &lt;figcaption&gt;Code reuse with ToneShell&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The backdoor first checks the current module path for the string
@@ -46,7 +46,7 @@ itself and the following files: msvcr100.dll, msvcp100.dll, mfc100.dll to a new
 folder it creates. The new directory name consists of a 6-character random
 uppercase folder name (e.g., &lt;code&gt;C:\\Users\&amp;lt;user&amp;gt;\\AppData\&amp;lt;random-6-chars&amp;gt;&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig2.png" title="The function that copies the DLLs to a new folder in AppData" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig2.png" title="The function that copies the DLLs to a new folder in AppData" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The function that copies the DLLs to a new folder in AppData&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once installed, it attempts to spin up the Task Scheduler COM service, connect
@@ -57,7 +57,7 @@ minute, it sets the execution path to the folder in AppData created earlier:
 &lt;code&gt;%APPDATA%\&amp;lt;random-6-chars&amp;gt;\\svchosts.exe&lt;/code&gt;, and sets it as the action Path. The
 task is registered in the root folder with the name &lt;code&gt;dokanctl&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig3.png" title="Task creation" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig3.png" title="Task creation" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Task creation&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;If the backdoor is already under the user profile, it performs junk arithmetic
@@ -72,11 +72,11 @@ method seen in different malware types. With the
 resolving these hashes back to the original imported functions is
 straightforward, making analysis and detection easier.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig4.png" title="Hash calculation" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig4.png" title="Hash calculation" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Hash calculation&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig5.png" title="Resolved Windows API functions" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig5.png" title="Resolved Windows API functions" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Resolved Windows API functions&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Anti-Analysis and Anti-Sandboxing&lt;span class="hx:absolute hx:-mt-20" id="anti-analysis-and-anti-sandboxing"&gt;&lt;/span&gt;
@@ -106,7 +106,7 @@ LastError to unusual constants (0xBADF00D), further muddying behavior without
 altering core logic.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig6.png" title="File creation loops" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig6.png" title="File creation loops" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;File creation loops&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Notably, the large embedded string buffers used in the comparison loop contain
@@ -119,11 +119,11 @@ relationship management. The backdoor does not use this content functionally;
 instead, it serves as filler to inflate the binary and supply meaningless
 strings for comparison.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig7.png" title="Text taken from PegaAI’s website" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig7.png" title="Text taken from PegaAI’s website" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Text taken from PegaAI’s website&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig8.png" title="Text taken from OpenAI’s website" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig8.png" title="Text taken from OpenAI’s website" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Text taken from OpenAI’s website&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Together, these techniques do not detect debuggers directly; instead, they
@@ -189,7 +189,7 @@ ongoing research and threat hunting to counter cyber operations.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;543024edc9f160cc1cedcffc3de52bfa656daa0ec9ed351331d97faaa67d0d99&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;1272a0853651069ed4dc505007e8525f99e1454f9e033bcc2e58d60fdafa4f0&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;C2:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;146.70.29[.]229:443&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Fire in the Woods – A New Variant of FireWood</title><link>https://intezer.github.io/community-intelligence/blog/2025/08/threat-bulletin-firewood/</link><pubDate>Wed, 13 Aug 2025 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2025/08/threat-bulletin-firewood/</guid><description>
+&lt;p&gt;&lt;code&gt;146.70.29[.]229:443&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Fire in the Woods – A New Variant of FireWood</title><link>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</link><pubDate>Wed, 13 Aug 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</guid><description>
 &lt;p&gt;&lt;em&gt;A new and low-detected variant of the FireWood backdoor was discovered by
 Intezer’s Research Team, with some changes in the implementation and the
 configuration of the backdoor.&lt;/em&gt;&lt;/p&gt;
@@ -212,11 +212,11 @@ functionality of the backdoor remains the same but we did notice some changes
 in the implementation and the configuration of the backdoor. It is unclear if
 the kernel module was also updated as we were not able to collect it.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/08/threat-bulletin-firewood/images/fig1.png" title="Code analysis of the new version in Intezer." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/images/fig1.png" title="Code analysis of the new version in Intezer." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Code analysis of the new version in Intezer.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/08/threat-bulletin-firewood/images/fig2.png" title="SHA256: 898a5bd86c5d99eb70088a90f1d8f90b03bd38c15a232200538d0601c888acb6" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/images/fig2.png" title="SHA256: 898a5bd86c5d99eb70088a90f1d8f90b03bd38c15a232200538d0601c888acb6" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;SHA256: 898a5bd86c5d99eb70088a90f1d8f90b03bd38c15a232200538d0601c888acb6&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Technical Analysis of New Firewood Variant&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis-of-new-firewood-variant"&gt;&lt;/span&gt;
@@ -239,7 +239,7 @@ flag (or the literal “nothing”). That extra metadata is passed through
 older Firewood variant. Another typo persists in both versions in the following
 error message: &amp;ldquo;Get Memory Faile&amp;rdquo;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/08/threat-bulletin-firewood/images/fig3.png" title="New evasion implementation and comparison of main functions" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/images/fig3.png" title="New evasion implementation and comparison of main functions" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;New evasion implementation and comparison of main functions&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;On the networking side, the older version read configuration settings that
@@ -327,7 +327,7 @@ its code is identical to the one we analyzed:&lt;/p&gt;
 &lt;a href="#old-firewood-version" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;cff20753e36a4c942dc4dab5a91fd621a42330e17a89185a5b7262280bcd9263&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;4c293309a7541edb89e3ec99c4074584328a21309e75a46d0ddb4373652ee0d6&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Weaponized Software Targets Chinese</title><link>https://intezer.github.io/community-intelligence/blog/2025/01/weaponized-software-targets-chinese/</link><pubDate>Thu, 16 Jan 2025 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2025/01/weaponized-software-targets-chinese/</guid><description>
+&lt;/ul&gt;</description></item><item><title>Weaponized Software Targets Chinese</title><link>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</link><pubDate>Thu, 16 Jan 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</guid><description>
 &lt;h2&gt;Overview of the Attack&lt;span class="hx:absolute hx:-mt-20" id="overview-of-the-attack"&gt;&lt;/span&gt;
 &lt;a href="#overview-of-the-attack" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Intezer Labs research team has identified a series of attacks targeting
 organizations in Chinese-speaking regions like Hong Kong, Taiwan, and China
@@ -387,11 +387,11 @@ specific offsets. This data is loaded and injected into the process as
 described earlier, further enhancing the malware’s ability to evade detection
 while executing its payload.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/01/weaponized-software-targets-chinese/images/fig1.png" title="Binwalk output for one of the PNG files used by the loader, demonstrating that it has a Windows executable (PE) at offset 0x2AB9E." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/images/fig1.png" title="Binwalk output for one of the PNG files used by the loader, demonstrating that it has a Windows executable (PE) at offset 0x2AB9E." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Binwalk output for one of the PNG files used by the loader, demonstrating that it has a Windows executable (PE) at offset 0x2AB9E.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/01/weaponized-software-targets-chinese/images/fig2.png" title="A function in the loader that handles the mapping of the PNG file into the memory. Specifically, it looks for the data that begins at offset 0x2AB9E in the PNG file." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/images/fig2.png" title="A function in the loader that handles the mapping of the PNG file into the memory. Specifically, it looks for the data that begins at offset 0x2AB9E in the PNG file." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;A function in the loader that handles the mapping of the PNG file into the memory. Specifically, it looks for the data that begins at offset 0x2AB9E in the PNG file.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;ValleyRAT Details&lt;span class="hx:absolute hx:-mt-20" id="valleyrat-details"&gt;&lt;/span&gt;
@@ -501,7 +501,7 @@ prevention mechanisms to counter these stealthy and persistent attacks.&lt;/p&gt
 &lt;li&gt;&lt;code&gt;3fc35cab1272f769af309cb46375e21680f13d629181c7646cb0cf2c9b2e72e7&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;517b43bf057877727387316d8538dc07599856eb428d43f512e89964a5dfb331&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;e54ce9939679c691dc5719e309a8d541183b6672269fd61013109ef0d8509b1e&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Technical Analysis of a Novel IMEEX Framework</title><link>https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/</link><pubDate>Thu, 10 Oct 2024 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/</guid><description>
+&lt;/ul&gt;</description></item><item><title>Technical Analysis of a Novel IMEEX Framework</title><link>https://research.intezer.com/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/</link><pubDate>Thu, 10 Oct 2024 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/</guid><description>
 &lt;p&gt;The IMEEX framework is a newly discovered, custom-built malware designed to
 target Windows systems. Delivered as a 64-bit DLL, it offers attackers
 extensive control over compromised machines. This framework is notable for its
@@ -1005,7 +1005,7 @@ file&amp;rsquo;s attributes to System (&lt;code&gt;FILE_ATTRIBUTE_SYSTEM&lt;/cod
 from kernel32.dll to the file, helping it blend in with legitimate system
 files. Then, the path to the file is saved in the following Windows Registry
 path: &lt;code&gt;HKEY_LOCAL_MACHINE\Software\Microsoft\IMEEX\&amp;lt;num&amp;gt;N&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;If any errors occur (such as checksum failures, write errors, or network
 issues), the function deletes the temporary file and sends an error response to
 the C2 server.&lt;/p&gt;
@@ -1224,7 +1224,7 @@ multiple Chinese APT groups. However, this does not strongly indicate specific
 attribution to a particular group, but rather suggests a possible rotation from
 ShadowPad to another toolset.&lt;/p&gt;
 &lt;h3&gt;IMEEX targeting Djibouti&lt;span class="hx:absolute hx:-mt-20" id="imeex-targeting-djibouti"&gt;&lt;/span&gt;
-&lt;a href="#imeex-targeting-djibouti" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;a href="#imeex-targeting-djibouti" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Djibouti holds significant geopolitical importance due to its strategic
 location at the crossroads of the Red Sea and the Gulf of Aden, controlling
 access to one of the world&amp;rsquo;s busiest maritime routes. This small East African
@@ -1258,7 +1258,7 @@ operations that threaten China&amp;rsquo;s regional strategic goals, aligning wi
 Beijing&amp;rsquo;s broader approach of blending economic influence and military
 presence.&lt;/p&gt;
 &lt;h3&gt;IMEEX targeting Afghanistan&lt;span class="hx:absolute hx:-mt-20" id="imeex-targeting-afghanistan"&gt;&lt;/span&gt;
-&lt;a href="#imeex-targeting-afghanistan" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;a href="#imeex-targeting-afghanistan" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;China&amp;rsquo;s interests in Afghanistan are multifaceted, revolving around security,
 economic influence, and geopolitical strategy. After the U.S. withdrawal and
 the Taliban&amp;rsquo;s return to power, China has sought to
@@ -1416,9 +1416,9 @@ Notably, the absence of the execution of modules is observed in the Afghan
 variant, underscoring its functional deficiencies compared to the more
 comprehensive Djibouti implementation.&lt;/p&gt;
 &lt;p&gt;The function that processes the command in the Djibouti variant.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The function that processes the command in the Afghan variant.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Technical Appendix: Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="technical-appendix-indicators-of-compromise"&gt;&lt;/span&gt;
 &lt;a href="#technical-appendix-indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Appendix A: File Names and Process Indicators&lt;span class="hx:absolute hx:-mt-20" id="appendix-a-file-names-and-process-indicators"&gt;&lt;/span&gt;
 &lt;a href="#appendix-a-file-names-and-process-indicators" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Attempts to run as svchost.exe, imaadp.dll or rundll32.exe&lt;/p&gt;

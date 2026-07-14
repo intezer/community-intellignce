@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Bitter</title><link>https://intezer.github.io/community-intelligence/tags/bitter/</link><description>Recent content in Bitter on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 24 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/bitter/index.xml" rel="self" type="application/rss+xml"/><item><title>Phishing Campaign Targets Chinese Nuclear Energy Industry</title><link>https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</link><pubDate>Fri, 24 Mar 2023 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Bitter</title><link>https://research.intezer.com/tags/bitter/</link><description>Recent content in Bitter on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 24 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/bitter/index.xml" rel="self" type="application/rss+xml"/><item><title>Phishing Campaign Targets Chinese Nuclear Energy Industry</title><link>https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</link><pubDate>Fri, 24 Mar 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</guid><description>
 &lt;p&gt;Intezer has been tracking activity targeting the energy sector and noted a
 campaign with techniques that align with those of
 &lt;a href="https://analyze.intezer.com/families/3b992ec8-b6b1-4ea4-a958-b5fca45f31bd?tab=detect"target="_blank" rel="noopener"&gt;Bitter APT&lt;/a&gt;,
@@ -31,7 +31,7 @@ payload. This activity appears to be a continuation of the tactics and campaign
 that Bitter APT have been using since
 &lt;a href="https://www.antiy.cn/research/notice&amp;amp;report/research_report/20210705.html"target="_blank" rel="noopener"&gt;at least 2021&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig1.png" title="Figure 1: Attack flow described in this research" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig1.png" title="Figure 1: Attack flow described in this research" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: Attack flow described in this research&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Social Engineering with Phishing Emails&lt;span class="hx:absolute hx:-mt-20" id="social-engineering-with-phishing-emails"&gt;&lt;/span&gt;
@@ -40,7 +40,7 @@ email address used to send the phishing emails is crafted to look like it is
 coming from an &amp;ldquo;Embassy in Beijing.&amp;rdquo; A free email provider is used, therefore
 domain reputation checks will not be useful.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig2.png" title="Figure 2: Name crafted to appear as communication from an embassy" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig2.png" title="Figure 2: Name crafted to appear as communication from an embassy" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Name crafted to appear as communication from an embassy&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The email is signed off with the name and details of an actual attaché of the
@@ -54,7 +54,7 @@ recipients in governmental and energy sectors, such as International Atomic
 Energy Agency (IAEA), China Institute of International Studies (CIIS),
 strategic alliances, and nuclear doctrines.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig3.png" title="Figure 3: Email body lure with nuclear themes" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig3.png" title="Figure 3: Email body lure with nuclear themes" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: Email body lure with nuclear themes&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Malicious Payloads via CHM and Microsoft Excel Files&lt;span class="hx:absolute hx:-mt-20" id="malicious-payloads-via-chm-and-microsoft-excel-files"&gt;&lt;/span&gt;
@@ -157,7 +157,7 @@ of the CHM payload abstracts the same activity through an encoded PowerShell
 command stage, obfuscating the activity further than just simple string
 concatenation.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig6.png" title="Figure 6: Encoded PowerShell command in version 2 of the CHM files" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig6.png" title="Figure 6: Encoded PowerShell command in version 2 of the CHM files" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: Encoded PowerShell command in version 2 of the CHM files&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The decoded command is the following:&lt;/p&gt;
@@ -178,7 +178,7 @@ data-copied-label="Copied!"
 computer name is sent to the C2 and not the username. What is interesting about
 the next version is that it now contains a decoy picture when opened:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig7.png" title="Figure 7: Decoy picture" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig7.png" title="Figure 7: Decoy picture" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: Decoy picture&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The decoy appears to reference the United Front Work Department of the Central
@@ -186,7 +186,7 @@ Committee of the Chinese Communist Party. The following is a machine translated
 version of the same picture for reference (please note that the translation
 will not be fully accurate and should be used for reference purposes only):&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig8.jpg" title="Figure 8: Machine translated version of the decoy" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig8.jpg" title="Figure 8: Machine translated version of the decoy" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 8: Machine translated version of the decoy&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;

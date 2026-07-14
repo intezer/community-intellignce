@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Ir</title><link>https://intezer.github.io/community-intelligence/tags/ir/</link><description>Recent content in Ir on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 01 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/ir/index.xml" rel="self" type="application/rss+xml"/><item><title>Boost Your SOC Skills: How to Detect Good Apps Gone Bad</title><link>https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</link><pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Ir</title><link>https://research.intezer.com/tags/ir/</link><description>Recent content in Ir on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 01 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/ir/index.xml" rel="self" type="application/rss+xml"/><item><title>Boost Your SOC Skills: How to Detect Good Apps Gone Bad</title><link>https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</link><pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</guid><description>
 &lt;p&gt;Threat actors have a wide range of tools and techniques they can use in cyber
 attacks including: malware-as-a-service, open-source tools and malware code,
 red team or admin tools. Besides, there is an extended variety of legitimate
@@ -182,7 +182,7 @@ commands from the command and control server (C2).&lt;/p&gt;
 applications. For example phishing documents will execute mshta directly or
 using other processes such as powershell or cmd.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/images/fig1.png" title="Screenshot of process hacker when mshta is executed by a malicious Microsoft Word document." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/images/fig1.png" title="Screenshot of process hacker when mshta is executed by a malicious Microsoft Word document." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Screenshot of process hacker when mshta is executed by a malicious Microsoft Word document.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;To identify the usage of mshta by threat actors we need to monitor and alert
@@ -334,7 +334,7 @@ data-copied-label="Copied!"
 &lt;a href="https://github.com/mikesxrs/Open-Source-YARA-rules/blob/master/RSA/Squiblydoo.yar"target="_blank" rel="noopener"&gt;this&lt;/a&gt;
 YARA rule to detect files that may potentially use this technique.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/images/fig2.png" title="Yara rule for detecting possible Squiblydoo scriptlet." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/images/fig2.png" title="Yara rule for detecting possible Squiblydoo scriptlet." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Yara rule for detecting possible Squiblydoo scriptlet.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Technique Name: Windows Management Instrumentation (WMI)&lt;span class="hx:absolute hx:-mt-20" id="technique-name-windows-management-instrumentation-wmi"&gt;&lt;/span&gt;
@@ -362,7 +362,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>3 Ways to Save Incident Response Time</title><link>https://intezer.github.io/community-intelligence/blog/2022/01/save-incident-response-time-intezer-analyze/</link><pubDate>Mon, 31 Jan 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/01/save-incident-response-time-intezer-analyze/</guid><description>
+&lt;/div&gt;</description></item><item><title>3 Ways to Save Incident Response Time</title><link>https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/</link><pubDate>Mon, 31 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/</guid><description>
 &lt;p&gt;When there is suspicious activity on an endpoint, the incident response team is responsible for investigating it to find out what happened in the network that caused the potential security breach. Is it a fast-spreading malware… or just a false positive? For anyone in digital forensics and incident response, you need to know ASAP if it&amp;rsquo;s the first, but you also don&amp;rsquo;t want to waste time investigating false positives.&lt;/p&gt;
 &lt;p&gt;There are several ways to collect files and forensics evidence, which we&amp;rsquo;ll dig into below with tips and free tools to save you time on each during incident response. These are three key areas we&amp;rsquo;ll look at where you can speed up investigations:&lt;/p&gt;
 &lt;ol&gt;
@@ -385,35 +385,35 @@ data-copied-label="Copied!"
 &lt;li&gt;&lt;strong&gt;Script:&lt;/strong&gt; Submitting a collection or a folder of files and/or hashes at once can be accomplished using a &lt;a href="https://github.com/intezer/analyze-python-sdk/blob/master/examples/analyze_folder.py"target="_blank" rel="noopener"&gt;script&lt;/a&gt; created with Intezer&amp;rsquo;s&lt;/li&gt;
 &lt;li&gt;SDK. The output of the script, shown below, contains the details of all files that were identified as malicious or at least suspicious by Intezer Analyze. This method saves you time that would usually have to spend classifying and analyzing files.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Using a script based on Intezer&amp;rsquo;s SDK to analyze a folder that contains several files. The output provides links to the analysis reports for all the malicious and suspicious files in question, including their verdict, malware family name and SHA256.&lt;/p&gt;
 &lt;p&gt;More detailed information can be found on the web UI. If you open the analysis of the last file from the script, you can see the full &lt;a href="https://analyze.intezer.com/files/339620e7f6f5a2b4c511c76488b19bed21e1015afe4b037a7a1b27e07fba0ec2/iocs"target="_blank" rel="noopener"&gt;analysis report&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig2.png" title="Analysis of a Loki sample (https://analyze.intezer.com/files/339620e7f6f5a2b4c511c76488b19bed21e1015afe4b037a7a1b27e07fba0ec2)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig2.png" title="Analysis of a Loki sample (https://analyze.intezer.com/files/339620e7f6f5a2b4c511c76488b19bed21e1015afe4b037a7a1b27e07fba0ec2)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Analysis of a Loki sample (https://analyze.intezer.com/files/339620e7f6f5a2b4c511c76488b19bed21e1015afe4b037a7a1b27e07fba0ec2)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This sample is identified as a Loki variant since it shares code genes with other samples from the same malware family, seen in the process tree resulting from the execution of the file in a sandbox.&lt;/p&gt;
 &lt;p&gt;Next, you can view the TTPs with each technique mapped to the MITRE ATT&amp;amp;CK® framework. Also, the IoCs tab provides network information and hashes of the files that were dropped by the malware. All of this information can be downloaded in a CSV format.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Under TTPs, you can see that among the capabilities of this sample are that it collects identification information about the system and has information stealing capabilities. This makes sense considering that the sample shares most of its code with Loki, an information stealing malware. The information presented further supports the classification of the file as Loki.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig4.png" title="IoCs extracted from the Loki sample can be used to detect similar threats which use the same domains." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig4.png" title="IoCs extracted from the Loki sample can be used to detect similar threats which use the same domains." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;IoCs extracted from the Loki sample can be used to detect similar threats which use the same domains.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Intezer Analyze also provides a code-based vaccine for each threat which can be downloaded in several formats, including YARA, STIX, Stix2, and OpenIOX. Signatures that are based on code are stronger than string-based signatures because they are produced from the specific code that executes a certain functionality in the malware. You can use the vaccine and the information provided in the IoCs and TTPs tabs to detect similar files in the environment using your existing security tools like SIEM, EDR and XDR.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig5.png" title="Generating a code-based vaccine in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig5.png" title="Generating a code-based vaccine in Intezer Analyze." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Generating a code-based vaccine in Intezer Analyze.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;For new threat variants, the analysis may show a portion of unique code as a result of new capabilities and features added to the malware. In this case, an investigator might want to get more information about the threat. If a deeper analysis of the file is needed, Intezer has plugins for &lt;a href="https://analyze.intezer.com/ida-plugin"target="_blank" rel="noopener"&gt;IDA Pro&lt;/a&gt; and &lt;a href="https://github.com/intezer/analyze-community-ghidra-plugin"target="_blank" rel="noopener"&gt;Ghidra&lt;/a&gt;. Both plugins enrich the assembly code with Intezer&amp;rsquo;s unique code reuse insights. These plugins accelerate the reverse engineering process and allow the analyst to focus solely on the malicious components by filtering out the trusted and library code sections.&lt;/p&gt;
 &lt;h2&gt;Analyzing Memory Dumps to Improve Incident Response Time&lt;span class="hx:absolute hx:-mt-20" id="analyzing-memory-dumps-to-improve-incident-response-time"&gt;&lt;/span&gt;
 &lt;a href="#analyzing-memory-dumps-to-improve-incident-response-time" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Another source of forensics evidence is based on the volatile memory of the compromised endpoint. This method presents the image of all running processes and produces a smaller amount of files which need to be analyzed. There are several popular tools that are used for memory acquisition of Windows machines such as Dumpit, &lt;a href="https://github.com/Velocidex/WinPmem"target="_blank" rel="noopener"&gt;WinPmem&lt;/a&gt;, and Process Hacker. The most common tool to inspect memory dumps is &lt;a href="https://www.volatilityfoundation.org/"target="_blank" rel="noopener"&gt;Volatility&lt;/a&gt;. By using Intezer with the &lt;a href="https://intezer.com/blog/malware-analysis/accelerate-incident-response-with-intezer-analyze-volatility-plugin/"target="_blank" rel="noopener"&gt;Volatility plugin&lt;/a&gt; (available as a free trial), you can get a full code reuse analysis of the memory dump in just a few minutes.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig6.png" title="Executing Intezer&amp;#39;s plugin for Volatility on a memory dump." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig6.png" title="Executing Intezer&amp;#39;s plugin for Volatility on a memory dump." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Executing Intezer&amp;#39;s plugin for Volatility on a memory dump.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;To run the plugin, use your Intezer Analyze API key, which can be passed as an argument or set in the environment variables of the system. The results of the execution can be viewed in the Endpoint and Memory Scans report page and they will look similar to this:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The memory scan shows the classification of all running code and processes collected from memory and analyzed using the Volatility plugin.&lt;/p&gt;
 &lt;p&gt;As you can see, the incident response team benefits from classifying all threats and their capabilities, which normally takes hours or even days when using EDRs.&lt;/p&gt;
 &lt;h2&gt;Scan Compromised Endpoints to Detect Threats Loaded In-Memory&lt;span class="hx:absolute hx:-mt-20" id="scan-compromised-endpoints-to-detect-threats-loaded-in-memory"&gt;&lt;/span&gt;
@@ -421,7 +421,7 @@ data-copied-label="Copied!"
 &lt;p&gt;Scanning the runtime environment of the endpoints can be extremely useful for conducting digital forensics and incident response (DFIR). With this approach, once an alert on an endpoint is triggered, the investigator can obtain the memory dump and scan it for any malicious artifacts, making it possible to find the necessary artifacts and narrowing the scope of the investigation around the presented evidence.&lt;/p&gt;
 &lt;p&gt;In this case, the Intezer Analyze &lt;a href="https://analyze.intezer.com/?tab=endpoint"target="_blank" rel="noopener"&gt;endpoint scanner&lt;/a&gt; can be executed on a compromised Windows endpoint. It collects all of the loaded processes and analyzes them using Intezer&amp;rsquo;s code comparison technology. You can see the result on the Analyze web UI. The scanner saves investigators not only the effort of collecting memory dumps, but also the time spent analyzing them.&lt;/p&gt;
 &lt;p&gt;Below is an endpoint infected with Formbook malware:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Results from the endpoint scanner show a malicious process that was detected as Formbook information stealer. The scanner quickly picked up the malicious process and identified it without the need for manual investigation.&lt;/p&gt;
 &lt;h2&gt;Get the Tools for More Efficient Incident Response&lt;span class="hx:absolute hx:-mt-20" id="get-the-tools-for-more-efficient-incident-response"&gt;&lt;/span&gt;
 &lt;a href="#get-the-tools-for-more-efficient-incident-response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The features, tools and plugins mentioned in this blog are aimed at making the lives of incident responders easier and more efficient. All the tools mentioned above are free or have free trials available. Sign up to &lt;a href="https://analyze.intezer.com"target="_blank" rel="noopener"&gt;Intezer Analyze&lt;/a&gt; for a free community account to start taking advantage of these tools and save time the next time you&amp;rsquo;re investigating an incident.&lt;/p&gt;
@@ -432,7 +432,7 @@ data-copied-label="Copied!"
 &lt;li&gt;&lt;a href="https://github.com/intezer/analyze-community-ghidra-plugin"target="_blank" rel="noopener"&gt;Ghidra plugin&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://analyze.intezer.com/?tab=endpoint"target="_blank" rel="noopener"&gt;Endpoint scanner&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://github.com/intezer/analyze-python-sdk"target="_blank" rel="noopener"&gt;Intezer&amp;rsquo;s SDK&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Conducting Digital Forensics Incident Response (DFIR) on an Infected GitLab Server</title><link>https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/</link><pubDate>Thu, 04 Nov 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/</guid><description>
+&lt;/ul&gt;</description></item><item><title>Conducting Digital Forensics Incident Response (DFIR) on an Infected GitLab Server</title><link>https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/</link><pubDate>Thu, 04 Nov 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/</guid><description>
 &lt;h2&gt;GitLab servers are under attack with a now-patched critical vulnerability&lt;span class="hx:absolute hx:-mt-20" id="gitlab-servers-are-under-attack-with-a-now-patched-critical-vulnerability"&gt;&lt;/span&gt;
 &lt;a href="#gitlab-servers-are-under-attack-with-a-now-patched-critical-vulnerability" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Earlier this week we investigated an incident that occurred on a user&amp;rsquo;s GitLab
 server. After the user installed a sensor on their server, an initial runtime
@@ -479,7 +479,7 @@ command executed inside the container. Shown below are Events which can be
 accessed from the sensor dashboard. A curl command is seen which uses the
 whoami value as part of the target&amp;rsquo;s hostname.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig1.png" title="Curl command seen under Events." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/images/fig1.png" title="Curl command seen under Events." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Curl command seen under Events.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;We were also able to find another script called &lt;code&gt;tmp.sh&lt;/code&gt; under the Events tab.&lt;/p&gt;
@@ -491,11 +491,11 @@ home folder.&lt;/li&gt;
 &lt;code&gt;44wrH5Y3VXn577ZJHAJwZG8pLMNQXURsGKnNfbwUNmv3fJdHcedednZSna9hbFU5ojBkF83beV5CJYnqh9jnZNNdTJ4oXor&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig2.png" title="View of tmp.sh execution event from the sensor." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/images/fig2.png" title="View of tmp.sh execution event from the sensor." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;View of tmp.sh execution event from the sensor.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig3.png" title="Tmp.sh execution event." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/images/fig3.png" title="Tmp.sh execution event." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Tmp.sh execution event.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;We examined &lt;code&gt;okk.sh&lt;/code&gt; and got the following details:&lt;/p&gt;
@@ -509,7 +509,7 @@ setup documentation page, shown in the image below.&lt;/li&gt;
 &lt;code&gt;45P62r6YsHWagiRZ6K5tGeKPy2tFFwfYvdfatsKHCC7wATRrsKqqSFySocLVtrKFzYj1RzYu2mSD9HXBofYusbfdAiSCkvM&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig4.png" title="Installation command for the cryptominer" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/images/fig4.png" title="Installation command for the cryptominer" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Installation command for the cryptominer&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The victim&amp;rsquo;s host exposed the GitLab authentication page on port 8080. We can
@@ -522,11 +522,11 @@ wallet was using hundreds of workers at the time of this post. The images below
 show details of the wallets including their hash rates and activity of the
 cryptominers.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig5.png" title="Hash rates of the wallet." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/images/fig5.png" title="Hash rates of the wallet." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Hash rates of the wallet.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/11/dfir-infected-gitlab-server/images/fig6.png" title="Hash rates of the second wallet." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/images/fig6.png" title="Hash rates of the second wallet." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Hash rates of the second wallet.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Threat Detection and Response&lt;span class="hx:absolute hx:-mt-20" id="threat-detection-and-response"&gt;&lt;/span&gt;
@@ -551,7 +551,7 @@ Special thanks to Adir Shemesh.&lt;/p&gt;
 &lt;a href="#tmpsh" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;00fc15eadd33b1055cd3f30869363c6498d2668b8f1e244e82ba1a9abff58bf1&lt;/code&gt;&lt;/p&gt;
 &lt;h3&gt;Wallet IDs&lt;span class="hx:absolute hx:-mt-20" id="wallet-ids"&gt;&lt;/span&gt;
 &lt;a href="#wallet-ids" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;44wrH5Y3VXn577ZJHAJwZG8pLMNQXURsGKnNfbwUNmv3fJdHcedednZSna9hbFU5ojBkF83beV5CJYnqh9jnZNNdTJ4oXor&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;45P62r6YsHWagiRZ6K5tGeKPy2tFFwfYvdfatsKHCC7wATRrsKqqSFySocLVtrKFzYj1RzYu2mSD9HXBofYusbfdAiSCkvM&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
+&lt;p&gt;&lt;code&gt;45P62r6YsHWagiRZ6K5tGeKPy2tFFwfYvdfatsKHCC7wATRrsKqqSFySocLVtrKFzYj1RzYu2mSD9HXBofYusbfdAiSCkvM&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
 &lt;p&gt;Enterprises today rely on a wide range of cloud services—infrastructure as a
 service (IaaS), platform as a service (PaaS), software as a service (SaaS), and
 more—to meet their business needs. But the growing popularity of cloud has also
@@ -674,7 +674,7 @@ Standards and Technology (NIST). As visible from Figure 1, the process is
 cyclical, meaning it is an ongoing learning process whereby organizations can
 continue to improve their prevention and response methods.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig1.png" title="Figure 1: Cycle of incident response (Source: The National Institute of Standards and Technology)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig1.png" title="Figure 1: Cycle of incident response (Source: The National Institute of Standards and Technology)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: Cycle of incident response (Source: The National Institute of Standards and Technology)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The challenges of incident response in the cloud are complex, and not all can
@@ -805,7 +805,7 @@ let&amp;rsquo;s assume you got an alert on the creation of several new AWS insta
 first thing to check is the CloudTrial logs, where you&amp;rsquo;ll find RunInstances
 events as shown in Figure 2 below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig2.png" title="Figure 2: AWS CloudTrail logs showing RunInstances events" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig2.png" title="Figure 2: AWS CloudTrail logs showing RunInstances events" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: AWS CloudTrail logs showing RunInstances events&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After you isolate the instances and connect securely (not from your personal
@@ -844,7 +844,7 @@ account. Even with the precautions detailed in this blog, breaches still
 happen—whether due to unknown vulnerabilities/misconfigurations, unauthorized
 access, or supply chain attacks. Having strong runtime threat detection and
 response capabilities is crucial.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Special thanks to Aner Izraeli for contributing to this post.&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Building Your Bullet Proof Incident Response Plan</title><link>https://intezer.github.io/community-intelligence/blog/2018/03/building-your-bullet-proof-incident-response-plan/</link><pubDate>Thu, 15 Mar 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/03/building-your-bullet-proof-incident-response-plan/</guid><description>
+&lt;p&gt;&lt;em&gt;Special thanks to Aner Izraeli for contributing to this post.&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Building Your Bullet Proof Incident Response Plan</title><link>https://research.intezer.com/blog/2018/03/building-your-bullet-proof-incident-response-plan/</link><pubDate>Thu, 15 Mar 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/03/building-your-bullet-proof-incident-response-plan/</guid><description>
 &lt;p&gt;Cyber security is constantly evolving, and therefore rife with challenges.
 Whether hobbyist hackers or state-sponsored threat actors are targeting
 organizations, internal security operations center (SOC) teams must proactively

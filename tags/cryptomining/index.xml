@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cryptomining</title><link>https://intezer.github.io/community-intelligence/tags/cryptomining/</link><description>Recent content in Cryptomining on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 29 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cryptomining/index.xml" rel="self" type="application/rss+xml"/><item><title>Early Bird Catches the Worm: New Golang Worm Drops XMRig Miner on Servers</title><link>https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/</link><pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cryptomining</title><link>https://research.intezer.com/tags/cryptomining/</link><description>Recent content in Cryptomining on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 29 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/cryptomining/index.xml" rel="self" type="application/rss+xml"/><item><title>Early Bird Catches the Worm: New Golang Worm Drops XMRig Miner on Servers</title><link>https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/</link><pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/</guid><description>
 &lt;p&gt;In early December, we discovered a new, undetected worm written in Golang. This
 worm continues the popular
 &lt;a href="https://intezer.com/blog/cloud-security/top-linux-cloud-threats-of-2020/"target="_blank" rel="noopener"&gt;2020 trend&lt;/a&gt;
@@ -19,7 +19,7 @@ binary worm, and an XMRig Miner—all of which are hosted on the same C&amp;amp;
 VirusTotal at the time of this publication. Figure 1 shows the ELF worm binary
 result in VirusTotal.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig1.png" title="Figure 1: ELF file fully undetected in VirusTotal (ead2cf8ab7aef63706b40eb57d668d0a)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig1.png" title="Figure 1: ELF file fully undetected in VirusTotal (ead2cf8ab7aef63706b40eb57d668d0a)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: ELF file fully undetected in VirusTotal (ead2cf8ab7aef63706b40eb57d668d0a)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The malware behaves similarly on both Linux and Windows operating systems. We
@@ -37,7 +37,7 @@ called &lt;a href="https://github.com/go-bindata/go-bindata"target="_blank" rel=
 functions are used by the malware to unpack the embedded XMRig Miner binary.
 Figure 2 shows the function inside this file.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig2.png" title="Figure 2: xmrig_linux_amd64.go file" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig2.png" title="Figure 2: xmrig_linux_amd64.go file" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: xmrig_linux_amd64.go file&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The malware will scan the network using TCP SYN in order to find services it
@@ -46,7 +46,7 @@ open ports related to these services: 8080 for Tomcat and Jenkins, 3306 for
 MySQL and 7001 for WebLogic on older versions of the worm. Each of these
 exploits has a package under the src “exp” (exploit) code.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig3.png" title="Figure 3: “exp” package files and functions" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig3.png" title="Figure 3: “exp” package files and functions" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: “exp” package files and functions&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The worm uses the &lt;a href="https://github.com/google/gopacket"target="_blank" rel="noopener"&gt;gopacket&lt;/a&gt; library that
@@ -55,7 +55,7 @@ pcapc, the worm gathers network data which is used to gather ACKS and continue
 to brute force the services. Figure 4 shows the worm’s output for brute force
 and exploitation attempts on Tomcat and MySQL services.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig4.png" title="Figure 4: Snippet from worm output" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig4.png" title="Figure 4: Snippet from worm output" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Snippet from worm output&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Post exploitation, the malware will deliver a loader script: ld.sh for Linux
@@ -63,11 +63,11 @@ and ld.ps1 for Windows. The loader is responsible for dropping and running the
 XMRig Miner and the Golang worm on the exploited service. See loader scripts in
 Figures 5 and 6.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig5.png" title="Figure 5: ldr.sh – Dropper bash script for Linux-based services" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig5.png" title="Figure 5: ldr.sh – Dropper bash script for Linux-based services" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: ldr.sh – Dropper bash script for Linux-based services&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig6.png" title="Figure 6: ldr.ps1 script – Dropper powershell script for Windows-based services" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig6.png" title="Figure 6: ldr.ps1 script – Dropper powershell script for Windows-based services" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: ldr.ps1 script – Dropper powershell script for Windows-based services&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Exploit Flow&lt;span class="hx:absolute hx:-mt-20" id="exploit-flow"&gt;&lt;/span&gt;
@@ -86,18 +86,18 @@ for more information about the exploit.&lt;/p&gt;
 and run the loader script. URLWIN and URLLINUX store the dropper script URL.
 Figures 7 and 8 show the described payload for each operating system.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig7.png" title="Figure 7: MySQL queries – Linux payload" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig7.png" title="Figure 7: MySQL queries – Linux payload" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: MySQL queries – Linux payload&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig8.png" title="Figure 8: MySQL queries – Windows payload" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig8.png" title="Figure 8: MySQL queries – Windows payload" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 8: MySQL queries – Windows payload&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;Tomcat: Port 8080&lt;span class="hx:absolute hx:-mt-20" id="tomcat-port-8080"&gt;&lt;/span&gt;
 &lt;a href="#tomcat-port-8080" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The malware will run credential spraying on the admin panel using basic
 authentication.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig9.png" title="Figure 9: Example of an authentication request to the Tomcat admin panel" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig9.png" title="Figure 9: Example of an authentication request to the Tomcat admin panel" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 9: Example of an authentication request to the Tomcat admin panel&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Upon a successful trial, the malware will attempt to deploy a WAR file (Web
@@ -107,7 +107,7 @@ the malicious payload.&lt;/p&gt;
 file: &lt;code&gt;%s/1.jsp?win=%s&amp;amp;linux=%s&lt;/code&gt;. These parameters will contain the dropper
 script URL. The jsp script will then drop and run the loaders.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig10.png" title="Figure 10: 1.jsp file script" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig10.png" title="Figure 10: 1.jsp file script" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 10: 1.jsp file script&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;Jenkins: Port 8080&lt;span class="hx:absolute hx:-mt-20" id="jenkins-port-8080"&gt;&lt;/span&gt;
@@ -187,7 +187,7 @@ platforms.&lt;/p&gt;
 &lt;p&gt;Both PE and ELF worms are now classified as XMRig Miner Dropper in
 &lt;a href="http://analyze.intezer.com/"target="_blank" rel="noopener"&gt;Intezer Analyze&lt;/a&gt;, which means you can detect and
 classify any variants that are genetically similar.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/12/new-golang-worm-drops-xmrig-miner-on-servers/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Special thanks to Joakim Kennedy for his contribution to this research.&lt;/strong&gt;&lt;/p&gt;
 &lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
 &lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;C&amp;amp;C&lt;span class="hx:absolute hx:-mt-20" id="cc"&gt;&lt;/span&gt;
@@ -318,7 +318,7 @@ classify any variants that are genetically similar.&lt;/p&gt;
 &lt;h4&gt;JSP&lt;span class="hx:absolute hx:-mt-20" id="jsp"&gt;&lt;/span&gt;
 &lt;a href="#jsp" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;644f20b5a6e03aa054ba62d32f983adc&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>"EternalMiner" Copycats exploiting SambaCry for cryptocurrency mining</title><link>https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/</link><pubDate>Wed, 26 Jul 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/</guid><description>
+&lt;/ul&gt;</description></item><item><title>"EternalMiner" Copycats exploiting SambaCry for cryptocurrency mining</title><link>https://research.intezer.com/blog/2017/07/eternalminer-copycats/</link><pubDate>Wed, 26 Jul 2017 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2017/07/eternalminer-copycats/</guid><description>
 &lt;p&gt;About eight weeks ago, a critical RCE vulnerability present in every Samba
 version since 2010 was reported and patched. This vulnerability is mostly known
 as &amp;ldquo;SambaCry&amp;rdquo; after the famous WannaCry attack targeting Windows systems
@@ -349,7 +349,7 @@ for better consumption of the victim machine’s resources! &lt;strong&gt;The co
 EternalMiner to the next level as an operation suitable for multiple victim’s
 machines&lt;/strong&gt;. In the following sections, we will drill down on each component of
 the following graph, comparing CopyMiner’s setup vs EternalMiner:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/07/eternalminer-copycats/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
 &lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&amp;ldquo;CopyMiner&amp;rdquo; Dropper&lt;span class="hx:absolute hx:-mt-20" id="copyminer-dropper"&gt;&lt;/span&gt;
 &lt;a href="#copyminer-dropper" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;On the 14th of June a small unique dropper
@@ -359,7 +359,7 @@ was uploaded to VirusTotal. The dropper starts executing from
 execute it as root user in the background. This is done using a hard-coded
 obfuscated bash one-liner as you can see in the picture below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig2.png" title="sample hash: 444d0fae73e1221b81dc6c5d53cf087afa88248fc22ef36e756841ab04df24a8" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/07/eternalminer-copycats/images/fig2.png" title="sample hash: 444d0fae73e1221b81dc6c5d53cf087afa88248fc22ef36e756841ab04df24a8" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;sample hash: 444d0fae73e1221b81dc6c5d53cf087afa88248fc22ef36e756841ab04df24a8&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Payload&lt;span class="hx:absolute hx:-mt-20" id="payload"&gt;&lt;/span&gt;
@@ -382,7 +382,7 @@ resources(patch &lt;code&gt;smb.conf&lt;/code&gt;).&lt;/li&gt;
 (&lt;code&gt;http://update.sdgndsfajfsdf.info/upd&lt;/code&gt;). It seems that this script is just a
 stripped version of the payload script, lacking the daily updates setup
 functionality:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/07/eternalminer-copycats/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;CPUMiner&lt;span class="hx:absolute hx:-mt-20" id="cpuminer"&gt;&lt;/span&gt;
 &lt;a href="#cpuminer" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;CPUMiner is an open source cryptomining command line utility supporting
 multiple coins/algorithms. It seems that the attackers used
@@ -393,7 +393,7 @@ standalone without command line parameters. Once started, the upgraded cpuminer
 automatically login into the attackers private mining pool server
 (&lt;code&gt;p.theywant[.]in:8080&lt;/code&gt;), unlike the public mining pool server used by
 EternalMiner (&lt;code&gt;xmr.crypto-pool[.]fr:3333&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/07/eternalminer-copycats/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Tsunami Backdoor&lt;span class="hx:absolute hx:-mt-20" id="tsunami-backdoor"&gt;&lt;/span&gt;
 &lt;a href="#tsunami-backdoor" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Alongside CPUMiner the payload script would also fetch &amp;amp; execute &amp;ldquo;Tsunami&amp;rdquo;
 (also known as Kaiten) which is an old Linux irc backdoor/ddos botnet best
@@ -409,7 +409,7 @@ configured with hardcoded c2 irc server (&lt;code&gt;asdgsd.uselesslongdomain[.]
 were able to connect to the live irc server using credentials hard coded in the
 malware. In the following picture you can see two victims currently logged in
 (running as root user).&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/07/eternalminer-copycats/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/07/eternalminer-copycats/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Quickly adopting&lt;span class="hx:absolute hx:-mt-20" id="quickly-adopting"&gt;&lt;/span&gt;
 &lt;a href="#quickly-adopting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We found that the domain used to host the payload file (&lt;code&gt;sdgndsfajfsdf[.]info&lt;/code&gt;)
 was registered on June 13th. Not only that but the first malicious

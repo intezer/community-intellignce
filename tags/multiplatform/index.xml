@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Multiplatform</title><link>https://intezer.github.io/community-intelligence/tags/multiplatform/</link><description>Recent content in Multiplatform on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 14 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/multiplatform/index.xml" rel="self" type="application/rss+xml"/><item><title>Detection Rules for Sysjoker (and How to Make Them With Osquery)</title><link>https://intezer.github.io/community-intelligence/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</link><pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Multiplatform</title><link>https://research.intezer.com/tags/multiplatform/</link><description>Recent content in Multiplatform on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 14 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/multiplatform/index.xml" rel="self" type="application/rss+xml"/><item><title>Detection Rules for Sysjoker (and How to Make Them With Osquery)</title><link>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</link><pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</guid><description>
 &lt;p&gt;On January 11, 2022, we released a blog post on a new malware called &lt;a href="../../../2022/01/new-backdoor-sysjoker"&gt;SysJoker&lt;/a&gt;. SysJoker is a malware targeting Windows, macOS, and Linux. At the time of the publication, the Linux and macOS versions were not detected by any scanning engines on VirusTotal. As a consequence to this, we decided to release a followup blog posting showing how the information we released can be used to investigate whether you have been affected.&lt;/p&gt;
 &lt;p&gt;There are many tools available to gather system information and to perform threat hunting within an organization. We decided to use &lt;a href="https://osquery.io"target="_blank" rel="noopener"&gt;osquery&lt;/a&gt; in this blog post. The reason for choosing osquery is that it is supported for all the affected operating systems that SysJoker targets and it is open source allowing essentially anyone to follow along in this tutorial.&lt;/p&gt;
 &lt;h2&gt;Information Gathering with Osquery&lt;span class="hx:absolute hx:-mt-20" id="information-gathering-with-osquery"&gt;&lt;/span&gt;
@@ -217,7 +217,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>New SysJoker Backdoor Targets Windows, Linux, and macOS</title><link>https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/</link><pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/</guid><description>
+&lt;/div&gt;</description></item><item><title>New SysJoker Backdoor Targets Windows, Linux, and macOS</title><link>https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/</link><pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/</guid><description>
 &lt;p&gt;Malware targeting multiple operating systems has become no exception in the
 malware threat landscape.
 &lt;a href="../../../2021/09/vermilionstrike-reimplementation-cobaltstrike"&gt;Vermilion Strike&lt;/a&gt;,
@@ -246,7 +246,7 @@ detection and response mitigations.&lt;/p&gt;
 operating system it targets. Both the macOS and Linux samples are fully
 undetected in VirusTotal.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig1.png" title="e06e06752509f9cd8bc85aa1aa24dba2 in VirusTotal targeting Mac M1 processor" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig1.png" title="e06e06752509f9cd8bc85aa1aa24dba2 in VirusTotal targeting Mac M1 processor" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;e06e06752509f9cd8bc85aa1aa24dba2 in VirusTotal targeting Mac M1 processor&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Behavioral Analysis&lt;span class="hx:absolute hx:-mt-20" id="behavioral-analysis"&gt;&lt;/span&gt;
@@ -261,7 +261,7 @@ C2 &lt;code&gt;https[://]github[.]url-mini[.]com/msg.zip&lt;/code&gt;, copies it
 &lt;code&gt;C:\ProgramData\Recovery\Systemrecovery\Windows.zip&lt;/code&gt;, unzips it and executes
 it. All of these actions are executed via PowerShell commands.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig2.png" title="Process tree showing PowerShell commands." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig2.png" title="Process tree showing PowerShell commands." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Process tree showing PowerShell commands.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once SysJoker (&lt;code&gt;d90d0f4d6dad402b5d025987030cc87c&lt;/code&gt;) is executed it sleeps for a
@@ -275,7 +275,7 @@ deleted immediately, stored in a JSON object, and then encoded and written to a
 file named &lt;code&gt;microsoft_windows.dll&lt;/code&gt;. The figure below shows the JSON object
 built in memory by SysJoker.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig3.png" title="JSON object built in memory by SysJoker." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig3.png" title="JSON object built in memory by SysJoker." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;JSON object built in memory by SysJoker.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;It will gather the MAC address, user name, physical media serial number, and IP
@@ -285,7 +285,7 @@ persistence by adding an entry to the registry run key
 of the steps above, the malware sleeps for a random duration.&lt;/p&gt;
 &lt;p&gt;The following screenshot shows the processes tree and commands.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig4.png" title="Processes tree and commands." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig4.png" title="Processes tree and commands." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Processes tree and commands.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Next, SysJoker will begin its C2 communication.&lt;/p&gt;
@@ -312,9 +312,9 @@ data-copied-label="Copied!"
 &lt;h3&gt;Resolving C2&lt;span class="hx:absolute hx:-mt-20" id="resolving-c2"&gt;&lt;/span&gt;
 &lt;a href="#resolving-c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;To get an available C2 and start communication, SysJoker first decodes a
 hardcoded Google Drive link.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig6.png" title="Decoding with CyberChef." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig6.png" title="Decoding with CyberChef." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decoding with CyberChef.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The Google Drive link hosts a text file named domain.txt that holds an encoded
@@ -328,12 +328,12 @@ when the malware communicates with the C2.&lt;/p&gt;
 directory with the unique token and will process the C2&amp;rsquo;s response which is
 built as JSON using functions from this library. This is how SysJoker pings the
 C2 for instructions (see step 2 in the image below):&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;If the server responds with data, SysJoker will parse the received payload (see
 step 3 in the image below). SysJoker can receive the following instruction from
 the C2: exe, cmd, remove_reg, and exit.&lt;/p&gt;
 &lt;p&gt;The following image shows the flow of SysJoker&amp;rsquo;s communication with the C2.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;remove_reg&lt;/code&gt; and &lt;code&gt;exit&lt;/code&gt; are not implemented in this current version. Based on
 the instruction names, we can assume that they are in charge of self-deletion
 of the malware. Let&amp;rsquo;s look into exe and cmd instructions:&lt;/p&gt;
@@ -342,14 +342,14 @@ SysJoker will receive a URL to a zip file, a directory for the path the file
 should be dropped to, and a filename that the malware should use on the
 extracted executable. It will download this file, unzip it and execute it.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig9.png" title="IDA code snippet of the parsing function, if exe part." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig9.png" title="IDA code snippet of the parsing function, if exe part." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;IDA code snippet of the parsing function, if exe part.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After execution, the malware will reply to the C2&amp;rsquo;s &lt;code&gt;/api/req/res&lt;/code&gt; API with
 either &amp;ldquo;success&amp;rdquo; if the process went successful or &amp;ldquo;exception&amp;rdquo; if not (step 4
 in the image above).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig10.png" title="IDA code snippet of the parsing function, building response status." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig10.png" title="IDA code snippet of the parsing function, building response status." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;IDA code snippet of the parsing function, building response status.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;cmd&lt;/code&gt; – This instruction is in charge of running a command and uploading its
@@ -357,7 +357,7 @@ response to the C2. SysJoker will decode the command, execute it and upload the
 command&amp;rsquo;s response to the C2 via &lt;code&gt;/api/req/res&lt;/code&gt; API (step 4 in the image
 above).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig11.png" title="IDA code snippet of the parsing function, building cmd command response." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig11.png" title="IDA code snippet of the parsing function, building cmd command response." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;IDA code snippet of the parsing function, building cmd command response.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;During our analysis, the C2 hasn&amp;rsquo;t responded with a next stage instruction.&lt;/p&gt;
@@ -393,7 +393,7 @@ with SysJoker, in the course of this investigation, check:
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;SysJoker&amp;rsquo;s Linux and Windows versions are now indexed in Intezer Analyze.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Final Points&lt;span class="hx:absolute hx:-mt-20" id="final-points"&gt;&lt;/span&gt;
 &lt;a href="#final-points" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are indications that SysJoker attack is performed by an advanced threat
 actor:&lt;/p&gt;
@@ -675,7 +675,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Vermilion Strike: Linux and Windows Re-implementation of Cobalt Strike</title><link>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</link><pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</guid><description>
+&lt;/div&gt;</description></item><item><title>Vermilion Strike: Linux and Windows Re-implementation of Cobalt Strike</title><link>https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</link><pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</guid><description>
 &lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
 &lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Discovered Linux &amp;amp; Windows re-implementation of Cobalt Strike Beacon written
@@ -717,11 +717,11 @@ how you can detect and respond to this threat.&lt;/p&gt;
 &lt;a href="#linux-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The file was uploaded to VirusTotal from Malaysia and has no detections in
 VirusTotal at the time of this writing.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig1.png" title="294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc in VirusTotal" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig1.png" title="294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc in VirusTotal" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc in VirusTotal&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig2.png" title="Vermilion Strike analysis in Intezer: https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig2.png" title="Vermilion Strike analysis in Intezer: https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Vermilion Strike analysis in Intezer: https://analyze.intezer.com/files/294b8db1f2702b60fb2e42fdc50c2cee6a5046112da9a5703a548a4fa50477bc&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The file shares strings with previously seen Cobalt Strike samples and triggers
@@ -739,7 +739,7 @@ same as Cobalt Strike. Tools used for extracting Cobalt Strike configurations
 can also be used to extract Vermilion Strike configuration. The Windows
 components of the configuration are ignored for this Linux version.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig3.png" title="Decoded configuration of the beacon" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig3.png" title="Decoded configuration of the beacon" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decoded configuration of the beacon&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Further decryption is performed in a heap with decoded strings, keys, and
@@ -748,7 +748,7 @@ a SHA256 hash sourced from a random number seeded from the thread ID. This
 value will be used later in DNS beaconing. Next, a public RSA key will be
 imported for later use.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig4.png" title="Importing of public RSA key to encrypt machine fingerprint" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig4.png" title="Importing of public RSA key to encrypt machine fingerprint" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Importing of public RSA key to encrypt machine fingerprint&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The beacon will begin fingerprinting the machine. A random number will be
@@ -758,13 +758,13 @@ information through the &lt;code&gt;getifaddrs&lt;/code&gt; function. It will lo
 interfaces looking for IPv4 addresses. It will gather the interface with an
 address not equal to &lt;code&gt;127.0.0.1&lt;/code&gt; and stage the IPv4 address.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig5.png" title="Network interface fingerprinting" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig5.png" title="Network interface fingerprinting" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Network interface fingerprinting&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Next, the beacon will fingerprint the entry in the local password database for
 information about the current effective user ID of the process.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig6.png" title="Fingerprinting of local password database" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig6.png" title="Fingerprinting of local password database" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Fingerprinting of local password database&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The beacon will then fingerprint the hostname of the machine. The collected
@@ -772,7 +772,7 @@ information will be formatted into a string, encrypted with the public RSA key,
 and base64 encoded, as is standard for communication with a Cobalt Strike
 server. The stages are shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig7.png" title="Stages of formatting the machine fingerprint" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig7.png" title="Stages of formatting the machine fingerprint" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Stages of formatting the machine fingerprint&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Prepended to the fingerprint string is the value &lt;code&gt;1.0.1.LR&lt;/code&gt;. This appears to be
@@ -795,18 +795,18 @@ change the beacon behavior.&lt;/p&gt;
 &lt;p&gt;Once the beacon gets the signal to download a task, it will perform a DNS TXT
 query to the domain&amp;rsquo;s nameservers, as shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig8.png" title="Packet capture of C2 communication" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig8.png" title="Packet capture of C2 communication" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Packet capture of C2 communication&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The result of the TXT query is a base64 encoded and AES encrypted struct
 containing task information. An example of a returned task is shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig9.png" title="A DNS TXT query result for a task" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig9.png" title="A DNS TXT query result for a task" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;A DNS TXT query result for a task&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;A decrypted task is shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig10.png" title="Decrypted command" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig10.png" title="Decrypted command" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decrypted command&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Tasks that the beacon can perform are:&lt;/p&gt;
@@ -844,7 +844,7 @@ the Windows DLL equivalent of the ELF file. The functionality is almost exactly
 the same, except for the Windows environment. A side-by-side comparison of the
 configuration decoding function for the ELF and DLL beacons is shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig11.png" title="Configuration decryption function comparison" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig11.png" title="Configuration decryption function comparison" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Configuration decryption function comparison&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The DLL has the same domains as the ELF for C2, as well as an additional
@@ -857,7 +857,7 @@ Windows version of Vermilion Strike
 similar version string as the ELF version. The version string in these samples
 is &lt;code&gt;W1.0.1&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig12.png" title="Internal version string in recent Windows versions" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig12.png" title="Internal version string in recent Windows versions" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Internal version string in recent Windows versions&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
@@ -876,14 +876,14 @@ implementation of Beacon.&lt;/p&gt;
 on code reuse, TTPs, and strings. Shown below are the verdicts for both
 versions.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig13.png" title="Intezer verdict of Windows version of Vermilion Strike" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig13.png" title="Intezer verdict of Windows version of Vermilion Strike" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Intezer verdict of Windows version of Vermilion Strike&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Intezer
 &lt;a href="https://analyze.intezer.com/files/07b815cee2b85a41820cd8157a68f35aa1ed0aa5f4093b8cb79a1d645a16273f"target="_blank" rel="noopener"&gt;verdict&lt;/a&gt;
 of Windows version of Vermilion Strike.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig14.png" title="Intezer verdict of Linux version of Vermilion Strike" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/images/fig14.png" title="Intezer verdict of Linux version of Vermilion Strike" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Intezer verdict of Linux version of Vermilion Strike&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Intezer
@@ -917,7 +917,7 @@ process.&lt;/em&gt;&lt;/p&gt;
 &lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;160.202.163.100&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;update.microsofthk[.]com&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;update.microsoftkernel[.]com&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;&lt;/p&gt;</description></item><item><title>HabitsRAT Used to Target Linux and Windows Servers</title><link>https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</link><pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</guid><description>
+&lt;p&gt;&lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;&lt;/p&gt;</description></item><item><title>HabitsRAT Used to Target Linux and Windows Servers</title><link>https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</link><pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</guid><description>
 &lt;p&gt;We have discovered a new malware written in Go, which we are calling HabitsRAT,
 targeting both Windows and Linux machines. The Windows version of the malware
 was first reported on by
@@ -1050,7 +1050,7 @@ been set up. If it hasn&amp;rsquo;t, it goes ahead and sets it up. On Linux, it 
 &amp;ldquo;systemd&amp;rdquo; unit file. The malware checks if it&amp;rsquo;s already configured by executing
 the command &lt;code&gt;systemctl status polkitd&lt;/code&gt;, as shown in Figure 1.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig1.png" title="Figure 1: Linux version of the malware checks if persistence has been configured already." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig1.png" title="Figure 1: Linux version of the malware checks if persistence has been configured already." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: Linux version of the malware checks if persistence has been configured already.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The systemd unit file is created at &lt;code&gt;/etc/systemd/system/polkitd.service&lt;/code&gt; and
@@ -1154,7 +1154,7 @@ a normal user or to &lt;code&gt;/usr/share/accounts-daemon/accounts-daemon.so&lt
 Windows version uses &lt;code&gt;%SystemDrive%WindowsDefenderMsMpEng.dll&lt;/code&gt; or
 &lt;code&gt;%APPDATA%Windows NTDefenderMsMpEng.dll&lt;/code&gt; instead.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig2.png" title="Figure 2: Generation of public-private key pair using the open-source library from Proton Mail." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig2.png" title="Figure 2: Generation of public-private key pair using the open-source library from Proton Mail." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Generation of public-private key pair using the open-source library from Proton Mail.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;HabitsRAT sends a &amp;ldquo;check-in&amp;rdquo; POST request to the C2 server to see if it should
@@ -1303,7 +1303,7 @@ can detect and mitigate threats like HabitsRAT on their Linux systems. Protect
 10 hosts &lt;a href="https://protect.intezer.com/signup"target="_blank" rel="noopener"&gt;for free&lt;/a&gt; with our community
 edition.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig3.gif" title="Figure 3: HabitsRAT detection in Intezer Protect." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig3.gif" title="Figure 3: HabitsRAT detection in Intezer Protect." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: HabitsRAT detection in Intezer Protect.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
@@ -1486,7 +1486,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>A Storm is Brewing: IPStorm Now Has Linux Malware</title><link>https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</guid><description>
+&lt;/div&gt;</description></item><item><title>A Storm is Brewing: IPStorm Now Has Linux Malware</title><link>https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</guid><description>
 &lt;h2&gt;UPDATE NOVEMBER 2023: IPStorm Infrastructure Dismantled by FBI&lt;span class="hx:absolute hx:-mt-20" id="update-november-2023-ipstorm-infrastructure-dismantled-by-fbi"&gt;&lt;/span&gt;
 &lt;a href="#update-november-2023-ipstorm-infrastructure-dismantled-by-fbi" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The FBI today revealed US law enforcement&amp;rsquo;s dismantlement of a botnet proxy
 network, along with a guilty plea for the individual responsible for the botnet
@@ -1534,14 +1534,14 @@ them for genetic analysis in Intezer.&lt;/p&gt;
 &lt;code&gt;658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117&lt;/code&gt; Linux
 sample.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig1.png" title="658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117 sample undetected in VirusTotal." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig1.png" title="658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117 sample undetected in VirusTotal." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117 sample undetected in VirusTotal.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Because IPStorm is written in Golang, not only can we observe strong code
 connections between the different Linux variants, we can also identify
 connections to IPStorm&amp;rsquo;s Windows samples uploaded to Intezer in 2019.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig2.png" title="Samples analyzed and classified by Intezer in the IPStorm malware family." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig2.png" title="Samples analyzed and classified by Intezer in the IPStorm malware family." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Samples analyzed and classified by Intezer in the IPStorm malware family.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The following map emphasizes code similarities between the different versions
@@ -1553,7 +1553,7 @@ some way:&lt;/p&gt;
 &lt;li&gt;IPStorm ELF files from 2020&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig3.png" title="Map showing IPStorm code similarities between different samples analyzed. Nodes represent the individual samples and the lines show code relations between them." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig3.png" title="Map showing IPStorm code similarities between different samples analyzed. Nodes represent the individual samples and the lines show code relations between them." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Map showing IPStorm code similarities between different samples analyzed. Nodes represent the individual samples and the lines show code relations between them.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The graph depicts three main clusters, with each cluster containing samples
@@ -1600,7 +1600,7 @@ malware, including reverse shell, which was previously seen in the Windows
 variant—maintaining connection with other peers in the P2P network and a new
 feature for spreading the malware to other victims.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig4.png" title="IPStorm Linux output non-privileged user." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig4.png" title="IPStorm Linux output non-privileged user." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;IPStorm Linux output non-privileged user.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Linux vs. Windows Comparison&lt;span class="hx:absolute hx:-mt-20" id="linux-vs-windows-comparison"&gt;&lt;/span&gt;
@@ -1735,7 +1735,7 @@ SSH honeypot. If the malware identifies a honeypot it will close the
 connection, otherwise it will proceed to download the payload and infect the
 server.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig5.png" title="Validation of whether the server is a honeypot or not." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig5.png" title="Validation of whether the server is a honeypot or not." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Validation of whether the server is a honeypot or not.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Another spreading method that is unique to the Linux version is searching for
@@ -1744,7 +1744,7 @@ potential Android victims. The malware checks for devices connected with ADB
 Android version of IPStorm to the device, which was previously downloaded from
 the P2P network.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig6.png" title="Screen capture from the log of the storm service showing the downloaded file." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig6.png" title="Screen capture from the log of the storm service showing the downloaded file." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Screen capture from the log of the storm service showing the downloaded file.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Antivirus Evasion&lt;span class="hx:absolute hx:-mt-20" id="antivirus-evasion"&gt;&lt;/span&gt;
@@ -1780,9 +1780,9 @@ connections between the two IPStorm variants. The screengrabs below demonstrate
 changes in the file names and the identical function names found in the two
 versions:&lt;/p&gt;
 &lt;h4&gt;Linux&lt;span class="hx:absolute hx:-mt-20" id="linux"&gt;&lt;/span&gt;
-&lt;a href="#linux" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig7.png" alt="" loading="lazy" /&gt; &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;a href="#linux" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig7.png" alt="" loading="lazy" /&gt; &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h4&gt;Windows&lt;span class="hx:absolute hx:-mt-20" id="windows"&gt;&lt;/span&gt;
-&lt;a href="#windows" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig9.png" alt="" loading="lazy" /&gt; &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;a href="#windows" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig9.png" alt="" loading="lazy" /&gt; &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Persistence&lt;span class="hx:absolute hx:-mt-20" id="persistence"&gt;&lt;/span&gt;
 &lt;a href="#persistence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The Linux version will attempt to gain persistence only if it was executed with
 root privileges. The Windows version, on the other hand, will always look to
@@ -1795,11 +1795,11 @@ and adding the program to the:
 &lt;p&gt;The Linux version achieves persistence by creating a &lt;code&gt;systemd&lt;/code&gt; service under
 &lt;code&gt;/etc/systemd/system/storm.service&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig11.png" title="/etc/systemd/system/storm.service" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig11.png" title="/etc/systemd/system/storm.service" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;/etc/systemd/system/storm.service&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig12.png" title="The function that archives persistence in the Linux variant." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig12.png" title="The function that archives persistence in the Linux variant." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The function that archives persistence in the Linux variant.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Another difference is the location to which the file is copied. The Windows
@@ -1823,7 +1823,7 @@ submit their Steam login credentials. With access to a user&amp;rsquo;s credenti
 attacker has full access to the the account, API key included.&lt;/p&gt;
 &lt;p&gt;We noticed IPStorm generates a large amount of traffic to Steam&amp;rsquo;s API, querying
 data pertaining to various Steam users and using multiple valid API keys.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;We suspect these are stolen accounts that are being monitored as part of a fake
 trade scam.
 &lt;a href="https://www.skinwallet.com/csgo/how-to-avoid-steam-api-key-scam/"target="_blank" rel="noopener"&gt;Browse here&lt;/a&gt;
@@ -1834,11 +1834,11 @@ the ads we have traced are related to pornographic websites. The malware crawls
 through different predefined sites, searches for advertisement iframes, and
 imitates a user &amp;ldquo;click&amp;rdquo; by browsing through the iframes.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig14.png" title="Example of a request the malware generates to an ad platform." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig14.png" title="Example of a request the malware generates to an ad platform." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Example of a request the malware generates to an ad platform.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig15.png" title="Websites the malware crawls through." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig15.png" title="Websites the malware crawls through." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Websites the malware crawls through.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;IPStorm Detection and Response&lt;span class="hx:absolute hx:-mt-20" id="ipstorm-detection-and-response"&gt;&lt;/span&gt;
@@ -1849,13 +1849,13 @@ the IPStorm malware.&lt;/p&gt;
 &lt;li&gt;Check if the process of IPStorm is running on your system.
 &lt;ul&gt;
 &lt;li&gt;Run: &lt;code&gt;pstree | grep storm&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;IPStorm will usually run with multiple threads. &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+&lt;li&gt;IPStorm will usually run with multiple threads. &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Check the services that run on your system, since if the malware was executed
 with root privileges it would create a service for persistence.
 &lt;ul&gt;
-&lt;li&gt;Run: &lt;code&gt;sudo systemctl status strom.service&lt;/code&gt; &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+&lt;li&gt;Run: &lt;code&gt;sudo systemctl status strom.service&lt;/code&gt; &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Check if IPStorm&amp;rsquo;s files exist in your system.
@@ -1863,9 +1863,9 @@ with root privileges it would create a service for persistence.
 &lt;li&gt;Run: &lt;code&gt;sudo find / -name &amp;quot;storm*&amp;quot; -type f&lt;/code&gt;
 &lt;ul&gt;
 &lt;li&gt;In case of a non-root execution the output will look similar to the
-screen capture below &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+screen capture below &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;li&gt;If the malware was executed with root privileges, the output will look
-similar to the screen capture below: &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig19.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+similar to the screen capture below: &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig19.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -1875,7 +1875,7 @@ with them.
 &lt;ul&gt;
 &lt;li&gt;Run: &lt;code&gt;sudo ss -tulpn&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;In the screen capture below a number of processes that belong to the
-IPStorm malware listen on specific ports. &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig20.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+IPStorm malware listen on specific ports. &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig20.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Use freely the Intezer Protect community beta to identify which process is
@@ -1883,7 +1883,7 @@ running on your system. The screen capture below is taken from the alert of
 IPStorm executed on a server. The info provided by the system includes the
 malware family name, full path of the executable, the process ID, execution
 time, and a link to Intezer where you can observe code reuse prevalent in
-this malware. &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig21.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+this malware. &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig21.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;How to Terminate IPStorm on a Compromised System&lt;span class="hx:absolute hx:-mt-20" id="how-to-terminate-ipstorm-on-a-compromised-system"&gt;&lt;/span&gt;
 &lt;a href="#how-to-terminate-ipstorm-on-a-compromised-system" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
@@ -1930,7 +1930,7 @@ help contributing to this analysis.&lt;/em&gt;&lt;/p&gt;
 detect this and other cross-platform malware with the code reuse feature for
 Golang, just by uploading a file or hash to the system. Below is the analysis
 of one of the Linux samples.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig22.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig22.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
 &lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Linux&lt;span class="hx:absolute hx:-mt-20" id="linux-1"&gt;&lt;/span&gt;
 &lt;a href="#linux-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
@@ -1988,7 +1988,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Fantastic payloads and where we find them</title><link>https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/</link><pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/</guid><description>
+&lt;/div&gt;</description></item><item><title>Fantastic payloads and where we find them</title><link>https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/</link><pubDate>Mon, 30 Mar 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/</guid><description>
 &lt;p&gt;Attackers have long used evasion features in their malware to avoid detection
 by security products and analysis systems. One of the most common anti-analysis
 tricks we have seen in today’s Windows malware is the use of packers. Packers
@@ -2015,7 +2015,7 @@ a sandboxed environment, let it unpack itself, and then grab the payload from
 memory.&lt;/p&gt;
 &lt;p&gt;While various malware and packers operate in different ways, an abstraction of
 a typical unpacking flow looks like this:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In this flow we can see that the packer will decode and execute a shellcode
 component that will in turn decode and execute the real payload. This is just a
 common scenario; some packers will not use a shellcode loader and instead they
@@ -2049,22 +2049,22 @@ samples:&lt;/p&gt;
 &lt;p&gt;When looking at the code of the packed files themselves, we can see just how
 different these samples are, showing no apparent connections to one another:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig2.png" title="Packer (June 2019) – 8e5089260064a955819a92ebccc43d05520e32d234dd3c176bed5f6d0665ebdb" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig2.png" title="Packer (June 2019) – 8e5089260064a955819a92ebccc43d05520e32d234dd3c176bed5f6d0665ebdb" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Packer (June 2019) – 8e5089260064a955819a92ebccc43d05520e32d234dd3c176bed5f6d0665ebdb&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig3.png" title="Packer (December 2019) – 3e8a273f80575ab6079d6512008bb6355b59de978fabc2a9a66c0ed148b94fef" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig3.png" title="Packer (December 2019) – 3e8a273f80575ab6079d6512008bb6355b59de978fabc2a9a66c0ed148b94fef" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Packer (December 2019) – 3e8a273f80575ab6079d6512008bb6355b59de978fabc2a9a66c0ed148b94fef&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;But if we look at the unpacked memory module payloads after undergoing dynamic
 analysis, we can see that they are nearly identical from a binary code
 perspective:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig4.png" title="Payload (June 2019) – 8e5089260064a955819a92ebccc43d05520e32d234dd3c176bed5f6d0665ebdb" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig4.png" title="Payload (June 2019) – 8e5089260064a955819a92ebccc43d05520e32d234dd3c176bed5f6d0665ebdb" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Payload (June 2019) – 8e5089260064a955819a92ebccc43d05520e32d234dd3c176bed5f6d0665ebdb&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig5.png" title="Payload (December 2019) – 3e8a273f80575ab6079d6512008bb6355b59de978fabc2a9a66c0ed148b94fef" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig5.png" title="Payload (December 2019) – 3e8a273f80575ab6079d6512008bb6355b59de978fabc2a9a66c0ed148b94fef" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Payload (December 2019) – 3e8a273f80575ab6079d6512008bb6355b59de978fabc2a9a66c0ed148b94fef&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;There is one notable exception: in the December 2019 sample, the payload memory
@@ -2086,7 +2086,7 @@ can still detect those traces to Emotet’s code that have not been modified.&lt
 2020. Looking at the packer’s code, we can see that it is different yet again,
 and has no relations to any code we have seen previously:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig6.png" title="Packer (March 2020) – C6684aa4af41685ffc584c1b1bb78855c894b3dae7f6fae4fb572bc02525102f" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig6.png" title="Packer (March 2020) – C6684aa4af41685ffc584c1b1bb78855c894b3dae7f6fae4fb572bc02525102f" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Packer (March 2020) – C6684aa4af41685ffc584c1b1bb78855c894b3dae7f6fae4fb572bc02525102f&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;However, when we look at the memory module payload itself, we can see that some
@@ -2094,7 +2094,7 @@ of the code is new and has been modified from previous versions. Most
 importantly, a substantial part of the code has been reused from previous
 Emotet variants that we have seen before:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig7.png" title="Payload (March 2020) – C6684aa4af41685ffc584c1b1bb78855c894b3dae7f6fae4fb572bc02525102f" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig7.png" title="Payload (March 2020) – C6684aa4af41685ffc584c1b1bb78855c894b3dae7f6fae4fb572bc02525102f" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Payload (March 2020) – C6684aa4af41685ffc584c1b1bb78855c894b3dae7f6fae4fb572bc02525102f&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;When less is more&lt;span class="hx:absolute hx:-mt-20" id="when-less-is-more"&gt;&lt;/span&gt;
@@ -2124,21 +2124,21 @@ Dridex banking trojan. Let’s compare two recent Dridex samples from February
 &lt;p&gt;Similar to Emotet, these packed files are very different from one another at
 the code level, showing no resemblance:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig8.png" title="Packer – 9b6ffb05ec826b3fbff7db04ebd187e2f956a5730af1d36e10a9f56ee1bb767a" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig8.png" title="Packer – 9b6ffb05ec826b3fbff7db04ebd187e2f956a5730af1d36e10a9f56ee1bb767a" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Packer – 9b6ffb05ec826b3fbff7db04ebd187e2f956a5730af1d36e10a9f56ee1bb767a&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig9.png" title="Packer – 45e0408d3ae2647cb9be835a5277eb7de41c83d8e473d22d5b3772c2f65305fb" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig9.png" title="Packer – 45e0408d3ae2647cb9be835a5277eb7de41c83d8e473d22d5b3772c2f65305fb" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Packer – 45e0408d3ae2647cb9be835a5277eb7de41c83d8e473d22d5b3772c2f65305fb&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;However, when we look at the payloads themselves, we can see again that they
 are actually very similar:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig10.png" title="Payload – 9b6ffb05ec826b3fbff7db04ebd187e2f956a5730af1d36e10a9f56ee1bb767a" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig10.png" title="Payload – 9b6ffb05ec826b3fbff7db04ebd187e2f956a5730af1d36e10a9f56ee1bb767a" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Payload – 9b6ffb05ec826b3fbff7db04ebd187e2f956a5730af1d36e10a9f56ee1bb767a&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig11.png" title="Payload – 45e0408d3ae2647cb9be835a5277eb7de41c83d8e473d22d5b3772c2f65305fb" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig11.png" title="Payload – 45e0408d3ae2647cb9be835a5277eb7de41c83d8e473d22d5b3772c2f65305fb" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Payload – 45e0408d3ae2647cb9be835a5277eb7de41c83d8e473d22d5b3772c2f65305fb&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;There is one notable exception here as well, but in this case it is much more
@@ -2153,15 +2153,15 @@ shellcode pieces that are used by the malware.&lt;/p&gt;
 recent samples of the Ursnif and TrickBot malware. When looking at the dynamic
 analysis modules, we see several different malicious modules that are detected
 and analyzed:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;If we review them more closely, we will see that all of them — minus copies of
 the original packer file — have the &amp;ldquo;fileless_code&amp;rdquo; tag, indicating that they
 are all shellcode-style modules with no PE header:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig13.png" title="TrickBot – 26d61225f07e39d9e35880631c5043626eb8e3846a526a44015d3a5d03642d55" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig13.png" title="TrickBot – 26d61225f07e39d9e35880631c5043626eb8e3846a526a44015d3a5d03642d55" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;TrickBot – 26d61225f07e39d9e35880631c5043626eb8e3846a526a44015d3a5d03642d55&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/03/fantastic-payloads-and-where-we-find-them/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The use of pure shellcode and shellcode-style components in modern malware
 seems to be a growing trend, one that is being adopted by some of the most

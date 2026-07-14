@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Dprk</title><link>https://intezer.github.io/community-intelligence/tags/dprk/</link><description>Recent content in Dprk on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 12 Dec 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/dprk/index.xml" rel="self" type="application/rss+xml"/><item><title>BLOCKBUSTED: Lazarus, Blockbuster, and North Korea</title><link>https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/</link><pubDate>Tue, 12 Dec 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Dprk</title><link>https://research.intezer.com/tags/dprk/</link><description>Recent content in Dprk on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 12 Dec 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/dprk/index.xml" rel="self" type="application/rss+xml"/><item><title>BLOCKBUSTED: Lazarus, Blockbuster, and North Korea</title><link>https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/</link><pubDate>Tue, 12 Dec 2017 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/</guid><description>
 &lt;p&gt;As we have proven in previous research blog posts, malware authors often reuse
 the same code. This evolution of code and code reuse is seen all throughout the
 well known Blockbuster campaign and connections between other malware
@@ -22,54 +22,54 @@ that there are code overlaps between a number of samples dating from 2014 to
 2017. These are malware from different periods of time and binaries attributed
 to different attacks.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig1.png" title="https://analyze.intezer.com/#/analyses/7b059705-9d55-4fd9-a70b-9b4401aeecae" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig1.png" title="https://analyze.intezer.com/#/analyses/7b059705-9d55-4fd9-a70b-9b4401aeecae" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;https://analyze.intezer.com/#/analyses/7b059705-9d55-4fd9-a70b-9b4401aeecae&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig2.png" title="https://analyze.intezer.com/#/analyses/d204da0f-a2a1-4f0e-9033-fe1e3b2105cc" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig2.png" title="https://analyze.intezer.com/#/analyses/d204da0f-a2a1-4f0e-9033-fe1e3b2105cc" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;https://analyze.intezer.com/#/analyses/d204da0f-a2a1-4f0e-9033-fe1e3b2105cc&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The analyzed samples were uncovered after uploading them to our Analyze system, generating YARA signatures from some of the unique code found in Lazarus group samples, and searching these signatures across a few malware databases. (Note: we found more samples than are being used for this report.)&lt;/p&gt;
 &lt;h2&gt;C&amp;amp;Cs &amp;amp; Command Handler&lt;span class="hx:absolute hx:-mt-20" id="ccs--command-handler"&gt;&lt;/span&gt;
 &lt;a href="#ccs--command-handler" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Throughout the years the Lazarus group has been active, not only have there been overlaps in the C&amp;amp;C infrastructure, the components of the C&amp;amp;C command handler have had pretty much the same functionality and code. Below is a comparison of two binaries from the Lazarus group, with shared code between the handler and functions included in the handler.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig3.png" title="C&amp;amp;C Command Handler 1d195c40169cbdb0f50eca40ebda62321aa05a54137635c7ebb2960690eb1d82" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig3.png" title="C&amp;amp;C Command Handler 1d195c40169cbdb0f50eca40ebda62321aa05a54137635c7ebb2960690eb1d82" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;C&amp;amp;C Command Handler 1d195c40169cbdb0f50eca40ebda62321aa05a54137635c7ebb2960690eb1d82&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig4.png" title="C&amp;amp;C Command Handler 2de5e99315a6cf42a46c8286ac4ea0bc842f6d78995833d2cab7de1cdad7dd8d" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig4.png" title="C&amp;amp;C Command Handler 2de5e99315a6cf42a46c8286ac4ea0bc842f6d78995833d2cab7de1cdad7dd8d" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;C&amp;amp;C Command Handler 2de5e99315a6cf42a46c8286ac4ea0bc842f6d78995833d2cab7de1cdad7dd8d&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The only visible differences are the control codes to execute certain functions; if you dive deeper, the functions themselves do not vary much. The first screenshot is of a binary with C&amp;amp;C commands 21687 to 21707 with a compilation date from February 5, 2014, and the second screenshot with C&amp;amp;C commands 32768 to 32835 is dated with the compilation date October 12, 2017. Not much has changed in three years. Interestingly enough, however, in reviewing more Blockbuster samples, the control code ranges appear to vary with the compilation date. Samples in the same range of compilation dates have the same control code sets. Also, we see the control codes remain the same regardless of whether the sample was compiled as an EXE or DLL.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig5.png" title="A few of the collected samples, compilation date, C&amp;amp;C commands, and type being EXE or DLL" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig5.png" title="A few of the collected samples, compilation date, C&amp;amp;C commands, and type being EXE or DLL" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;A few of the collected samples, compilation date, C&amp;amp;C commands, and type being EXE or DLL&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Infection Vectors &amp;amp; Targets&lt;span class="hx:absolute hx:-mt-20" id="infection-vectors--targets"&gt;&lt;/span&gt;
 &lt;a href="#infection-vectors--targets" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Lazarus group has targeted a variety of victims — from individuals to corporations — and used multiple platforms like traditional PCs and more recently, Android devices. The group does not seem to engage in specific targeting as they look to be targeting everyone and anyone they can infect using different infection vectors over the years. Their C&amp;amp;Cs seem to consist of hijacked domains and servers.&lt;/p&gt;
 &lt;p&gt;Most recently, it looks like they have tried to spearfish users by sending them an infected document. The latest samples we have incorporate a malicious visual basic macro embedded in a document with a fake job position.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig6.png" title="Malicious fake job position document" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig6.png" title="Malicious fake job position document" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Malicious fake job position document&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig7.png" title="Embedded macro" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig7.png" title="Embedded macro" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Embedded macro&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;During our research, we found a C&amp;amp;C located in China that is linked to a domain posted on the comment section of the threat intel news website, Israel Defense. These spam links are not just posted on Israel Defense, but all over the internet.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig8.png" title="http://www.israeldefense.co.il/he/comment/112488 with link to lzruziniu[.]com" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig8.png" title="http://www.israeldefense.co.il/he/comment/112488 with link to lzruziniu[.]com" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;http://www.israeldefense.co.il/he/comment/112488 with link to lzruziniu[.]com&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;It appears that during the time of this post, the C&amp;amp;C (114.215.107.218) was also hosting another binary from Lazarus. It also seems to be an automated spam comment, as there are multiple others on the same page. The links seem specific enough as if they were supposed to get someone browsing the web to click the link, which would lead to a download for infection. They may also have been using some type of web browser exploits. It is hard to tell at this point because the comments are from a couple years ago.&lt;/p&gt;
 &lt;h2&gt;Control Flow &amp;amp; Legacy Code&lt;span class="hx:absolute hx:-mt-20" id="control-flow--legacy-code"&gt;&lt;/span&gt;
 &lt;a href="#control-flow--legacy-code" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After reverse engineering one of the binaries from the Lazarus group, the rest become easily recognizable by a quick glance in IDA. From the entry point (or the ServiceMain export if the binary is a DLL), the binary begins by resolving all its imports, including those unused, by calling GetProcAddress and manually storing them in pointers.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig9.png" title="2014 DLL vs 2017 EXE" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig9.png" title="2014 DLL vs 2017 EXE" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;2014 DLL vs 2017 EXE&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The string obfuscation code has changed throughout the binaries according to the time they were compiled as well. This is one of the updates the group did make to the code, but the most significant evidence here is that from the oldest binary to the newest, they use the GetProcAddress function with “GetProcAddress” as the parameter. This was obviously a coding error that has remained in all the binaries analyzed.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/12/blockbusted-lazarus-blockbuster-north-korea/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The next part of the execution flow of the binary varies, but consists mainly of the same code with different options used. There may be features like registering persistence, checking for sandboxes or virtual machines, and more. All of these options seem to be interchangeably used, and a binary could be created as simply as filling out a few textboxes and checkboxes for all the different features, establishing the binary with a “generate RAT” button.&lt;/p&gt;
 &lt;p&gt;After the various components of optional code are executed, the malware creates a thread to bind and ‘listen’ to a specified port, waiting for a command from the C&amp;amp;C as discussed in the previous section of this post.&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;

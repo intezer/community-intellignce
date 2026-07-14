@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Stealer</title><link>https://intezer.github.io/community-intelligence/tags/stealer/</link><description>Recent content in Stealer on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 24 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/stealer/index.xml" rel="self" type="application/rss+xml"/><item><title>CryptoClippy is Evolving to Pilfer Even More Financial Data</title><link>https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</link><pubDate>Wed, 24 May 2023 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Stealer</title><link>https://research.intezer.com/tags/stealer/</link><description>Recent content in Stealer on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 24 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/stealer/index.xml" rel="self" type="application/rss+xml"/><item><title>CryptoClippy is Evolving to Pilfer Even More Financial Data</title><link>https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</link><pubDate>Wed, 24 May 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</guid><description>
 &lt;p&gt;A banking trojan is a malware designed to steal sensitive financial
 information, such as online banking login credentials, credit card numbers, and
 other financial data. Recently Unit42 released a detailed
@@ -35,9 +35,9 @@ that is signed by &amp;ldquo;PLK Management Limited,&amp;rdquo; and its metadata
 and product name pointing to &amp;ldquo;WhatsApp.&amp;rdquo; Still, it doesn’t share code with the
 software.&lt;/p&gt;
 &lt;p&gt;We named the installer of the first stage MINTYCIV.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig2.png" title=".NET MINTYCIV first stage installer." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig2.png" title=".NET MINTYCIV first stage installer." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;.NET MINTYCIV first stage installer.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The installer attempts to look like a legitimate application, but in the
@@ -52,11 +52,11 @@ the national postal service of Brazil. The submitted file name starts with
 Rastreio or Correios followed by four letters. Restreio translates to
 &amp;ldquo;tracking&amp;rdquo; in Portuguese and Correios means &amp;ldquo;mail&amp;rdquo; or &amp;ldquo;post office.&amp;rdquo;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig3.png" title="Correios logo included with the files" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig3.png" title="Correios logo included with the files" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Correios logo included with the files&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig4.png" title="One of the NSIS installers with the Correios logo" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig4.png" title="One of the NSIS installers with the Correios logo" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;One of the NSIS installers with the Correios logo&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;All files have the same behavior – extract and execute a BAT file that attempts
@@ -153,7 +153,7 @@ implementing an injection method. It is possible that the CryptoClippy malware
 developers cloned the project, removed the symbols and added a layer of
 obfuscation, and deployed this script.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig5.png" title="The script that injects the 2nd loader (after removing the obfuscation from the script)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig5.png" title="The script that injects the 2nd loader (after removing the obfuscation from the script)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The script that injects the 2nd loader (after removing the obfuscation from the script)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The 2nd stage
@@ -167,12 +167,12 @@ project that implements direct system calls execution for evading detection. In
 addition, both loader versions use Ntdll to resolve API functions, and the API
 names are hashed.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig6.png" title="Analysis of the CryptoClippy loader we inspected." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig6.png" title="Analysis of the CryptoClippy loader we inspected." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Analysis of the CryptoClippy loader we inspected.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The loader we found has two unique strings. One of them is
 client-injector64.dll which seems to be the name of the DLL.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;We noticed that both loader versions, before making the injection, call
 &lt;a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-rtlgetversion"target="_blank" rel="noopener"&gt;RtlGetVersion&lt;/a&gt;
 to get information about the operation system of the victim endpoint. The
@@ -184,7 +184,7 @@ the correct minor version is defined in the
 From this check, we understand that the malware targets Windows versions
 starting from Vista and above.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig7.png" title="Source: https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoa" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig7.png" title="Source: https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoa" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Source: https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoa&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Updates to the CryptoClippy Malware&lt;span class="hx:absolute hx:-mt-20" id="updates-to-the-cryptoclippy-malware"&gt;&lt;/span&gt;
@@ -196,7 +196,7 @@ that we obtained
 that were published in the previous report. While the main functionality of the
 malware stayed the same, there are several changes that we noticed.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig9.png" title="Analysis of the CryptoClippy malware sample obtained from the C2." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig9.png" title="Analysis of the CryptoClippy malware sample obtained from the C2." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Analysis of the CryptoClippy malware sample obtained from the C2.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Information Stealing&lt;span class="hx:absolute hx:-mt-20" id="information-stealing"&gt;&lt;/span&gt;
@@ -237,7 +237,7 @@ capability — the ability to substitute the intercepted PIX string with one
 under the control of the threat actors. This insidious modification would
 effectively redirect all payments to their designated account.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig10.png" title="CMSTPLUA CLSID used by the malware in UAC bypass." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig10.png" title="CMSTPLUA CLSID used by the malware in UAC bypass." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;CMSTPLUA CLSID used by the malware in UAC bypass.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Besides the capabilities above, the malware obtains the user name, computer
@@ -262,12 +262,12 @@ function, creating an object of the class specified by the
 value. CLSID is a unique identifier of a COM class object. In our case, the
 CLSID is &lt;code&gt;{000214EE-0000-0000-C000-00000000046}&lt;/code&gt;. Looking up this value, we get
 only two results (the top result is Portuguese):&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This handler points to the IShellLinkA interface, which provides methods for
 working with Shell links – LNK files. The target of the LNK file is the bat
 file from the second stage (&lt;code&gt;Repoista.bat&lt;/code&gt;). This script is responsible for
 executing the PowerShell script that injects the loader.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The malware contains 3 scripts that are executed in different stages of the
 malware execution. The name of the scripts changes between samples since it
 depends on the configuration. All of the scripts are encoded using RC4. As
@@ -291,7 +291,7 @@ interface to bypass UAC and execute the script with elevated permissions. This
 technique was previously used by other threats, such as
 &lt;a href="https://cybergeeks.tech/a-step-by-step-analysis-of-a-new-version-of-darkside-ransomware/#:~:text=%20the%20ransomware%20can%20perform%20privilege%20escalation%20using%20the%20cmstplua%20com%20interface%20and%20achieves%20persistence%20by%20installing%20itself%20as%20a%20service.%20"target="_blank" rel="noopener"&gt;DarkSide ransomware&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig13.png" title="CMSTPLUA CLSID used by the malware in UAC bypass." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig13.png" title="CMSTPLUA CLSID used by the malware in UAC bypass." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;CMSTPLUA CLSID used by the malware in UAC bypass.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;If the token elevation type is TokenElevationTypeDefault, the malware will use

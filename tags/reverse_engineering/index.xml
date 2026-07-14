@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Reverse_engineering</title><link>https://intezer.github.io/community-intelligence/tags/reverse_engineering/</link><description>Recent content in Reverse_engineering on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 07 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/reverse_engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>Malware Reverse Engineering – Unraveling the Secrets of Encryption in Malware</title><link>https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/</link><pubDate>Mon, 07 Aug 2023 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Reverse_engineering</title><link>https://research.intezer.com/tags/reverse_engineering/</link><description>Recent content in Reverse_engineering on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 07 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/reverse_engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>Malware Reverse Engineering – Unraveling the Secrets of Encryption in Malware</title><link>https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/</link><pubDate>Mon, 07 Aug 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/</guid><description>
 &lt;p&gt;Encryption is everywhere in our lives. You might not notice it, but you use it
 every single day. It is baked into even the most basic processes of our digital
 world. Every time you open a website, send a message, unlock your phone, or pay
@@ -47,7 +47,7 @@ analysis. With the messages being decrypted, this uncovered a
 Mary, along with her co-conspirators, was executed! Think of the consequences
 the next time you decide to use a weak cipher for your secret messages!&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig1.jpg" title="Part of the cipher used by Mary, Queen of Scots (https://www.nationalarchives.gov.uk/education/resources/elizabeth-monarchy/ciphers-used-by-mary-queen-of-scots/)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig1.jpg" title="Part of the cipher used by Mary, Queen of Scots (https://www.nationalarchives.gov.uk/education/resources/elizabeth-monarchy/ciphers-used-by-mary-queen-of-scots/)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Part of the cipher used by Mary, Queen of Scots (https://www.nationalarchives.gov.uk/education/resources/elizabeth-monarchy/ciphers-used-by-mary-queen-of-scots/)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Fast forwarding to the modern era, with the development of technology, the
@@ -68,14 +68,14 @@ produces an output based on the following rules:&lt;/p&gt;
 &lt;li&gt;This means that XORing the output with one of the inputs returns the other
 input, making it a two-way function.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In XOR encryption, each plaintext byte is combined with a corresponding byte or
 character from a secret key using the XOR operation. The resulting ciphertext
 is the encrypted form of the plaintext. Since the encryption is a two-way
 function meaning that to decrypt the ciphertext, all you have to do is XOR it
 with the same secret key.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig3.gif" title="A simulation of a rolling XOR encryption." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig3.gif" title="A simulation of a rolling XOR encryption." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;A simulation of a rolling XOR encryption.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;A rolling XOR (rotating XOR) is a cryptographic technique that involves
@@ -105,14 +105,14 @@ value eight steps to the right.&lt;/p&gt;
 &lt;p&gt;The decoding function accepts four arguments: the XOR key, the constant added
 to the key byte every round, the encoded buffer, and its length.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig4.png" title="A call to the function that decodes the configuration using XOR." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig4.png" title="A call to the function that decodes the configuration using XOR." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;A call to the function that decodes the configuration using XOR.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The screenshot below presents the implementation of the XOR encryption. The
 highlighted xor operation between the buffer and the key is followed by
 including the key and the constant character.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig5.png" title="The decoding function in RedXor." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig5.png" title="The decoding function in RedXor." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The decoding function in RedXor.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The pseudocode of the decryption would look like this:&lt;/p&gt;
@@ -142,7 +142,7 @@ data-copied-label="Copied!"
 &lt;a href="#symmetric-cryptography" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Symmetric cryptography is when the same key is used to encrypt and decrypt
 plaintext and ciphertext. Generally, there are two types of ciphers used in
 symmetric encryption. Stream ciphers and Block ciphers.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Stream Ciphers&lt;span class="hx:absolute hx:-mt-20" id="stream-ciphers"&gt;&lt;/span&gt;
 &lt;a href="#stream-ciphers" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;A stream cipher is a type of cipher that encrypts data by combining the
 plaintext with a keystream. A keystream is a pseudorandom set of bits that is
@@ -171,21 +171,21 @@ bytes ranging from 0x00 to 0xFF. This is a very distinctive way to identify RC4
 usage. After the identity permutation is created, the key bytes will be mixed
 in to create the pseudorandom keystream.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig7.png" title="Start of the Key-scheduling algorithm (KSA) in Symbiote" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig7.png" title="Start of the Key-scheduling algorithm (KSA) in Symbiote" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Start of the Key-scheduling algorithm (KSA) in Symbiote&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Another use of a stream cipher in malware is the use of ChaCha20 in the APT
 malware StageClient. ChaCha20 is used to encrypt the configuration, protecting
 it from static analysis.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig8.png" title="Call to ChaCha20 with key passed in as parameter in StageClient" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig8.png" title="Call to ChaCha20 with key passed in as parameter in StageClient" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Call to ChaCha20 with key passed in as parameter in StageClient&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;For a visualization of the ChaCha20 cipher, we recommend watching this
 Computerphile video:&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://youtu.be/UeIpq-C-GSA"target="_blank" rel="noopener"&gt;Chacha Cipher – Computerphile&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig9.png" title="ChaCha20 decrypted StageClient configuration showing C2 address" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig9.png" title="ChaCha20 decrypted StageClient configuration showing C2 address" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;ChaCha20 decrypted StageClient configuration showing C2 address&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Block Ciphers&lt;span class="hx:absolute hx:-mt-20" id="block-ciphers"&gt;&lt;/span&gt;
@@ -212,7 +212,7 @@ data, usually a random number, that is used to ensure that two identical
 plaintext blocks encrypt to different ciphertext blocks, ensuring additional
 security and the removal of patterns.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig10.png" title="Intezer logo (left), ECB encrypted (middle), CBC encrypted (right)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig10.png" title="Intezer logo (left), ECB encrypted (middle), CBC encrypted (right)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Intezer logo (left), ECB encrypted (middle), CBC encrypted (right)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;For AES, there is also an
@@ -242,7 +242,7 @@ Golang is shown in the GrimPlant component. Golang statically compiles
 libraries into the built binary, therefore it is easy to detect when AES is
 being used and compare it with the source code.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig11.png" title="Constant AES S-box in GrimPlant component." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig11.png" title="Constant AES S-box in GrimPlant component." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Constant AES S-box in GrimPlant component.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Asymmetric Encryption&lt;span class="hx:absolute hx:-mt-20" id="asymmetric-encryption"&gt;&lt;/span&gt;
@@ -257,7 +257,7 @@ one key can only be decrypted with the corresponding key from the pair.&lt;/p&gt
 the recipient&amp;rsquo;s public key, transmission of the encrypted message, and
 decryption by the recipient using their private key. This process ensures
 secure communication without the need for a shared secret key.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Asymmetric encryption reduces the need for a secure channel to exchange a
 secret key. The public keys can be freely shared without compromising the
 security of the encryption. It ensures that only the intended recipient with
@@ -324,7 +324,7 @@ process of the infected endpoint.&lt;/p&gt;
 which decodes and encodes an RSA public key using a SubjectPublicKeyInfo
 format.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig13.png" title="RSA public key in Vermilion Strike." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig13.png" title="RSA public key in Vermilion Strike." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;RSA public key in Vermilion Strike.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Vermilion Strike then gathers specific system information from the compromised
@@ -339,7 +339,7 @@ then base64 encoded, a common standard for transmitting binary data as text.
 The encrypted data is sent to the C2 server in a similar way that the metadata
 is sent from a Cobalt Strike beacon to the C2 server.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig14.png" title="The collected information (left), encrypted information(middle), encrypted and encoded information(right)." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig14.png" title="The collected information (left), encrypted information(middle), encrypted and encoded information(right)." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The collected information (left), encrypted information(middle), encrypted and encoded information(right).&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Spotting Encryption in Malware&lt;span class="hx:absolute hx:-mt-20" id="spotting-encryption-in-malware"&gt;&lt;/span&gt;
@@ -378,7 +378,7 @@ researchers quickly identify known malicious behaviors in a sample. As seen in
 the screenshot below, when running CAPA for the Vermilion Strike sample, it
 identifies the implementation of RSA and XOR encryption. It provides the
 addresses of the relevant functions.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Having said that, CAPA is not a magic bullet, and in some cases, it might fail
 to detect certain behaviors due to unorthodox techniques implemented by threat
 actors or novel and non-conventional implementations of certain methods. In
@@ -392,7 +392,7 @@ loading values from the stack (as can be seen in the screenshot below). These
 operations often indicate encryption-related transformations and can provide
 crucial insights into how the malware encrypts and manipulates data.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig15.png" title="Implementation of encryption using boolean algebra operations." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig15.png" title="Implementation of encryption using boolean algebra operations." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Implementation of encryption using boolean algebra operations.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;RC4&lt;span class="hx:absolute hx:-mt-20" id="rc4"&gt;&lt;/span&gt;
@@ -428,7 +428,7 @@ data-copied-label="Copied!"
 &lt;a href="../../../2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data"&gt;CryptoClippy&lt;/a&gt;
 malware, we can identify the two loops that are part of the KSA algorithm as
 described above.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h4&gt;ChaCha20&lt;span class="hx:absolute hx:-mt-20" id="chacha20"&gt;&lt;/span&gt;
 &lt;a href="#chacha20" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;In the key setup stage of the ChaCha20 encryption algorithm, a
 &lt;a href="https://xilinx.github.io/Vitis_Libraries/security/2019.2/guide_L1/internals/chacha20.html"target="_blank" rel="noopener"&gt;fixed constant&lt;/a&gt;
@@ -444,7 +444,7 @@ ChaCha20 encryption. Below is the constant string in StageClient, along with
 the beginning of the initialization state, with the
 &lt;a href="https://github.com/shiffthq/chacha20/blob/master/src/chacha20.c"target="_blank" rel="noopener"&gt;source code&lt;/a&gt;
 for comparison.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/08/unraveling-malware-encryption-secrets/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The following Yara rule can be used to check for the likely use of ChaCha20
 using the constant string.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;

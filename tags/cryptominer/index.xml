@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cryptominer</title><link>https://intezer.github.io/community-intelligence/tags/cryptominer/</link><description>Recent content in Cryptominer on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 06 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cryptominer/index.xml" rel="self" type="application/rss+xml"/><item><title>Rocke Group Actively Targeting the Cloud: Wants Your SSH Keys</title><link>https://intezer.github.io/community-intelligence/blog/2021/04/rocke-group-actively-targeting-the-cloud-wants-your-ssh-keys/</link><pubDate>Tue, 06 Apr 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/04/rocke-group-actively-targeting-the-cloud-wants-your-ssh-keys/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cryptominer</title><link>https://research.intezer.com/tags/cryptominer/</link><description>Recent content in Cryptominer on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 06 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/cryptominer/index.xml" rel="self" type="application/rss+xml"/><item><title>Rocke Group Actively Targeting the Cloud: Wants Your SSH Keys</title><link>https://research.intezer.com/blog/2021/04/rocke-group-actively-targeting-the-cloud-wants-your-ssh-keys/</link><pubDate>Tue, 06 Apr 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/04/rocke-group-actively-targeting-the-cloud-wants-your-ssh-keys/</guid><description>
 &lt;h2&gt;New Malware Variant Exploits Production Environment&lt;span class="hx:absolute hx:-mt-20" id="new-malware-variant-exploits-production-environment"&gt;&lt;/span&gt;
 &lt;a href="#new-malware-variant-exploits-production-environment" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Rocke Group is a Chinese-based threat actor most known for running
 cryptojacking malware on Linux machines. The group has been
@@ -281,7 +281,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Watch Your Containers: Doki Infecting Docker Servers in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</link><pubDate>Tue, 28 Jul 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</guid><description>
+&lt;/div&gt;</description></item><item><title>Watch Your Containers: Doki Infecting Docker Servers in the Cloud</title><link>https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</link><pubDate>Tue, 28 Jul 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</guid><description>
 &lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
 &lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://blog.netlab.360.com/a-new-mining-botnet-blends-its-c2s-into-ngrok-service/"target="_blank" rel="noopener"&gt;Ngrok Mining Botnet&lt;/a&gt;
@@ -363,14 +363,14 @@ Ngrok to craft unique URLs with a short lifetime and uses them to download
 payloads during the attack by passing them to the curl based image. The
 downloaded payload is saved in &lt;code&gt;/tmpXXXXXX&lt;/code&gt; directory in the container.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig1.png" title="The command that created the container as seen on the syslog of the attacked server" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig1.png" title="The command that created the container as seen on the syslog of the attacked server" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The command that created the container as seen on the syslog of the attacked server&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;By using the bind configuration the attacker can control the cron utility of
 the host. The attacker modifies the host&amp;rsquo;s cron to execute the downloaded
 payload every minute. We observed two types of payloads, one is a network
 scanner script and the other is a downloader script.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The network scanner uses zmap, zgrap, and jq to scan ports associated with
 Redis, Docker, SSH, and HTTP.&lt;/p&gt;
 &lt;p&gt;Using a list of hardcoded ranges of IP addresses, which belong mostly to cloud
@@ -395,7 +395,7 @@ find the domain of its C2 in real time.&lt;/p&gt;
 for over six months despite having
 &lt;a href="https://www.virustotal.com/gui/file/4aadb47706f0fe1734ee514e79c93eed65e1a0a9f61b63f3e7b6367bd9a3e63b/detection"target="_blank" rel="noopener"&gt;been uploaded to VirusTotal&lt;/a&gt;
 on January 14, 2020 and scanned multiple times since.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Doki is multi-threaded and uses the embedTLS library for cryptographic
 functions and network communication. When executed, the malware will create a
 seperate thread in order to handle all C2 communications.&lt;/p&gt;
@@ -423,21 +423,21 @@ from law enforcement and domain filtering attempts from security products.&lt;/p
 not &amp;ldquo;46927e019820&amp;rdquo;, which is what&amp;rsquo;s generated for &amp;ldquo;0.000000&amp;rdquo;, meaning when no
 Dogecoin was ever transferred from the wallet. In the case that this domain is
 generated, the malware will exit without continuing any further.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Otherwise, the malware continues to download a shell script by contacting its
 C2 via HTTPS, using the URL &lt;code&gt;&amp;lt;c2_address&amp;gt;/update.sh&lt;/code&gt; and saving the returned
 data as &lt;code&gt;/tmp/update.sh&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;It will then resolve the current process&amp;rsquo;s PID and path to be used as script
 arguments, and proceeds to execute the script by running:
 &lt;code&gt;/bin/sh -c ./update.sh \&amp;lt;process_id&amp;gt; \&amp;lt;process_path&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Meanwhile, the main thread of the malware reads from STDIN, expecting to
 receive binary data from that shell script. The arguments are passed to the
 script in order to allow it to communicate with the malware in this way and
 receive code to execute.&lt;/p&gt;
 &lt;p&gt;If data is received via STDIN, the malware saves it as a file under /tmp,
 choosing its name randomly from a predefined list of Linux kernel modules.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;While it&amp;rsquo;s a very basic deception method, it&amp;rsquo;s not something commonly seen in
 Linux malware, which often don&amp;rsquo;t bother disguising as system files.&lt;/p&gt;
 &lt;p&gt;Finally, the malware proceeds to fork so the child process executes the file
@@ -477,7 +477,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Technical Analysis: Pacha Group Competing against Rocke Group for Cryptocurrency Mining Foothold on the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</link><pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</guid><description>
+&lt;/div&gt;</description></item><item><title>Technical Analysis: Pacha Group Competing against Rocke Group for Cryptocurrency Mining Foothold on the Cloud</title><link>https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</link><pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</guid><description>
 &lt;p&gt;Pacha Group is a crypto-mining threat actor we at Intezer discovered and
 profiled in a &lt;a href="../../../2019/02/technical-analysis-pacha-group"&gt;blog post&lt;/a&gt;
 published on February 28, 2019. This threat actor targeted Linux servers dating
@@ -494,10 +494,10 @@ environments are increasingly becoming a common target for adversaries.&lt;/p&gt
 &lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
 &lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In monitoring Pacha Group we have identified new, undetected Linux.GreedyAntd
 variants that share code with previous variants.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Despite sharing nearly 30% of code with previous variants, detection rates of
 the new Pacha Group variants are low:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The main malware infrastructure appears to be identical to previous Pacha Group
 campaigns, although there is a distinguishable effort to detect and mitigate
 Rocke Group’s implants. Rocke Group was first reported by
@@ -508,7 +508,7 @@ servers and cloud-based environments as reported by
 The following image is a blacklist of miners in which Linux.GreedyAntd searches
 to eradicate. We have recognized several file names in this blacklist known to
 be used for Rocke Group’s implants:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Furthermore, there are other strings within this file path blacklist which are
 used to search for and disable cloud protection solutions, such as Alibaba
 Server Guard Agent. Strings of malware
@@ -519,46 +519,46 @@ were also found. Rocke Group is known to hunt for similar security products and
 to have
 &lt;a href="https://community.atlassian.com/t5/Confluence-questions/How-come-my-confluence-installation-was-hacked-by-Kerberods/qaq-p/1054605#M141274"target="_blank" rel="noopener"&gt;abused&lt;/a&gt;
 the same vulnerability.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Another interesting update in Pacha Group’s infrastructure in comparison to
 previous campaigns is that further implants would only be able to be downloaded
 from Pacha Group’s servers if the HTTP GET request was completed with a
 specific User-Agent. In the following screenshot we can see how files can not
 be downloaded unless the correct User-Agent is used:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In addition, Pacha Group’s component update seems to include a lightweight
 user-mode rootkit known as Libprocesshider, which is an open source project
 hosted on &lt;a href="https://github.com/gianlucaborello/libprocesshider"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt; and has
 also been used by Rocke Group.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The malware updates &lt;code&gt;/etc/ld.preload&lt;/code&gt; to include the path of the dropped
 library masquerading libconv.so, a unicode conversion library.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This shared object will export customized versions of readdir and readdir64
 functions that will attempt to hide a process name from /proc filesystem of one
 of the main components of the malware’s infrastructure, in charge to download
 further implants in intervals along with enforcing process, file path and IP
 blacklisting:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Along with process and file path blacklisting measures seen in previous
 variants, we also observed that newer variants implement IP blacklisting using
 an interesting technique.&lt;/p&gt;
 &lt;p&gt;Right after process and file path black listing has been accomplished, we find
 the following code:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Each of the IPs in the blacklist IP table is decoded and then added to the
 system routing table with host scope via ioctl.&lt;/p&gt;
 &lt;p&gt;This is more conveniently shown by observing the following system call trace:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When we check the routing table of a compromised system we see the following:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Each of the decoded IPs have been added to the routing table with host scope.
 This implies that when any of these IPs will be requested, each request will be
 routed back to the host to be resolved instead of redirecting them to the
 gateway, causing a failure in the routing process.&lt;/p&gt;
 &lt;p&gt;In the following screenshot we can see the effect of this methodology by using
 the ping utility:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After analyzing the IP blacklist we discovered that some of these IPs, even
 though they may not necessarily be malicious, are known to have been used by
 Rocke Group in the past. As an example, systemten.org is in this blacklist and

@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Phishing</title><link>https://intezer.github.io/community-intelligence/tags/phishing/</link><description>Recent content in Phishing on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 23 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/phishing/index.xml" rel="self" type="application/rss+xml"/><item><title>Emerging Phishing Techniques New Threats and Attack Vectors</title><link>https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</link><pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Phishing</title><link>https://research.intezer.com/tags/phishing/</link><description>Recent content in Phishing on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 23 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/phishing/index.xml" rel="self" type="application/rss+xml"/><item><title>Emerging Phishing Techniques New Threats and Attack Vectors</title><link>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</link><pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</guid><description>
 &lt;p&gt;Phishing remains
 &lt;a href="https://www.crowdstrike.com/en-us/cybersecurity-101/cyberattacks/common-cyberattacks/"target="_blank" rel="noopener"&gt;one of the most prevalent&lt;/a&gt;
 and successful attack vectors used by cybercriminals today. It exploits human
@@ -25,7 +25,7 @@ observed in 2025 so far.&lt;/p&gt;
 inside them. Once decoded, this JavaScript reveals an obfuscated script that
 redirects users to a phishing site. The attackers delivered the SVG file as an
 email attachment, successfully evading detection mechanisms.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;How SVG Files Work&lt;span class="hx:absolute hx:-mt-20" id="how-svg-files-work"&gt;&lt;/span&gt;
 &lt;a href="#how-svg-files-work" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Scalable Vector Graphics (SVG) is an XML-based format for rendering
 two-dimensional graphics. Unlike other image formats, SVG files can contain
@@ -46,9 +46,9 @@ we must first decode the data to reveal its original structure.&lt;/p&gt;
 (&lt;a href="https://www.virustotal.com/gui/file/de0b9021204beb8cb3acc2e339b16a64bfe8084447d1cdca28dc5bdb2203e139/detection"target="_blank" rel="noopener"&gt;VirusTotal link&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Upon inspecting the SVG file, we found an embedded &lt;code&gt;&amp;lt;iframe&amp;gt;&lt;/code&gt; tag containing
 Base64-encoded data.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Decoding the Base64 data exposed an obfuscated JavaScript payload.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This script, when deobfuscated, revealed a malicious URL that redirected users
 to a phishing page designed to harvest credentials.&lt;/p&gt;
 &lt;p&gt;The script we extracted followed a multi-step obfuscation pattern:&lt;/p&gt;
@@ -165,8 +165,8 @@ to be delivered directly to users.&lt;/li&gt;
 security vendor flagged it as malicious, and the malicious PDF bypassed
 security vendors and went straight to the victim’s mailbox.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;To extract the hidden URL, we performed the following steps using a custom PDF
 URL analyzer built by the Intezer research team:&lt;/p&gt;
 &lt;ul&gt;
@@ -178,8 +178,8 @@ objects that contained hyperlinks.&lt;/li&gt;
 malicious indicators and phishing databases using a custom tool we built and
 Intezer’s platform.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Findings&lt;span class="hx:absolute hx:-mt-20" id="findings-1"&gt;&lt;/span&gt;
 &lt;a href="#findings-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In the analysis we conducted, we found that:&lt;/p&gt;
 &lt;ul&gt;
@@ -266,7 +266,7 @@ documents (e.g., &lt;code&gt;.docx&lt;/code&gt;) to deliver phishing payloads. M
 archive web content and can store complete HTML documents, including images,
 links, and scripts. This makes them ideal for hiding phishing lures inside
 seemingly harmless Office files.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The phishing emails delivering these &lt;code&gt;.docx&lt;/code&gt; files successfully bypassed
 multiple email security filters and landed in user inboxes undetected.&lt;/p&gt;
 &lt;h3&gt;How OpenXML Documents Work&lt;span class="hx:absolute hx:-mt-20" id="how-openxml-documents-work"&gt;&lt;/span&gt;
@@ -372,7 +372,7 @@ track these shifts in real time. We encourage the community to remain
 proactive. These are not theoretical techniques; they are actively used in the
 wild, and we expect their adoption to increase.&lt;/p&gt;
 &lt;p&gt;Phishing isn’t going away, but with the right tools, analysis depth, and
-research collaboration, we can stay ahead of threats designed to go unnoticed.&lt;/p&gt;</description></item><item><title>Phishing Campaign Targets Chinese Nuclear Energy Industry</title><link>https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</link><pubDate>Fri, 24 Mar 2023 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</guid><description>
+research collaboration, we can stay ahead of threats designed to go unnoticed.&lt;/p&gt;</description></item><item><title>Phishing Campaign Targets Chinese Nuclear Energy Industry</title><link>https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</link><pubDate>Fri, 24 Mar 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</guid><description>
 &lt;p&gt;Intezer has been tracking activity targeting the energy sector and noted a
 campaign with techniques that align with those of
 &lt;a href="https://analyze.intezer.com/families/3b992ec8-b6b1-4ea4-a958-b5fca45f31bd?tab=detect"target="_blank" rel="noopener"&gt;Bitter APT&lt;/a&gt;,
@@ -405,7 +405,7 @@ payload. This activity appears to be a continuation of the tactics and campaign
 that Bitter APT have been using since
 &lt;a href="https://www.antiy.cn/research/notice&amp;amp;report/research_report/20210705.html"target="_blank" rel="noopener"&gt;at least 2021&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig1.png" title="Figure 1: Attack flow described in this research" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig1.png" title="Figure 1: Attack flow described in this research" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: Attack flow described in this research&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Social Engineering with Phishing Emails&lt;span class="hx:absolute hx:-mt-20" id="social-engineering-with-phishing-emails"&gt;&lt;/span&gt;
@@ -414,7 +414,7 @@ email address used to send the phishing emails is crafted to look like it is
 coming from an &amp;ldquo;Embassy in Beijing.&amp;rdquo; A free email provider is used, therefore
 domain reputation checks will not be useful.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig2.png" title="Figure 2: Name crafted to appear as communication from an embassy" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig2.png" title="Figure 2: Name crafted to appear as communication from an embassy" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Name crafted to appear as communication from an embassy&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The email is signed off with the name and details of an actual attaché of the
@@ -428,7 +428,7 @@ recipients in governmental and energy sectors, such as International Atomic
 Energy Agency (IAEA), China Institute of International Studies (CIIS),
 strategic alliances, and nuclear doctrines.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig3.png" title="Figure 3: Email body lure with nuclear themes" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig3.png" title="Figure 3: Email body lure with nuclear themes" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: Email body lure with nuclear themes&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Malicious Payloads via CHM and Microsoft Excel Files&lt;span class="hx:absolute hx:-mt-20" id="malicious-payloads-via-chm-and-microsoft-excel-files"&gt;&lt;/span&gt;
@@ -531,7 +531,7 @@ of the CHM payload abstracts the same activity through an encoded PowerShell
 command stage, obfuscating the activity further than just simple string
 concatenation.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig6.png" title="Figure 6: Encoded PowerShell command in version 2 of the CHM files" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig6.png" title="Figure 6: Encoded PowerShell command in version 2 of the CHM files" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: Encoded PowerShell command in version 2 of the CHM files&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The decoded command is the following:&lt;/p&gt;
@@ -552,7 +552,7 @@ data-copied-label="Copied!"
 computer name is sent to the C2 and not the username. What is interesting about
 the next version is that it now contains a decoy picture when opened:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig7.png" title="Figure 7: Decoy picture" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig7.png" title="Figure 7: Decoy picture" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: Decoy picture&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The decoy appears to reference the United Front Work Department of the Central
@@ -560,7 +560,7 @@ Committee of the Chinese Communist Party. The following is a machine translated
 version of the same picture for reference (please note that the translation
 will not be fully accurate and should be used for reference purposes only):&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig8.jpg" title="Figure 8: Machine translated version of the decoy" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig8.jpg" title="Figure 8: Machine translated version of the decoy" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 8: Machine translated version of the decoy&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
@@ -697,7 +697,7 @@ data-copied-label="Copied!"
 &lt;td&gt;Data can be exfiltrated&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>Elephant Framework Delivered in Phishing Attacks Against Ukrainian Organizations</title><link>https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</link><pubDate>Mon, 04 Apr 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</guid><description>
+&lt;/table&gt;</description></item><item><title>Elephant Framework Delivered in Phishing Attacks Against Ukrainian Organizations</title><link>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</link><pubDate>Mon, 04 Apr 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</guid><description>
 &lt;p&gt;A recently developed malware framework called Elephant is being delivered in
 targeted spear phishing campaigns using spoofed Ukrainian governmental email
 addresses. The four malware components delivered are used for stealing
@@ -803,7 +803,7 @@ allowed to send emails using that domain name. Some email providers do warn
 when they receive an email from an address that doesn&amp;rsquo;t have an SPF record. The
 screenshot below shows the warning message displayed in GMail when reading such
 email.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Our theory is that the threat actor exploited this vulnerability to send
 spoofed phishing emails to their targets. We reported the issue to CERT-UA.&lt;/p&gt;
 &lt;p&gt;We
@@ -822,7 +822,7 @@ components have been organized. The location of the implant&amp;rsquo;s entrypoi
 unknown and has been guessed to be in the root folder. As there are also server
 components to the framework, we hypothesize that there are more folders for the
 two servers used by the framework.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Dropper Component&lt;span class="hx:absolute hx:-mt-20" id="dropper-component"&gt;&lt;/span&gt;
 &lt;a href="#dropper-component" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;While called the dropper in the framework, this component does not have an
 embedded payload. Instead it is technically a downloader that fetches the next
@@ -840,7 +840,7 @@ between this component and the others is that this one is using code from the
 &lt;a href="https://github.com/redcode-labs/Coldfire"target="_blank" rel="noopener"&gt;ColdFire project on GitHub&lt;/a&gt;. The
 screenshot below shows the malware using the &lt;code&gt;Wait&lt;/code&gt; function to sleep for 10
 seconds before allocating 200 mb of garbage data.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Persistence is established by adding a new key entry with the name &lt;code&gt;Java-3DK&lt;/code&gt;
 to the registry key &lt;code&gt;SoftwareMicrosoftWindowsCurrentVersionRun&lt;/code&gt;. After this,
 the malware checks if a new binary exists by comparing its MD5 hash with a hash
@@ -881,7 +881,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig4.png" title="Analysis of the Elephant downloader (https://analyze.intezer.com/files/8ffe7f2eeb0cbfbe158b77bbff3e0055d2ef7138f481b4fac8ade6bfb9b2b0a1)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig4.png" title="Analysis of the Elephant downloader (https://analyze.intezer.com/files/8ffe7f2eeb0cbfbe158b77bbff3e0055d2ef7138f481b4fac8ade6bfb9b2b0a1)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Analysis of the Elephant downloader (https://analyze.intezer.com/files/8ffe7f2eeb0cbfbe158b77bbff3e0055d2ef7138f481b4fac8ade6bfb9b2b0a1)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Implant Component (GrimPlant)&lt;span class="hx:absolute hx:-mt-20" id="implant-component-grimplant"&gt;&lt;/span&gt;
@@ -891,7 +891,7 @@ set of functionality, for example it doesn&amp;rsquo;t have any persistence func
 on its own. When the malware first is executed, it allocates 200 mb and sleeps
 for 10 seconds, the function shown in the screenshot below. This is an
 anti-emulation technique that has been found in other malware written in Go.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The Command and Control (C2) address is not included in the binary. Instead it
 is passed in to the malware via the command line flag &lt;code&gt;-addr&lt;/code&gt;. The address is
 not provided as a plain string. Instead it has been encrypted with AES in
@@ -1023,7 +1023,7 @@ Zservers and still returned Elephant components as of April 2022. The
 components retrieved from the server are very similar to the samples used at
 the end of March. The other hosting providers used by the threat actor are PQ
 Hosting and Serverion.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The threat actor has chosen to sprinkle some French connections within their
 infrastructure. The certificates use French location information and the domain
 name &lt;code&gt;forkscenter[.]fr&lt;/code&gt;. We don&amp;rsquo;t know if the decision to name it Elephant is a
@@ -1075,7 +1075,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>New Conversation Hijacking Campaign Delivering IcedID</title><link>https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/</link><pubDate>Mon, 28 Mar 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/</guid><description>
+&lt;/div&gt;</description></item><item><title>New Conversation Hijacking Campaign Delivering IcedID</title><link>https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/</link><pubDate>Mon, 28 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/</guid><description>
 &lt;p&gt;&lt;em&gt;This post describes the technical analysis of a new campaign detected by
 Intezer&amp;rsquo;s research team, which initiates attacks with a phishing email that
 uses conversation hijacking to deliver IcedID.&lt;/em&gt;&lt;/p&gt;
@@ -1116,7 +1116,7 @@ resulting in execution of the malware without warning to the user. &lt;strong&gt
 regards to targeting, we have seen organizations within energy, healthcare,
 law, and pharmaceutical sectors.&lt;/strong&gt;&lt;/p&gt;
 &lt;h2&gt;Infection Chain&lt;span class="hx:absolute hx:-mt-20" id="infection-chain"&gt;&lt;/span&gt;
-&lt;a href="#infection-chain" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;a href="#infection-chain" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The attack-chain starts with a phishing email. The email includes a message
 about some important document and has a password protected &lt;code&gt;zip&lt;/code&gt; archive file
 attached. The password to the archive is given in the email body, as can be
@@ -1124,45 +1124,45 @@ seen in the screenshot below. What makes the phishing email more convincing is
 that it&amp;rsquo;s using conversation hijacking (thread hijacking). &lt;strong&gt;A forged reply to
 a previous stolen email is being used.&lt;/strong&gt; Additionally, the email has also been
 sent from the email account from whom the email was stolen from.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The content of the zip archive is shown in the screenshot below. It includes a
 single &lt;code&gt;ISO&lt;/code&gt; file with the same filename as the zip archive. It can also be
 seen that the file was created not that long before the email was sent.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The ISO file includes two files, a LNK file named &lt;code&gt;document&lt;/code&gt; and a DLL file
 named &lt;code&gt;main&lt;/code&gt;. From the timestamps it can be concluded that the DLL file was
 prepared the day before while the LNK file was prepared about a week before. It
 is possible that the LNK file has been used in earlier phishing emails.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The LNK file has been made to look like a document file via its embedded icon
 file. As can be seen in the screenshot below, when a user double clicks the
 link file, it uses &lt;code&gt;regsvr32&lt;/code&gt; to execute the DLL file.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The use of &lt;a href="https://attack.mitre.org/techniques/T1218/010/"target="_blank" rel="noopener"&gt;&lt;code&gt;regsvr32&lt;/code&gt;&lt;/a&gt; allows
 for proxy execution of malicious code in &lt;strong&gt;&lt;code&gt;main.dll&lt;/code&gt;&lt;/strong&gt; for defense evasion.
 The DLL file is a loader for the IcedID payload. It contains a number of
 exports, most of which consist of junk code.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The loader will locate the encrypted payload, stored in the resource section of
 the binary. It does this through the technique &lt;em&gt;API hashing&lt;/em&gt;. A decompilation
 of the simple hashing function is shown below.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The resulting hash is then compared with a hardcoded hash, locating the call
 for &lt;strong&gt;&lt;code&gt;FindResourceA&lt;/code&gt;&lt;/strong&gt;. The function is dynamically called to fetch the
 payload.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Memory is allocated using &lt;strong&gt;&lt;code&gt;VirtualAlloc&lt;/code&gt;&lt;/strong&gt; to hold the decrypted payload.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The IcedID &amp;ldquo;Gziploader&amp;rdquo; payload is decoded and placed in memory and then
 executed. GZiploader fingerprints the machine and sends a beacon to the command
 and control server with information about the infected host. The information is
 smuggled through the cookies header via an HTTP GET request.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The C2 is located at &lt;code&gt;yourgroceries[.]top&lt;/code&gt;. The C2 can respond with a further
 stage to be dropped and executed. The C2 did not respond with a payload during
 our analysis.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Conversation Hijacking as a Phishing Technique&lt;span class="hx:absolute hx:-mt-20" id="conversation-hijacking-as-a-phishing-technique"&gt;&lt;/span&gt;
 &lt;a href="#conversation-hijacking-as-a-phishing-technique" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The technique of hijacking an already existing conversation over email to
 spread malware is something threat actors have been using for a while. Normally
@@ -1234,7 +1234,7 @@ data-copied-label="Copied!"
 server and it is not known to us how it was accessed by the threat actor. The
 only thing we managed to find was a &lt;a href="https://roundcube.net/"target="_blank" rel="noopener"&gt;roundcube&lt;/a&gt; webmail
 instance. The login page is shown in the screenshot below.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;One of the headers in the snippet above reported that the client connected to
 the server via MAPI.
 &lt;a href="https://docs.microsoft.com/en-us/exchange/clients/mapi-mailbox-access?view=exchserver-2019"target="_blank" rel="noopener"&gt;MAPI&lt;/a&gt;
@@ -1268,7 +1268,7 @@ use of commodity packers and multiple stages to hide activity. It is important
 to be able to detect malicious files in memory to detect this type of attack.
 We recommend you use an
 &lt;a href="https://docs.intezer.com/hc/en-us/articles/360021350340-Conduct-Live-Endpoint-Analysis"target="_blank" rel="noopener"&gt;endpoint scanner&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
 &lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;ISO File:
@@ -1289,7 +1289,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Targeted Phishing Attack against Ukrainian Government Expands to Georgia</title><link>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</guid><description>
+&lt;/div&gt;</description></item><item><title>Targeted Phishing Attack against Ukrainian Government Expands to Georgia</title><link>https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</guid><description>
 &lt;p&gt;In May 2021,
 &lt;a href="https://www.fortinet.com/blog/threat-research/spearphishing-attack-uses-covid-21-lure-to-target-ukrainian-government"target="_blank" rel="noopener"&gt;Fortinet published a report&lt;/a&gt;
 about the early stages of an ongoing phishing attack against the Ukrainian
@@ -1329,14 +1329,14 @@ stages of the attack. The packed executable loads an AutoIt payload into
 memory. The payload searches for files on the victim&amp;rsquo;s machine based on a list
 of file extensions and uploads them to a C2 that is hardcoded in the script.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig1.png" title="Attack flow." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig1.png" title="Attack flow." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Attack flow.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;An example of one of the phishing emails sent to the Ukrainian government is
 below. The threat actor references payments made to veterans of the
 Anti-Terrorist Operation (ATO).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig2.png" title="Phishing email sent to the Ukrainian government. Translation from Ukrainian – Subject: Payments to ATO Veterans. Content: It must be filled in and sent back." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig2.png" title="Phishing email sent to the Ukrainian government. Translation from Ukrainian – Subject: Payments to ATO Veterans. Content: It must be filled in and sent back." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Phishing email sent to the Ukrainian government. Translation from Ukrainian – Subject: Payments to ATO Veterans. Content: It must be filled in and sent back.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The link, masqueraded as a Ukrainian .gov domain, is actually a shortened URL
@@ -1347,7 +1347,7 @@ present content related to the Israeli
 &lt;a href="https://en.wikipedia.org/wiki/Merkava"target="_blank" rel="noopener"&gt;Merkava&lt;/a&gt;, the main battle tank used by
 the Israeli Defense Forces.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig3.png" title="Reference to Israeli Merkava in the RTF file." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig3.png" title="Reference to Israeli Merkava in the RTF file." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Reference to Israeli Merkava in the RTF file.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This file is incharge of dropping the final payload from the C2. In other
@@ -1368,7 +1368,7 @@ Georgian)&lt;/li&gt;
 &lt;p&gt;All three files have low detection rates in VirusTotal at the time of this
 writing. In the following sections we will describe each file&amp;rsquo;s behavior.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig4.png" title="b56975725c4e260370af540f9c0b6709 in VirusTotal." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig4.png" title="b56975725c4e260370af540f9c0b6709 in VirusTotal." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;b56975725c4e260370af540f9c0b6709 in VirusTotal.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;The PDF File&lt;span class="hx:absolute hx:-mt-20" id="the-pdf-file"&gt;&lt;/span&gt;
@@ -1379,11 +1379,11 @@ Upon a victim opening the PDF it will send a query to Google containing the C2:
 The system will prompt a security warning allowing the document to contact
 &lt;code&gt;http[:]//www.google.com&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig5.png" title="Action object in b56975725c4e260370af540f9c0b6709" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig5.png" title="Action object in b56975725c4e260370af540f9c0b6709" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Action object in b56975725c4e260370af540f9c0b6709&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig6.png" title="System prompt message." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig6.png" title="System prompt message." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;System prompt message.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once the document connects to Google a short series of network redirections
@@ -1394,7 +1394,7 @@ image below, the C2 contains a frame with an src to another C2 URL
 will finally drop &lt;code&gt;georgia_private_sector_poster_inputs_06_2021.cpl&lt;/code&gt;
 (&lt;code&gt;02f0118bd15dabf727659b9fd27c86c9&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig7.png" title="Network redirections for delivering the payload." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig7.png" title="Network redirections for delivering the payload." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Network redirections for delivering the payload.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This redirection process, starting with Google as the first domain the PDF
@@ -1405,11 +1405,11 @@ dropping and running the packed payload from the C2,
 &lt;code&gt;16868138130[.]space/000/000.exe&lt;/code&gt; (&lt;code&gt;41af4d9fbd0bc719212b78cd7a1b89ec&lt;/code&gt;). The
 packed malware loads the AutoIt payload into memory.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig8.png" title="Genetic report of 02f0118bd15dabf727659b9fd27c86c9. Drops 41af4d9fbd0bc719212b78cd7a1b89ec which loads AutoIt into memory." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig8.png" title="Genetic report of 02f0118bd15dabf727659b9fd27c86c9. Drops 41af4d9fbd0bc719212b78cd7a1b89ec which loads AutoIt into memory." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Genetic report of 02f0118bd15dabf727659b9fd27c86c9. Drops 41af4d9fbd0bc719212b78cd7a1b89ec which loads AutoIt into memory.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig9.png" title="IoC report of 02f0118bd15dabf727659b9fd27c86c9 in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig9.png" title="IoC report of 02f0118bd15dabf727659b9fd27c86c9 in Intezer Analyze." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;IoC report of 02f0118bd15dabf727659b9fd27c86c9 in Intezer Analyze.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The
@@ -1421,21 +1421,21 @@ which looks for files containing the following extensions:
 &lt;code&gt;_filsearch&lt;/code&gt; uses &lt;code&gt;@ComSpec&lt;/code&gt; environment variable (which usually points to
 CMD). The process tree created by the AutoIt file is below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig10.png" title="Code snippet from the AutoIt script main logic." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig10.png" title="Code snippet from the AutoIt script main logic." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Code snippet from the AutoIt script main logic.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig11.png" title="Code snippet from the AutoIt script _filsearch function." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig11.png" title="Code snippet from the AutoIt script _filsearch function." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Code snippet from the AutoIt script _filsearch function.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig12.png" title="Process tree snippet in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig12.png" title="Process tree snippet in Intezer Analyze." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Process tree snippet in Intezer Analyze.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Each file is uploaded to the C2 via a multipart/form-data POST request. The
 file&amp;rsquo;s directory is sent as Hex. Below is an example of a file upload request.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig13.png" title="Example of C_/Users/admin/AppData/Roaming/Microsoft/Windows/Cookies/NUT28OOW.txt file upload." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig13.png" title="Example of C_/Users/admin/AppData/Roaming/Microsoft/Windows/Cookies/NUT28OOW.txt file upload." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Example of C_/Users/admin/AppData/Roaming/Microsoft/Windows/Cookies/NUT28OOW.txt file upload.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Lastly, the AutoIt script creates and runs a batch named &lt;code&gt;r.bat&lt;/code&gt; which deletes
@@ -1449,11 +1449,11 @@ file will run a PowerShell command that drops an executable from the C2
 (&lt;code&gt;http[://]1221[.]site/15858415841/0407.exe&lt;/code&gt;) and saves it as
 &lt;code&gt;centuryarticle.exe&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig14.png" title="VBA script (7546f382d73231a4c1fdc58ab1535ec0) in the malicious document." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig14.png" title="VBA script (7546f382d73231a4c1fdc58ab1535ec0) in the malicious document." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;VBA script (7546f382d73231a4c1fdc58ab1535ec0) in the malicious document.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig15.png" title="Process tree of 900e892c8151f0f59a93af1206583ce6" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig15.png" title="Process tree of 900e892c8151f0f59a93af1206583ce6" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Process tree of 900e892c8151f0f59a93af1206583ce6&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The file dropped from the C2 is a packed .NET file that loads the AutoIt
@@ -1652,7 +1652,7 @@ for analyzing memory dumps.&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.justice.gov/file/1080281/download"target="_blank" rel="noopener"&gt;Mueller, R. Indictment – United States of America vs. Viktor Borisovich Netyksho, et al. Retrieved September 13, 2018&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://attack.mitre.org/groups/G0007/"target="_blank" rel="noopener"&gt;APT28 MITRE ATT&amp;amp;CK&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://attack.mitre.org/software/S0251/"target="_blank" rel="noopener"&gt;Zebrocy MITRE ATT&amp;amp;CK&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</description></item><item><title>Energy Sector and its Suppliers Targeted in Global Phishing Campaign</title><link>https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/</link><pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/</guid><description>
+&lt;/ol&gt;</description></item><item><title>Energy Sector and its Suppliers Targeted in Global Phishing Campaign</title><link>https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/</link><pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/</guid><description>
 &lt;p&gt;Our research team has found a sophisticated campaign, active for at least one
 year, targeting large international companies in the energy, oil &amp;amp; gas, and
 electronics industries. The attack also targets oil &amp;amp; gas suppliers, possibly
@@ -1682,7 +1682,7 @@ stealer malware.&lt;/li&gt;
 keyboard strokes and steal browsing data.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig1.png" title="Attack Flow Targeting Energy, Oil, and Gas Companies" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig1.png" title="Attack Flow Targeting Energy, Oil, and Gas Companies" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Attack Flow Targeting Energy, Oil, and Gas Companies&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;The Phishing Campaign&lt;span class="hx:absolute hx:-mt-20" id="the-phishing-campaign"&gt;&lt;/span&gt;
@@ -1734,12 +1734,12 @@ that more details and requirements can be found in the attached file
 (containing the malware). The email presents a strict deadline for which the
 request for the bid should be submitted.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig2.png" title="Phishing email inviting recipient to participate in a project." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig2.png" title="Phishing email inviting recipient to participate in a project." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Phishing email inviting recipient to participate in a project.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Upon opening the disk image file the target is presented with an executable.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig3.png" title="Malicious file contained in the disk image." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig3.png" title="Malicious file contained in the disk image." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Malicious file contained in the disk image.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Phishing Email Tactics&lt;span class="hx:absolute hx:-mt-20" id="phishing-email-tactics"&gt;&lt;/span&gt;
@@ -1760,7 +1760,7 @@ for the company Hyundai Engineering (&lt;code&gt;hec.co.kr&lt;/code&gt;). The ty
 &amp;ldquo;Hyundai Engineering&amp;rdquo; invites the recipient to reply to a confidentiality
 agreement with respect to a refinery expansion project.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig4.png" title="Email sent from typosquatted domain (jeongwan@hec-co.kr)." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig4.png" title="Email sent from typosquatted domain (jeongwan@hec-co.kr)." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Email sent from typosquatted domain (jeongwan@hec-co.kr).&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Another typosquatted email that caught our attention was supposedly sent by
@@ -1783,7 +1783,7 @@ the project beginning in the second half of 2021.&lt;/p&gt;
 its recent developments and also because the offshore wind farm is under the
 occupation of GustoMSC.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig5.png" title="Phishing email impersonating GustoMSC." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig5.png" title="Phishing email impersonating GustoMSC." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Phishing email impersonating GustoMSC.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Email Spoofing&lt;span class="hx:absolute hx:-mt-20" id="email-spoofing"&gt;&lt;/span&gt;
@@ -1794,7 +1794,7 @@ the email is sent from a trusted or legitimate entity. An example of a spoofed
 email from this campaign pretends to come from a company called Haesung Tech,
 seen below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig6.png" title="Spoofed email pretending to be sent from Haesung Tech." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig6.png" title="Spoofed email pretending to be sent from Haesung Tech." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Spoofed email pretending to be sent from Haesung Tech.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This email is clearly spoofed since inside the header the Sender Policy
@@ -1802,7 +1802,7 @@ Framework (SPF) check does not pass. The reason for this is there is no DNS TXT
 record for &lt;code&gt;haesungtech.com&lt;/code&gt; that defines a permitted sender. The SPF verdict
 is shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig7.png" title="Sender Policy Framework (SPF) verdict." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig7.png" title="Sender Policy Framework (SPF) verdict." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Sender Policy Framework (SPF) verdict.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;The Malware&lt;span class="hx:absolute hx:-mt-20" id="the-malware"&gt;&lt;/span&gt;
@@ -1831,7 +1831,7 @@ recipient of the phishing email works for a company called
 &lt;a href="http://www.gsenc.com/"target="_blank" rel="noopener"&gt;GS E&amp;amp;C&lt;/a&gt;, a Korean EPC contractor engaged in various
 global power plant projects.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig8.png" title="Phishing email sent to GS E&amp;amp;C." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig8.png" title="Phishing email sent to GS E&amp;amp;C." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Phishing email sent to GS E&amp;amp;C.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The email contains a reference to the
@@ -1844,7 +1844,7 @@ power plants, and renewable energy), is invited to submit both technical and
 commercial offers for the items described in the attached material take off
 (MTO) document (below).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig9.png" title="Second part of the phishing email sent to employee at GS E&amp;amp;C." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig9.png" title="Second part of the phishing email sent to employee at GS E&amp;amp;C." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Second part of the phishing email sent to employee at GS E&amp;amp;C.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;There is a typo in the email below. Instead of &amp;ldquo;regional headquarters&amp;rdquo; the
@@ -1852,7 +1852,7 @@ address says &amp;ldquo;Reginal Headquarter.&amp;rdquo; In addition to this mist
 provided is the actual
 &lt;a href="https://ae.arabplaces.com/abu-dhabi/cpecc-87624"target="_blank" rel="noopener"&gt;address&lt;/a&gt; of CPECC in UAE.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig10.png" title="Phishing email with a typo." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig10.png" title="Phishing email with a typo." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Phishing email with a typo.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Though the attached file has a seemingly complementary name related to the
@@ -1860,7 +1860,7 @@ contents of the email, it is actually an IMG file that contains Snake Keylogger
 malware. Once the user double-clicks on the IMG file, the content of the file
 is mounted, as shown below, and the user can click the file to be executed.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig11.png" title="Mounted disk image file with malicious Snake Keylogger binary masquerading as PDF." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig11.png" title="Mounted disk image file with malicious Snake Keylogger binary masquerading as PDF." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Mounted disk image file with malicious Snake Keylogger binary masquerading as PDF.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Fileless Malware Execution&lt;span class="hx:absolute hx:-mt-20" id="fileless-malware-execution"&gt;&lt;/span&gt;
@@ -1874,7 +1874,7 @@ load Agent Tesla as reported by
 for investigation. The file contains a malicious PE file that shares code with
 other Snake Keylogger samples.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig12.png" title="Genetic analysis of the ISO sample containing Snake Keylogger." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/images/fig12.png" title="Genetic analysis of the ISO sample containing Snake Keylogger." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Genetic analysis of the ISO sample containing Snake Keylogger.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Targeting Companies in Religion Media Business&lt;span class="hx:absolute hx:-mt-20" id="targeting-companies-in-religion-media-business"&gt;&lt;/span&gt;

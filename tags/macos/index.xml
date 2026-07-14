@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Macos</title><link>https://intezer.github.io/community-intelligence/tags/macos/</link><description>Recent content in Macos on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 11 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/macos/index.xml" rel="self" type="application/rss+xml"/><item><title>New SysJoker Backdoor Targets Windows, Linux, and macOS</title><link>https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/</link><pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Macos</title><link>https://research.intezer.com/tags/macos/</link><description>Recent content in Macos on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 11 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/macos/index.xml" rel="self" type="application/rss+xml"/><item><title>New SysJoker Backdoor Targets Windows, Linux, and macOS</title><link>https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/</link><pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/</guid><description>
 &lt;p&gt;Malware targeting multiple operating systems has become no exception in the
 malware threat landscape.
 &lt;a href="../../../2021/09/vermilionstrike-reimplementation-cobaltstrike"&gt;Vermilion Strike&lt;/a&gt;,
@@ -27,7 +27,7 @@ detection and response mitigations.&lt;/p&gt;
 operating system it targets. Both the macOS and Linux samples are fully
 undetected in VirusTotal.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig1.png" title="e06e06752509f9cd8bc85aa1aa24dba2 in VirusTotal targeting Mac M1 processor" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig1.png" title="e06e06752509f9cd8bc85aa1aa24dba2 in VirusTotal targeting Mac M1 processor" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;e06e06752509f9cd8bc85aa1aa24dba2 in VirusTotal targeting Mac M1 processor&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Behavioral Analysis&lt;span class="hx:absolute hx:-mt-20" id="behavioral-analysis"&gt;&lt;/span&gt;
@@ -42,7 +42,7 @@ C2 &lt;code&gt;https[://]github[.]url-mini[.]com/msg.zip&lt;/code&gt;, copies it
 &lt;code&gt;C:\ProgramData\Recovery\Systemrecovery\Windows.zip&lt;/code&gt;, unzips it and executes
 it. All of these actions are executed via PowerShell commands.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig2.png" title="Process tree showing PowerShell commands." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig2.png" title="Process tree showing PowerShell commands." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Process tree showing PowerShell commands.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once SysJoker (&lt;code&gt;d90d0f4d6dad402b5d025987030cc87c&lt;/code&gt;) is executed it sleeps for a
@@ -56,7 +56,7 @@ deleted immediately, stored in a JSON object, and then encoded and written to a
 file named &lt;code&gt;microsoft_windows.dll&lt;/code&gt;. The figure below shows the JSON object
 built in memory by SysJoker.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig3.png" title="JSON object built in memory by SysJoker." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig3.png" title="JSON object built in memory by SysJoker." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;JSON object built in memory by SysJoker.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;It will gather the MAC address, user name, physical media serial number, and IP
@@ -66,7 +66,7 @@ persistence by adding an entry to the registry run key
 of the steps above, the malware sleeps for a random duration.&lt;/p&gt;
 &lt;p&gt;The following screenshot shows the processes tree and commands.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig4.png" title="Processes tree and commands." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig4.png" title="Processes tree and commands." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Processes tree and commands.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Next, SysJoker will begin its C2 communication.&lt;/p&gt;
@@ -93,9 +93,9 @@ data-copied-label="Copied!"
 &lt;h3&gt;Resolving C2&lt;span class="hx:absolute hx:-mt-20" id="resolving-c2"&gt;&lt;/span&gt;
 &lt;a href="#resolving-c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;To get an available C2 and start communication, SysJoker first decodes a
 hardcoded Google Drive link.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig6.png" title="Decoding with CyberChef." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig6.png" title="Decoding with CyberChef." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decoding with CyberChef.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The Google Drive link hosts a text file named domain.txt that holds an encoded
@@ -109,12 +109,12 @@ when the malware communicates with the C2.&lt;/p&gt;
 directory with the unique token and will process the C2&amp;rsquo;s response which is
 built as JSON using functions from this library. This is how SysJoker pings the
 C2 for instructions (see step 2 in the image below):&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;If the server responds with data, SysJoker will parse the received payload (see
 step 3 in the image below). SysJoker can receive the following instruction from
 the C2: exe, cmd, remove_reg, and exit.&lt;/p&gt;
 &lt;p&gt;The following image shows the flow of SysJoker&amp;rsquo;s communication with the C2.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;remove_reg&lt;/code&gt; and &lt;code&gt;exit&lt;/code&gt; are not implemented in this current version. Based on
 the instruction names, we can assume that they are in charge of self-deletion
 of the malware. Let&amp;rsquo;s look into exe and cmd instructions:&lt;/p&gt;
@@ -123,14 +123,14 @@ SysJoker will receive a URL to a zip file, a directory for the path the file
 should be dropped to, and a filename that the malware should use on the
 extracted executable. It will download this file, unzip it and execute it.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig9.png" title="IDA code snippet of the parsing function, if exe part." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig9.png" title="IDA code snippet of the parsing function, if exe part." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;IDA code snippet of the parsing function, if exe part.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After execution, the malware will reply to the C2&amp;rsquo;s &lt;code&gt;/api/req/res&lt;/code&gt; API with
 either &amp;ldquo;success&amp;rdquo; if the process went successful or &amp;ldquo;exception&amp;rdquo; if not (step 4
 in the image above).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig10.png" title="IDA code snippet of the parsing function, building response status." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig10.png" title="IDA code snippet of the parsing function, building response status." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;IDA code snippet of the parsing function, building response status.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;cmd&lt;/code&gt; – This instruction is in charge of running a command and uploading its
@@ -138,7 +138,7 @@ response to the C2. SysJoker will decode the command, execute it and upload the
 command&amp;rsquo;s response to the C2 via &lt;code&gt;/api/req/res&lt;/code&gt; API (step 4 in the image
 above).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig11.png" title="IDA code snippet of the parsing function, building cmd command response." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig11.png" title="IDA code snippet of the parsing function, building cmd command response." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;IDA code snippet of the parsing function, building cmd command response.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;During our analysis, the C2 hasn&amp;rsquo;t responded with a next stage instruction.&lt;/p&gt;
@@ -174,7 +174,7 @@ with SysJoker, in the course of this investigation, check:
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;SysJoker&amp;rsquo;s Linux and Windows versions are now indexed in Intezer Analyze.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/new-backdoor-sysjoker/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Final Points&lt;span class="hx:absolute hx:-mt-20" id="final-points"&gt;&lt;/span&gt;
 &lt;a href="#final-points" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are indications that SysJoker attack is performed by an advanced threat
 actor:&lt;/p&gt;

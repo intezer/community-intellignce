@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Loader</title><link>https://intezer.github.io/community-intelligence/tags/loader/</link><description>Recent content in Loader on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 17 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/loader/index.xml" rel="self" type="application/rss+xml"/><item><title>Babble Babble Babble Babble Babble Babble BabbleLoader</title><link>https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/</link><pubDate>Sun, 17 Nov 2024 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Loader</title><link>https://research.intezer.com/tags/loader/</link><description>Recent content in Loader on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 17 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/loader/index.xml" rel="self" type="application/rss+xml"/><item><title>Babble Babble Babble Babble Babble Babble BabbleLoader</title><link>https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/</link><pubDate>Sun, 17 Nov 2024 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/</guid><description>
 &lt;h2&gt;Loaders, an Ever Evolving Market&lt;span class="hx:absolute hx:-mt-20" id="loaders-an-ever-evolving-market"&gt;&lt;/span&gt;
 &lt;a href="#loaders-an-ever-evolving-market" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The pace of innovation and development in the malware detection market is
 relentless, the same goes for the development of malware itself. Constantly
@@ -50,14 +50,14 @@ hamper analysis by confusing the analyst. This is achieved through multiple
 means. There are many paths of code that are never actually accessed, but use
 random imports with randomly generated hardcoded strings.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig1.png" title="Junk Code making rubbish calls" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig1.png" title="Junk Code making rubbish calls" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Junk Code making rubbish calls&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The loader also makes excessive use of random instructions, adding values to
 local variables and moving data around registers for no particular
 functionality.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig2.png" title="Junk Code" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig2.png" title="Junk Code" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Junk Code&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The amount of junk code added into the sample greatly increases the amount of
@@ -65,19 +65,19 @@ code to the point where it starts to crash disassembly or decompilation tools
 through its sheer mass alone. In the case of IDA needs to collapse nodes due to
 them being so large.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig3.png" title="Collapsed Node in IDA" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig3.png" title="Collapsed Node in IDA" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Collapsed Node in IDA&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;In Ghidra the function graph view will freeze and there are too many
 instructions for the decompiler to show.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig4.png" title="Decompilation output in Ghidra" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig4.png" title="Decompilation output in Ghidra" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decompilation output in Ghidra&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;We have even checked in Binary Ninja to see the effects of the junk code. The
 user is required to manually force analysis of the function due to the size.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig5.png" title="Binary Ninja showing large function" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig5.png" title="Binary Ninja showing large function" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Binary Ninja showing large function&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Each of these techniques also serve the purpose of making the loader
@@ -87,12 +87,12 @@ flow. Each sample is structurally unique with only a few snippets of shared
 code. Below is a very small snippet of the main method of two different
 samples, showing very different control flow.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig6.png" title="Comparison of structure of two BabbleLoader samples" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig6.png" title="Comparison of structure of two BabbleLoader samples" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Comparison of structure of two BabbleLoader samples&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Even the metadata of the file is randomized for each sample.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig7.png" title="Junk Metadata" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig7.png" title="Junk Metadata" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Junk Metadata&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;What This Means for AI-Based Analysis Techniques&lt;span class="hx:absolute hx:-mt-20" id="what-this-means-for-ai-based-analysis-techniques"&gt;&lt;/span&gt;
@@ -127,7 +127,7 @@ dynamically resolving API calls. It will achieve this through
 It will first get a module handle for &lt;code&gt;ntdll.dll&lt;/code&gt;. The string for the DLL is
 decrypted using a rolling XOR cipher.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig8.png" title="Decoding of NTDLL string" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig8.png" title="Decoding of NTDLL string" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decoding of NTDLL string&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Using the returned handle, the loader will start to read the PE header of
@@ -156,13 +156,13 @@ data-copied-label="Copied!"
 &lt;p&gt;The parsed values can be seen easily from viewing the export directory in CFF
 explorer.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig9.png" title="Parsed fields shown in CFF Explorer" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig9.png" title="Parsed fields shown in CFF Explorer" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Parsed fields shown in CFF Explorer&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once the struct has been built up, it can then proceed to iterate through the
 export names, hashing the names to compare to hardcoded values in the binary.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig10.png" title="Resolution of functions by hash" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig10.png" title="Resolution of functions by hash" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Resolution of functions by hash&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The following calls are resolved, getting pointers for imports. Whilst the
@@ -214,7 +214,7 @@ decryption process begins with the loader rearranging the randomly stored
 encrypted chunks of the payload into their correct order within the mapped
 memory, before proceeding to decrypt each block.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig11.png" title="Decryption stages" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig11.png" title="Decryption stages" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decryption stages&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Before calling the decrypted code, the loader will perform one of a number of
@@ -312,7 +312,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;p&gt;The decoded value (Nvidia Vendor ID) is shown below:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig12.png" title="XOR to derive VendorID" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig12.png" title="XOR to derive VendorID" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;XOR to derive VendorID&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;VDLL Function&lt;span class="hx:absolute hx:-mt-20" id="vdll-function"&gt;&lt;/span&gt;
@@ -324,7 +324,7 @@ will decode two DLLs with exports.&lt;/p&gt;
 &lt;code&gt;MpSwitchToNextThread_WithCheck&lt;/code&gt;. The second check is &lt;code&gt;ntdll.dll&lt;/code&gt; with the
 export of &lt;code&gt;MpDispatchException&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig13.png" title="Call of emulated function" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig13.png" title="Call of emulated function" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Call of emulated function&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;If any of the &lt;code&gt;GetProcAddress&lt;/code&gt; calls are successful, it will set a variable for
@@ -349,7 +349,7 @@ array. A counter is incremented with each iteration, but if the checksums
 match, the counter is reduced by one. Giving the number of processes with
 unique names running.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig14.png" title="Checksum counter" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig14.png" title="Checksum counter" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Checksum counter&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The counter is compared to check if there are at least 85 unique processes
@@ -361,7 +361,7 @@ been employed by other malware also, such as
 &lt;p&gt;When the check has passed, the next stage of the payload will be decoded and
 executed.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig15.png" title="Second stage of decryption" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig15.png" title="Second stage of decryption" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Second stage of decryption&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Donut Loader and Payload&lt;span class="hx:absolute hx:-mt-20" id="donut-loader-and-payload"&gt;&lt;/span&gt;
@@ -372,7 +372,7 @@ different malware and threat groups in their operations. The payload in this
 sample is a
 &lt;a href="https://g0njxa.medium.com/approaching-stealers-devs-a-brief-interview-with-whitesnake-2acd8af9d61b"target="_blank" rel="noopener"&gt;WhiteSnake stealer&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig16.png" title="WhiteSnake Payload" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig16.png" title="WhiteSnake Payload" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;WhiteSnake Payload&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This payload has a very interesting method of communication with its Command
@@ -382,7 +382,7 @@ detail in a blog from
 but instead of downloading from the official TOR Project website. The payload
 is downloaded from &lt;a href="https://github.com/matinrco/tor"target="_blank" rel="noopener"&gt;this github repository&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig17.png" title="Open source project downloaded by WhiteSnake" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/images/fig17.png" title="Open source project downloaded by WhiteSnake" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Open source project downloaded by WhiteSnake&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;In other samples, Meduza stealer has also been observed. There may be other
@@ -532,7 +532,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Wrapping Up a Year of Infamous Bazar Campaigns</title><link>https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</link><pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</guid><description>
+&lt;/div&gt;</description></item><item><title>Wrapping Up a Year of Infamous Bazar Campaigns</title><link>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</link><pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</guid><description>
 &lt;h2&gt;Bazar is the latest tool developed by the TrickBot gang&lt;span class="hx:absolute hx:-mt-20" id="bazar-is-the-latest-tool-developed-by-the-trickbot-gang"&gt;&lt;/span&gt;
 &lt;a href="#bazar-is-the-latest-tool-developed-by-the-trickbot-gang" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Common malware used for cybercrime such as Agent Tesla, Dridex and Formbook
 have been around for at least five years and are still distributed and active.
@@ -552,7 +552,7 @@ payload delivery can vary between a
 to &lt;a href="https://www.hhs.gov/sites/default/files/bazarloader.pdf"target="_blank" rel="noopener"&gt;days&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;In this post we will profile Bazar and highlight four prominent campaigns
 delivering this year-old malware.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Key Profiling&lt;span class="hx:absolute hx:-mt-20" id="key-profiling"&gt;&lt;/span&gt;
 &lt;a href="#key-profiling" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Attribution&lt;span class="hx:absolute hx:-mt-20" id="attribution"&gt;&lt;/span&gt;
 &lt;a href="#attribution" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Based on code similarities, delivery, infrastructure and operation methods,
@@ -578,7 +578,7 @@ solutions as it resides only in memory and leaves no footprint on disk. The
 following is the genetic analysis of a Bazar sample
 (&lt;code&gt;3578e96b72cba790179d546f11e045ca&lt;/code&gt;) injecting fileless code into memory.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig2.png" title="Bazar sample (3578e96b72cba790179d546f11e045ca) injects fileless code" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig2.png" title="Bazar sample (3578e96b72cba790179d546f11e045ca) injects fileless code" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Bazar sample (3578e96b72cba790179d546f11e045ca) injects fileless code&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Use of decentralized C2C: For its C2C communication, Bazar uses
@@ -605,7 +605,7 @@ masquerading a non-executable file type, so that the file has a word document
 icon but it is in fact an executable.&lt;/p&gt;
 &lt;p&gt;The next image shows a Google Docs page hosting the malware executable.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig3.png" title="COVID-19 themed phishing campaign (source: BleepingComputer)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig3.png" title="COVID-19 themed phishing campaign (source: BleepingComputer)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;COVID-19 themed phishing campaign (source: BleepingComputer)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, one of these phishing emails was sent to a BleepingComputer
@@ -623,7 +623,7 @@ penetration testing tools were installed and ran on the victim&amp;rsquo;s machi
 reconnaissance and privilege escalation purposes. Ryuk ransomware was delivered
 as the final step of the attack to run widely on the organization&amp;rsquo;s assets.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig4.png" title="CISA alert on the ransomware campaign" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig4.png" title="CISA alert on the ransomware campaign" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;CISA alert on the ransomware campaign&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This attack chain not only targeted the healthcare sector but also went after
@@ -642,7 +642,7 @@ number, the &amp;ldquo;service provider&amp;rdquo; lures the user to browse a ph
 insert a code, and click on &amp;ldquo;unsubscribe.&amp;rdquo; By clicking unsubscribe a malicious
 Microsoft Office document is downloaded delivering Bazar.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig5.png" title="Example of a BazarCall phishing email (source: Sophos)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig5.png" title="Example of a BazarCall phishing email (source: Sophos)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Example of a BazarCall phishing email (source: Sophos)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The email has no indication of maliciousness as it does not contain any links
@@ -687,7 +687,7 @@ Endpoint Scanner collects all binaries running in memory, including fileless,
 and classifies them using genetic code analysis technology.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig6.png" title="Endpoint scan on an infected machine" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig6.png" title="Endpoint scan on an infected machine" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Endpoint scan on an infected machine&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;References&lt;span class="hx:absolute hx:-mt-20" id="references"&gt;&lt;/span&gt;
@@ -699,7 +699,7 @@ and classifies them using genetic code analysis technology.&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://news.sophos.com/en-us/2021/04/15/bazarloader/"target="_blank" rel="noopener"&gt;https://news.sophos.com/en-us/2021/04/15/bazarloader/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.cybereason.com/blog/a-bazar-of-tricks-following-team9s-development-cycles#trickbot-connection"target="_blank" rel="noopener"&gt;https://www.cybereason.com/blog/a-bazar-of-tricks-following-team9s-development-cycles#trickbot-connection&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon"target="_blank" rel="noopener"&gt;https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Prince of Persia the Sands of Foudre</title><link>https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/</link><pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/</guid><description>
+&lt;/ul&gt;</description></item><item><title>Prince of Persia the Sands of Foudre</title><link>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</link><pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the past couple years, Palo Alto Networks reported on the &amp;ldquo;Prince of Persia&amp;rdquo;
 malware campaign which is believed to be of Iranian origin and ongoing for more
@@ -716,7 +716,7 @@ malware, version 8.&lt;/p&gt;
 &lt;p&gt;In this blog post, we are only going to focus on the new, unique, interesting
 features of the new version of Foudre, and its related campaign&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig1.png" title="Internal version name of Foudre v8" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig1.png" title="Internal version name of Foudre v8" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Internal version name of Foudre v8&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;No to The Forced Hijab&lt;span class="hx:absolute hx:-mt-20" id="no-to-the-forced-hijab"&gt;&lt;/span&gt;
@@ -730,7 +730,7 @@ to protesters in Iran who are protesting the mandatory use of the hijab for
 women and the video is meant to distract the victim while the Foudre malware
 gets installed in the background.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig2.png" title="Screenshot from the video bundled in the malware" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig2.png" title="Screenshot from the video bundled in the malware" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Screenshot from the video bundled in the malware&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Foudre is a remote access tool and has the ability to remotely execute
@@ -744,15 +744,15 @@ versions.&lt;/p&gt;
 &lt;a href="#code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After uploading the WinRAR SFX to Intezer Analyze™, the files inside were
 statically extracted which reveals 3 binaries, a lockbox3 signature, and the
 video mentioned above.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Using our new Show Code feature, we can see code overlapping with Foudre and
 Infy.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig4.png" title="Code overlap with Foudre" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig4.png" title="Code overlap with Foudre" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Code overlap with Foudre&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig5.png" title="Code overlap with Infy" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig5.png" title="Code overlap with Infy" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Code overlap with Infy&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;New Features/Changes&lt;span class="hx:absolute hx:-mt-20" id="new-featureschanges"&gt;&lt;/span&gt;
@@ -760,7 +760,7 @@ Infy.&lt;/p&gt;
 undetected on
 &lt;a href="https://www.virustotal.com/#/file/c7279a32329ebb1ab5c1cdbfbddb5a167e1505340c3ca72e837a222ff92665a6/detection"target="_blank" rel="noopener"&gt;VirusTotal&lt;/a&gt;
 with only 3/67 detections.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In the latest version of Foudre, there are 2 modules. One of the modules
 (i7234.dll) has the export &amp;ldquo;D1&amp;rdquo; and the other module (d388) exports &amp;ldquo;D2&amp;rdquo; as a
 function. We are going to refer to the different binaries based on their
@@ -867,7 +867,7 @@ IoCs section. The domains up to week of September 9, 2018 (week 35) have been
 registered in Panama and resolve to the same IP address &lt;code&gt;185[.]61[.]154[.]26&lt;/code&gt;.
 The oldest domain using this algorithm we could find that was registered was
 registered for the week of November 5, 2017.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Due to the content of the video and the information from the reports on
 previous versions of Foudre, we believe the targets are mostly Iranian

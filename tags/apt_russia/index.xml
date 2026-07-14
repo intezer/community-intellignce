@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Apt_russia</title><link>https://intezer.github.io/community-intelligence/tags/apt_russia/</link><description>Recent content in Apt_russia on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 04 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/apt_russia/index.xml" rel="self" type="application/rss+xml"/><item><title>Elephant Framework Delivered in Phishing Attacks Against Ukrainian Organizations</title><link>https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</link><pubDate>Mon, 04 Apr 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Apt_russia</title><link>https://research.intezer.com/tags/apt_russia/</link><description>Recent content in Apt_russia on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 04 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/apt_russia/index.xml" rel="self" type="application/rss+xml"/><item><title>Elephant Framework Delivered in Phishing Attacks Against Ukrainian Organizations</title><link>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</link><pubDate>Mon, 04 Apr 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</guid><description>
 &lt;p&gt;A recently developed malware framework called Elephant is being delivered in
 targeted spear phishing campaigns using spoofed Ukrainian governmental email
 addresses. The four malware components delivered are used for stealing
@@ -104,7 +104,7 @@ allowed to send emails using that domain name. Some email providers do warn
 when they receive an email from an address that doesn&amp;rsquo;t have an SPF record. The
 screenshot below shows the warning message displayed in GMail when reading such
 email.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Our theory is that the threat actor exploited this vulnerability to send
 spoofed phishing emails to their targets. We reported the issue to CERT-UA.&lt;/p&gt;
 &lt;p&gt;We
@@ -123,7 +123,7 @@ components have been organized. The location of the implant&amp;rsquo;s entrypoi
 unknown and has been guessed to be in the root folder. As there are also server
 components to the framework, we hypothesize that there are more folders for the
 two servers used by the framework.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Dropper Component&lt;span class="hx:absolute hx:-mt-20" id="dropper-component"&gt;&lt;/span&gt;
 &lt;a href="#dropper-component" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;While called the dropper in the framework, this component does not have an
 embedded payload. Instead it is technically a downloader that fetches the next
@@ -141,7 +141,7 @@ between this component and the others is that this one is using code from the
 &lt;a href="https://github.com/redcode-labs/Coldfire"target="_blank" rel="noopener"&gt;ColdFire project on GitHub&lt;/a&gt;. The
 screenshot below shows the malware using the &lt;code&gt;Wait&lt;/code&gt; function to sleep for 10
 seconds before allocating 200 mb of garbage data.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Persistence is established by adding a new key entry with the name &lt;code&gt;Java-3DK&lt;/code&gt;
 to the registry key &lt;code&gt;SoftwareMicrosoftWindowsCurrentVersionRun&lt;/code&gt;. After this,
 the malware checks if a new binary exists by comparing its MD5 hash with a hash
@@ -182,7 +182,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig4.png" title="Analysis of the Elephant downloader (https://analyze.intezer.com/files/8ffe7f2eeb0cbfbe158b77bbff3e0055d2ef7138f481b4fac8ade6bfb9b2b0a1)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig4.png" title="Analysis of the Elephant downloader (https://analyze.intezer.com/files/8ffe7f2eeb0cbfbe158b77bbff3e0055d2ef7138f481b4fac8ade6bfb9b2b0a1)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Analysis of the Elephant downloader (https://analyze.intezer.com/files/8ffe7f2eeb0cbfbe158b77bbff3e0055d2ef7138f481b4fac8ade6bfb9b2b0a1)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Implant Component (GrimPlant)&lt;span class="hx:absolute hx:-mt-20" id="implant-component-grimplant"&gt;&lt;/span&gt;
@@ -192,7 +192,7 @@ set of functionality, for example it doesn&amp;rsquo;t have any persistence func
 on its own. When the malware first is executed, it allocates 200 mb and sleeps
 for 10 seconds, the function shown in the screenshot below. This is an
 anti-emulation technique that has been found in other malware written in Go.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The Command and Control (C2) address is not included in the binary. Instead it
 is passed in to the malware via the command line flag &lt;code&gt;-addr&lt;/code&gt;. The address is
 not provided as a plain string. Instead it has been encrypted with AES in
@@ -324,7 +324,7 @@ Zservers and still returned Elephant components as of April 2022. The
 components retrieved from the server are very similar to the samples used at
 the end of March. The other hosting providers used by the threat actor are PQ
 Hosting and Serverion.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The threat actor has chosen to sprinkle some French connections within their
 infrastructure. The certificates use French location information and the domain
 name &lt;code&gt;forkscenter[.]fr&lt;/code&gt;. We don&amp;rsquo;t know if the decision to name it Elephant is a
@@ -376,7 +376,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Targeted Phishing Attack against Ukrainian Government Expands to Georgia</title><link>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</guid><description>
+&lt;/div&gt;</description></item><item><title>Targeted Phishing Attack against Ukrainian Government Expands to Georgia</title><link>https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</guid><description>
 &lt;p&gt;In May 2021,
 &lt;a href="https://www.fortinet.com/blog/threat-research/spearphishing-attack-uses-covid-21-lure-to-target-ukrainian-government"target="_blank" rel="noopener"&gt;Fortinet published a report&lt;/a&gt;
 about the early stages of an ongoing phishing attack against the Ukrainian
@@ -416,14 +416,14 @@ stages of the attack. The packed executable loads an AutoIt payload into
 memory. The payload searches for files on the victim&amp;rsquo;s machine based on a list
 of file extensions and uploads them to a C2 that is hardcoded in the script.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig1.png" title="Attack flow." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig1.png" title="Attack flow." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Attack flow.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;An example of one of the phishing emails sent to the Ukrainian government is
 below. The threat actor references payments made to veterans of the
 Anti-Terrorist Operation (ATO).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig2.png" title="Phishing email sent to the Ukrainian government. Translation from Ukrainian – Subject: Payments to ATO Veterans. Content: It must be filled in and sent back." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig2.png" title="Phishing email sent to the Ukrainian government. Translation from Ukrainian – Subject: Payments to ATO Veterans. Content: It must be filled in and sent back." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Phishing email sent to the Ukrainian government. Translation from Ukrainian – Subject: Payments to ATO Veterans. Content: It must be filled in and sent back.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The link, masqueraded as a Ukrainian .gov domain, is actually a shortened URL
@@ -434,7 +434,7 @@ present content related to the Israeli
 &lt;a href="https://en.wikipedia.org/wiki/Merkava"target="_blank" rel="noopener"&gt;Merkava&lt;/a&gt;, the main battle tank used by
 the Israeli Defense Forces.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig3.png" title="Reference to Israeli Merkava in the RTF file." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig3.png" title="Reference to Israeli Merkava in the RTF file." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Reference to Israeli Merkava in the RTF file.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This file is incharge of dropping the final payload from the C2. In other
@@ -455,7 +455,7 @@ Georgian)&lt;/li&gt;
 &lt;p&gt;All three files have low detection rates in VirusTotal at the time of this
 writing. In the following sections we will describe each file&amp;rsquo;s behavior.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig4.png" title="b56975725c4e260370af540f9c0b6709 in VirusTotal." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig4.png" title="b56975725c4e260370af540f9c0b6709 in VirusTotal." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;b56975725c4e260370af540f9c0b6709 in VirusTotal.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;The PDF File&lt;span class="hx:absolute hx:-mt-20" id="the-pdf-file"&gt;&lt;/span&gt;
@@ -466,11 +466,11 @@ Upon a victim opening the PDF it will send a query to Google containing the C2:
 The system will prompt a security warning allowing the document to contact
 &lt;code&gt;http[:]//www.google.com&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig5.png" title="Action object in b56975725c4e260370af540f9c0b6709" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig5.png" title="Action object in b56975725c4e260370af540f9c0b6709" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Action object in b56975725c4e260370af540f9c0b6709&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig6.png" title="System prompt message." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig6.png" title="System prompt message." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;System prompt message.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once the document connects to Google a short series of network redirections
@@ -481,7 +481,7 @@ image below, the C2 contains a frame with an src to another C2 URL
 will finally drop &lt;code&gt;georgia_private_sector_poster_inputs_06_2021.cpl&lt;/code&gt;
 (&lt;code&gt;02f0118bd15dabf727659b9fd27c86c9&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig7.png" title="Network redirections for delivering the payload." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig7.png" title="Network redirections for delivering the payload." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Network redirections for delivering the payload.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This redirection process, starting with Google as the first domain the PDF
@@ -492,11 +492,11 @@ dropping and running the packed payload from the C2,
 &lt;code&gt;16868138130[.]space/000/000.exe&lt;/code&gt; (&lt;code&gt;41af4d9fbd0bc719212b78cd7a1b89ec&lt;/code&gt;). The
 packed malware loads the AutoIt payload into memory.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig8.png" title="Genetic report of 02f0118bd15dabf727659b9fd27c86c9. Drops 41af4d9fbd0bc719212b78cd7a1b89ec which loads AutoIt into memory." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig8.png" title="Genetic report of 02f0118bd15dabf727659b9fd27c86c9. Drops 41af4d9fbd0bc719212b78cd7a1b89ec which loads AutoIt into memory." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Genetic report of 02f0118bd15dabf727659b9fd27c86c9. Drops 41af4d9fbd0bc719212b78cd7a1b89ec which loads AutoIt into memory.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig9.png" title="IoC report of 02f0118bd15dabf727659b9fd27c86c9 in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig9.png" title="IoC report of 02f0118bd15dabf727659b9fd27c86c9 in Intezer Analyze." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;IoC report of 02f0118bd15dabf727659b9fd27c86c9 in Intezer Analyze.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The
@@ -508,21 +508,21 @@ which looks for files containing the following extensions:
 &lt;code&gt;_filsearch&lt;/code&gt; uses &lt;code&gt;@ComSpec&lt;/code&gt; environment variable (which usually points to
 CMD). The process tree created by the AutoIt file is below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig10.png" title="Code snippet from the AutoIt script main logic." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig10.png" title="Code snippet from the AutoIt script main logic." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Code snippet from the AutoIt script main logic.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig11.png" title="Code snippet from the AutoIt script _filsearch function." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig11.png" title="Code snippet from the AutoIt script _filsearch function." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Code snippet from the AutoIt script _filsearch function.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig12.png" title="Process tree snippet in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig12.png" title="Process tree snippet in Intezer Analyze." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Process tree snippet in Intezer Analyze.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Each file is uploaded to the C2 via a multipart/form-data POST request. The
 file&amp;rsquo;s directory is sent as Hex. Below is an example of a file upload request.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig13.png" title="Example of C_/Users/admin/AppData/Roaming/Microsoft/Windows/Cookies/NUT28OOW.txt file upload." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig13.png" title="Example of C_/Users/admin/AppData/Roaming/Microsoft/Windows/Cookies/NUT28OOW.txt file upload." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Example of C_/Users/admin/AppData/Roaming/Microsoft/Windows/Cookies/NUT28OOW.txt file upload.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Lastly, the AutoIt script creates and runs a batch named &lt;code&gt;r.bat&lt;/code&gt; which deletes
@@ -536,11 +536,11 @@ file will run a PowerShell command that drops an executable from the C2
 (&lt;code&gt;http[://]1221[.]site/15858415841/0407.exe&lt;/code&gt;) and saves it as
 &lt;code&gt;centuryarticle.exe&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig14.png" title="VBA script (7546f382d73231a4c1fdc58ab1535ec0) in the malicious document." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig14.png" title="VBA script (7546f382d73231a4c1fdc58ab1535ec0) in the malicious document." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;VBA script (7546f382d73231a4c1fdc58ab1535ec0) in the malicious document.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig15.png" title="Process tree of 900e892c8151f0f59a93af1206583ce6" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/images/fig15.png" title="Process tree of 900e892c8151f0f59a93af1206583ce6" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Process tree of 900e892c8151f0f59a93af1206583ce6&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The file dropped from the C2 is a packed .NET file that loads the AutoIt
@@ -739,7 +739,7 @@ for analyzing memory dumps.&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.justice.gov/file/1080281/download"target="_blank" rel="noopener"&gt;Mueller, R. Indictment – United States of America vs. Viktor Borisovich Netyksho, et al. Retrieved September 13, 2018&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://attack.mitre.org/groups/G0007/"target="_blank" rel="noopener"&gt;APT28 MITRE ATT&amp;amp;CK&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://attack.mitre.org/software/S0251/"target="_blank" rel="noopener"&gt;Zebrocy MITRE ATT&amp;amp;CK&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</description></item><item><title>A Zebra in Gopher’s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy</title><link>https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</link><pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</guid><description>
+&lt;/ol&gt;</description></item><item><title>A Zebra in Gopher’s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy</title><link>https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</link><pubDate>Wed, 09 Dec 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/</guid><description>
 &lt;h2&gt;Summary&lt;span class="hx:absolute hx:-mt-20" id="summary"&gt;&lt;/span&gt;
 &lt;a href="#summary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In November, we uncovered COVID-19 phishing lures that were used to deliver the
 Go version of
@@ -822,13 +822,13 @@ content. Figure 1 shows what the user would see if they downloaded the file to
 their desktop. According to timestamps stored in the file, the disk was created
 on November 20, 2020, 10 days before it was uploaded to VirusTotal.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig1.png" title="Figure 1: VHD phishing lure." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig1.png" title="Figure 1: VHD phishing lure." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: VHD phishing lure.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;If the user double-clicks on the file, Windows will mount the drive and it
 appears as an external hard drive. Figure 2 shows the content of the VHD.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig2.png" title="Figure 2: Content of the VHD file. It contains two files: A PDF file and an executable that is masquerading as a Microsoft Word document." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig2.png" title="Figure 2: Content of the VHD file. It contains two files: A PDF file and an executable that is masquerading as a Microsoft Word document." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Content of the VHD file. It contains two files: A PDF file and an executable that is masquerading as a Microsoft Word document.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The VHD file includes two files, a PDF document and an executable that is
@@ -836,7 +836,7 @@ masquerading as a Microsoft Word document. The PDF file consists of
 presentation slides about Sinopharm International Corporation. Figure 3
 displays a screenshot of the first slide.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig3.png" title="Figure 3: PDF of presentation slides used as part of the lure." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig3.png" title="Figure 3: PDF of presentation slides used as part of the lure." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: PDF of presentation slides used as part of the lure.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Sinopharm International Corporation is a China-based
@@ -857,11 +857,11 @@ The scan results of the executable from VirusTotal is shown in Figure 4 and
 70 antivirus engines detected the file as generic malware while Analyze
 detected the file as malware associated with Sofacy.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig4.png" title="Figure 4: VirusTotal scan results of the binary file with generic detection." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig4.png" title="Figure 4: VirusTotal scan results of the binary file with generic detection." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: VirusTotal scan results of the binary file with generic detection.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig5.png" title="Figure 5: Intezer Analyze detects the file as genetically similar to malware used by Sofacy one year ago." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig5.png" title="Figure 5: Intezer Analyze detects the file as genetically similar to malware used by Sofacy one year ago." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Intezer Analyze detects the file as genetically similar to malware used by Sofacy one year ago.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The malware is a new sample of Zebrocy written in Go. Earlier this year,
@@ -886,7 +886,7 @@ anti-debugging checks. In Figure 6, it can be seen how the malware calls the
 Windows API function &lt;code&gt;IsDebuggerPresent&lt;/code&gt;. If true is returned, it enters an
 infinite sleeping loop.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig6.png" title="Figure 6: Logic that checks if the process is being debugged. If true, it enters a sleeping loop." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig6.png" title="Figure 6: Logic that checks if the process is being debugged. If true, it enters a sleeping loop." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: Logic that checks if the process is being debugged. If true, it enters a sleeping loop.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The screenshot is uploaded to the C&amp;amp;C located at the URL:
@@ -907,7 +907,7 @@ VirusTotal from Kazakhstan on November 12. This VHD file was named
 &lt;code&gt;No.243.CB3-EVACUATION LETTER.vhd&lt;/code&gt;. The content of the file is shown in Figure
 7.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig7.png" title="Figure 7: Content of No.243.CB3-EVACUATION LETTER.vhd. The disk file includes an executable file and a PDF file." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig7.png" title="Figure 7: Content of No.243.CB3-EVACUATION LETTER.vhd. The disk file includes an executable file and a PDF file." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: Content of No.243.CB3-EVACUATION LETTER.vhd. The disk file includes an executable file and a PDF file.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The executable is another Go version of Zebrocy. It uses the same C&amp;amp;C URL. The
@@ -936,7 +936,7 @@ other VHD files, this also has a PDF file and an executable masquerading as a
 Microsoft Word Document. Instead of delivering the Go version of Zebrocy, the
 Delphi loader was used.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig8.png" title="Figure 8: Content of VHD uploaded to VirusTotal in October." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig8.png" title="Figure 8: Content of VHD uploaded to VirusTotal in October." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 8: Content of VHD uploaded to VirusTotal in October.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The PDF lure is written in Russian. The title is, according to Google
@@ -944,7 +944,7 @@ Translate: &amp;ldquo;NATIONAL LIST INDIVIDUALS AND LEGAL ENTITIES INVOLVED IN T
 AND EXTREMIST ACTIVITIES OR THE DISTRIBUTION OF WEAPONS OF MASS DESTRUCTION.&amp;rdquo;
 The content of the first page is shown in Figure 9.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig9.jpg" title="Figure 9: Redacted screenshot of PDF lure written in Russian." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/images/fig9.jpg" title="Figure 9: Redacted screenshot of PDF lure written in Russian." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 9: Redacted screenshot of PDF lure written in Russian.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;According to timestamps, the VHD was created on October 21, the day after the
@@ -1012,7 +1012,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Mapping the Connections Inside Russia’s APT Ecosystem</title><link>https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/</link><pubDate>Tue, 24 Sep 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/</guid><description>
+&lt;/div&gt;</description></item><item><title>Mapping the Connections Inside Russia’s APT Ecosystem</title><link>https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/</link><pubDate>Tue, 24 Sep 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/</guid><description>
 &lt;p&gt;&lt;em&gt;This research is a joint effort conducted by Omri Ben-Bassat from Intezer and
 Itay Cohen from Check Point Research.&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;Prologue пролог&lt;span class="hx:absolute hx:-mt-20" id="prologue-пролог"&gt;&lt;/span&gt;
@@ -1045,7 +1045,7 @@ and the
 While these discoveries shed light into specific Russian actors or operations,
 the larger picture remains hazy.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig1.png" title="Figure 1: An infographic that was published in a report by the Estonian Foreign Intelligence Service" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig1.png" title="Figure 1: An infographic that was published in a report by the Estonian Foreign Intelligence Service" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: An infographic that was published in a report by the Estonian Foreign Intelligence Service&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The fog behind these complicated operations made us realize that while we know
@@ -1200,7 +1200,7 @@ networks structures, their associated data and dynamics.&lt;/p&gt;
 of connections. In order to make it look clearer, we would need to apply some
 layout algorithms to it.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig2.png" title="Figure 2: The initial graph as created by Gephi" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig2.png" title="Figure 2: The initial graph as created by Gephi" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: The initial graph as created by Gephi&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Without getting too deep into Graph Theory and Graph Drawing, layout algorithms
@@ -1211,7 +1211,7 @@ the graph. For our graph, we chose a
 or more specifically–
 &lt;a href="https://github.com/gephi/gephi/wiki/Fruchterman-Reingold"target="_blank" rel="noopener"&gt;Fruchterman-Reingold algorithm&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig3.gif" title="Figure 3: The graph of connections after applying layout algorithms" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig3.gif" title="Figure 3: The graph of connections after applying layout algorithms" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: The graph of connections after applying layout algorithms&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Now we can notice some big clusters that are created and bridges between two or
@@ -1231,7 +1231,7 @@ colors. In our research, we want to show connections between families and
 actors. Thus, for each node on the graph, we will add a label with its name and
 a unique color per attributed actor.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig4.png" title="Figure 4: Colors applied to the graph in order to make it more readable" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig4.png" title="Figure 4: Colors applied to the graph in order to make it more readable" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Colors applied to the graph in order to make it more readable&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Analyzing the Connections анализ связей&lt;span class="hx:absolute hx:-mt-20" id="analyzing-the-connections-анализ-связей"&gt;&lt;/span&gt;
@@ -1284,11 +1284,11 @@ originated from the Pinch source code. Not only that several functions are
 mutual, but there are also mutual strings—as can be seen in the screenshots
 below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig5.png" title="Figure 5: PinchDuke 0ce Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig5.png" title="Figure 5: PinchDuke 0ce Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: PinchDuke 0ce Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig6.png" title="Figure 6: Black Energy 3cf46c68dccb989fbda3f853cc19025d39d38d9ea5786f4ae6a926677d6c5f62" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig6.png" title="Figure 6: Black Energy 3cf46c68dccb989fbda3f853cc19025d39d38d9ea5786f4ae6a926677d6c5f62" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: Black Energy 3cf46c68dccb989fbda3f853cc19025d39d38d9ea5786f4ae6a926677d6c5f62&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;BlackEnergy &amp;lt;—&amp;gt; Energetic Bear&lt;span class="hx:absolute hx:-mt-20" id="blackenergy--energetic-bear"&gt;&lt;/span&gt;
@@ -1303,11 +1303,11 @@ Database. We believe that this function was not actively shared between these
 actors, but instead, was taken from a
 &lt;a href="https://www.c-plusplus.net/forum/topic/157481/selbstl%C3%B6schende-dll-m%C3%B6glich"target="_blank" rel="noopener"&gt;public source&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig7.png" title="Figure 7: Black Energy 11b7b8a7965b52ebb213b023b6772dd2c76c66893fc96a18a9a33c8cf125af80" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig7.png" title="Figure 7: Black Energy 11b7b8a7965b52ebb213b023b6772dd2c76c66893fc96a18a9a33c8cf125af80" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: Black Energy 11b7b8a7965b52ebb213b023b6772dd2c76c66893fc96a18a9a33c8cf125af80&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig8.png" title="Figure 8: Energetic Bear fc54d8afd2ce5cb6cc53c46783bf91d0dd19de604308d536827320826bc36ed9" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig8.png" title="Figure 8: Energetic Bear fc54d8afd2ce5cb6cc53c46783bf91d0dd19de604308d536827320826bc36ed9" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 8: Energetic Bear fc54d8afd2ce5cb6cc53c46783bf91d0dd19de604308d536827320826bc36ed9&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Potao Main Module &amp;lt;—&amp;gt; X-Agent&lt;span class="hx:absolute hx:-mt-20" id="potao-main-module--x-agent"&gt;&lt;/span&gt;
@@ -1335,7 +1335,7 @@ connections between them. The map is basically a one-stop-shop for anyone who
 is interested to learn and understand the connections and attributions of the
 samples, modules, families, and actors that together comprise this ecosystem.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig9.png" title="Figure 9: The map we created to show the connections inside the ecosystem" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig9.png" title="Figure 9: The map we created to show the connections inside the ecosystem" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 9: The map we created to show the connections inside the ecosystem&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The map is intuitive and rich with information. The user can get a full
@@ -1345,7 +1345,7 @@ the malware family the node belongs to, as well as links to analysis reports on
 Intezer’s platform and external links to related articles and publications.
 Basically, this side-panel is a short identity-card of the entities on the map.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig10.png" title="Figure 10: A side panel with additional information about the nodes" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig10.png" title="Figure 10: A side panel with additional information about the nodes" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 10: A side panel with additional information about the nodes&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The map and its data are available open-sourced in our repository and we are
@@ -1434,7 +1434,7 @@ us in this research, for helping us a lot and for always giving interesting and
 important insights. We would also like to thank our colleagues from
 &lt;a href="https://www.welivesecurity.com/"target="_blank" rel="noopener"&gt;ESET&lt;/a&gt; for providing some of the samples. And
 last but not least is our colleague Paul Litvak, who helped us with completing
-the APT Detector tool.&lt;/p&gt;</description></item><item><title>NotPetya Returns as Bad Rabbit</title><link>https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/</link><pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/</guid><description>
+the APT Detector tool.&lt;/p&gt;</description></item><item><title>NotPetya Returns as Bad Rabbit</title><link>https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/</link><pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/</guid><description>
 &lt;p&gt;Large scale cyber attacks seem to be happening once a month these days.
 Originally discovered by
 &lt;a href="https://www.welivesecurity.com/2017/10/24/kiev-metro-hit-new-variant-infamous-diskcoder-ransomware/"target="_blank" rel="noopener"&gt;ESET&lt;/a&gt;,
@@ -1444,7 +1444,7 @@ believed to have originated from compromised webpages with a fake popup for
 updating Adobe Flash Player. It has been reported that much of the behavior of
 Bad Rabbit has been similar to a previous ransomware known as NotPetya.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig1.png" title="Screenshot from ESET report, after ransomware has infected a computer" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig1.png" title="Screenshot from ESET report, after ransomware has infected a computer" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Screenshot from ESET report, after ransomware has infected a computer&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Using Intezer Analyze™, we have found code reuse from NotPetya throughout
@@ -1457,15 +1457,15 @@ did not contain any code from any Adobe product but does contain code from
 NotPetya. In fact, we find that 27% of the code in the loader has been seen in
 only NotPetya samples. Find the public report
 &lt;a href="https://analyze.intezer.com/#/analyses/6ba279af-8ce2-46c6-8b86-5fa65a5ed42a"target="_blank" rel="noopener"&gt;here&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Below is a direct comparison of function (&lt;code&gt;0x1000C244&lt;/code&gt;) of NotPetya
 (&lt;code&gt;027cc450ef5f8c5f653329641ec1fed91f694e0d229928963b30f6b0d7d3a745&lt;/code&gt;) and
 function (&lt;code&gt;0x4033B4&lt;/code&gt;) of the Bad Rabbit loader
 (&lt;code&gt;630325cac09ac3fab908f903e3b00d0dadd5fdaa0875ed8496fcbb97a558d0da&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Another example of code reuse in the loader from a function that seems to
 initialize some type of struct.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;#BadRabbit (#NotPetya v2) unpacked DLL: infpub.dat : &lt;a href="https://t.co/Ey5Yffsn74"target="_blank" rel="noopener"&gt;https://t.co/Ey5Yffsn74&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;— hasherezade (@hasherezade)
@@ -1482,18 +1482,18 @@ report with the unpacked sample: &lt;a href="https://t.co/NOIul4yLVT"target="_bl
 &lt;p&gt;— Jay Rosenberg (@jaytezer)
 &lt;a href="https://x.com/jaytezer/status/922875751174758400?ref_src=twsrc%5Etfw"target="_blank" rel="noopener"&gt;October 24, 2017&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Below is a screenshot comparing a function (&lt;code&gt;0x1000777B&lt;/code&gt;) of NotPetya (&lt;code&gt;027cc450ef5f8c5f653329641ec1fed91f694e0d229928963b30f6b0d7d3a745&lt;/code&gt;) and a function (&lt;code&gt;0x1000733&lt;/code&gt;C) of the encryptor module of Bad Rabbit (&lt;code&gt;579fd8a0385482fb4c789561a30b09f25671e86422f40ef5cca2036b28f99648&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The next screenshot is of another matching function between the two samples.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/10/notpetya-returns-bad-rabbit/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;As you can see in this attack, and in many other cases, malware authors constantly reuse their code. By recognizing code reuse, you force malware authors to rewrite code and come up with new techniques to avoid detection. This changes the playing field and makes it far less cost effective for malware authors and cyber crime organizations.&lt;/p&gt;
 &lt;p&gt;IOCs:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;630325cac09ac3fab908f903e3b00d0dadd5fdaa0875ed8496fcbb97a558d0da&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;8ebc97e05c8e1073bda2efb6f4d00ad7e789260afa2c276f0c72740b838a0a93&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;579fd8a0385482fb4c789561a30b09f25671e86422f40ef5cca2036b28f99648&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>New Variants of Agent.BTZ/ComRAT Found: The Threat That Hit The Pentagon In 2008 Still Evolving; Part 2/2</title><link>https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/</link><pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/</guid><description>
+&lt;/ul&gt;</description></item><item><title>New Variants of Agent.BTZ/ComRAT Found: The Threat That Hit The Pentagon In 2008 Still Evolving; Part 2/2</title><link>https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/</link><pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/</guid><description>
 &lt;p&gt;&lt;a href="../../../2017/08/new-variants-of-agent-btz-comrat-found/"&gt;Our previous blog&lt;/a&gt;
 post was a short brief of new Agent.BTZ variants that we found. This second
 part in the series will demonstrate in greater detail exactly how we discovered
@@ -1533,7 +1533,7 @@ direct neighbors. By summing up the data in this table we can conclude that, in
 general, about ~30% of the original code has been used in every version up to
 the latest known version as of 2014 (marked in red).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig1.png" title="https://www.gdatasoftware.com/blog/2015/01/23927-evolution-of-sophisticated-spyware-from-agent-btz-to-comrat" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig1.png" title="https://www.gdatasoftware.com/blog/2015/01/23927-evolution-of-sophisticated-spyware-from-agent-btz-to-comrat" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;https://www.gdatasoftware.com/blog/2015/01/23927-evolution-of-sophisticated-spyware-from-agent-btz-to-comrat&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Obviously this 30% isn’t comprised of totally unique code made by Agent.BTZ’s
@@ -1547,7 +1547,7 @@ unique pieces of code created by the malware’s authors.&lt;/p&gt;
 &lt;a href="#mysterious-magic-number" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After filtering out all of the common and library code, we were left with
 several unique functions that can be found in every version of the malware
 since 2007. The most prominent is the following function:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In the picture you can see the two, almost identical functions from the first
 version (Ch 1.0) on the right and the latest version (Ch 3.26) of Agent.BTZ on
 the left. This function is initially reading first four bytes of a given file,
@@ -1559,7 +1559,7 @@ function shown above is the only reference to that magic number. Luckily, while
 re-reading old ThreatExpert’s Agent.BTZ analysis from 2008 we happened to
 notice the following paragraph:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig3.png" title="http://blog.threatexpert.com/2008/11/agentbtz-threat-that-hit-pentagon.html" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig3.png" title="http://blog.threatexpert.com/2008/11/agentbtz-threat-that-hit-pentagon.html" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;http://blog.threatexpert.com/2008/11/agentbtz-threat-that-hit-pentagon.html&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;So now we know that this function is used to verify thumb.dd files, which are
@@ -1568,7 +1568,7 @@ networks, like those of the Pentagon). But wait… why didn’t we found the
 function which creates these files? Because the USB-infection vector was
 removed few years earlier! &lt;strong&gt;And yet the adversary is still looking for these
 valuable thumb.dd files…&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Hunting for new variants&lt;span class="hx:absolute hx:-mt-20" id="hunting-for-new-variants"&gt;&lt;/span&gt;
 &lt;a href="#hunting-for-new-variants" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;So far, we know that this function exists, and it has stayed consistent across
 all versions of the malware; we know what it does (verify certain magic number)
@@ -1583,7 +1583,7 @@ months’ worth of file uploads. As soon as the scan finished, we dug into the
 results and &lt;strong&gt;discovered this first new variant of Agent.BTZ that wasn’t yet
 mentioned in any public report&lt;/strong&gt;:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig5.png" title="A screenshot from the Intezer Analyze™ product displaying partial code connections between new sample to old samples of Agent.BTZ(Turla group)." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig5.png" title="A screenshot from the Intezer Analyze™ product displaying partial code connections between new sample to old samples of Agent.BTZ(Turla group)." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;A screenshot from the Intezer Analyze™ product displaying partial code connections between new sample to old samples of Agent.BTZ(Turla group).&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This
@@ -1779,7 +1779,7 @@ data-copied-label="Copied!"
 &lt;li&gt;&lt;a href="https://securelist.com/the-epic-turla-operation/65545/"target="_blank" rel="noopener"&gt;https://securelist.com/the-epic-turla-operation/65545/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://artemonsecurity.com/snake_whitepaper.pdf"target="_blank" rel="noopener"&gt;http://artemonsecurity.com/snake_whitepaper.pdf&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.gdatasoftware.com/blog/2015/01/23926-analysis-of-project-cobra"target="_blank" rel="noopener"&gt;https://www.gdatasoftware.com/blog/2015/01/23926-analysis-of-project-cobra&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>New Variants of Agent.BTZ/ComRAT Found: The Threat That Hit The Pentagon In 2008 Still Evolving; Part 1/2</title><link>https://intezer.github.io/community-intelligence/blog/2017/08/new-variants-of-agent-btz-comrat-found/</link><pubDate>Mon, 07 Aug 2017 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2017/08/new-variants-of-agent-btz-comrat-found/</guid><description>
+&lt;/ul&gt;</description></item><item><title>New Variants of Agent.BTZ/ComRAT Found: The Threat That Hit The Pentagon In 2008 Still Evolving; Part 1/2</title><link>https://research.intezer.com/blog/2017/08/new-variants-of-agent-btz-comrat-found/</link><pubDate>Mon, 07 Aug 2017 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2017/08/new-variants-of-agent-btz-comrat-found/</guid><description>
 &lt;p&gt;Agent.BTZ–also known as ComRAT–is one of the world’s oldest known
 state-sponsored threats, mainly known for the
 &lt;a href="http://articles.latimes.com/2008/nov/28/nation/na-cyberattack28"target="_blank" rel="noopener"&gt;2008 Pentagon breach&lt;/a&gt;.
@@ -1802,7 +1802,7 @@ technology, along with a thorough analysis of the new samples.&lt;/p&gt;
 WinRAR, the adversary tried to mimic WinRAR’s SFX installer. Resource data was
 duplicated, including icons and layouts used by the original installer, as you
 can see in the following screenshot:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/08/new-variants-of-agent-btz-comrat-found/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/08/new-variants-of-agent-btz-comrat-found/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Once executed, the dropper installs activeds.dll – a proxy dll which is loaded
 directly to explorer.exe once the machine reboots. The purpose of this proxy
 dll is to load the malware’s main payload – stdole2.tlb. The dropper then also
@@ -1838,7 +1838,7 @@ stopped using an incremental value. New variants are now using a different
 numbering system of &lt;code&gt;0.8/9.&amp;lt;RANDOM_VALUE&amp;gt;&lt;/code&gt;, making it more difficult for
 researchers to track the exact version of the samples.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2017/08/new-variants-of-agent-btz-comrat-found/images/fig2.png" title="Example configuration extracted from one of the samples – PVer 0.9.1528434231." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/08/new-variants-of-agent-btz-comrat-found/images/fig2.png" title="Example configuration extracted from one of the samples – PVer 0.9.1528434231." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Example configuration extracted from one of the samples – PVer 0.9.1528434231.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Even without the PVer numbering, we were able to determine using our technology

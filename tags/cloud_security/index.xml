@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cloud_security</title><link>https://intezer.github.io/community-intelligence/tags/cloud_security/</link><description>Recent content in Cloud_security on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 26 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cloud_security/index.xml" rel="self" type="application/rss+xml"/><item><title>Exposed Prefect Workflows Could Lead to Disruptive Attacks</title><link>https://intezer.github.io/community-intelligence/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/</link><pubDate>Tue, 26 Oct 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cloud_security</title><link>https://research.intezer.com/tags/cloud_security/</link><description>Recent content in Cloud_security on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 26 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/cloud_security/index.xml" rel="self" type="application/rss+xml"/><item><title>Exposed Prefect Workflows Could Lead to Disruptive Attacks</title><link>https://research.intezer.com/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/</link><pubDate>Tue, 26 Oct 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Workflow management platforms are powerful tools for automating and managing
 complex tasks. Integrating workflow platforms can help companies coordinate and
@@ -54,7 +54,7 @@ attacks on the companies that own the exposed instances.&lt;/p&gt;
 &lt;a href="#how-is-the-attack-executed" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Workflows can be deleted with a single button click in the web UI as shown
 below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/images/fig1.png" title="Deleting a workflow in the web UI." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/images/fig1.png" title="Deleting a workflow in the web UI." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Deleting a workflow in the web UI.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Another way to delete workflows, as well as projects, tasks and agents, is by
@@ -64,11 +64,11 @@ attacker can retrieve the ID of the elements they plan to delete and then use
 the suitable API functions to delete the elements. Those elements are
 &lt;code&gt;delete_task&lt;/code&gt;, &lt;code&gt;delete_flow&lt;/code&gt;, &lt;code&gt;delete_project&lt;/code&gt; or &lt;code&gt;delete_agent&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/images/fig2.png" title="Obtaining the ID of a task using GraphQL API." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/images/fig2.png" title="Obtaining the ID of a task using GraphQL API." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Obtaining the ID of a task using GraphQL API.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/images/fig3.png" title="Deleting a task which has a specific ID." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/images/fig3.png" title="Deleting a task which has a specific ID." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Deleting a task which has a specific ID.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;The Risk of Exposed Prefect Instances&lt;span class="hx:absolute hx:-mt-20" id="the-risk-of-exposed-prefect-instances"&gt;&lt;/span&gt;
@@ -105,7 +105,7 @@ platform. We advise on adding firewall rules to hide the instance from the
 internet and ensure that authentication is configured. If the application does
 not offer sufficient authentication mechanisms, consider leveraging tools
 provisioned by the cloud provider to implement your own authentication such as
-GCP&amp;rsquo;s Identity-Aware Proxy or AWS&amp;rsquo;s Session Manager.&lt;/p&gt;</description></item><item><title>Misconfigured Airflows Leak Thousands of Credentials from Popular Services</title><link>https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/</link><pubDate>Mon, 04 Oct 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/</guid><description>
+GCP&amp;rsquo;s Identity-Aware Proxy or AWS&amp;rsquo;s Session Manager.&lt;/p&gt;</description></item><item><title>Misconfigured Airflows Leak Thousands of Credentials from Popular Services</title><link>https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/</link><pubDate>Mon, 04 Oct 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/</guid><description>
 &lt;p&gt;&lt;em&gt;This research refers to misconfigured Apache Airflow managed by individuals or
 organizations (&amp;lsquo;users&amp;rsquo;). As a result of the misconfiguration, the credentials
 of users are exposed, including their own credentials to the different
@@ -194,7 +194,7 @@ These can be leveraged in dictionary or brute-force-style attacks against other
 platforms. Popular platforms that we found with exposed credentials as a result
 of misconfigured Airflow instances include database passwords, API keys, and
 cloud credentials. These include but are not limited to:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Most of these credentials are exposed through insecure coding practices. We
 document some of the ways in which the credentials have been exposed below.&lt;/p&gt;
 &lt;h4&gt;Insecure Coding Practices&lt;span class="hx:absolute hx:-mt-20" id="insecure-coding-practices"&gt;&lt;/span&gt;
@@ -203,7 +203,7 @@ practices. We discovered many instances with hardcoded passwords inside the
 Python DAG code. An example of a hardcoded password for a production PostgreSQL
 database is shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig2.png" title="Hardcoded PostgreSQL password in DAG code." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig2.png" title="Hardcoded PostgreSQL password in DAG code." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Hardcoded PostgreSQL password in DAG code.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;Variables&lt;span class="hx:absolute hx:-mt-20" id="variables"&gt;&lt;/span&gt;
@@ -213,7 +213,7 @@ variable value that is able to be globally used across all DAG scripts. It is
 very common to see hardcoded passwords in these variables. An example of a
 Slack token used in a variable is shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig3.png" title="Hardcoded Slack token in variables." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig3.png" title="Hardcoded Slack token in variables." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Hardcoded Slack token in variables.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;Connections&lt;span class="hx:absolute hx:-mt-20" id="connections"&gt;&lt;/span&gt;
@@ -225,7 +225,7 @@ the credentials are stored in the &lt;code&gt;Extra&lt;/code&gt; field of the co
 This means that they are not encrypted and can be viewed by anyone. An example
 with an AWS key stored in the extra field is shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig4.png" title="AWS key located in misused connection." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig4.png" title="AWS key located in misused connection." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;AWS key located in misused connection.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;Logs&lt;span class="hx:absolute hx:-mt-20" id="logs"&gt;&lt;/span&gt;
@@ -235,7 +235,7 @@ would be logged in plaintext in the logs section; now registered as
 &lt;a href="https://www.cvedetails.com/cve/CVE-2020-17511/"target="_blank" rel="noopener"&gt;CVE-2020-17511&lt;/a&gt;. Below shows a
 log entry for a SQL Lakehouse platform.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig5.png" title="Password located in logs." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig5.png" title="Password located in logs." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Password located in logs.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;Configuration&lt;span class="hx:absolute hx:-mt-20" id="configuration"&gt;&lt;/span&gt;
@@ -246,7 +246,7 @@ file &lt;code&gt;expose_config&lt;/code&gt; is set to &lt;code&gt;True&lt;/code&
 the web server UI. Accessing from the UI can expose credentials. It is common
 to see plaintext fernet keys in these files as shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig6.png" title="Key located in exposed configuration file." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig6.png" title="Key located in exposed configuration file." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Key located in exposed configuration file.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Leakage of Sensitive Data&lt;span class="hx:absolute hx:-mt-20" id="leakage-of-sensitive-data"&gt;&lt;/span&gt;
@@ -270,7 +270,7 @@ can be handy, it is also very dangerous because on top of there being no
 authentication, anyone with access to the server can get information from the
 database.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig7.png" title="Screenshot of the Ad Hoc Query feature in Airflow UI." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig7.png" title="Screenshot of the Ad Hoc Query feature in Airflow UI." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Screenshot of the Ad Hoc Query feature in Airflow UI.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Many exposed Airflow instances that we found revealed information about the
@@ -284,7 +284,7 @@ image short names to deliver malicious code instead of the intended code. A
 really good example of this type of attack is covered
 &lt;a href="https://medium.com/@alex.birsan/dependency-confusion-4a5d60fec610"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig8.png" title="Private container registry." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig8.png" title="Private container registry." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Private container registry.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Legal Action&lt;span class="hx:absolute hx:-mt-20" id="legal-action"&gt;&lt;/span&gt;
@@ -310,7 +310,7 @@ internal container image names to execute. These container image variables
 could be edited and swapped out with an image containing and running
 unauthorized or malicious code.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig9.png" title="Image name variables vulnerable to exploitation." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig9.png" title="Image name variables vulnerable to exploitation." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Image name variables vulnerable to exploitation.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Another possible route for malicious code execution can come through unofficial
@@ -320,7 +320,7 @@ being used. This can be leveraged to edit DAGs to include malicious code that
 can then be triggered from the UI. Of all the exposed instances, we noted only
 a small percentage using these types of vulnerable plugins.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig10.png" title="Vulnerable code editor plugin." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/images/fig10.png" title="Vulnerable code editor plugin." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Vulnerable code editor plugin.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Mitigation&lt;span class="hx:absolute hx:-mt-20" id="mitigation"&gt;&lt;/span&gt;
@@ -358,7 +358,7 @@ called
 &lt;a href="https://intezer.com/blog/container-security/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/"target="_blank" rel="noopener"&gt;Argo Workflows&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;In the event that an attacker has already exploited a misconfiguration or
 vulnerability, you will need to detect and terminate the malicious or
-unauthorized code in your production environment as soon as it is executed.&lt;/p&gt;</description></item><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
+unauthorized code in your production environment as soon as it is executed.&lt;/p&gt;</description></item><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
 &lt;p&gt;Enterprises today rely on a wide range of cloud services—infrastructure as a
 service (IaaS), platform as a service (PaaS), software as a service (SaaS), and
 more—to meet their business needs. But the growing popularity of cloud has also
@@ -481,7 +481,7 @@ Standards and Technology (NIST). As visible from Figure 1, the process is
 cyclical, meaning it is an ongoing learning process whereby organizations can
 continue to improve their prevention and response methods.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig1.png" title="Figure 1: Cycle of incident response (Source: The National Institute of Standards and Technology)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig1.png" title="Figure 1: Cycle of incident response (Source: The National Institute of Standards and Technology)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: Cycle of incident response (Source: The National Institute of Standards and Technology)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The challenges of incident response in the cloud are complex, and not all can
@@ -612,7 +612,7 @@ let&amp;rsquo;s assume you got an alert on the creation of several new AWS insta
 first thing to check is the CloudTrial logs, where you&amp;rsquo;ll find RunInstances
 events as shown in Figure 2 below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig2.png" title="Figure 2: AWS CloudTrail logs showing RunInstances events" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/images/fig2.png" title="Figure 2: AWS CloudTrail logs showing RunInstances events" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: AWS CloudTrail logs showing RunInstances events&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After you isolate the instances and connect securely (not from your personal
@@ -651,7 +651,7 @@ account. Even with the precautions detailed in this blog, breaches still
 happen—whether due to unknown vulnerabilities/misconfigurations, unauthorized
 access, or supply chain attacks. Having strong runtime threat detection and
 response capabilities is crucial.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Special thanks to Aner Izraeli for contributing to this post.&lt;/em&gt;&lt;/p&gt;</description></item><item><title>New Attacks on Kubernetes via Misconfigured Argo Workflows</title><link>https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/</link><pubDate>Tue, 20 Jul 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/</guid><description>
+&lt;p&gt;&lt;em&gt;Special thanks to Aner Izraeli for contributing to this post.&lt;/em&gt;&lt;/p&gt;</description></item><item><title>New Attacks on Kubernetes via Misconfigured Argo Workflows</title><link>https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/</link><pubDate>Tue, 20 Jul 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/</guid><description>
 &lt;h2&gt;Key Points&lt;span class="hx:absolute hx:-mt-20" id="key-points"&gt;&lt;/span&gt;
 &lt;a href="#key-points" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Intezer has detected a new attack vector against Kubernetes (K8s) clusters
@@ -704,18 +704,18 @@ container, is described later in this blog.&lt;/p&gt;
 YAML file containing a &lt;code&gt;spec&lt;/code&gt; for the type of work to be performed. Most
 commonly, each step in an Argo workflow is a container. An example &amp;ldquo;Hello
 World&amp;rdquo; workflow is shown below:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;These workflows are executed from a template or submitted directly through the
 Argo user interface, as shown below:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;How Argo is Abused by Attackers&lt;span class="hx:absolute hx:-mt-20" id="how-argo-is-abused-by-attackers"&gt;&lt;/span&gt;
 &lt;a href="#how-argo-is-abused-by-attackers" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In instances when permissions are misconfigured, it is possible for an attacker
 to access an open Argo dashboard and submit their own workflow. In one cluster,
 we noticed that a popular cryptocurrency mining container,
 &lt;code&gt;kannix/monero-miner&lt;/code&gt;, was being deployed. An example of an in the wild attack,
 still running on an exposed cluster for nine months, is shown below.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The &lt;code&gt;kannix/monero-miner&lt;/code&gt; (now removed from Docker Hub) was a popular image
 which used XMRig to mine for Monero cryptocurrency. Its ease of use allowed it
 to be conveniently used by threat actors of any skill level to conduct
@@ -728,10 +728,10 @@ mining attack against Kubernetes clusters.&lt;/p&gt;
 &lt;p&gt;In Docker Hub there are still a number of options for Monero mining that
 attackers can use. With a simple search it shows that there are at least 45
 other containers with millions of downloads.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Using another popular container, &lt;code&gt;giansalex/monero-miner&lt;/code&gt;, we detected an XMRig
 Miner running on the cluster via Argo Workflows.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Mitigation Advice&lt;span class="hx:absolute hx:-mt-20" id="mitigation-advice"&gt;&lt;/span&gt;
 &lt;a href="#mitigation-advice" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;For a quick check that an instance is misconfigured, try accessing the Argo
 Workflows dashboard from an unauthenticated incognito browser outside your
@@ -742,7 +742,7 @@ check the status code. Make a HTTP GET request to
 correctly configured instance, whereas a successful status code of
 &lt;code&gt;200 Success&lt;/code&gt; could indicate that an unauthorized user is able to access the
 instance.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;It is critical to ensure that best practices for permissions are followed in
 order to prevent unauthorized activity in your environments. Methodologies such
 as the
@@ -772,7 +772,7 @@ that only trusted code is running in your environment. In the event that an
 attacker has exploited a misconfiguration or vulnerability in your K8s cluster
 or applications running on clusters, runtime protection solutions give
 immediate visibility over all code running on your pods, nodes, and clusters,
-and help you detect and respond to attacks in your environment.&lt;/p&gt;</description></item><item><title>Why Relying on the Cloud Provider for Security is Not Enough</title><link>https://intezer.github.io/community-intelligence/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</link><pubDate>Thu, 20 May 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</guid><description>
+and help you detect and respond to attacks in your environment.&lt;/p&gt;</description></item><item><title>Why Relying on the Cloud Provider for Security is Not Enough</title><link>https://research.intezer.com/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</link><pubDate>Thu, 20 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</guid><description>
 &lt;p&gt;73% of organizations using the cloud are not sure which parts of security fall
 under their responsibility. Ultimately, the customer is responsible for
 security in the cloud, meaning protecting the workloads (applications and code)
@@ -896,7 +896,7 @@ will eventually get through, making the last line of defense a priority.
 Protecting the runtime environment buys you time to do larger programs to
 reduce risk and have a more holistic cloud security. Runtime protection is also
 needed to detect and respond to attacks. If an attacker exploits an unknown
-vulnerability or a backdoor in the supply chain you must be able to detect it.&lt;/p&gt;</description></item><item><title>Attackers Abusing Legitimate Cloud Monitoring Tools to Conduct Cyber Attacks</title><link>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</link><pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</guid><description>
+vulnerability or a backdoor in the supply chain you must be able to detect it.&lt;/p&gt;</description></item><item><title>Attackers Abusing Legitimate Cloud Monitoring Tools to Conduct Cyber Attacks</title><link>https://research.intezer.com/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</link><pubDate>Tue, 08 Sep 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;TeamTNT is a cybercrime group that targets cloud environments including Docker
 and Kubernetes instances. The group has been
@@ -939,7 +939,7 @@ to start, stop, and open interactive shells in any of these containers. By
 installing a legitimate tool such as Weave Scope the attackers reap all the
 benefits as if they had installed a backdoor on the server, with significantly
 less effort and without needing to use malware.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;The image above is a Weave Scope visualization of a Linux server. On the left
 is the open terminal of a Nginx-based container. On the right is a view of all
 the containers on the server.&lt;/em&gt;&lt;/p&gt;
@@ -955,7 +955,7 @@ connect back via SSH.&lt;/p&gt;
 &lt;p&gt;Next the attackers download and install Weave Scope. As described in the
 installation guide in &lt;a href="https://github.com/weaveworks/scope"target="_blank" rel="noopener"&gt;Weave Scope&amp;rsquo;s git&lt;/a&gt;,
 it takes only a few commands to complete installation of the tool.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/09/attackers-abusing-legitimate-cloud-monitoring-tools-to-conduct-cyber-attacks/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Once installed, the attackers can connect to the Weave Scope dashboard via HTTP
 on port 4040 and gain full visibility and control over the victim&amp;rsquo;s
 infrastructure.&lt;/p&gt;
@@ -1021,7 +1021,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Watch Your Containers: Doki Infecting Docker Servers in the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</link><pubDate>Tue, 28 Jul 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</guid><description>
+&lt;/div&gt;</description></item><item><title>Watch Your Containers: Doki Infecting Docker Servers in the Cloud</title><link>https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</link><pubDate>Tue, 28 Jul 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/</guid><description>
 &lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
 &lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://blog.netlab.360.com/a-new-mining-botnet-blends-its-c2s-into-ngrok-service/"target="_blank" rel="noopener"&gt;Ngrok Mining Botnet&lt;/a&gt;
@@ -1103,14 +1103,14 @@ Ngrok to craft unique URLs with a short lifetime and uses them to download
 payloads during the attack by passing them to the curl based image. The
 downloaded payload is saved in &lt;code&gt;/tmpXXXXXX&lt;/code&gt; directory in the container.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig1.png" title="The command that created the container as seen on the syslog of the attacked server" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig1.png" title="The command that created the container as seen on the syslog of the attacked server" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The command that created the container as seen on the syslog of the attacked server&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;By using the bind configuration the attacker can control the cron utility of
 the host. The attacker modifies the host&amp;rsquo;s cron to execute the downloaded
 payload every minute. We observed two types of payloads, one is a network
 scanner script and the other is a downloader script.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The network scanner uses zmap, zgrap, and jq to scan ports associated with
 Redis, Docker, SSH, and HTTP.&lt;/p&gt;
 &lt;p&gt;Using a list of hardcoded ranges of IP addresses, which belong mostly to cloud
@@ -1135,7 +1135,7 @@ find the domain of its C2 in real time.&lt;/p&gt;
 for over six months despite having
 &lt;a href="https://www.virustotal.com/gui/file/4aadb47706f0fe1734ee514e79c93eed65e1a0a9f61b63f3e7b6367bd9a3e63b/detection"target="_blank" rel="noopener"&gt;been uploaded to VirusTotal&lt;/a&gt;
 on January 14, 2020 and scanned multiple times since.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Doki is multi-threaded and uses the embedTLS library for cryptographic
 functions and network communication. When executed, the malware will create a
 seperate thread in order to handle all C2 communications.&lt;/p&gt;
@@ -1163,21 +1163,21 @@ from law enforcement and domain filtering attempts from security products.&lt;/p
 not &amp;ldquo;46927e019820&amp;rdquo;, which is what&amp;rsquo;s generated for &amp;ldquo;0.000000&amp;rdquo;, meaning when no
 Dogecoin was ever transferred from the wallet. In the case that this domain is
 generated, the malware will exit without continuing any further.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Otherwise, the malware continues to download a shell script by contacting its
 C2 via HTTPS, using the URL &lt;code&gt;&amp;lt;c2_address&amp;gt;/update.sh&lt;/code&gt; and saving the returned
 data as &lt;code&gt;/tmp/update.sh&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;It will then resolve the current process&amp;rsquo;s PID and path to be used as script
 arguments, and proceeds to execute the script by running:
 &lt;code&gt;/bin/sh -c ./update.sh \&amp;lt;process_id&amp;gt; \&amp;lt;process_path&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Meanwhile, the main thread of the malware reads from STDIN, expecting to
 receive binary data from that shell script. The arguments are passed to the
 script in order to allow it to communicate with the malware in this way and
 receive code to execute.&lt;/p&gt;
 &lt;p&gt;If data is received via STDIN, the malware saves it as a file under /tmp,
 choosing its name randomly from a predefined list of Linux kernel modules.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;While it&amp;rsquo;s a very basic deception method, it&amp;rsquo;s not something commonly seen in
 Linux malware, which often don&amp;rsquo;t bother disguising as system files.&lt;/p&gt;
 &lt;p&gt;Finally, the malware proceeds to fork so the child process executes the file
@@ -1217,7 +1217,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Technical Analysis: Pacha Group Competing against Rocke Group for Cryptocurrency Mining Foothold on the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</link><pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</guid><description>
+&lt;/div&gt;</description></item><item><title>Technical Analysis: Pacha Group Competing against Rocke Group for Cryptocurrency Mining Foothold on the Cloud</title><link>https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</link><pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</guid><description>
 &lt;p&gt;Pacha Group is a crypto-mining threat actor we at Intezer discovered and
 profiled in a &lt;a href="../../../2019/02/technical-analysis-pacha-group"&gt;blog post&lt;/a&gt;
 published on February 28, 2019. This threat actor targeted Linux servers dating
@@ -1234,10 +1234,10 @@ environments are increasingly becoming a common target for adversaries.&lt;/p&gt
 &lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
 &lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In monitoring Pacha Group we have identified new, undetected Linux.GreedyAntd
 variants that share code with previous variants.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Despite sharing nearly 30% of code with previous variants, detection rates of
 the new Pacha Group variants are low:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The main malware infrastructure appears to be identical to previous Pacha Group
 campaigns, although there is a distinguishable effort to detect and mitigate
 Rocke Group’s implants. Rocke Group was first reported by
@@ -1248,7 +1248,7 @@ servers and cloud-based environments as reported by
 The following image is a blacklist of miners in which Linux.GreedyAntd searches
 to eradicate. We have recognized several file names in this blacklist known to
 be used for Rocke Group’s implants:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Furthermore, there are other strings within this file path blacklist which are
 used to search for and disable cloud protection solutions, such as Alibaba
 Server Guard Agent. Strings of malware
@@ -1259,46 +1259,46 @@ were also found. Rocke Group is known to hunt for similar security products and
 to have
 &lt;a href="https://community.atlassian.com/t5/Confluence-questions/How-come-my-confluence-installation-was-hacked-by-Kerberods/qaq-p/1054605#M141274"target="_blank" rel="noopener"&gt;abused&lt;/a&gt;
 the same vulnerability.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Another interesting update in Pacha Group’s infrastructure in comparison to
 previous campaigns is that further implants would only be able to be downloaded
 from Pacha Group’s servers if the HTTP GET request was completed with a
 specific User-Agent. In the following screenshot we can see how files can not
 be downloaded unless the correct User-Agent is used:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In addition, Pacha Group’s component update seems to include a lightweight
 user-mode rootkit known as Libprocesshider, which is an open source project
 hosted on &lt;a href="https://github.com/gianlucaborello/libprocesshider"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt; and has
 also been used by Rocke Group.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The malware updates &lt;code&gt;/etc/ld.preload&lt;/code&gt; to include the path of the dropped
 library masquerading libconv.so, a unicode conversion library.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This shared object will export customized versions of readdir and readdir64
 functions that will attempt to hide a process name from /proc filesystem of one
 of the main components of the malware’s infrastructure, in charge to download
 further implants in intervals along with enforcing process, file path and IP
 blacklisting:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Along with process and file path blacklisting measures seen in previous
 variants, we also observed that newer variants implement IP blacklisting using
 an interesting technique.&lt;/p&gt;
 &lt;p&gt;Right after process and file path black listing has been accomplished, we find
 the following code:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Each of the IPs in the blacklist IP table is decoded and then added to the
 system routing table with host scope via ioctl.&lt;/p&gt;
 &lt;p&gt;This is more conveniently shown by observing the following system call trace:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When we check the routing table of a compromised system we see the following:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Each of the decoded IPs have been added to the routing table with host scope.
 This implies that when any of these IPs will be requested, each request will be
 routed back to the host to be resolved instead of redirecting them to the
 gateway, causing a failure in the routing process.&lt;/p&gt;
 &lt;p&gt;In the following screenshot we can see the effect of this methodology by using
 the ping utility:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After analyzing the IP blacklist we discovered that some of these IPs, even
 though they may not necessarily be malicious, are known to have been used by
 Rocke Group in the past. As an example, systemten.org is in this blacklist and

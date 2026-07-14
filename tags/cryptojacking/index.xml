@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cryptojacking</title><link>https://intezer.github.io/community-intelligence/tags/cryptojacking/</link><description>Recent content in Cryptojacking on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 13 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/cryptojacking/index.xml" rel="self" type="application/rss+xml"/><item><title>A Rare Look Inside a Cryptojacking Campaign and its Profit</title><link>https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/</link><pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Cryptojacking</title><link>https://research.intezer.com/tags/cryptojacking/</link><description>Recent content in Cryptojacking on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 13 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/cryptojacking/index.xml" rel="self" type="application/rss+xml"/><item><title>A Rare Look Inside a Cryptojacking Campaign and its Profit</title><link>https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/</link><pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/</guid><description>
 &lt;p&gt;&lt;a href="https://intezer.com/blog/cloud-security/top-linux-cloud-threats-of-2020/"target="_blank" rel="noopener"&gt;Linux threats&lt;/a&gt;
 are becoming more frequent and a more common type of Linux threat is
 cryptojacking, which is the unauthorized use of an IT system for the purpose of
@@ -20,7 +20,7 @@ currently 95 workers. Workers are victim machines whose resources are being
 used to mine cryptocurrency for the attacker. A snapshot of the active workers
 is shown in Figure 1.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig1.gif" title="Figure 1: Snapshot of workers mining cryptocurrency for the attacker" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig1.gif" title="Figure 1: Snapshot of workers mining cryptocurrency for the attacker" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: Snapshot of workers mining cryptocurrency for the attacker&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Cryptojacking Campaign Attack Flow&lt;span class="hx:absolute hx:-mt-20" id="cryptojacking-campaign-attack-flow"&gt;&lt;/span&gt;
@@ -42,7 +42,7 @@ for the execution of the coinminer malware. Before running the coinminer, it
 verifies the path &lt;code&gt;/usr/share/dbus-1/bin&lt;/code&gt; contains two files: &lt;code&gt;systemd-host&lt;/code&gt;
 (aka the miner) and the other named IBus, the miner&amp;rsquo;s configuration file.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig2.png" title="Figure 2: The cryptojacking campaign attack flow" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig2.png" title="Figure 2: The cryptojacking campaign attack flow" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: The cryptojacking campaign attack flow&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The path &lt;code&gt;/usr/share&lt;/code&gt; is not commonly seen in Linux malware and is writable
@@ -69,7 +69,7 @@ the wallets are not active or have only a few workers. In this recent attack,
 we found a live dashboard—shown in Figure 3— that is constantly updated with
 new workers and paints the full picture of this campaign.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig3.png" title="Figure 3: Screenshot of the first cryptomining dashboard" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig3.png" title="Figure 3: Screenshot of the first cryptomining dashboard" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: Screenshot of the first cryptomining dashboard&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The dashboard shows that this cryptojacking campaign has been active for almost
@@ -77,16 +77,16 @@ a year with both wallets receiving at least one payment per day. One of the
 wallets averages 95 workers while the second wallet averages four workers,
 meaning the campaign is still operational and has about 100 victims to date.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig4.png" title="Figure 4: Screenshot of second cryptomining dashboard" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig4.png" title="Figure 4: Screenshot of second cryptomining dashboard" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Screenshot of second cryptomining dashboard&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Insights About the Cryptojacking Victims&lt;span class="hx:absolute hx:-mt-20" id="insights-about-the-cryptojacking-victims"&gt;&lt;/span&gt;
 &lt;a href="#insights-about-the-cryptojacking-victims" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig5.png" title="Figure 5: Screenshot of the active workers, their names and hash rates" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig5.png" title="Figure 5: Screenshot of the active workers, their names and hash rates" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Screenshot of the active workers, their names and hash rates&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig6.png" title="Figure 6: Screenshot from Monero benchmarks" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig6.png" title="Figure 6: Screenshot from Monero benchmarks" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: Screenshot from Monero benchmarks&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Using the randomx CPU benchmarks, we can cross-reference the hash rates seen in
@@ -102,7 +102,7 @@ performance victims.&lt;/p&gt;
 date, which we assume is the date of infection. In Figure 6, for example, the
 marked numbers can be translated into 01/11, or January 11.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig7.png" title="Figure 7: Screenshot from the dashboard disclosing the name of the worker" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig7.png" title="Figure 7: Screenshot from the dashboard disclosing the name of the worker" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: Screenshot from the dashboard disclosing the name of the worker&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Cryptojacking Mitigation&lt;span class="hx:absolute hx:-mt-20" id="cryptojacking-mitigation"&gt;&lt;/span&gt;
@@ -130,17 +130,17 @@ Docker.&lt;/p&gt;
 &lt;p&gt;Executing the orchestrator file will prompt an immediate alert in Intezer
 Protect as seen in Figure 8.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig8.png" title="Figure 8: Screenshot from the dashboard disclosing the name of the worker" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig8.png" title="Figure 8: Screenshot from the dashboard disclosing the name of the worker" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 8: Screenshot from the dashboard disclosing the name of the worker&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;When XMRig Miner is executed by the first file, Intezer Protect will trigger a
 second alert as seen in Figure 9.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig9.png" title="Figure 9: Intezer Protect alert triggered upon the execution of XMRig Miner" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig9.png" title="Figure 9: Intezer Protect alert triggered upon the execution of XMRig Miner" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 9: Intezer Protect alert triggered upon the execution of XMRig Miner&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig10.png" title="Figure 10: Intezer Protect reports on Docker misconfiguration with an open API port" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/images/fig10.png" title="Figure 10: Intezer Protect reports on Docker misconfiguration with an open API port" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 10: Intezer Protect reports on Docker misconfiguration with an open API port&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;The Bottom Line&lt;span class="hx:absolute hx:-mt-20" id="the-bottom-line"&gt;&lt;/span&gt;

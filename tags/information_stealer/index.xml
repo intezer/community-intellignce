@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Information_stealer</title><link>https://intezer.github.io/community-intelligence/tags/information_stealer/</link><description>Recent content in Information_stealer on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 29 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/information_stealer/index.xml" rel="self" type="application/rss+xml"/><item><title>YTStealer Malware: "YouTube Cookies! Om Nom Nom Nom"</title><link>https://intezer.github.io/community-intelligence/blog/2022/06/ytstealer-malware-youtube-cookies/</link><pubDate>Wed, 29 Jun 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/06/ytstealer-malware-youtube-cookies/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Information_stealer</title><link>https://research.intezer.com/tags/information_stealer/</link><description>Recent content in Information_stealer on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 29 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/information_stealer/index.xml" rel="self" type="application/rss+xml"/><item><title>YTStealer Malware: "YouTube Cookies! Om Nom Nom Nom"</title><link>https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/</link><pubDate>Wed, 29 Jun 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/</guid><description>
 &lt;h2&gt;The Stage: The Dark Web Market for YouTube Account Access&lt;span class="hx:absolute hx:-mt-20" id="the-stage-the-dark-web-market-for-youtube-account-access"&gt;&lt;/span&gt;
 &lt;a href="#the-stage-the-dark-web-market-for-youtube-account-access" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In 2006, the term
 &lt;a href="https://ana.blogs.com/maestros/2006/11/data_is_the_new.html"target="_blank" rel="noopener"&gt;&amp;ldquo;data is the new oil&amp;rdquo;&lt;/a&gt;
@@ -41,7 +41,7 @@ project&amp;rsquo;s readme file. The framework is marketing itself for Red Teams
 pen-testers. It provides anti-debugging, anti-memory analysis, and anti-VM
 functionality.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig1.png" title="Figure 1: Part of Chacals README." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig1.png" title="Figure 1: Part of Chacals README." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: Part of Chacals README.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;What sets YTStealer aside from other stealers sold on the Dark Web market is
@@ -60,7 +60,7 @@ called &lt;a href="https://go-rod.github.io"target="_blank" rel="noopener"&gt;Ro
 control browsers over the DevTools Protocol and markets itself as a tool for
 web automation and scraping.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig2.png" title="Figure 2: Screenshot of Rods documentation describing the framework." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig2.png" title="Figure 2: Screenshot of Rods documentation describing the framework." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Screenshot of Rods documentation describing the framework.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Using the web browser, YTStealer navigates to YouTube&amp;rsquo;s Studio page which
@@ -107,7 +107,7 @@ a software company that &amp;ldquo;provides [sic] unique solutions for getting a
 monetizing targeted traffic&amp;rdquo;. The website provided in the listing points to
 &lt;code&gt;youbot[.]solutions&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig3.png" title="Figure 3: Google Business listing for YOUBOT SOLUTIONS LLC." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig3.png" title="Figure 3: Google Business listing for YOUBOT SOLUTIONS LLC." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: Google Business listing for YOUBOT SOLUTIONS LLC.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The business listing has a logo of an eye in a red circle. A Google image
@@ -118,11 +118,11 @@ profile picture for a user on the site. Figure 4 shows the profile page of the
 user. The profile page provided a link to a Twitter account. Figure 5 shows a
 screenshot of the Twitter account.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig4.png" title="Figure 4: Screenshot of Aparat user accounts profile page that uses YOUBOT SOLUTIONS LLCs logo as their profile image." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig4.png" title="Figure 4: Screenshot of Aparat user accounts profile page that uses YOUBOT SOLUTIONS LLCs logo as their profile image." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Screenshot of Aparat user accounts profile page that uses YOUBOT SOLUTIONS LLCs logo as their profile image.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig5.png" title="Figure 5: Twitter profile linked to in the Aparat user profile." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig5.png" title="Figure 5: Twitter profile linked to in the Aparat user profile." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Twitter profile linked to in the Aparat user profile.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;How Are Victims Targeted?&lt;span class="hx:absolute hx:-mt-20" id="how-are-victims-targeted"&gt;&lt;/span&gt;
@@ -141,7 +141,7 @@ analysis of one of the files that drop both YTStealer and RedLine. One of the
 memory modules found has a lot of shared code with other RedLine stealer
 samples in our dataset.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig6.png" title="Figure 6: Intezer Analyze result for one of the malware dropping YTStealer together with RedLine stealer. (https://analyze.intezer.com/files/132f868aabbd82b36b283f0b6768133b6297de0acd5f47e6cb9a76dc07fd276a)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig6.png" title="Figure 6: Intezer Analyze result for one of the malware dropping YTStealer together with RedLine stealer. (https://analyze.intezer.com/files/132f868aabbd82b36b283f0b6768133b6297de0acd5f47e6cb9a76dc07fd276a)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: Intezer Analyze result for one of the malware dropping YTStealer together with RedLine stealer. (https://analyze.intezer.com/files/132f868aabbd82b36b283f0b6768133b6297de0acd5f47e6cb9a76dc07fd276a)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;A lot of these files are disguised as installers for tools or legitimate
@@ -186,7 +186,7 @@ legitimate software. We also saw fake installers for mods and cheats for games.
 When it comes to how to protect yourself, the classic security practice should
 be applied. Only use software from trusted sources.&lt;/p&gt;
 &lt;h2&gt;Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="indicators-of-compromise"&gt;&lt;/span&gt;
-&lt;a href="#indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href="https://github.com/intezer/community-intelligence/blob/master/YTStealer_hashes.txt"target="_blank" rel="noopener"&gt;IoCs can be found on GitHub here.&lt;/a&gt;&lt;/p&gt;</description></item><item><title>New Conversation Hijacking Campaign Delivering IcedID</title><link>https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/</link><pubDate>Mon, 28 Mar 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/</guid><description>
+&lt;a href="#indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href="https://github.com/intezer/community-intelligence/blob/master/YTStealer_hashes.txt"target="_blank" rel="noopener"&gt;IoCs can be found on GitHub here.&lt;/a&gt;&lt;/p&gt;</description></item><item><title>New Conversation Hijacking Campaign Delivering IcedID</title><link>https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/</link><pubDate>Mon, 28 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/</guid><description>
 &lt;p&gt;&lt;em&gt;This post describes the technical analysis of a new campaign detected by
 Intezer&amp;rsquo;s research team, which initiates attacks with a phishing email that
 uses conversation hijacking to deliver IcedID.&lt;/em&gt;&lt;/p&gt;
@@ -227,7 +227,7 @@ resulting in execution of the malware without warning to the user. &lt;strong&gt
 regards to targeting, we have seen organizations within energy, healthcare,
 law, and pharmaceutical sectors.&lt;/strong&gt;&lt;/p&gt;
 &lt;h2&gt;Infection Chain&lt;span class="hx:absolute hx:-mt-20" id="infection-chain"&gt;&lt;/span&gt;
-&lt;a href="#infection-chain" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;a href="#infection-chain" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The attack-chain starts with a phishing email. The email includes a message
 about some important document and has a password protected &lt;code&gt;zip&lt;/code&gt; archive file
 attached. The password to the archive is given in the email body, as can be
@@ -235,45 +235,45 @@ seen in the screenshot below. What makes the phishing email more convincing is
 that it&amp;rsquo;s using conversation hijacking (thread hijacking). &lt;strong&gt;A forged reply to
 a previous stolen email is being used.&lt;/strong&gt; Additionally, the email has also been
 sent from the email account from whom the email was stolen from.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The content of the zip archive is shown in the screenshot below. It includes a
 single &lt;code&gt;ISO&lt;/code&gt; file with the same filename as the zip archive. It can also be
 seen that the file was created not that long before the email was sent.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The ISO file includes two files, a LNK file named &lt;code&gt;document&lt;/code&gt; and a DLL file
 named &lt;code&gt;main&lt;/code&gt;. From the timestamps it can be concluded that the DLL file was
 prepared the day before while the LNK file was prepared about a week before. It
 is possible that the LNK file has been used in earlier phishing emails.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The LNK file has been made to look like a document file via its embedded icon
 file. As can be seen in the screenshot below, when a user double clicks the
 link file, it uses &lt;code&gt;regsvr32&lt;/code&gt; to execute the DLL file.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The use of &lt;a href="https://attack.mitre.org/techniques/T1218/010/"target="_blank" rel="noopener"&gt;&lt;code&gt;regsvr32&lt;/code&gt;&lt;/a&gt; allows
 for proxy execution of malicious code in &lt;strong&gt;&lt;code&gt;main.dll&lt;/code&gt;&lt;/strong&gt; for defense evasion.
 The DLL file is a loader for the IcedID payload. It contains a number of
 exports, most of which consist of junk code.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The loader will locate the encrypted payload, stored in the resource section of
 the binary. It does this through the technique &lt;em&gt;API hashing&lt;/em&gt;. A decompilation
 of the simple hashing function is shown below.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The resulting hash is then compared with a hardcoded hash, locating the call
 for &lt;strong&gt;&lt;code&gt;FindResourceA&lt;/code&gt;&lt;/strong&gt;. The function is dynamically called to fetch the
 payload.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Memory is allocated using &lt;strong&gt;&lt;code&gt;VirtualAlloc&lt;/code&gt;&lt;/strong&gt; to hold the decrypted payload.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The IcedID &amp;ldquo;Gziploader&amp;rdquo; payload is decoded and placed in memory and then
 executed. GZiploader fingerprints the machine and sends a beacon to the command
 and control server with information about the infected host. The information is
 smuggled through the cookies header via an HTTP GET request.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The C2 is located at &lt;code&gt;yourgroceries[.]top&lt;/code&gt;. The C2 can respond with a further
 stage to be dropped and executed. The C2 did not respond with a payload during
 our analysis.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Conversation Hijacking as a Phishing Technique&lt;span class="hx:absolute hx:-mt-20" id="conversation-hijacking-as-a-phishing-technique"&gt;&lt;/span&gt;
 &lt;a href="#conversation-hijacking-as-a-phishing-technique" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The technique of hijacking an already existing conversation over email to
 spread malware is something threat actors have been using for a while. Normally
@@ -345,7 +345,7 @@ data-copied-label="Copied!"
 server and it is not known to us how it was accessed by the threat actor. The
 only thing we managed to find was a &lt;a href="https://roundcube.net/"target="_blank" rel="noopener"&gt;roundcube&lt;/a&gt; webmail
 instance. The login page is shown in the screenshot below.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;One of the headers in the snippet above reported that the client connected to
 the server via MAPI.
 &lt;a href="https://docs.microsoft.com/en-us/exchange/clients/mapi-mailbox-access?view=exchserver-2019"target="_blank" rel="noopener"&gt;MAPI&lt;/a&gt;
@@ -379,7 +379,7 @@ use of commodity packers and multiple stages to hide activity. It is important
 to be able to detect malicious files in memory to detect this type of attack.
 We recommend you use an
 &lt;a href="https://docs.intezer.com/hc/en-us/articles/360021350340-Conduct-Live-Endpoint-Analysis"target="_blank" rel="noopener"&gt;endpoint scanner&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
 &lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;ISO File:

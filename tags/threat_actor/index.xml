@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Threat_actor</title><link>https://intezer.github.io/community-intelligence/tags/threat_actor/</link><description>Recent content in Threat_actor on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 27 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/threat_actor/index.xml" rel="self" type="application/rss+xml"/><item><title>Wrapping Up a Year of Infamous Bazar Campaigns</title><link>https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</link><pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Threat_actor</title><link>https://research.intezer.com/tags/threat_actor/</link><description>Recent content in Threat_actor on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 27 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/threat_actor/index.xml" rel="self" type="application/rss+xml"/><item><title>Wrapping Up a Year of Infamous Bazar Campaigns</title><link>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</link><pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</guid><description>
 &lt;h2&gt;Bazar is the latest tool developed by the TrickBot gang&lt;span class="hx:absolute hx:-mt-20" id="bazar-is-the-latest-tool-developed-by-the-trickbot-gang"&gt;&lt;/span&gt;
 &lt;a href="#bazar-is-the-latest-tool-developed-by-the-trickbot-gang" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Common malware used for cybercrime such as Agent Tesla, Dridex and Formbook
 have been around for at least five years and are still distributed and active.
@@ -18,7 +18,7 @@ payload delivery can vary between a
 to &lt;a href="https://www.hhs.gov/sites/default/files/bazarloader.pdf"target="_blank" rel="noopener"&gt;days&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;In this post we will profile Bazar and highlight four prominent campaigns
 delivering this year-old malware.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Key Profiling&lt;span class="hx:absolute hx:-mt-20" id="key-profiling"&gt;&lt;/span&gt;
 &lt;a href="#key-profiling" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Attribution&lt;span class="hx:absolute hx:-mt-20" id="attribution"&gt;&lt;/span&gt;
 &lt;a href="#attribution" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Based on code similarities, delivery, infrastructure and operation methods,
@@ -44,7 +44,7 @@ solutions as it resides only in memory and leaves no footprint on disk. The
 following is the genetic analysis of a Bazar sample
 (&lt;code&gt;3578e96b72cba790179d546f11e045ca&lt;/code&gt;) injecting fileless code into memory.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig2.png" title="Bazar sample (3578e96b72cba790179d546f11e045ca) injects fileless code" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig2.png" title="Bazar sample (3578e96b72cba790179d546f11e045ca) injects fileless code" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Bazar sample (3578e96b72cba790179d546f11e045ca) injects fileless code&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Use of decentralized C2C: For its C2C communication, Bazar uses
@@ -71,7 +71,7 @@ masquerading a non-executable file type, so that the file has a word document
 icon but it is in fact an executable.&lt;/p&gt;
 &lt;p&gt;The next image shows a Google Docs page hosting the malware executable.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig3.png" title="COVID-19 themed phishing campaign (source: BleepingComputer)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig3.png" title="COVID-19 themed phishing campaign (source: BleepingComputer)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;COVID-19 themed phishing campaign (source: BleepingComputer)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, one of these phishing emails was sent to a BleepingComputer
@@ -89,7 +89,7 @@ penetration testing tools were installed and ran on the victim&amp;rsquo;s machi
 reconnaissance and privilege escalation purposes. Ryuk ransomware was delivered
 as the final step of the attack to run widely on the organization&amp;rsquo;s assets.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig4.png" title="CISA alert on the ransomware campaign" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig4.png" title="CISA alert on the ransomware campaign" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;CISA alert on the ransomware campaign&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This attack chain not only targeted the healthcare sector but also went after
@@ -108,7 +108,7 @@ number, the &amp;ldquo;service provider&amp;rdquo; lures the user to browse a ph
 insert a code, and click on &amp;ldquo;unsubscribe.&amp;rdquo; By clicking unsubscribe a malicious
 Microsoft Office document is downloaded delivering Bazar.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig5.png" title="Example of a BazarCall phishing email (source: Sophos)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig5.png" title="Example of a BazarCall phishing email (source: Sophos)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Example of a BazarCall phishing email (source: Sophos)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The email has no indication of maliciousness as it does not contain any links
@@ -153,7 +153,7 @@ Endpoint Scanner collects all binaries running in memory, including fileless,
 and classifies them using genetic code analysis technology.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig6.png" title="Endpoint scan on an infected machine" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig6.png" title="Endpoint scan on an infected machine" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Endpoint scan on an infected machine&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;References&lt;span class="hx:absolute hx:-mt-20" id="references"&gt;&lt;/span&gt;
@@ -165,7 +165,7 @@ and classifies them using genetic code analysis technology.&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://news.sophos.com/en-us/2021/04/15/bazarloader/"target="_blank" rel="noopener"&gt;https://news.sophos.com/en-us/2021/04/15/bazarloader/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.cybereason.com/blog/a-bazar-of-tricks-following-team9s-development-cycles#trickbot-connection"target="_blank" rel="noopener"&gt;https://www.cybereason.com/blog/a-bazar-of-tricks-following-team9s-development-cycles#trickbot-connection&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon"target="_blank" rel="noopener"&gt;https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Stantinko's Proxy After Your Apache Server</title><link>https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/</link><pubDate>Tue, 24 Nov 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/</guid><description>
+&lt;/ul&gt;</description></item><item><title>Stantinko's Proxy After Your Apache Server</title><link>https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/</link><pubDate>Tue, 24 Nov 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/</guid><description>
 &lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
 &lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It is common for threat actors to evolve their Linux malware. BlackTech with
 their new &lt;a href="https://blogs.jpcert.or.jp/en/2020/11/elf-plead.html"target="_blank" rel="noopener"&gt;ELF_PLEAD&lt;/a&gt;
@@ -195,7 +195,7 @@ VirusTotal. The sample was uploaded on November 7, 2020 from Russia, one of
 Stantinko&amp;rsquo;s main target countries. The sample is an unstripped 64-bit ELF
 binary.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig1.png" title="Figure 1: The sample&amp;#39;s detection report in VirusTotal (7d2a840048f32e487f8a61d7fc1a0c39)." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig1.png" title="Figure 1: The sample&amp;#39;s detection report in VirusTotal (7d2a840048f32e487f8a61d7fc1a0c39)." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: The sample&amp;#39;s detection report in VirusTotal (7d2a840048f32e487f8a61d7fc1a0c39).&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Malware Flow&lt;span class="hx:absolute hx:-mt-20" id="malware-flow"&gt;&lt;/span&gt;
@@ -207,7 +207,7 @@ malware exits without conducting any additional malicious activity. Figure 2
 below is a snippet from the configuration parsing logic. The configurations are
 stored as key/value pairs.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig2.png" title="Figure 2: ParseConfigElement function is used to parse the configuration file." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig2.png" title="Figure 2: ParseConfigElement function is used to parse the configuration file." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: ParseConfigElement function is used to parse the configuration file.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The configuration file is expected to have the following keys: &lt;code&gt;proxy_ip&lt;/code&gt;,
@@ -220,7 +220,7 @@ the clients who interact with this Trojan are other infected machines that are
 part of the campaign. Figure 3 is a snippet taken from the main function,
 showing the general code flow described above.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig3.png" title="Figure 3: Main function flow snippet" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig3.png" title="Figure 3: Main function flow snippet" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: Main function flow snippet&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once a client connects to the listener, the program calls the
@@ -238,7 +238,7 @@ based on the client&amp;rsquo;s HTTP request headers and content, using the
 request to the C&amp;amp;C. Figure 4 shows a snippet from the &lt;code&gt;on_client_connect&lt;/code&gt;
 function.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig4.png" title="Figure 4: Snippet from on_client_connect function" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig4.png" title="Figure 4: Snippet from on_client_connect function" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Snippet from on_client_connect function&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The POST request is sent to one of the following paths on the C&amp;amp;C server:&lt;/p&gt;
@@ -255,7 +255,7 @@ of the campaign&amp;rsquo;s attack chain. The C&amp;amp;C IP address is stored a
 parameter in the config file. Finally, the proxy forwards the C&amp;amp;C response back
 to the client. Figure 5 emphasizes the attack flow at a high level.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig5.png" title="Figure 5: Attack Flow" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig5.png" title="Figure 5: Attack Flow" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Attack Flow&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -292,7 +292,7 @@ shares several function names with the old one. These functions, such as
 the new version. We are almost certain these functions are leftover from the
 previous variant.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig6.png" title="Figure 6: String reuse between the Linux versions" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig6.png" title="Figure 6: String reuse between the Linux versions" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: String reuse between the Linux versions&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the C&amp;amp;C paths hint at some of Stantinko&amp;rsquo;s earlier campaigns
@@ -304,7 +304,7 @@ Also, the malware&amp;rsquo;s C&amp;amp;C was hosted on &lt;code&gt;kdbmai[.]net
 directory is DRTIPROV. DRTIPROV is part of a Program Database (pdb) path from
 one of the group&amp;rsquo;s Windows malware.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig7.png" title="Figure 7: Path hard coded in the detect_proxy_script function" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig7.png" title="Figure 7: Path hard coded in the detect_proxy_script function" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: Path hard coded in the detect_proxy_script function&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Wrap-Up&lt;span class="hx:absolute hx:-mt-20" id="wrap-up"&gt;&lt;/span&gt;
@@ -316,7 +316,7 @@ and
 &lt;a href="https://securelist.com/ransomexx-trojan-attacks-linux-systems/99279/"target="_blank" rel="noopener"&gt;RansomEXX&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The code from the new Stantinko sample is now indexed in Intezer&amp;rsquo;s Genome
 Database.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/11/stantinkos-proxy-after-your-apache-server/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;I want to thank Nicole Fishbein and Joakim Kennedy for their contributions to
 this analysis&lt;/em&gt;.&lt;/p&gt;
 &lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
@@ -350,7 +350,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>ChinaZ Updates Toolkit by Introducing New, Undetected Malware</title><link>https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</link><pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</guid><description>
+&lt;/div&gt;</description></item><item><title>ChinaZ Updates Toolkit by Introducing New, Undetected Malware</title><link>https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</link><pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;ChinaZ is a Chinese cybercrime group and the author of several
 &lt;a href="https://www.botconf.eu//srv/htdocs/wp-content/uploads/2014/12/2014-2.10-Chinese-Chicken-Multiplatform-DDoS-Botnets.pdf"target="_blank" rel="noopener"&gt;DDoS malware&lt;/a&gt;.
@@ -360,7 +360,7 @@ between ChinaZ and other Chinese threat actors.&lt;/p&gt;
 &lt;p&gt;Recently, we have discovered new tools being utilized by ChinaZ which have low
 detection rates in comparison to the group’s other, more common malware.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig1.jpeg" title="VirusTotal detection rate of one of the discovered samples" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig1.jpeg" title="VirusTotal detection rate of one of the discovered samples" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;VirusTotal detection rate of one of the discovered samples&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Some of the components reported in this article have been present in the wild
@@ -368,7 +368,7 @@ for at least one year, which implies the active state of this group. We have
 based this conclusion upon seeing that the first submission was made to
 VirusTotal one year ago:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig2.jpeg" title="VirusTotal analysis of an older, related sample" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig2.jpeg" title="VirusTotal analysis of an older, related sample" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;VirusTotal analysis of an older, related sample&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;We believe this may be an attempt by ChinaZ to retool its current toolset,
@@ -391,13 +391,13 @@ identified subdomains were hosting several HttpFileServer panels, web servers
 specifically designed for publishing and sharing files. ChinaZ is known to have
 used these types of panels in the past.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig3.jpeg" title="HttpFileServer panel of one of the identified servers" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig3.jpeg" title="HttpFileServer panel of one of the identified servers" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;HttpFileServer panel of one of the identified servers&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Based on VirusTotal passive DNS records, it appears that some Windows malware
 samples were also hosted on some of these subdomains:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig4.jpeg" title="VirusTotal Intelligence graph from one of the discovered samples" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig4.jpeg" title="VirusTotal Intelligence graph from one of the discovered samples" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;VirusTotal Intelligence graph from one of the discovered samples&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After analyzing some of the Windows binaries we observed that based on code
@@ -410,7 +410,7 @@ are also infected by common PE file infectors such as Sality, Parite, and
 Virut. ChinaZ has a reputation for deploying infected malware compromised with
 these aforementioned file infectors:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig5.jpeg" title="Sality genes from one of the hosted Windows malware samples" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig5.jpeg" title="Sality genes from one of the hosted Windows malware samples" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Sality genes from one of the hosted Windows malware samples&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;As seen in the screenshot above, a Gh0st RAT instance deployed by ChinaZ
@@ -423,13 +423,13 @@ same servers as other malware under the ChinaZ umbrella.&lt;/p&gt;
 Analysis, we observed that they all share the same ratio of genes across
 several malware families related to ChinaZ threat actors.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig6.jpeg" title="Malware Analysis across samples under the ChinaZ umbrella" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig6.jpeg" title="Malware Analysis across samples under the ChinaZ umbrella" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Malware Analysis across samples under the ChinaZ umbrella&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After analyzing these connections we observed that they all have been
 statically compiled with specific versions of some C++ libraries.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig7.jpeg" title="C&amp;#43;&amp;#43; function similarities between one of the identified samples and a XorDDoS instance" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig7.jpeg" title="C&amp;#43;&amp;#43; function similarities between one of the identified samples and a XorDDoS instance" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;C&amp;#43;&amp;#43; function similarities between one of the identified samples and a XorDDoS instance&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;These code similarities are from C++ statically linked library code, which at
@@ -452,37 +452,37 @@ persistence mechanisms are primarily based on setting symbolic links to
 specific directories in which the presence of those symbolic links implies file
 execution on boot time. These mechanisms are predominant among all discovered
 samples.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig8.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig8.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;We have observed that across the discovered implants the name of the persistent
 binary will be set differently. The name used to label NewManager was &amp;rsquo;new
 manager&amp;rsquo;, therefore its name:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig9.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig9.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The malware will then execute a series of functions that will initialize the
 communication with the CNC to start receiving commands.&lt;/p&gt;
 &lt;p&gt;The client will collect interface information from &lt;code&gt;/proc/net/dev&lt;/code&gt; and cpu
 information from &lt;code&gt;/proc/stat&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig10.jpeg" title="Functions executed prior to CNC command handling" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig10.jpeg" title="Functions executed prior to CNC command handling" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Functions executed prior to CNC command handling&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This collected information serves to inform the operator of the network
 interface and cpu performance of the compromised machine.&lt;/p&gt;
 &lt;p&gt;After this information is collected, the client will craft the beaconing packet
 that will be sent periodically to send interface and cpu statistics to the CNC.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig11.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig11.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After analyzing the network protocol we observed that packets are crafted in a
 similar manner, although they will differ depending on the payload based on the
 command type sent. In order to show the packet&amp;rsquo;s structure, the following
 diagram shows the beaconing packet:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig12.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig12.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After this specific information is configured to be sent in intervals to the
 CNC, the backdoor will send its own handshake packet.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig13.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig13.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This packet transfers the kernel version to the backdoor operator. Once this
 command is sent, the operator will be able to see the compromised machine on
 its panel:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig14.jpeg" title="NewManager CNC panel" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig14.jpeg" title="NewManager CNC panel" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;NewManager CNC panel&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;NewManager supports three commands. They are the following:&lt;/p&gt;
@@ -515,7 +515,7 @@ its panel:&lt;/p&gt;
 &lt;p&gt;The command ID after packet parsing is fairly straightforward on the backdoor’s
 side.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig15.jpeg" title="Command selection implementation in NewManager" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig15.jpeg" title="Command selection implementation in NewManager" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Command selection implementation in NewManager&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;AmpManager&lt;span class="hx:absolute hx:-mt-20" id="ampmanager"&gt;&lt;/span&gt;
@@ -531,10 +531,10 @@ some command IDs do not match with the command IDs implemented by NewManager.&lt
 AmpManager to be a different malware, although it’s clear that NewManager is
 AmpManager’s predecessor.&lt;/p&gt;
 &lt;p&gt;The name AmpManager chooses to persist in a given system is shown below:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig16.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig16.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The following is an overview of the command implementation code:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig17.jpeg" title="Command selection implementation in AmpManager" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig17.jpeg" title="Command selection implementation in AmpManager" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Command selection implementation in AmpManager&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;As we can see, the command implementation code is broader than the one
@@ -543,12 +543,12 @@ NewManager is AmpManager introduces DDoS attacks among other features.&lt;/p&gt;
 &lt;p&gt;There are three different DDoS attack methodologies implemented: SSDP, DNS, and
 NTP amplifications.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig18.jpeg" title="SSDP flood UDP header" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig18.jpeg" title="SSDP flood UDP header" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;SSDP flood UDP header&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;These floods have some configurations set under the &lt;code&gt;/etc/&lt;/code&gt; directory that will
 impact the number of iterations that each flood will run for.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig19.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig19.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The following table shows the supported commands implemented in AmpManager:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -621,7 +621,7 @@ ChinaZ.&lt;/p&gt;
 covering in detail the internals of BillGates malware.&lt;/p&gt;
 &lt;p&gt;If we take a closer look, we can see that these two C++ classes are also used
 in DDoSManager:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig20.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig20.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This reinforces the connection between these malware samples and the developers
 of Elknot/BillGates, and with respect to the ChinaZ umbrella, in addition to
 the connections explained previously.&lt;/p&gt;
@@ -629,25 +629,25 @@ the connections explained previously.&lt;/p&gt;
 persistence mechanisms. The techniques applied are the same ones covered in
 NewManager and AmpManager as previously mentioned. DDoSManager will use the
 name SingTool to masquerade itself:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig21.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig21.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Interface and performance information will be collected as with the previous
 samples. However, an additional thread will be launched.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig22.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig22.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This thread is in charge of listening for packets to then decode and parse them
 for CNC communication.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig23.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig23.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When we intercepted the network traffic we noticed that the traffic was
 encoded:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig24.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig24.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After analysis we observed that packets were encoded and decoded with a simple
 sub/xor algorithm. This algorithm is the following:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig25.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig25.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After applying this algorithm to each given packet, we can retrieve their plain
 text version. The following is the structure of each packet after decoding:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig26.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig26.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Furthermore, the command ID will be extracted from each packet in order to
 execute the desired task.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig27.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig27.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;DDoSManager supports a total of seven commands. These are the following:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -697,15 +697,15 @@ execute the desired task.&lt;/p&gt;
 &lt;/table&gt;
 &lt;p&gt;The malware sets a configuration file for the targets it will attempt to DDoS.
 This configuration file is located at /tmp/Cfg.9:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig28.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig28.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When a DDoS command is executed, a series of fields will be provided from the
 CNC packet in order to execute the command. These fields are clearly shown on a
 debug message in the binary:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig29.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig29.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;There are three different DDoS amplification algorithms supported. These are
 SYN, UDP, and DNS amplifications. Interestingly, in the analyzed samples of
 DDoSManager we found that the DNS amplification algorithm was not implemented.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig30.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig30.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have analyzed three new malware variants in which we have named NewManager,
 AmpManager, and DDoSManager.&lt;/p&gt;
@@ -763,7 +763,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Mapping the Connections Inside Russia’s APT Ecosystem</title><link>https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/</link><pubDate>Tue, 24 Sep 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/</guid><description>
+&lt;/div&gt;</description></item><item><title>Mapping the Connections Inside Russia’s APT Ecosystem</title><link>https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/</link><pubDate>Tue, 24 Sep 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/</guid><description>
 &lt;p&gt;&lt;em&gt;This research is a joint effort conducted by Omri Ben-Bassat from Intezer and
 Itay Cohen from Check Point Research.&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;Prologue пролог&lt;span class="hx:absolute hx:-mt-20" id="prologue-пролог"&gt;&lt;/span&gt;
@@ -796,7 +796,7 @@ and the
 While these discoveries shed light into specific Russian actors or operations,
 the larger picture remains hazy.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig1.png" title="Figure 1: An infographic that was published in a report by the Estonian Foreign Intelligence Service" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig1.png" title="Figure 1: An infographic that was published in a report by the Estonian Foreign Intelligence Service" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: An infographic that was published in a report by the Estonian Foreign Intelligence Service&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The fog behind these complicated operations made us realize that while we know
@@ -951,7 +951,7 @@ networks structures, their associated data and dynamics.&lt;/p&gt;
 of connections. In order to make it look clearer, we would need to apply some
 layout algorithms to it.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig2.png" title="Figure 2: The initial graph as created by Gephi" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig2.png" title="Figure 2: The initial graph as created by Gephi" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: The initial graph as created by Gephi&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Without getting too deep into Graph Theory and Graph Drawing, layout algorithms
@@ -962,7 +962,7 @@ the graph. For our graph, we chose a
 or more specifically–
 &lt;a href="https://github.com/gephi/gephi/wiki/Fruchterman-Reingold"target="_blank" rel="noopener"&gt;Fruchterman-Reingold algorithm&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig3.gif" title="Figure 3: The graph of connections after applying layout algorithms" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig3.gif" title="Figure 3: The graph of connections after applying layout algorithms" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: The graph of connections after applying layout algorithms&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Now we can notice some big clusters that are created and bridges between two or
@@ -982,7 +982,7 @@ colors. In our research, we want to show connections between families and
 actors. Thus, for each node on the graph, we will add a label with its name and
 a unique color per attributed actor.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig4.png" title="Figure 4: Colors applied to the graph in order to make it more readable" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig4.png" title="Figure 4: Colors applied to the graph in order to make it more readable" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Colors applied to the graph in order to make it more readable&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Analyzing the Connections анализ связей&lt;span class="hx:absolute hx:-mt-20" id="analyzing-the-connections-анализ-связей"&gt;&lt;/span&gt;
@@ -1035,11 +1035,11 @@ originated from the Pinch source code. Not only that several functions are
 mutual, but there are also mutual strings—as can be seen in the screenshots
 below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig5.png" title="Figure 5: PinchDuke 0ce Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig5.png" title="Figure 5: PinchDuke 0ce Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: PinchDuke 0ce Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig6.png" title="Figure 6: Black Energy 3cf46c68dccb989fbda3f853cc19025d39d38d9ea5786f4ae6a926677d6c5f62" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig6.png" title="Figure 6: Black Energy 3cf46c68dccb989fbda3f853cc19025d39d38d9ea5786f4ae6a926677d6c5f62" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: Black Energy 3cf46c68dccb989fbda3f853cc19025d39d38d9ea5786f4ae6a926677d6c5f62&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;BlackEnergy &amp;lt;—&amp;gt; Energetic Bear&lt;span class="hx:absolute hx:-mt-20" id="blackenergy--energetic-bear"&gt;&lt;/span&gt;
@@ -1054,11 +1054,11 @@ Database. We believe that this function was not actively shared between these
 actors, but instead, was taken from a
 &lt;a href="https://www.c-plusplus.net/forum/topic/157481/selbstl%C3%B6schende-dll-m%C3%B6glich"target="_blank" rel="noopener"&gt;public source&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig7.png" title="Figure 7: Black Energy 11b7b8a7965b52ebb213b023b6772dd2c76c66893fc96a18a9a33c8cf125af80" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig7.png" title="Figure 7: Black Energy 11b7b8a7965b52ebb213b023b6772dd2c76c66893fc96a18a9a33c8cf125af80" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 7: Black Energy 11b7b8a7965b52ebb213b023b6772dd2c76c66893fc96a18a9a33c8cf125af80&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig8.png" title="Figure 8: Energetic Bear fc54d8afd2ce5cb6cc53c46783bf91d0dd19de604308d536827320826bc36ed9" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig8.png" title="Figure 8: Energetic Bear fc54d8afd2ce5cb6cc53c46783bf91d0dd19de604308d536827320826bc36ed9" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 8: Energetic Bear fc54d8afd2ce5cb6cc53c46783bf91d0dd19de604308d536827320826bc36ed9&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Potao Main Module &amp;lt;—&amp;gt; X-Agent&lt;span class="hx:absolute hx:-mt-20" id="potao-main-module--x-agent"&gt;&lt;/span&gt;
@@ -1086,7 +1086,7 @@ connections between them. The map is basically a one-stop-shop for anyone who
 is interested to learn and understand the connections and attributions of the
 samples, modules, families, and actors that together comprise this ecosystem.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig9.png" title="Figure 9: The map we created to show the connections inside the ecosystem" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig9.png" title="Figure 9: The map we created to show the connections inside the ecosystem" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 9: The map we created to show the connections inside the ecosystem&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The map is intuitive and rich with information. The user can get a full
@@ -1096,7 +1096,7 @@ the malware family the node belongs to, as well as links to analysis reports on
 Intezer’s platform and external links to related articles and publications.
 Basically, this side-panel is a short identity-card of the entities on the map.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/09/russian-apt-ecosystem/images/fig10.png" title="Figure 10: A side panel with additional information about the nodes" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig10.png" title="Figure 10: A side panel with additional information about the nodes" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 10: A side panel with additional information about the nodes&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The map and its data are available open-sourced in our repository and we are
@@ -1185,7 +1185,7 @@ us in this research, for helping us a lot and for always giving interesting and
 important insights. We would also like to thank our colleagues from
 &lt;a href="https://www.welivesecurity.com/"target="_blank" rel="noopener"&gt;ESET&lt;/a&gt; for providing some of the samples. And
 last but not least is our colleague Paul Litvak, who helped us with completing
-the APT Detector tool.&lt;/p&gt;</description></item><item><title>Technical Analysis: Pacha Group Competing against Rocke Group for Cryptocurrency Mining Foothold on the Cloud</title><link>https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</link><pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</guid><description>
+the APT Detector tool.&lt;/p&gt;</description></item><item><title>Technical Analysis: Pacha Group Competing against Rocke Group for Cryptocurrency Mining Foothold on the Cloud</title><link>https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</link><pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/</guid><description>
 &lt;p&gt;Pacha Group is a crypto-mining threat actor we at Intezer discovered and
 profiled in a &lt;a href="../../../2019/02/technical-analysis-pacha-group"&gt;blog post&lt;/a&gt;
 published on February 28, 2019. This threat actor targeted Linux servers dating
@@ -1202,10 +1202,10 @@ environments are increasingly becoming a common target for adversaries.&lt;/p&gt
 &lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
 &lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In monitoring Pacha Group we have identified new, undetected Linux.GreedyAntd
 variants that share code with previous variants.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Despite sharing nearly 30% of code with previous variants, detection rates of
 the new Pacha Group variants are low:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The main malware infrastructure appears to be identical to previous Pacha Group
 campaigns, although there is a distinguishable effort to detect and mitigate
 Rocke Group’s implants. Rocke Group was first reported by
@@ -1216,7 +1216,7 @@ servers and cloud-based environments as reported by
 The following image is a blacklist of miners in which Linux.GreedyAntd searches
 to eradicate. We have recognized several file names in this blacklist known to
 be used for Rocke Group’s implants:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Furthermore, there are other strings within this file path blacklist which are
 used to search for and disable cloud protection solutions, such as Alibaba
 Server Guard Agent. Strings of malware
@@ -1227,46 +1227,46 @@ were also found. Rocke Group is known to hunt for similar security products and
 to have
 &lt;a href="https://community.atlassian.com/t5/Confluence-questions/How-come-my-confluence-installation-was-hacked-by-Kerberods/qaq-p/1054605#M141274"target="_blank" rel="noopener"&gt;abused&lt;/a&gt;
 the same vulnerability.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Another interesting update in Pacha Group’s infrastructure in comparison to
 previous campaigns is that further implants would only be able to be downloaded
 from Pacha Group’s servers if the HTTP GET request was completed with a
 specific User-Agent. In the following screenshot we can see how files can not
 be downloaded unless the correct User-Agent is used:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;In addition, Pacha Group’s component update seems to include a lightweight
 user-mode rootkit known as Libprocesshider, which is an open source project
 hosted on &lt;a href="https://github.com/gianlucaborello/libprocesshider"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt; and has
 also been used by Rocke Group.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The malware updates &lt;code&gt;/etc/ld.preload&lt;/code&gt; to include the path of the dropped
 library masquerading libconv.so, a unicode conversion library.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This shared object will export customized versions of readdir and readdir64
 functions that will attempt to hide a process name from /proc filesystem of one
 of the main components of the malware’s infrastructure, in charge to download
 further implants in intervals along with enforcing process, file path and IP
 blacklisting:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Along with process and file path blacklisting measures seen in previous
 variants, we also observed that newer variants implement IP blacklisting using
 an interesting technique.&lt;/p&gt;
 &lt;p&gt;Right after process and file path black listing has been accomplished, we find
 the following code:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Each of the IPs in the blacklist IP table is decoded and then added to the
 system routing table with host scope via ioctl.&lt;/p&gt;
 &lt;p&gt;This is more conveniently shown by observing the following system call trace:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When we check the routing table of a compromised system we see the following:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Each of the decoded IPs have been added to the routing table with host scope.
 This implies that when any of these IPs will be requested, each request will be
 routed back to the host to be resolved instead of redirecting them to the
 gateway, causing a failure in the routing process.&lt;/p&gt;
 &lt;p&gt;In the following screenshot we can see the effect of this methodology by using
 the ping utility:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After analyzing the IP blacklist we discovered that some of these IPs, even
 though they may not necessarily be malicious, are known to have been used by
 Rocke Group in the past. As an example, systemten.org is in this blacklist and

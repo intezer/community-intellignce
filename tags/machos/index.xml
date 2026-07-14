@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Machos</title><link>https://intezer.github.io/community-intelligence/tags/machos/</link><description>Recent content in Machos on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 01 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/machos/index.xml" rel="self" type="application/rss+xml"/><item><title>A Storm is Brewing: IPStorm Now Has Linux Malware</title><link>https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Machos</title><link>https://research.intezer.com/tags/machos/</link><description>Recent content in Machos on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 01 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/machos/index.xml" rel="self" type="application/rss+xml"/><item><title>A Storm is Brewing: IPStorm Now Has Linux Malware</title><link>https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</guid><description>
 &lt;h2&gt;UPDATE NOVEMBER 2023: IPStorm Infrastructure Dismantled by FBI&lt;span class="hx:absolute hx:-mt-20" id="update-november-2023-ipstorm-infrastructure-dismantled-by-fbi"&gt;&lt;/span&gt;
 &lt;a href="#update-november-2023-ipstorm-infrastructure-dismantled-by-fbi" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The FBI today revealed US law enforcement&amp;rsquo;s dismantlement of a botnet proxy
 network, along with a guilty plea for the individual responsible for the botnet
@@ -46,14 +46,14 @@ them for genetic analysis in Intezer.&lt;/p&gt;
 &lt;code&gt;658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117&lt;/code&gt; Linux
 sample.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig1.png" title="658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117 sample undetected in VirusTotal." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig1.png" title="658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117 sample undetected in VirusTotal." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;658638c6bef52e03e6aea4b6c1b2b3b8d81ad40144b56b2122d96e6957c33117 sample undetected in VirusTotal.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Because IPStorm is written in Golang, not only can we observe strong code
 connections between the different Linux variants, we can also identify
 connections to IPStorm&amp;rsquo;s Windows samples uploaded to Intezer in 2019.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig2.png" title="Samples analyzed and classified by Intezer in the IPStorm malware family." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig2.png" title="Samples analyzed and classified by Intezer in the IPStorm malware family." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Samples analyzed and classified by Intezer in the IPStorm malware family.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The following map emphasizes code similarities between the different versions
@@ -65,7 +65,7 @@ some way:&lt;/p&gt;
 &lt;li&gt;IPStorm ELF files from 2020&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig3.png" title="Map showing IPStorm code similarities between different samples analyzed. Nodes represent the individual samples and the lines show code relations between them." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig3.png" title="Map showing IPStorm code similarities between different samples analyzed. Nodes represent the individual samples and the lines show code relations between them." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Map showing IPStorm code similarities between different samples analyzed. Nodes represent the individual samples and the lines show code relations between them.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The graph depicts three main clusters, with each cluster containing samples
@@ -112,7 +112,7 @@ malware, including reverse shell, which was previously seen in the Windows
 variant—maintaining connection with other peers in the P2P network and a new
 feature for spreading the malware to other victims.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig4.png" title="IPStorm Linux output non-privileged user." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig4.png" title="IPStorm Linux output non-privileged user." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;IPStorm Linux output non-privileged user.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Linux vs. Windows Comparison&lt;span class="hx:absolute hx:-mt-20" id="linux-vs-windows-comparison"&gt;&lt;/span&gt;
@@ -247,7 +247,7 @@ SSH honeypot. If the malware identifies a honeypot it will close the
 connection, otherwise it will proceed to download the payload and infect the
 server.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig5.png" title="Validation of whether the server is a honeypot or not." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig5.png" title="Validation of whether the server is a honeypot or not." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Validation of whether the server is a honeypot or not.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Another spreading method that is unique to the Linux version is searching for
@@ -256,7 +256,7 @@ potential Android victims. The malware checks for devices connected with ADB
 Android version of IPStorm to the device, which was previously downloaded from
 the P2P network.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig6.png" title="Screen capture from the log of the storm service showing the downloaded file." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig6.png" title="Screen capture from the log of the storm service showing the downloaded file." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Screen capture from the log of the storm service showing the downloaded file.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Antivirus Evasion&lt;span class="hx:absolute hx:-mt-20" id="antivirus-evasion"&gt;&lt;/span&gt;
@@ -292,9 +292,9 @@ connections between the two IPStorm variants. The screengrabs below demonstrate
 changes in the file names and the identical function names found in the two
 versions:&lt;/p&gt;
 &lt;h4&gt;Linux&lt;span class="hx:absolute hx:-mt-20" id="linux"&gt;&lt;/span&gt;
-&lt;a href="#linux" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig7.png" alt="" loading="lazy" /&gt; &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;a href="#linux" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig7.png" alt="" loading="lazy" /&gt; &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h4&gt;Windows&lt;span class="hx:absolute hx:-mt-20" id="windows"&gt;&lt;/span&gt;
-&lt;a href="#windows" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig9.png" alt="" loading="lazy" /&gt; &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;a href="#windows" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig9.png" alt="" loading="lazy" /&gt; &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Persistence&lt;span class="hx:absolute hx:-mt-20" id="persistence"&gt;&lt;/span&gt;
 &lt;a href="#persistence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The Linux version will attempt to gain persistence only if it was executed with
 root privileges. The Windows version, on the other hand, will always look to
@@ -307,11 +307,11 @@ and adding the program to the:
 &lt;p&gt;The Linux version achieves persistence by creating a &lt;code&gt;systemd&lt;/code&gt; service under
 &lt;code&gt;/etc/systemd/system/storm.service&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig11.png" title="/etc/systemd/system/storm.service" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig11.png" title="/etc/systemd/system/storm.service" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;/etc/systemd/system/storm.service&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig12.png" title="The function that archives persistence in the Linux variant." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig12.png" title="The function that archives persistence in the Linux variant." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The function that archives persistence in the Linux variant.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Another difference is the location to which the file is copied. The Windows
@@ -335,7 +335,7 @@ submit their Steam login credentials. With access to a user&amp;rsquo;s credenti
 attacker has full access to the the account, API key included.&lt;/p&gt;
 &lt;p&gt;We noticed IPStorm generates a large amount of traffic to Steam&amp;rsquo;s API, querying
 data pertaining to various Steam users and using multiple valid API keys.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;We suspect these are stolen accounts that are being monitored as part of a fake
 trade scam.
 &lt;a href="https://www.skinwallet.com/csgo/how-to-avoid-steam-api-key-scam/"target="_blank" rel="noopener"&gt;Browse here&lt;/a&gt;
@@ -346,11 +346,11 @@ the ads we have traced are related to pornographic websites. The malware crawls
 through different predefined sites, searches for advertisement iframes, and
 imitates a user &amp;ldquo;click&amp;rdquo; by browsing through the iframes.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig14.png" title="Example of a request the malware generates to an ad platform." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig14.png" title="Example of a request the malware generates to an ad platform." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Example of a request the malware generates to an ad platform.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig15.png" title="Websites the malware crawls through." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig15.png" title="Websites the malware crawls through." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Websites the malware crawls through.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;IPStorm Detection and Response&lt;span class="hx:absolute hx:-mt-20" id="ipstorm-detection-and-response"&gt;&lt;/span&gt;
@@ -361,13 +361,13 @@ the IPStorm malware.&lt;/p&gt;
 &lt;li&gt;Check if the process of IPStorm is running on your system.
 &lt;ul&gt;
 &lt;li&gt;Run: &lt;code&gt;pstree | grep storm&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;IPStorm will usually run with multiple threads. &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+&lt;li&gt;IPStorm will usually run with multiple threads. &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Check the services that run on your system, since if the malware was executed
 with root privileges it would create a service for persistence.
 &lt;ul&gt;
-&lt;li&gt;Run: &lt;code&gt;sudo systemctl status strom.service&lt;/code&gt; &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+&lt;li&gt;Run: &lt;code&gt;sudo systemctl status strom.service&lt;/code&gt; &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Check if IPStorm&amp;rsquo;s files exist in your system.
@@ -375,9 +375,9 @@ with root privileges it would create a service for persistence.
 &lt;li&gt;Run: &lt;code&gt;sudo find / -name &amp;quot;storm*&amp;quot; -type f&lt;/code&gt;
 &lt;ul&gt;
 &lt;li&gt;In case of a non-root execution the output will look similar to the
-screen capture below &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+screen capture below &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;li&gt;If the malware was executed with root privileges, the output will look
-similar to the screen capture below: &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig19.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+similar to the screen capture below: &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig19.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -387,7 +387,7 @@ with them.
 &lt;ul&gt;
 &lt;li&gt;Run: &lt;code&gt;sudo ss -tulpn&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;In the screen capture below a number of processes that belong to the
-IPStorm malware listen on specific ports. &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig20.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+IPStorm malware listen on specific ports. &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig20.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Use freely the Intezer Protect community beta to identify which process is
@@ -395,7 +395,7 @@ running on your system. The screen capture below is taken from the alert of
 IPStorm executed on a server. The info provided by the system includes the
 malware family name, full path of the executable, the process ID, execution
 time, and a link to Intezer where you can observe code reuse prevalent in
-this malware. &lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig21.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
+this malware. &lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig21.png" alt="" loading="lazy" /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;How to Terminate IPStorm on a Compromised System&lt;span class="hx:absolute hx:-mt-20" id="how-to-terminate-ipstorm-on-a-compromised-system"&gt;&lt;/span&gt;
 &lt;a href="#how-to-terminate-ipstorm-on-a-compromised-system" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
@@ -442,7 +442,7 @@ help contributing to this analysis.&lt;/em&gt;&lt;/p&gt;
 detect this and other cross-platform malware with the code reuse feature for
 Golang, just by uploading a file or hash to the system. Below is the analysis
 of one of the Linux samples.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig22.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/images/fig22.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
 &lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Linux&lt;span class="hx:absolute hx:-mt-20" id="linux-1"&gt;&lt;/span&gt;
 &lt;a href="#linux-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;

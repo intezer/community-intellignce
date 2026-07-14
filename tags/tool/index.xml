@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Tool</title><link>https://intezer.github.io/community-intelligence/tags/tool/</link><description>Recent content in Tool on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 03 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://intezer.github.io/community-intelligence/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>Detection Rules for Lightning Framework (and How to Make Them With Osquery)</title><link>https://intezer.github.io/community-intelligence/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</link><pubDate>Wed, 03 Aug 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Tool</title><link>https://research.intezer.com/tags/tool/</link><description>Recent content in Tool on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 03 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>Detection Rules for Lightning Framework (and How to Make Them With Osquery)</title><link>https://research.intezer.com/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</link><pubDate>Wed, 03 Aug 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</guid><description>
 &lt;p&gt;On 21 July, 2022, we released a blog post about a new malware called
 &lt;a href="../../../2022/07/lightning-framework-new-linux-threat"&gt;Lightning Framework&lt;/a&gt;.
 Lightning is a modular malware framework targeting Linux. At the time of the
@@ -70,7 +70,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;p&gt;An example of a query that shows the malware artifacts is shown below:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/08/lightning-framework-linux-detection-rules-osquery/images/fig1.png" title="Successfully finding Lightning Framework files using osquery." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/08/lightning-framework-linux-detection-rules-osquery/images/fig1.png" title="Successfully finding Lightning Framework files using osquery." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Successfully finding Lightning Framework files using osquery.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Detecting Persistence of Lightning Framework&lt;span class="hx:absolute hx:-mt-20" id="detecting-persistence-of-lightning-framework"&gt;&lt;/span&gt;
@@ -179,7 +179,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>SOC Level Up: Threat Hunting and Detection With Sigma</title><link>https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/</link><pubDate>Tue, 17 May 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/</guid><description>
+&lt;/div&gt;</description></item><item><title>SOC Level Up: Threat Hunting and Detection With Sigma</title><link>https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/</link><pubDate>Tue, 17 May 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/</guid><description>
 &lt;p&gt;In the last part of the SOC Level Up series, we introduced
 &lt;a href="../../../2022/03/intro-to-sigma-rules/"&gt;Sigma&lt;/a&gt; – an open-source framework to
 write one rule that can be used in multiple environments. In this blog, we will
@@ -244,7 +244,7 @@ requires more effort from the security team – they need to execute the threat
 in a sandbox and understand its execution flow. But for threat actors, it is
 also much harder to change the behavior of the threat and stay undetected.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig1.png" title="Pyramid of Pain by David J Bianco" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig1.png" title="Pyramid of Pain by David J Bianco" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Pyramid of Pain by David J Bianco&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Using Sigma to Write Detection Rules for Emotet&lt;span class="hx:absolute hx:-mt-20" id="using-sigma-to-write-detection-rules-for-emotet"&gt;&lt;/span&gt;
@@ -268,7 +268,7 @@ recently discovered
 of Emotet. We will use oleid and olevba to discover the macros embedded in the
 file (for more information, check out this blog about
 &lt;a href="https://intezer.com/blog/malware-analysis/analyze-malicious-microsoft-office-files/"target="_blank" rel="noopener"&gt;analyzing malicious Office files&lt;/a&gt;).&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;From this short analysis, we know that the malicious document will execute
 commands using cmd and it will use a signed binary called MSHTA to download and
 execute code from a given URL. Using legitimate and signed binaries is a very
@@ -278,7 +278,7 @@ common technique used by threat actors – you can read more about
 detection indicators. We can get even more information by executing the sample
 in a sandbox environment and inspecting the process tree as shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig3.png" title="Process tree of the sample election in Intezer." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig3.png" title="Process tree of the sample election in Intezer." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Process tree of the sample election in Intezer.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;We will use the following information to make a basic Sigma rule:&lt;/p&gt;
@@ -405,7 +405,7 @@ indicators that are shared among several samples of the same threat.&lt;/p&gt;
 &lt;a href="https://analyze.intezer.com/files/12315dbe67fd3db9ce3c1f520fef14e10e946b7a1d8628583c2a26949312edc5/detect-hunt"target="_blank" rel="noopener"&gt;file&lt;/a&gt;
 that delivers Emotet:&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig4.png" title="Analysis of Emotet." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig4.png" title="Analysis of Emotet." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Analysis of Emotet.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The file was executed in Intezer&amp;rsquo;s sandbox and its behavior was analyzed
@@ -481,7 +481,7 @@ users to extract up-to-date behavioral artifacts, so you can create rules to
 proactively hunt for the existence of a threat within your organization and
 create updated detection rules.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig5.png" title="Family page view for Emotet in an enterprise account, showing the relevant detection opportunities." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig5.png" title="Family page view for Emotet in an enterprise account, showing the relevant detection opportunities." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Family page view for Emotet in an enterprise account, showing the relevant detection opportunities.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
@@ -491,7 +491,7 @@ the end of the day, our goal is to detect threats and stop them and for that we
 need to know which indicators are unique to a specific threat and less likely
 to change among the variants of the malware.&lt;/p&gt;
 &lt;p&gt;You can get IoCs, artifacts, and other detection opportunities for creating
-Sigma rules using Intezer.&lt;/p&gt;</description></item><item><title>How to Write YARA Rules That Minimize False Positives</title><link>https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/</link><pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/</guid><description>
+Sigma rules using Intezer.&lt;/p&gt;</description></item><item><title>How to Write YARA Rules That Minimize False Positives</title><link>https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/</link><pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/</guid><description>
 &lt;h2&gt;Generate Advanced YARA Rules Based on Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="generate-advanced-yara-rules-based-on-code-reuse"&gt;&lt;/span&gt;
 &lt;a href="#generate-advanced-yara-rules-based-on-code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Incorporating YARA into daily security operations can accelerate incident
 response time, classify malware, empower threat intelligence and improve
@@ -541,7 +541,7 @@ increasing the number of false positives generated.&lt;/p&gt;
 &lt;p&gt;The ideal signature will have the right balance: broad enough to identify many
 variants of the malware but specific enough to avoid false positives.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s an example:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The above example represents a file that has been disassembled into tiny pieces
 of binary code, or genes. If a YARA rule is created based on the file&amp;rsquo;s trusted
 code (green), many false positives will be generated.&lt;/p&gt;
@@ -602,7 +602,7 @@ for a partial match.&lt;/li&gt;
 &lt;li&gt;Detecting future variants that the attacker may release based on code reuse.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Let&amp;rsquo;s look at that example again:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;As demonstrated in the previous example, creating a YARA rule based on a file&amp;rsquo;s
 trusted code will result in false positives. At the same time, developing a
 rule that contains all of the code&amp;rsquo;s addresses will make the rule very specific
@@ -624,11 +624,11 @@ a common financial trojan. With the code-based YARA signature in place, any
 future sample or variant that reuses some aspects of Emotet&amp;rsquo;s code will be
 detected.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig2.png" title="Example YARA rule, generated by Intezer to detect Emotet." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/images/fig2.png" title="Example YARA rule, generated by Intezer to detect Emotet." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Example YARA rule, generated by Intezer to detect Emotet.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig3.png" title="Intezer analysis of Emotet, with red box highlighting the button to generate a code-based YARA signature (SHA256: 5f2aa0bb76749cce2c13c1049521a3e70389c773632245e1f915ca6c522d1402)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/images/fig3.png" title="Intezer analysis of Emotet, with red box highlighting the button to generate a code-based YARA signature (SHA256: 5f2aa0bb76749cce2c13c1049521a3e70389c773632245e1f915ca6c522d1402)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Intezer analysis of Emotet, with red box highlighting the button to generate a code-based YARA signature (SHA256: 5f2aa0bb76749cce2c13c1049521a3e70389c773632245e1f915ca6c522d1402)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Example YARA Rule for WannaCry Variant2&lt;span class="hx:absolute hx:-mt-20" id="example-yara-rule-for-wannacry-variant2"&gt;&lt;/span&gt;
@@ -638,11 +638,11 @@ sample. Deployed in May 2017, WannaCry was one of the largest, high profile
 ransomware attacks in history, infecting over 200,000 computers across 150
 countries.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig4.png" title="Example YARA rule for WannaCry." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/images/fig4.png" title="Example YARA rule for WannaCry." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Example YARA rule for WannaCry.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig5.png" title="Genetic analysis of WannaCry in Intezer Analyze (SHA256: bf293bda73c5b4c1ec66561ad20d7e2bc6692d051282d35ce8b7b7020c753467)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/images/fig5.png" title="Genetic analysis of WannaCry in Intezer Analyze (SHA256: bf293bda73c5b4c1ec66561ad20d7e2bc6692d051282d35ce8b7b7020c753467)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Genetic analysis of WannaCry in Intezer Analyze (SHA256: bf293bda73c5b4c1ec66561ad20d7e2bc6692d051282d35ce8b7b7020c753467)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Generating YARA Rules with Intezer Analyze&lt;span class="hx:absolute hx:-mt-20" id="generating-yara-rules-with-intezer-analyze"&gt;&lt;/span&gt;
@@ -658,7 +658,7 @@ large volume of alerts.&lt;/p&gt;
 to find file-based detection opportunities for creating new YARA rules. You can
 filter these detection opportunities by the artifact type, family, and verdict.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/05/yara-rules-minimize-false-positives/images/fig6.png" title="NanoCoreRAT sample, SHA256: 0689544cd227b93df10df4d99ea04270d0f9f76259aa34cb8f6707a02e70081d" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/images/fig6.png" title="NanoCoreRAT sample, SHA256: 0689544cd227b93df10df4d99ea04270d0f9f76259aa34cb8f6707a02e70081d" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;NanoCoreRAT sample, SHA256: 0689544cd227b93df10df4d99ea04270d0f9f76259aa34cb8f6707a02e70081d&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This feature also allows for some more advanced usages. It can be used in
@@ -691,7 +691,7 @@ more accurate YARA signatures for detecting future variants or new malware.&lt;/
 rules based on binary code, rather than simple strings. Code-based YARA rules
 are the most effective since they are tolerant to modifications and are more
 equipped to detect variants of the same threat.&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>SOC Level Up: Introduction to Sigma Rules</title><link>https://intezer.github.io/community-intelligence/blog/2022/03/intro-to-sigma-rules/</link><pubDate>Tue, 22 Mar 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/03/intro-to-sigma-rules/</guid><description>
+&lt;/ul&gt;</description></item><item><title>SOC Level Up: Introduction to Sigma Rules</title><link>https://research.intezer.com/blog/2022/03/intro-to-sigma-rules/</link><pubDate>Tue, 22 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/03/intro-to-sigma-rules/</guid><description>
 &lt;p&gt;&lt;em&gt;Sigma rules are catching on more and more for SOC teams, as a way to write one
 rule that can be used across multiple environments. By learning how Sigma rules
 work and how to create them, you can take your SOC skills to the next level.&lt;/em&gt;&lt;/p&gt;
@@ -761,7 +761,7 @@ security breach and starting an incident response process sooner.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Sigma Rules Syntax&lt;span class="hx:absolute hx:-mt-20" id="sigma-rules-syntax"&gt;&lt;/span&gt;
 &lt;a href="#sigma-rules-syntax" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/03/intro-to-sigma-rules/images/fig1.png" title="Source: Sigma repo" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/03/intro-to-sigma-rules/images/fig1.png" title="Source: Sigma repo" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Source: Sigma repo&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The structure of Sigma rules is made of optional and mandatory parts as can be
@@ -1068,7 +1068,7 @@ source and fields the rules use. Both rules will achieve the same result.&lt;/p&
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In this blog we presented Sigma rules – a well-defined and formatted structure
 for writing detection rules, that can be used in all types of operating systems
 and environments. Sigma allows you to share information but also consume it,
-making it easier to integrate new detection rules and protect your environment.&lt;/p&gt;</description></item><item><title>Radare Plugin is Here for Intezer Community</title><link>https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/</link><pubDate>Tue, 08 Feb 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/</guid><description>
+making it easier to integrate new detection rules and protect your environment.&lt;/p&gt;</description></item><item><title>Radare Plugin is Here for Intezer Community</title><link>https://research.intezer.com/blog/2022/02/radare-plugin-automate-reverse-engineering/</link><pubDate>Tue, 08 Feb 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/02/radare-plugin-automate-reverse-engineering/</guid><description>
 &lt;p&gt;When you reverse engineer code as part of an incident response team, you want
 to quickly get information about what kind of threat you&amp;rsquo;re dealing with.&lt;/p&gt;
 &lt;p&gt;A while back we released Intezer Analyze plugins both for
@@ -1097,19 +1097,19 @@ The
 &lt;a href="https://analyze.intezer.com/files/7c82689142a415b0a34553478e445988980f48705735939d6d33c17e4e8dac94"target="_blank" rel="noopener"&gt;result&lt;/a&gt;
 from Intezer Analyze is shown below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig1.png" title="Intezer Analyze result for a ScarCruft sample." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig1.png" title="Intezer Analyze result for a ScarCruft sample." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Intezer Analyze result for a ScarCruft sample.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;If you open the sample and run the plugin, you can see below that four items in
 the flag space called &lt;code&gt;gene&lt;/code&gt; have been created.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig2.png" title="Executing r2analyze as a r2pipe plugin." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig2.png" title="Executing r2analyze as a r2pipe plugin." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Executing r2analyze as a r2pipe plugin.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;If selecting only that flag space and listing all the flags, you can see that
 four functions have been identified as unique to ScarCruft.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig3.png" title="Listing detected functions." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/02/radare-plugin-automate-reverse-engineering/images/fig3.png" title="Listing detected functions." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Listing detected functions.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;If Radare2 is your preferred framework for reverse-engineering and analyzing
@@ -1122,7 +1122,7 @@ malware families. Analyze malware and unknown files for free at
 &lt;a href="#additional-resources" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://intezer.com/blog/malware-analysis/ida-pro-plugin-now-available-to-the-community/"target="_blank" rel="noopener"&gt;IDA Pro plugin&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://intezer.com/blog/malware-analysis/community-ghidra-plugin-is-here/"target="_blank" rel="noopener"&gt;Ghidra plugin&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Make your First Malware Honeypot in Under 20 Minutes</title><link>https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/</link><pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/</guid><description>
+&lt;/ul&gt;</description></item><item><title>Make your First Malware Honeypot in Under 20 Minutes</title><link>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</link><pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</guid><description>
 &lt;p&gt;&lt;em&gt;For a free honeypot, you can use one of the several open-source options listed below.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;A &amp;ldquo;honeypot&amp;rdquo; is a metaphor that references using honey as bait for a lure or trap. Honeypots have served many purposes in history, including recruiting spies and catching criminals in real life. Honeypots have also long made their way into computing as a way to gather information about potential threats targeting public facing assets.&lt;/p&gt;
 &lt;p&gt;Honeypots are a powerful tool for threat intelligence researchers, security engineers, and malware analysts. Honeypots come in many forms, collecting different information and serving distinct purposes. Honeypots can be used to collect:&lt;/p&gt;
@@ -1140,37 +1140,37 @@ malware families. Analyze malware and unknown files for free at
 &lt;a href="#setting-up-your-cloud-environment" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The cloud is the perfect place to host your honeypot because it&amp;rsquo;s cheap, quick, and flexible. Many cloud providers offer a free tier that includes a free virtual machine or an allowance to spend on cloud resources. A virtual machine is a virtual computer that is able to be developed on a physical server through code. Virtual computers can easily host a service which can be used for the honeypot.&lt;/p&gt;
 &lt;p&gt;For this tutorial, we will &lt;a href="https://docs.aws.amazon.com/efs/latest/ug/gs-step-one-create-ec2-resources.html"target="_blank" rel="noopener"&gt;create a virtual machine&lt;/a&gt; via the AWS console. Start by searching for the EC2 service in AWS. If you already have your infrastructure set up for your honeypot, you can skip this step.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig1.png" title="EC2 service in the Management Console." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig1.png" title="EC2 service in the Management Console." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;EC2 service in the Management Console.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Click Launch instance on the EC2 Dashboard. This will begin the process of setting up a virtual machine.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig2.png" title="Launch instance button is located on the dashboard." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig2.png" title="Launch instance button is located on the dashboard." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Launch instance button is located on the dashboard.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;On the next page you will be presented with a number of Amazon Machine Images (AMI) and architecture options. These machine images are the software that will be used in the virtual machine, such as the operating system and applications.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig3.png" title="Amazon machine images to choose from." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig3.png" title="Amazon machine images to choose from." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Amazon machine images to choose from.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s choose Amazon Linux 2. The next page you will be asked to choose the size of the instance type. This decides the amount of CPU cores and RAM your virtual machine will have and also the &lt;a href="https://aws.amazon.com/ec2/pricing/on-demand/"target="_blank" rel="noopener"&gt;price&lt;/a&gt;. There is a free tier option in AWS.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig4.png" title="Instance Type choices in AWS." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig4.png" title="Instance Type choices in AWS." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Instance Type choices in AWS.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once you have decided on the size of the virtual machine, you will configure the instance and its networking. It&amp;rsquo;s best to add a name tag to help identify the instance and to configure your security group to only allow inbound SSH access from your router or VPN. This means that only you can access the SSH port while the wider internet will not be able to reach it. This way, you can test deploying your honeypot service without having it attacked before you are ready.&lt;/p&gt;
 &lt;p&gt;To use just your own IP address, click the dropdown box under Source and choose My IP. This will place your own IP address into the field using a &lt;a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing"target="_blank" rel="noopener"&gt;CIDR&lt;/a&gt; of 32, which restricts it to just that one IP.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig5.png" title="Security Group configuration." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig5.png" title="Security Group configuration." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Security Group configuration.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This group will be changed later to expose your honeypot after it is set up. As you finish the configuration and click Launch at the review page, you will be prompted to choose a key pair for the SSH communication. A key pair is a set of asymmetric keys, usually &lt;a href="https://asecuritysite.com/rsa/"target="_blank" rel="noopener"&gt;RSA&lt;/a&gt;, that is used as a way to authenticate to the virtual machine over the internet. You can generate a new key pair quickly using the prompt and download the private key (.pem) to your computer.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig6.png" title="Creation of a new RSA key pair." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig6.png" title="Creation of a new RSA key pair." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Creation of a new RSA key pair.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The instance will take a short time to boot. You will then see a lot of information about the machine, which includes its public IPv4 address. This is the address that will be used to reach the services set up:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;To SSH to the terminal, use the terminal in Mac/Linux, or use a SSH client like &lt;a href="https://www.putty.org/"target="_blank" rel="noopener"&gt;PuTTY&lt;/a&gt; for Windows. The command to SSH to your instance is:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;ssh -i [Path to RSA-Key] ec2-user@[Public IP]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
@@ -1186,14 +1186,14 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig8.png" title="SSH command to log into the EC2 instance." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig8.png" title="SSH command to log into the EC2 instance." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;SSH command to log into the EC2 instance.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;If you set up the configuration properly, then you will be able to reach your virtual machine over SSH. Depending on how your permissions are configured on Mac and Linux machines, you &lt;a href="https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error"target="_blank" rel="noopener"&gt;might&lt;/a&gt; have to configure the permissions on the downloaded private key before use. Once you SSH into your machine, it&amp;rsquo;s time to set up the honeypot software.&lt;/p&gt;
 &lt;h2&gt;Your Choice of Honeypot&lt;span class="hx:absolute hx:-mt-20" id="your-choice-of-honeypot"&gt;&lt;/span&gt;
 &lt;a href="#your-choice-of-honeypot" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It&amp;rsquo;s now time to decide your choice for the honeypot technology. First we want to highlight open-source honeypots that are the result of great work by the security community. A good resource to look at is the &lt;a href="https://github.com/paralax/awesome-honeypots"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt; page for &lt;a href="https://github.com/paralax/awesome-honeypots"target="_blank" rel="noopener"&gt;Awesome Honeypots&lt;/a&gt;. Awesome Honeypots is a curated list of open-source honeypots and honeypot management tools. It contains links to honeypot projects for popular applications and services such as databases, content management systems, and web applications.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig9.png" title="Awesome Honeypots on GitHub." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig9.png" title="Awesome Honeypots on GitHub." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Awesome Honeypots on GitHub.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Many popular applications are covered in this list, especially other free and open-source software options for finishing your honeypot.&lt;/p&gt;
@@ -1272,7 +1272,7 @@ data-copied-label="Copied!"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This will configure the Docker daemon to listen for Docker Engine API requests on port 2375 over TCP. The default setting provides unauthenticated direct access to the Docker daemon, which means it can be exploited by attackers to run malicious code with ease. Once the file is created, reload the unit files and restart the Docker service by running the following commands:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;sudo systemctl daemon-reload
@@ -1289,10 +1289,10 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;One can use netstat to confirm that the daemon is listening on port 2375.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;To check that your attack vector is working in a test environment, try to create a container remotely from your own terminal, outside the SSH tunnel. Start by reconfiguring the security group in AWS to allow inbound access to your API port from your router or VPN IP address.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig12.png" title="Edited security group to allow access to Docker API port." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig12.png" title="Edited security group to allow access to Docker API port." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Edited security group to allow access to Docker API port.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;You can test by running Docker commands from your terminal with the -H flag specifying the public IP address of the EC2 instance and the port of the Docker API.&lt;/p&gt;
@@ -1311,44 +1311,44 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;p&gt;You can also test by creating a container to test. We will run an Alpine container.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig13.png" title="Creation of a container from a remote system." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig13.png" title="Creation of a container from a remote system." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Creation of a container from a remote system.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig14.png" title="Docker image information." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig14.png" title="Docker image information." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Docker image information.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig15.png" title="Alert integration options." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig15.png" title="Alert integration options." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Alert integration options.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;You&amp;rsquo;ve Been Attacked! Now What?&lt;span class="hx:absolute hx:-mt-20" id="youve-been-attacked-now-what"&gt;&lt;/span&gt;
-&lt;a href="#youve-been-attacked-now-what" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;a href="#youve-been-attacked-now-what" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The above screen grab shows the first half of the malicious activity. Even though you can see in the alerts that the bash history was tampered with, you can still see all the events that have happened on the instance. Important information and a timeline of the attack can be gathered from the events listed here.&lt;/p&gt;
 &lt;p&gt;Starting from the bottom and working our way up, we see that a new container image &lt;a href="https://hub.docker.com/r/docker72590/alpine/tags"target="_blank" rel="noopener"&gt;&lt;code&gt;docker72590/alpine:latest&lt;/code&gt;&lt;/a&gt; was executed. This container was documented in a blog by &lt;a href="https://www.lacework.com/blog/teamtnt-continues-to-target-exposed-docker-api/"target="_blank" rel="noopener"&gt;Lacework&lt;/a&gt; and it is from a group pretending to be the threat actor TeamTNT. Many files are executed, including creating SSH keys with the name TeamTNT. We can see that a bash script has been downloaded from &lt;code&gt;104.192.82[.]138//s3f1015/b/a.sh&lt;/code&gt;. This is a great place to start collecting IoCs. Now, let&amp;rsquo;s take a look at the Docker image that was executed. Go to your honeypot under Hosts and click on Images.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig18.png" title="Running containers on the honeypot." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig18.png" title="Running containers on the honeypot." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Running containers on the honeypot.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig19.png" title="Malicious container code." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig19.png" title="Malicious container code." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Malicious container code.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig20.png" title="XMRig Miner alert." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig20.png" title="XMRig Miner alert." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;XMRig Miner alert.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig21.png" title="Network and container details." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig21.png" title="Network and container details." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Network and container details.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig22.png" title="Genetic analysis of the cryptominer in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig22.png" title="Genetic analysis of the cryptominer in Intezer Analyze." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Genetic analysis of the cryptominer in Intezer Analyze.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2022/01/how-to-make-malware-honeypot/images/fig23.png" title="Related samples based on shared code genes." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/images/fig23.png" title="Related samples based on shared code genes." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Related samples based on shared code genes.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Start Making Your Own Honeypot&lt;span class="hx:absolute hx:-mt-20" id="start-making-your-own-honeypot"&gt;&lt;/span&gt;
@@ -1414,7 +1414,7 @@ data-copied-label="Copied!"
 &lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
 &lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;104.192.82[.]138&lt;/code&gt;&lt;/p&gt;
 &lt;h3&gt;Crypto Wallet&lt;span class="hx:absolute hx:-mt-20" id="crypto-wallet"&gt;&lt;/span&gt;
-&lt;a href="#crypto-wallet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;85X7JcgPpwQdZXaK2TKJb8baQAXc3zBsnW7JuY7MLi9VYSamf4bFwa7SEAK9Hgp2P53npV19w1zuaK5bft5m2NN71CmNLoh&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Detection Rules for Sysjoker (and How to Make Them With Osquery)</title><link>https://intezer.github.io/community-intelligence/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</link><pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</guid><description>
+&lt;a href="#crypto-wallet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;85X7JcgPpwQdZXaK2TKJb8baQAXc3zBsnW7JuY7MLi9VYSamf4bFwa7SEAK9Hgp2P53npV19w1zuaK5bft5m2NN71CmNLoh&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Detection Rules for Sysjoker (and How to Make Them With Osquery)</title><link>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</link><pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</guid><description>
 &lt;p&gt;On January 11, 2022, we released a blog post on a new malware called &lt;a href="../../../2022/01/new-backdoor-sysjoker"&gt;SysJoker&lt;/a&gt;. SysJoker is a malware targeting Windows, macOS, and Linux. At the time of the publication, the Linux and macOS versions were not detected by any scanning engines on VirusTotal. As a consequence to this, we decided to release a followup blog posting showing how the information we released can be used to investigate whether you have been affected.&lt;/p&gt;
 &lt;p&gt;There are many tools available to gather system information and to perform threat hunting within an organization. We decided to use &lt;a href="https://osquery.io"target="_blank" rel="noopener"&gt;osquery&lt;/a&gt; in this blog post. The reason for choosing osquery is that it is supported for all the affected operating systems that SysJoker targets and it is open source allowing essentially anyone to follow along in this tutorial.&lt;/p&gt;
 &lt;h2&gt;Information Gathering with Osquery&lt;span class="hx:absolute hx:-mt-20" id="information-gathering-with-osquery"&gt;&lt;/span&gt;
@@ -1633,7 +1633,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Teaching Capa New Tricks: Analyzing Capabilities in PE and ELF Files</title><link>https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</link><pubDate>Wed, 15 Sep 2021 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</guid><description>
+&lt;/div&gt;</description></item><item><title>Teaching Capa New Tricks: Analyzing Capabilities in PE and ELF Files</title><link>https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</link><pubDate>Wed, 15 Sep 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When analyzing malware, one of the goals in addition to identifying what
 malware it is, is to understand what it does when it runs on a machine. There
@@ -1679,7 +1679,7 @@ Olympic Destroyer is a good example because of all the false flags planted by
 the threat actor. If we analyze the sample, you can see that it drops a number
 of other files. The analysis of one of these files is shown in Figure 1.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig1.png" title="Figure 1: Analysis of one of the dropped files by the Olympic Destroyer sample (3e27b6b287f0b9f7e85bfe18901d961110ae969d58b44af15b1d75be749022c2)." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig1.png" title="Figure 1: Analysis of one of the dropped files by the Olympic Destroyer sample (3e27b6b287f0b9f7e85bfe18901d961110ae969d58b44af15b1d75be749022c2)." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 1: Analysis of one of the dropped files by the Olympic Destroyer sample (3e27b6b287f0b9f7e85bfe18901d961110ae969d58b44af15b1d75be749022c2).&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The gene summary shows that the file shares code with Olympic Destroyer and
@@ -1689,7 +1689,7 @@ stealer attempts to obtain credentials from LSASS. The technique used is
 similar to Mimikatz. From the gene summary, we can see that it does not share
 code with Mimikatz.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig2.png" title="Figure 2: Olympic Destroyer related sample found is the system stealer (f188abc33d351c2254d794b525c5a8b79ea78acd3050cd8d27d3ecfc568c2936) from the original Cisco Talos report." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig2.png" title="Figure 2: Olympic Destroyer related sample found is the system stealer (f188abc33d351c2254d794b525c5a8b79ea78acd3050cd8d27d3ecfc568c2936) from the original Cisco Talos report." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Olympic Destroyer related sample found is the system stealer (f188abc33d351c2254d794b525c5a8b79ea78acd3050cd8d27d3ecfc568c2936) from the original Cisco Talos report.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;If we look at the related TeleBots samples, we can see (Figure 3) that they
@@ -1703,7 +1703,7 @@ suggesting that the same supply chain vector as NotPetya was used. XData,
 according to ESET, had an embedded DLL that performed credential harvesting
 like Mimikatz.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig3.png" title="Figure 3: TeleBots related samples show that the samples share code with an XData sample." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig3.png" title="Figure 3: TeleBots related samples show that the samples share code with an XData sample." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 3: TeleBots related samples show that the samples share code with an XData sample.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The connection between the two malware families can be made stronger by looking
@@ -1716,7 +1716,7 @@ decrypting payloads or for injecting into another process. What this is telling
 us is that XData and Olympic Destroyer share a unique code that is used as part
 of the allocation of read-write-execute memory.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig4.png" title="Figure 4: Capabilities with shared code genes between the Olympic Destroyer sample and XData." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig4.png" title="Figure 4: Capabilities with shared code genes between the Olympic Destroyer sample and XData." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Capabilities with shared code genes between the Olympic Destroyer sample and XData.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Analyzing Capabilities of ELF Files&lt;span class="hx:absolute hx:-mt-20" id="analyzing-capabilities-of-elf-files"&gt;&lt;/span&gt;
@@ -1735,7 +1735,7 @@ capabilities detected for a RedXOR sample that we released a
 on earlier this year. From what we can see in the table under the TTPs tab, the
 way the capabilities have been implemented is unique to RedXOR.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig5.png" title="Figure 5: Capabilities of a RedXOR sample detected by capa." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig5.png" title="Figure 5: Capabilities of a RedXOR sample detected by capa." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Capabilities of a RedXOR sample detected by capa.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;ELF malware are sometimes statically linked. This means that libraries used by
@@ -1754,7 +1754,7 @@ libc. What this allows analysts to deduce is that the shared genes between
 BlackTech and Bifrost exist because their malware has been statically linked
 against the same libc version.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig6.png" title="Figure 6: Some of the capabilities for a TSCookie sample." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/images/fig6.png" title="Figure 6: Some of the capabilities for a TSCookie sample." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 6: Some of the capabilities for a TSCookie sample.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
@@ -1769,7 +1769,7 @@ also enjoy providing improvements and bug fixes to open-source projects.
 Additionally, we also have
 &lt;a href="https://github.com/intezer"target="_blank" rel="noopener"&gt;released some of our own&lt;/a&gt;. Check out FireEye&amp;rsquo;s
 blog post on capa v3.0 release
-&lt;a href="https://www.fireeye.com/blog/threat-research/2021/09/elfant-in-the-room-capa-v3.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>MoP – "Master of Puppets" – Advanced malware tracking framework revealed at BlackHat Arsenal 2019</title><link>https://intezer.github.io/community-intelligence/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</link><pubDate>Wed, 14 Aug 2019 00:00:00 +0000</pubDate><guid>https://intezer.github.io/community-intelligence/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</guid><description>
+&lt;a href="https://www.fireeye.com/blog/threat-research/2021/09/elfant-in-the-room-capa-v3.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>MoP – "Master of Puppets" – Advanced malware tracking framework revealed at BlackHat Arsenal 2019</title><link>https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</link><pubDate>Wed, 14 Aug 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</guid><description>
 &lt;p&gt;At BlackHat Arsenal 2019 Intezer’s researcher, Omri Ben-Bassat, revealed
 open-source tool called MoP (“Master of Puppets”) which is a framework for
 reverse engineers who wish to create and operate trackers for new malware found
@@ -1790,6 +1790,6 @@ on a single laptop. MoP framework comes with a number of pre-built plugins for
 known RATs, such as NjRAT and Gh0stRAT. Find it on
 &lt;a href="https://github.com/intezer/MoP/"target="_blank" rel="noopener"&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://intezer.github.io/community-intelligence/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/images/fig1.png" title="Real NjRAT server with fake victim connected from MoP instance" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/images/fig1.png" title="Real NjRAT server with fake victim connected from MoP instance" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Real NjRAT server with fake victim connected from MoP instance&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;</description></item></channel></rss>
