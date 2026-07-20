@@ -1,0 +1,236 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Yara</title><link>https://research.intezer.com/tags/yara/</link><description>Recent content in Yara on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 03 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/yara/index.xml" rel="self" type="application/rss+xml"/><item><title>Using YARA Rules to Turn Open Source Against Malware</title><link>https://research.intezer.com/blog/2020/09/turning-open-source-against-malware/</link><pubDate>Thu, 03 Sep 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/09/turning-open-source-against-malware/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Offensive Security Tools are any kind of functionality meant to facilitate
+intrusions and security bypasses in order to achieve the former.&lt;/p&gt;
+&lt;p&gt;Generally we can divide them into three categories:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Close Source Tools:&lt;/strong&gt; The most infamous example is CobaltStrike.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Open Source &amp;ldquo;as is&amp;rdquo; Standalone Tools:&lt;/strong&gt; Metasploit, Mimikatz, and various
+RAT/C2 frameworks are some examples.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Open Source Libraries:&lt;/strong&gt; Examples include some memory injection libraries
+and other offensive libraries which must be incorporated in a tool in order
+to be useful.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Unsophisticated actors adopt OSTs to fill in R&amp;amp;D resources which they don&amp;rsquo;t
+possess while advanced actors, including government-backed ones, incorporate
+OSTs so they can spend their resources elsewhere in advancing operations or
+upgrading infrastructure, for example.&lt;/p&gt;
+&lt;p&gt;We analyzed thousands of threat actor reports from security companies dating
+back to 2015, checking for their references to open source OST projects. What
+we found is the number of references to open source OST projects is steadily on
+the rise which indicates their increasing usage.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/09/turning-open-source-against-malware/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;What is special about OST libraries is they can&amp;rsquo;t operate independently and
+must be included as part of a bigger tool. These embedded libraries are rarely
+documented by security companies due to the difficulty it takes to identify
+them, as they are only part of a malicious file and usually stripped of
+strings.&lt;/p&gt;
+&lt;p&gt;The ability to detect files that use offensive libraries can enhance threat
+hunting capabilities as very few legitimate programs will include such
+functionalities.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;In this article we will present a tutorial on how you can create code-based
+YARA signatures to find malware using OST libraries.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This article is a part of a larger investigation into the effects of free
+publication of OSTs. The full research will be presented at
+&lt;a href="https://www.virusbulletin.com/"target="_blank" rel="noopener"&gt;VirusBulletin&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Malware Adopting Open Source&lt;span class="hx:absolute hx:-mt-20" id="malware-adopting-open-source"&gt;&lt;/span&gt;
+&lt;a href="#malware-adopting-open-source" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Malware developers aren&amp;rsquo;t much different from normal programmers in that they
+both want to do their job in the easiest way possible. For some tasks, the most
+efficient solution is to simply copy and paste code from the Internet. If
+malware developers take this short cut when developing their tools, we as
+defenders should take advantage of it.&lt;/p&gt;
+&lt;p&gt;During our investigation, we identified which open source OST libraries threat
+actors most often copy and paste into their toolsets. One conclusion we drew is
+that many actors outsource memory injection logic into a small subset of open
+source libraries.&lt;/p&gt;
+&lt;p&gt;As an example, using only string reuse, we can observe that Lazarus, Winnti,
+Trickbot, Ramsay, and DarkHotel all have used the
+&lt;a href="https://github.com/dismantl/ImprovedReflectiveDLLInjection"target="_blank" rel="noopener"&gt;ImprovedReflectiveDllInjection&lt;/a&gt;
+library:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/09/turning-open-source-against-malware/images/fig2.png" title="(Search Exact String result available for Intezer Analyze users)" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;(Search Exact String result available for Intezer Analyze users)&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/09/turning-open-source-against-malware/images/fig3.png" title="(Strings from one of the files found when making the above string search)" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;(Strings from one of the files found when making the above string search)&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We can confirm this by searching for the strings on Github and finding
+&lt;a href="https://github.com/dismantl/ImprovedReflectiveDLLInjection/blob/master/inject/src/LoadLibraryR.c#L594"target="_blank" rel="noopener"&gt;the specific code they used&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/09/turning-open-source-against-malware/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Creating YARA signatures from OST library strings can yield some successful
+threat detections, however, attackers can easily remove those strings. We have
+witnessed first hand these malware families removing such strings once they
+have recognized their mistake and we are aware of multiple other threat actors
+using this library without the accompanying strings.&lt;/p&gt;
+&lt;p&gt;Therefore we must find a different method to create signatures to detect the
+use of these libraries.&lt;/p&gt;
+&lt;h2&gt;Code-based Signatures&lt;span class="hx:absolute hx:-mt-20" id="code-based-signatures"&gt;&lt;/span&gt;
+&lt;a href="#code-based-signatures" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The premise of code reuse signatures is to create YARA rules based on repeating
+binary patterns. These binary patterns are normalized code instructions.
+Normalized as in they must be readjusted to account for inconsistencies between
+different compilation outputs (e.g. different registers being used or varying
+immediate values). Each compiler has different compilation optimization rules
+and even the slightest difference can result in signatures becoming essentially
+ineffective.&lt;/p&gt;
+&lt;p&gt;To demonstrate how you can create a code-based YARA signature, let&amp;rsquo;s look at
+the &lt;a href="https://github.com/fancycode/MemoryModule"target="_blank" rel="noopener"&gt;MemoryModule&lt;/a&gt; library as an
+example. We uploaded a batch of precompiled MemoryModule binaries to
+&lt;a href="https://mega.nz/file/ytwyXYJY#SU5vCDYf_9M3gcC3HSqIWoKgcr7zfGSzskAP46VyJ9A"target="_blank" rel="noopener"&gt;Mega.nz&lt;/a&gt;
+so you can follow along.&lt;/p&gt;
+&lt;p&gt;We compile the library and search for assembly code that looks unique to our
+library (we also
+&lt;a href="https://docs.microsoft.com/en-us/cpp/build/reference/debug-generate-debug-info?view=vs-2019"target="_blank" rel="noopener"&gt;generate&lt;/a&gt;
+a PDB file so that we can easily track the code). We chose the following blocks
+in the &lt;code&gt;MemoryLoadLibraryEx&lt;/code&gt; function:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/09/turning-open-source-against-malware/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The blocks we will inspect specifically are the top center and middle left
+blocks, which can be traced to the
+&lt;a href="https://github.com/fancycode/MemoryModule/blob/master/MemoryModule.c#L571"target="_blank" rel="noopener"&gt;following code&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;Note: It&amp;rsquo;s also possible to do this the opposite way. First, choose the source
+code which seems unique and then only track the related assembly. It really
+depends on what is most comfortable for you.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s important to compile the library via several compiler versions in order to
+ensure the binary patterns we are signing don&amp;rsquo;t change drastically. You can
+&lt;a href="https://github.com/intezer/ost-map/blob/master/vs-autocompiler/autocompiler.ps1"target="_blank" rel="noopener"&gt;find here an open source script&lt;/a&gt;
+we made available for this task. Generally, choosing small blocks with simple
+instructions like the ones we selected is recommended since there is less room
+for changes to be made through different compiler versions.&lt;/p&gt;
+&lt;p&gt;After browsing through these libraries to make certain that our code remains
+the same between different compiler versions, we can start building our binary
+YARA signature.&lt;/p&gt;
+&lt;p&gt;For the sake of brevity we rearranged the function so only the code we&amp;rsquo;re
+interested in appears on screen:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/09/turning-open-source-against-malware/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Using an &lt;a href="https://c9x.me/x86/"target="_blank" rel="noopener"&gt;Intel Instruction Set reference sheet&lt;/a&gt;, turn the
+first block into a binary pattern:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-asm" data-lang="asm"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;B8&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="no"&gt;D&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="no"&gt;A&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt; &lt;span class="err"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;mov&lt;/span&gt; &lt;span class="no"&gt;reg&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;imm32&lt;/span&gt; &lt;span class="err"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;B&lt;/span&gt;&lt;span class="err"&gt;?&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="no"&gt;D&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="no"&gt;A&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;66&lt;/span&gt; &lt;span class="err"&gt;39&lt;/span&gt; &lt;span class="err"&gt;01&lt;/span&gt; &lt;span class="err"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nf"&gt;cmp&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;reg&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="no"&gt;reg&lt;/span&gt; &lt;span class="err"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;66&lt;/span&gt; &lt;span class="mi"&gt;39&lt;/span&gt; &lt;span class="err"&gt;??&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;For example, &lt;code&gt;mov reg, imm32&lt;/code&gt; is encoded as &lt;code&gt;B8+ rd&lt;/code&gt; in the
+&lt;a href="https://c9x.me/x86/html/file_module_x86_id_176.html"target="_blank" rel="noopener"&gt;mov&lt;/a&gt; command. This means
+the second byte has possible values 8-0xf so let&amp;rsquo;s put a question mark over it.&lt;/p&gt;
+&lt;p&gt;We avoid signing the &lt;code&gt;jz&lt;/code&gt; instruction because it can turn to &lt;code&gt;jnz&lt;/code&gt; on another
+compiler&amp;rsquo;s whim. For this reason, familiarity with compiler behavior is useful
+and can be attained by reviewing multiple versions of the same code through
+binaries created for different library versions.&lt;/p&gt;
+&lt;p&gt;Moving on to the second block, let&amp;rsquo;s turn only its beginning sequence into a
+binary pattern:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-asm" data-lang="asm"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;B9&lt;/span&gt; &lt;span class="no"&gt;C1&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt; &lt;span class="err"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;mov&lt;/span&gt; &lt;span class="no"&gt;ecx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="no"&gt;C1h&lt;/span&gt; &lt;span class="err"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;B9&lt;/span&gt; &lt;span class="no"&gt;C1&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;FF&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt; &lt;span class="no"&gt;DE&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="no"&gt;B&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt; &lt;span class="mi"&gt;00&lt;/span&gt; &lt;span class="err"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;call&lt;/span&gt; &lt;span class="no"&gt;cs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="no"&gt;offset&lt;/span&gt; &lt;span class="err"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;FF&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt; &lt;span class="err"&gt;??&lt;/span&gt; &lt;span class="err"&gt;??&lt;/span&gt; &lt;span class="err"&gt;??&lt;/span&gt; &lt;span class="err"&gt;??&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;33&lt;/span&gt; &lt;span class="nf"&gt;C0&lt;/span&gt; &lt;span class="err"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="no"&gt;xor&lt;/span&gt; &lt;span class="no"&gt;eax&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;eax&lt;/span&gt; &lt;span class="err"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;33&lt;/span&gt; &lt;span class="no"&gt;C0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;We don&amp;rsquo;t normalize &lt;code&gt;mov ecx, 0C1h&lt;/code&gt; because it isn&amp;rsquo;t part of the function&amp;rsquo;s
+logic (it&amp;rsquo;s used to handle the stack frame, aka &amp;rsquo;the function&amp;rsquo;s
+infrastructure&amp;rsquo;) and as you can see below it sometimes doesn&amp;rsquo;t trail our &amp;ldquo;real&amp;rdquo;
+logic:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/09/turning-open-source-against-malware/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Next let&amp;rsquo;s combine the two functions into a YARA rule and add a condition for
+the blocks to be close to each other. We chose a distance of 0x800 bytes after
+reviewing the same code in newer compilers, where the blocks end up on opposite
+sides of the same function due to new optimizations (as can be seen in the
+V142/V141 versions):&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;rule MemoryModule_x64 {
+strings:
+// First block:
+$s1 = {
+B? 4D 5A 00 00 // mov &amp;lt;reg&amp;gt;, 0x00004D5A
+66 39 // cmp &amp;lt;reg&amp;gt;, &amp;lt;reg&amp;gt;
+}
+// Second block:
+$s2 = {
+B9 C1 00 00 00 // mov ecx, 0x000000C1
+FF 15 ?? ?? ?? ?? // call cs:[mem]
+33 C0 48 // xor eax, eax
+}
+condition:
+$s1 and $s2 in (@s1..@s1&amp;#43;0x800) and $s3 in (@s1..@s1&amp;#43;0x50) and positives &amp;gt; 0
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Finally we&amp;rsquo;ll test the validity of our new rule.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s make sure we don&amp;rsquo;t miss any MemoryModule binaries (no false negatives):&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/09/turning-open-source-against-malware/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Before deploying the signature, we test it on VirusTotal.&lt;/p&gt;
+&lt;p&gt;In this case we had to add a block to the signature (we chose the one to the
+right from the initial figure) to reduce false positives, as we found the 0x800
+distance made the signature too generic and returned hits on programs that
+didn&amp;rsquo;t use MemoryModule.&lt;/p&gt;
+&lt;p&gt;The final signature looks like this:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;rule MemoryModule_x64 {
+strings:
+// First block:
+$s1 = {
+B? 4D 5A 00 00 // mov &amp;lt;reg&amp;gt;, 0x00004D5A
+66 39 // cmp &amp;lt;reg&amp;gt;, &amp;lt;reg&amp;gt;
+}
+// Second block:
+$s2 = {
+B9 C1 00 00 00 // mov ecx, 0x000000C1
+FF 15 ?? ?? ?? ?? // call cs:[mem]
+33 C0 48 // xor eax, eax
+}
+// Third block:
+$s3 = {
+48 63 ?? ?? // movsxd &amp;lt;reg&amp;gt;, dword ptr [reg&amp;#43;0x3C]
+48 8D ?? 08 01 00 00 // lea &amp;lt;reg&amp;gt;, [reg&amp;#43;0x108]
+4? ?? ?? // cmp &amp;lt;reg&amp;gt;, &amp;lt;reg&amp;gt;
+}
+condition:
+$s1 and $s2 in (@s1..@s1&amp;#43;0x800) and $s3 in (@s1..@s1&amp;#43;0x50) and positives &amp;gt; 0
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Malware developers often incorporate open source libraries in order to cut
+costs and preserve their research and development resources for other
+activities. In this article we presented how you can create signatures to
+target malware that outsource their offensive capabilities to these libraries.
+We demonstrated why signatures based on strings can be easily broken when
+hunting for these projects and how you can create more advanced code-based
+signatures to catch malware that incorporate OST libraries.&lt;/p&gt;
+&lt;p&gt;We hope this post was productive for you and wish you happy hunting! We invite
+you to virtually attend the talk which will present the full research study at
+VirusBulletin.&lt;/p&gt;</description></item></channel></rss>

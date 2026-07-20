@@ -5335,7 +5335,257 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Yet Another Distraction? A New Version of North Korean Ransomware Hermes Has Emerged</title><link>https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</link><pubDate>Thu, 08 Feb 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</guid><description>
+&lt;/div&gt;</description></item><item><title>Examining Code Reuse Reveals Undiscovered Links Among North Korea’s Malware Families</title><link>https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/</link><pubDate>Mon, 06 Aug 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/</guid><description>
+&lt;p&gt;&lt;em&gt;This research is a joint effort of
+&lt;a href="https://twitter.com/ChristiaanBeek"target="_blank" rel="noopener"&gt;Christiaan Beek&lt;/a&gt;, lead scientist &amp;amp; sr.
+principal engineer at McAfee, and
+&lt;a href="https://twitter.com/jaytezer"target="_blank" rel="noopener"&gt;Jay Rosenberg&lt;/a&gt;, senior security researcher at
+Intezer, and can be found in the McAfee Labs blog as well.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Attacks from the online groups Lazarus, Silent Chollima, Group 123, Hidden
+Cobra, DarkSeoul, Blockbuster, Operation Troy, and 10 Days of Rain are believed
+to have come from North Korea. But how can we know with certainty? And what
+connection does a DDoS and disk-wiping attack from July 4, 2009, have with
+WannaCry, one of the largest cyberattacks in the history of the cyber sphere?&lt;/p&gt;
+&lt;p&gt;From the Mydoom variant Brambul to the more recent Fallchill, WannaCry, and the
+targeting of cryptocurrency exchanges, we see a distinct timeline of attacks
+beginning from the moment North Korea entered the world stage as a significant
+threat actor.&lt;/p&gt;
+&lt;p&gt;Bad actors have a tendency to unwittingly leave fingerprints on their attacks,
+allowing researchers to connect the dots between them. North Korean actors have
+left many of these clues in their wake and throughout the evolution of their
+malware arsenal.&lt;/p&gt;
+&lt;p&gt;This post reflects months of research; in it we will highlight our code
+analysis illustrating key similarities between samples attributed to the
+Democratic People’s Republic of Korea, a shared networking infrastructure, and
+other revealing data hidden within the binaries. Together these puzzle pieces
+show the connections between the many attacks attributed to North Korea and
+categorize different tools used by specific teams of their cyber army.&lt;/p&gt;
+&lt;h2&gt;Valuable context&lt;span class="hx:absolute hx:-mt-20" id="valuable-context"&gt;&lt;/span&gt;
+&lt;a href="#valuable-context" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;This article is too short to dig deeply into the history, politics, and
+economic changes of recent years. Nonetheless, we must highlight some events to
+put past and present cyber events into perspective. The DPRK, like any country,
+wants to be as self-sufficient and independent as possible. However, for
+products such as oil, food, and foreign currency for trading, the country lacks
+resources and has to find ways of acquiring them. What can a nation do when
+legal international economics are denied? To survive, it must gain foreign
+currency for trading. One of the oldest ways to do this is to join the worlds
+of gambling (casinos) and drugs. In 2005, the United States wanted to shut down
+North Korean enterprises involved in illegal operations. They investigated a
+couple of banks in Asia that seemed to have ties with North Korea and operated
+as money laundering sites. One bank in particular is controlled by a
+billionaire gambling mogul who started a casino in Pyongyang and has close ties
+to Pyongyang. That bank, based in Macau, came back into the picture during an
+attack on the SWIFT financial system of a bank in Vietnam in 2015. The Macau
+bank was listed twice in the malware’s code as a recipient of stolen funds:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig1.png" title="SWIFT code in malware." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;SWIFT code in malware.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Code reuse&lt;span class="hx:absolute hx:-mt-20" id="code-reuse"&gt;&lt;/span&gt;
+&lt;a href="#code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are many reasons to reuse malware code, which is very common in the world
+of cybercrime. If we take an average ransomware campaign, for example, once the
+campaign becomes less successful, actors often change some of basics such as
+using a different packer to bypass defenses. With targeted campaigns, an
+adversary must keep its tools undetected for as long as possible. By
+identifying reused code, we gain valuable insights about the “ancestral
+relations” to known threat actors or other campaigns. Our research was heavily
+focused on this type of analysis.&lt;/p&gt;
+&lt;p&gt;In our years of investigating cyber threats, we have seen the DPRK conduct
+multiple cyber campaigns. In North Korea, hackers’ skills determine which cyber
+units they work for. We are aware two major focuses of DPRK campaigns: one to
+raise money, and one to pursue nationalist aims. The first workforce gathers
+money for the nation, even if that means committing cybercrime to hack into
+financial institutions, hijack gambling sessions, or sell pirated and cracked
+software. Unit 180 is responsible for illegally gaining foreign currency using
+hacking techniques. The second workforce operates larger campaigns motivated by
+nationalism, gathering intelligence from other nations, and in some cases
+disrupting rival states and military targets. Most of these actions are
+executed by Unit 121.&lt;/p&gt;
+&lt;p&gt;We focused in our research on the larger-scale nationalism-motivated campaigns,
+in which we discovered many overlaps in code reuse. We are highly confident
+that nation-state–sponsored groups were active in these efforts.&lt;/p&gt;
+&lt;h2&gt;Timeline&lt;span class="hx:absolute hx:-mt-20" id="timeline"&gt;&lt;/span&gt;
+&lt;a href="#timeline" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We created a timeline of most of the malware samples and noticeable campaigns
+that we examined. We used primarily open-source blogs and papers to build this
+timeline and used the malware artifacts as a starting point of our research.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig2.png" title="Timeline of malware and campaigns." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Timeline of malware and campaigns.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Analysis and observations&lt;span class="hx:absolute hx:-mt-20" id="analysis-and-observations"&gt;&lt;/span&gt;
+&lt;a href="#analysis-and-observations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Similarities&lt;span class="hx:absolute hx:-mt-20" id="similarities"&gt;&lt;/span&gt;
+&lt;a href="#similarities" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;During our research, we found many malware family names that are believed to be
+associated with North Korea’s cyber operations. To better understand this
+threat actor and the similarities between the campaigns, we have used Intezer’s
+code similarity detection engine to plot the links between a vast number of
+these malware families.&lt;/p&gt;
+&lt;p&gt;The following graph presents a high-level overview of these relations. Each
+node represents a malware family or a hacking tool (“Brambul,” “Fallchill,”
+etc.) and each line presents a code similarity between two families. A thicker
+line correlates to a stronger similarity. In defining similarities, we take
+into account only unique code connections, and disregard common code or
+libraries. This definition holds both for this graph and our entire research.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;We can easily see a significant amount of code similarities between almost
+every one of the attacks associated with North Korea. Our research included
+thousands of samples, mostly unclassified or uncategorized. This graph was
+plotted using a dataset of only several hundred samples, so there might be more
+connections than displayed here.&lt;/p&gt;
+&lt;h3&gt;Deep technical analysis&lt;span class="hx:absolute hx:-mt-20" id="deep-technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#deep-technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;During our research, we came across many code similarities between North Korean
+binaries that had not been seen before. Some of these attacks and malware have
+not been linked to one another, at least publicly. We will showcase four
+examples of reused code that has been seen only in malware attributed to North
+Korea.&lt;/p&gt;
+&lt;h4&gt;Common SMB module&lt;span class="hx:absolute hx:-mt-20" id="common-smb-module"&gt;&lt;/span&gt;
+&lt;a href="#common-smb-module" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The first code example appeared in the server message block (SMB) module of
+WannaCry in 2017, Mydoom in 2009, Joanap, and DeltaAlfa. Further shared code
+across these families is an AES library from CodeProject. These attacks have
+been attributed to Lazarus; that means the group has reused code from at least
+2009 to 2017.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig4.png" title="Code overlap of a MYDOOM sample" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code overlap of a MYDOOM sample&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;In the next screenshots we highlight the exact code block that reflects the SMB
+module we found in campaigns other than WannaCry and Mydoom.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig5.png" title="An SMB module common to several attacks." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;An SMB module common to several attacks.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;A lot has been written about
+&lt;a href="https://securingtomorrow.mcafee.com/mcafee-labs/analysis-wannacry-ransomware/"target="_blank" rel="noopener"&gt;WannaCry&lt;/a&gt;.
+As we analyze the code against our databases, we can draw the following
+overview:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig6.png" title="WannaCry code comparison overview." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;WannaCry code comparison overview.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;For our research we compared the three major variants of WannaCry. An early
+release, called a beta, from February 2017, one from April, and the infamous
+one that hit the world in May.&lt;/p&gt;
+&lt;h4&gt;Common file mapping&lt;span class="hx:absolute hx:-mt-20" id="common-file-mapping"&gt;&lt;/span&gt;
+&lt;a href="#common-file-mapping" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The second example demonstrates code responsible for mapping a file and using
+the XOR key 0xDEADBEEF on the first four bytes of the file. This code has
+appeared in the malware families NavRAT and Gold Dragon, plus a certain DLL
+from the South Korean gambling hacking campaign. These three RATs are thought
+to be affiliated with North Korea’s Group 123. NavRAT and the gambling DLL
+share more code, making them closer variants.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig7.png" title="Code overlap in a NavRAT sample" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code overlap in a NavRAT sample&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h4&gt;Unique net share&lt;span class="hx:absolute hx:-mt-20" id="unique-net-share"&gt;&lt;/span&gt;
+&lt;a href="#unique-net-share" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The third example, responsible for launching a cmd.exe with a net share, has
+been seen in 2009’s Brambul, also known as SierraBravo, as well as KorDllBot in
+2011. These malware families are also attributed to the Lazarus group.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig9.png" title="Code overlap of a SierraBravo (Brambul) sample." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code overlap of a SierraBravo (Brambul) sample.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig10.png" title="A code block reused in the malware families Brambul/SierraBravo and KorDllBot." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;A code block reused in the malware families Brambul/SierraBravo and KorDllBot.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h4&gt;Operation Dark Hotel&lt;span class="hx:absolute hx:-mt-20" id="operation-dark-hotel"&gt;&lt;/span&gt;
+&lt;a href="#operation-dark-hotel" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;In 2014, Kaspersky reported a more than seven-year campaign against Asian
+hotels, in which the adversaries used an arsenal of tools to break into the
+computers of hotel visitors. Zero days and control servers were used, along
+with the malware family Tapaoux, or DarkHotel, according to the report.&lt;/p&gt;
+&lt;p&gt;While we examined the DPRK samples, we noticed a hit with the Dark Hotel
+samples in our collections. By going through the code, we noticed several
+pieces of code overlap and reuse, for example, with samples from Operation
+Troy.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig11.png" title="Code overlap in a Dark Hotel sample." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code overlap in a Dark Hotel sample.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Identifying a group&lt;span class="hx:absolute hx:-mt-20" id="identifying-a-group"&gt;&lt;/span&gt;
+&lt;a href="#identifying-a-group" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;By applying what we learned from our comparisons and code-block
+identifications, we uncovered possible new links between malware families and
+the groups using them.&lt;/p&gt;
+&lt;p&gt;With the different pieces of malware we have analyzed, we can illustrate the
+code reuse and sharing between the groups known to be affiliated with North
+Korea.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig12.png" title="Groups and families linked by code reuse." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Groups and families linked by code reuse.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The malware attributed to the group Lazarus has code connections that link many
+of the malware families spotted over the years. Lazarus is a collective name
+for many DPRK cyber operations, and we clearly see links between malware
+families used in different campaigns.&lt;/p&gt;
+&lt;p&gt;The malware (NavRAT, gambling, and Gold Dragon) possibly created by Group 123
+are connected to each other but are separate from those used by Lazarus.
+Although these are different units focusing on different areas, there seems to
+be a parallel structure in which they collaborate during certain campaigns.&lt;/p&gt;
+&lt;h2&gt;MITRE ATT&amp;amp;CK&lt;span class="hx:absolute hx:-mt-20" id="mitre-attck"&gt;&lt;/span&gt;
+&lt;a href="#mitre-attck" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;From our research of these malware samples, we can identify the following
+techniques used by the malware families:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;When we zoom in on the Discovery category in the MITRE model, for example, we
+notice that the techniques are typical for first-stage dropper malware. The
+adversary drops these samples on victims’ machines and collects information on
+where they landed in the victims’ networks and which user/access rights they
+gained.&lt;/p&gt;
+&lt;p&gt;In 2018, we saw examples of campaigns in which attackers used PowerShell to
+download and execute these droppers. Once information has been sent to a
+control server, the adversary determines the next steps, which often include
+installing a remote access tool to enable lateral movement on the network and
+pursue the goals of the campaign.&lt;/p&gt;
+&lt;h2&gt;Final words&lt;span class="hx:absolute hx:-mt-20" id="final-words"&gt;&lt;/span&gt;
+&lt;a href="#final-words" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Security vendors and researchers often use different names when speaking about
+the same malware, group, or attack. This habit makes it challenging to group
+all the malware and campaigns. By taking a scientific approach, such as looking
+for code reuse, we can categorize our findings. We believe our research will
+help the security community organize the current “mess” we face in relation to
+North Korean malware and campaigns.&lt;/p&gt;
+&lt;p&gt;We clearly saw a lot of code reuse over the many years of cyber campaigns we
+examined. This indicates the North Koreans have groups with different skills
+and tools that execute their focused parts of cyber operations while also
+working in parallel when large campaigns require a mix of skills and tools.&lt;/p&gt;
+&lt;p&gt;We found our months of research, data gathering, and analysis very satisfying.
+By combining our skills, data, and technology, we were able to draw connections
+and reveal links that we had not seen before. The cybersecurity industry would
+greatly benefit from more collaboration and sharing of information, and we hope
+that this effort between McAfee and Intezer will inspire the community to work
+together more often.&lt;/p&gt;
+&lt;p&gt;The authors thank Costin Raiu for providing them with samples they did not have
+in their collections.&lt;/p&gt;
+&lt;h2&gt;Sources&lt;span class="hx:absolute hx:-mt-20" id="sources"&gt;&lt;/span&gt;
+&lt;a href="#sources" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Glenn Simpson, Gordon Fairclough, and Jay Solomon, “U.S. Probes Banks’ North
+Korea Ties.” Wall Street Journal, last updated September 8, 2005.&lt;/li&gt;
+&lt;li&gt;Christiaan Beek, “Attacks on SWIFT Banking system benefit from insider
+knowledge.”
+&lt;a href="https://securingtomorrow.mcafee.com/mcafee-labs/attacks-swift-banking-system-benefit-insider-knowledge/"target="_blank" rel="noopener"&gt;https://securingtomorrow.mcafee.com/mcafee-labs/attacks-swift-banking-system-benefit-insider-knowledge/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Atif Mushtaq, “DDOS Madness Continued…”
+&lt;a href="https://www.fireeye.com/blog/threat-research/2009/07/ddos-madness-climax.html"target="_blank" rel="noopener"&gt;https://www.fireeye.com/blog/threat-research/2009/07/ddos-madness-climax.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Ryan Sherstobitoff and Jessica Saavedra-Morales, “Gold Dragon Widens Olympics
+Malware Attacks, Gains Permanent Presence on Victims’ Systems.”
+&lt;a href="https://securingtomorrow.mcafee.com/mcafee-labs/gold-dragon-widens-olympics-malware-attacks-gains-permanent-presence-on-victims-systems/"target="_blank" rel="noopener"&gt;https://securingtomorrow.mcafee.com/mcafee-labs/gold-dragon-widens-olympics-malware-attacks-gains-permanent-presence-on-victims-systems/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Alex Drozhzhin, “Darkhotel: a spy campaign in luxury Asian hotels.”
+&lt;a href="https://www.kaspersky.com/blog/darkhotel-apt/6613/"target="_blank" rel="noopener"&gt;https://www.kaspersky.com/blog/darkhotel-apt/6613/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Warren Mercer, Paul Rascagneres, and Jungsoo An, “NavRAT Uses US-North Korea
+Summit As Decoy For Attacks In South Korea.”
+&lt;a href="https://blog.talosintelligence.com/2018/05/navrat.html"target="_blank" rel="noopener"&gt;https://blog.talosintelligence.com/2018/05/navrat.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Sergei Shevchenko and Adrian Nish, “Cyber Heist Attribution.”
+&lt;a href="https://baesystemsai.blogspot.com/2016/05/cyber-heist-attribution.html"target="_blank" rel="noopener"&gt;https://baesystemsai.blogspot.com/2016/05/cyber-heist-attribution.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Mydoom code reuse report.
+&lt;a href="https://analyze.intezer.com/#/analyses/113ba80f-1680-43d7-b287-cc62f3740fad"target="_blank" rel="noopener"&gt;https://analyze.intezer.com/#/analyses/113ba80f-1680-43d7-b287-cc62f3740fad&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;NavRAT code reuse report.
+&lt;a href="https://analyze.intezer.com/#/analyses/4f19fd5a-a898-4fdf-96c9-d3a4aad817cb"target="_blank" rel="noopener"&gt;https://analyze.intezer.com/#/analyses/4f19fd5a-a898-4fdf-96c9-d3a4aad817cb&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SierraBravo code reuse report.
+&lt;a href="https://analyze.intezer.com/#/analyses/8da8104e-56e4-49fd-ba24-82978bc1610c"target="_blank" rel="noopener"&gt;https://analyze.intezer.com/#/analyses/8da8104e-56e4-49fd-ba24-82978bc1610c&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Dark Hotel code reuse report.
+&lt;a href="https://analyze.intezer.com/#/analyses/c034e0fe-7825-4f6d-b092-7c5ee693aff4"target="_blank" rel="noopener"&gt;https://analyze.intezer.com/#/analyses/c034e0fe-7825-4f6d-b092-7c5ee693aff4&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Kang Jang-ho, “A foreign currency earned with a virtual currency … What is
+the life of a North Korean hacker?”
+&lt;a href="http://m.mtn.co.kr/news/news_view.php?mmn_idx=2018062517065863930#_enliple"target="_blank" rel="noopener"&gt;http://m.mtn.co.kr/news/news_view.php?mmn_idx=2018062517065863930#_enliple&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Awesome work by the team responsible for the “Operation Blockbuster”
+&lt;a href="https://www.operationblockbuster.com/resources/"target="_blank" rel="noopener"&gt;report&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Yet Another Distraction? A New Version of North Korean Ransomware Hermes Has Emerged</title><link>https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</link><pubDate>Thu, 08 Feb 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/</guid><description>
 &lt;h2&gt;Detecting Reused Ransomware&lt;span class="hx:absolute hx:-mt-20" id="detecting-reused-ransomware"&gt;&lt;/span&gt;
 &lt;a href="#detecting-reused-ransomware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Whether we’re dealing with a criminal threat actor looking to steal money from
 their victims using ransomware or malware sponsored by a nation state, we can
