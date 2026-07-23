@@ -1,4 +1,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Ai</title><link>https://research.intezer.com/tags/ai/</link><description>Recent content in Ai on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 20 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/ai/index.xml" rel="self" type="application/rss+xml"/><item><title>When the AI Edits Its Own Trust Boundary: Remote Code Execution Vulnerability in AWS's Agentic IDE</title><link>https://research.intezer.com/blog/2026/07/remote-code-execution-kiro/</link><pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/07/remote-code-execution-kiro/</guid><description>
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"&gt;&lt;svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;&lt;/div&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;strong&gt;Update July 23rd, 2026&lt;/strong&gt;: Updated timeline to include the CVE issued by Amazon.&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;p&gt;&lt;em&gt;This article is based on joint research with Eran Segal, researcher at
 &lt;a href="https://www.kodemsecurity.com/"target="_blank" rel="noopener"&gt;Kodem Security&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;AI coding agents are powerful, highly capable, and equipped with risky tools,
@@ -372,8 +378,9 @@ required to fix this issue have been deployed in the latest release of Kiro.”
 However, they have not provided information on the specific version in which
 this vulnerability is patched. We checked v0.11.130 and confirmed that the
 vulnerability is patched in that version.&lt;/li&gt;
+&lt;li&gt;July 22 - Amazon provided &lt;a href="https://nvd.nist.gov/vuln/detail/CVE-2026-10591"target="_blank" rel="noopener"&gt;CVE-2026-10591&lt;/a&gt;,
+which is used to track the vulnerability, and they shared their &lt;a href="https://aws.amazon.com/security/security-bulletins/2026-037-aws/"target="_blank" rel="noopener"&gt;security bulletin&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;As of this post, Amazon has decided not to issue a CVE.&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The promise of agentic IDEs is that the human stays in control of anything
 risky. This vulnerability shows how fragile that promise is when the agent is
