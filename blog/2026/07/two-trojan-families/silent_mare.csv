@@ -1,0 +1,174 @@
+type,value,comment
+sha256,08b9f93000512b45f8c2e8d3d6624536b366e67c40fd4b958db58e3a1d129c3d,ConvertMate installer file hash
+domain,banifuri.com,C2 domain contacted by ConvertMate installer
+domain,chrialletworton.com,Affiliate domain contacted by ConvertMate installer
+domain,conmateapp.com,Product website associated with ConvertMate installer
+url,https://banifuri.com/get-known-values,C2 configuration fetch URL contacted by ConvertMate installer
+url,https://banifuri.com/log,C2 telemetry exfiltration URL contacted by ConvertMate installer
+url,https://banifuri.com/pixel,C2 conversion tracking pixel URL contacted by ConvertMate installer
+url,https://chrialletworton.com/524c5f6f-7ad4-4468-a535-e7598d5af5a3,Affiliate redirect URL launched by ConvertMate installer
+certificate.subject,AMARYLLIS SIGNAL LTD,ConvertMate installer code-signing certificate subject
+certificate.issuer,GlobalSign GCC R45 EV CodeSigning CA 2020,ConvertMate installer code-signing certificate issuer
+certificate.serial,77632688bc1b58d31bc7df0d,ConvertMate installer code-signing certificate serial
+filepath,%LOCALAPPDATA%\ConvertMate\,Install directory created by ConvertMate installer
+filepath,%LOCALAPPDATA%\ConvertMate\id.txt,User ID file dropped by ConvertMate installer
+filepath,%LOCALAPPDATA%\ConvertMate\Convert Mate.exe,Main app dropped by ConvertMate installer
+filepath,%LOCALAPPDATA%\ConvertMate\UpdateRetreiver.exe,Updater dropped by ConvertMate installer
+filepath,%LOCALAPPDATA%\ConvertMate\Uninstaller.exe,Uninstaller dropped by ConvertMate installer
+filepath,%LOCALAPPDATA%\ConvertMate\favicon.ico,Favicon dropped by ConvertMate installer
+filepath,%LOCALAPPDATA%\ConvertMate\conmate_update.ps1,PowerShell script temporarily dropped by ConvertMate installer
+filepath,%DESKTOP%\Convert Mate.lnk,Desktop shortcut created by ConvertMate installer
+scheduled_task,ConvertMateTask,Scheduled task created by ConvertMate installer for daily updater execution
+sha256,09c2af472ab86b62a702e94a39df2bef09205f4249ed871cbeece751c1e7ef4f,ConvertMate updater UpdateRetreiver.exe
+domain,confetly.com,ConvertMate updater C2 domain
+url,https://confetly.com/auth,ConvertMate updater authentication endpoint
+url,https://confetly.com/update,ConvertMate updater encrypted payload download
+url,https://confetly.com/is5m,ConvertMate updater success status reporting
+url,https://confetly.com/iserr,ConvertMate updater error status reporting
+certificate.subject,AMARYLLIS SIGNAL LTD,ConvertMate updater code-signing certificate subject (EV GlobalSign)
+certificate.issuer,GlobalSign,ConvertMate updater code-signing certificate issuer
+certificate.serial,77632688bc1b58d31bc7df0d,ConvertMate updater code-signing certificate serial
+filepath,%APPDATA%\ConvertMate\id.txt,ConvertMate updater reads user ID and install date
+filepath,UpdateRetreiver.exe,ConvertMate updater binary filename (misspelled Retriever)
+sha256,ecf876ac0225934c183cdf76f55f0ba2d1c5cf86a52d2ba882cdc33eda11f878,Easy2Convert installer main binary
+domain,caliberti.com,Easy2Convert installer C2 domain
+domain,www.ez2convertapp.com,Easy2Convert installer product website
+url,https://caliberti.com/client,Easy2Convert installer C2 configuration endpoint
+url,https://caliberti.com/variables,Easy2Convert installer C2 telemetry beacon endpoint
+url,https://www.ez2convertapp.com/toconvert-eula,Easy2Convert installer EULA page
+url,https://www.ez2convertapp.com/toconvert-privacy,Easy2Convert installer privacy policy page
+certificate.subject,BLUE TAKIN LTD,Easy2Convert installer code-signing certificate subject
+certificate.issuer,GlobalSign GCC R45 EV CodeSigning CA 2020,Easy2Convert installer code-signing certificate issuer
+certificate.serial,0a6047dea944141527d85e24,Easy2Convert installer code-signing certificate serial
+filepath,%LOCALAPPDATA%\Easy2Conver\,Easy2Convert installer installation directory
+filepath,%LOCALAPPDATA%\Easy2Conver\Easy2Convert.exe,Easy2Convert installer self-copy
+filepath,%LOCALAPPDATA%\Easy2Conver\Easy2ConvertUpdater.exe,Easy2Convert installer dropped persistent updater
+filepath,%LOCALAPPDATA%\Easy2Conver\Uninstall.exe,Easy2Convert installer dropped uninstaller
+filepath,%LOCALAPPDATA%\Easy2Conver\u.txt,Easy2Convert installer persistent UUID tracking file
+filepath,%USERPROFILE%\Desktop\Easy2Convert.lnk,Easy2Convert installer desktop shortcut
+scheduled_task,Easy2ConvertTask,Easy2Convert installer COM-based scheduled task running every 10 minutes
+sha256,27262f4bf8096f04e53309d4ce603cfbeb27ed10abdf1c461d3ccb14e012f61e,Easy2Convert updater binary (Easy2ConvertUpdater.exe)
+domain,hiko.lakienti.com,Easy2Convert updater C2 domain
+url,https://hiko.lakienti.com/check-for-updates,Easy2Convert updater C2 check-in endpoint
+url,https://hiko.lakienti.com/get-update,Easy2Convert updater encrypted payload download endpoint
+url,https://hiko.lakienti.com/status-ok,Easy2Convert updater success reporting endpoint
+url,https://hiko.lakienti.com/status-bad,Easy2Convert updater failure reporting endpoint
+certificate.subject,BLUE TAKIN LTD,Easy2Convert updater code-signing certificate subject
+certificate.issuer,GlobalSign,Easy2Convert updater code-signing certificate issuer (EV)
+certificate.serial,0a6047dea944141527d85e24,Easy2Convert updater code-signing certificate serial
+filepath,%APPDATA%\Easy2Convert\u.txt,Easy2Convert updater user ID and timestamp source file
+filepath,Easy2ConvertUpdater.exe,Easy2Convert updater binary filename
+sha256,5810795a6596bfe8059a9e499ee5e4b7341207d8eb0b4a4f6dbc6c0f60de71c2,PDF Skills installer PDFSkills.exe
+domain,val.skillcli.com,PDF Skills installer C2 config domain
+domain,cbn.skillcli.com,PDF Skills installer C2 telemetry domain
+domain,visit.keyguardai.com,PDF Skills installer affiliate domain
+domain,www.pdfskillsapp.com,PDF Skills installer product/thank-you domain
+url,https://val.skillcli.com/v6,PDF Skills installer C2 configuration retrieval (XOR-encrypted)
+url,https://cbn.skillcli.com/r,PDF Skills installer telemetry exfiltration (XOR-encrypted)
+url,https://visit.keyguardai.com/click?pid=496&offer_id=14039178,PDF Skills installer KeyGuard AI affiliate URL
+url,https://www.pdfskillsapp.com/thanks?userid=<GUID>,PDF Skills installer post-install thank-you page
+certificate.subject,RED ROOT LTD,PDF Skills installer code signing cert subject
+certificate.issuer,GlobalSign GCC R45 EV CodeSigning CA 2020,PDF Skills installer code signing cert issuer
+certificate.serial,6838e670ea30dfa3294ea278,PDF Skills installer code signing cert serial (expired 2025-02-26)
+filepath,%APPDATA%\PDFSkills\,PDF Skills installer admin install directory
+filepath,%LOCALAPPDATA%\PDFSkills\,PDF Skills installer non-admin install directory
+filepath,<InstallDir>\Update.exe,PDF Skills installer dropped malware loader stub
+filepath,<InstallDir>\Update.dll,PDF Skills installer dropped malware loader DLL
+filepath,<InstallDir>\PDFSkillsApp.exe,PDF Skills installer dropped legitimate PDF app
+filepath,<InstallDir>\Uninstall.exe,PDF Skills installer dropped uninstaller
+filepath,<InstallDir>\Updates.zip,PDF Skills installer dropped (then deleted) payload archive
+filepath,<InstallDir>\update_task.ps1,PDF Skills installer dropped PowerShell task script (admin)
+filepath,<InstallDir>\update_task_ad.ps1,PDF Skills installer dropped PowerShell task script (non-admin)
+filepath,<InstallDir>\skillsUserId.txt,PDF Skills installer persistent user ID file
+filepath,%APPDATA%\SMCR\userId.txt,PDF Skills installer backup user ID file
+filepath,%DESKTOP%\PDFSkillsApp.lnk,PDF Skills installer desktop shortcut
+scheduled_task,UpdateTaskZT,PDF Skills installer daily persistence task executing Update.exe
+sha256,876a7e9c2d54eea24720d6554a864db6aab12f30fe135598c16f8c23a8a7baf7,PDF Skills updater Update.exe managed stub
+sha256,5ad036c7f0f52bc70187b00bf92c0eb8a2fbbc34a69d4f06e313ac451387b513,PDF Skills updater Update.dll native loader
+domain,pwrtail.com,PDF Skills updater primary C2 domain
+domain,cbn.skillcli.com,PDF Skills updater telemetry C2 domain
+url,https://pwrtail.com/update/auth,PDF Skills updater C2 authentication endpoint
+url,https://pwrtail.com/update/download,PDF Skills updater C2 payload download endpoint
+url,https://cbn.skillcli.com/r,PDF Skills updater telemetry exfiltration endpoint
+filepath,%APPDATA%\PDFSkills\skillsUserId.txt,PDF Skills updater persistent user ID file read
+filepath,%LOCALAPPDATA%\PDFSkills\skillsUserId.txt,PDF Skills updater alternate user ID file location
+filepath,%APPDATA%\PDFSkills\PDFSkillsApp.exe,PDF Skills updater installation date source
+filepath,%APPDATA%\PDFSkills,PDF Skills updater application data folder
+filepath,Update.exe,PDF Skills updater managed loader binary
+filepath,Update.dll,PDF Skills updater native/mixed-mode loader DLL
+sha256,a8df2614154fb621c8e63df63d6aa9251eb6f184151d118a60b0dc902a4bd021,Rapid Doc updater RapiddocUpdater.exe
+domain,segataw.com,Rapid Doc updater C2 domain
+url,https://segataw.com/,Rapid Doc updater base C2 URL
+url,https://segataw.com/auth_product,Rapid Doc updater authentication beacon endpoint
+url,https://segataw.com/gupdate,Rapid Doc updater encrypted payload delivery endpoint
+url,https://segataw.com/product_report,Rapid Doc updater telemetry reporting endpoint
+filepath,%LOCALAPPDATA%\Rapidoc\,Rapid Doc updater persistence directory
+filepath,%LOCALAPPDATA%\Rapidoc\rapidoc-file.txt,Rapid Doc updater GUID fingerprint file
+sha256,84459f055a271cf9229ff0aa82981b47a2870f1ea6307a6078a30ae67eae1762,Zap PDF installer (Zapdf.exe)
+domain,alexinok.com,Zap PDF installer C2 domain
+domain,zappdfapp.com,Zap PDF installer product website (EULA/privacy)
+url,https://alexinok.com/hwmi,Zap PDF installer C2 configuration fetch endpoint
+url,https://alexinok.com/agg,Zap PDF installer telemetry exfiltration endpoint
+url,https://alexinok.com/Zp2s,Zap PDF installer Chrome detection signal endpoint
+url,https://alexinok.com/zpdfupd,Zap PDF installer updater download endpoint (base64 ZIP)
+url,https://www.zappdfapp.com/zap-eula?,Zap PDF installer EULA page
+url,https://www.zappdfapp.com/zap-privacy?,Zap PDF installer privacy policy page
+filepath,%LOCALAPPDATA%\Zapdf\,Zap PDF installer install directory
+filepath,%LOCALAPPDATA%\Zapdf\Zapdf.exe,Zap PDF installer main application dropped
+filepath,%LOCALAPPDATA%\Zapdf\Zapdf_txt.txt,Zap PDF installer user ID (GUID) file
+filepath,%LOCALAPPDATA%\Zapdf\ZapUpdater\ZapUpdater.exe,Zap PDF installer downloaded updater binary
+filepath,%LOCALAPPDATA%\Zapdf\extract,Zap PDF installer temp base64-decoded ZIP path
+filepath,%DESKTOP%\Zapdf.lnk,Zap PDF installer desktop shortcut
+scheduled_task,Zapdf,Zap PDF installer daily persistence scheduled task (runs ZapUpdater.exe)
+sha256,912479bf09b5c7454ac6c052e539c30924454ad1129861bf7e16f48eeee733ef,Zap PDF updater ZapUpdater.exe main loader
+domain,domenget.com,Zap PDF updater C2 domain
+url,https://domenget.com/,Zap PDF updater C2 base URL
+url,https://domenget.com/login,Zap PDF updater C2 login endpoint
+url,https://domenget.com/post,Zap PDF updater C2 payload download endpoint
+url,https://domenget.com/pdata,Zap PDF updater C2 metrics telemetry endpoint
+filepath,%LOCALAPPDATA%\Application\config.dat,Zap PDF updater formatted timestamp storage
+filepath,%LOCALAPPDATA%\Zapdf\Zapdf_txt.txt,Zap PDF updater persistent victim GUID file
+filepath,%LOCALAPPDATA%\Zapdf\,Zap PDF updater created directory
+filepath,%LOCALAPPDATA%\Application\,Zap PDF updater created directory
+sha256,2014c84faf5d71a5a5cc77713e136e1ebe789565aa12ce0731a8add53bca078f,ZipThis installer main binary
+domain,apb.thisilient.com,ZipThis installer C2 config subdomain
+domain,can.thisilient.com,ZipThis installer C2 telemetry subdomain
+domain,sts.thisilient.com,ZipThis installer conversion tracking subdomain
+domain,www.zipthisapp.com,ZipThis installer product domain
+domain,visit.keyguardai.com,ZipThis installer affiliate domain
+url,https://apb.thisilient.com/v6,ZipThis installer C2 configuration retrieval (XOR-encrypted)
+url,https://can.thisilient.com/r,ZipThis installer telemetry exfiltration (XOR-encrypted)
+url,https://sts.thisilient.com/st,ZipThis installer conversion tracking pixel
+url,"https://visit.keyguardai.com/click?pid=496&offer_id=14039178",ZipThis installer KeyGuard AI affiliate URL
+url,https://www.zipthisapp.com/success?u=<GUID>,ZipThis installer post-install success page
+url,https://www.zipthisapp.com/see-you-later,ZipThis installer uninstall page
+certificate.subject,LIGHTNER TOK LTD,ZipThis installer code signing cert subject
+certificate.issuer,GlobalSign GCC R45 EV CodeSigning CA 2020,ZipThis installer code signing cert issuer
+certificate.serial,4469809aa0e206829c99cd18,ZipThis installer code signing cert serial (expired 2025-02-21)
+filepath,<InstallDir>\Updater.exe,ZipThis installer dropped persistent updater/loader
+filepath,<InstallDir>\ZipThisApp.exe,ZipThis installer dropped main app
+filepath,<InstallDir>\Uninstall.exe,ZipThis installer dropped uninstaller
+filepath,<InstallDir>\update_task.ps1,ZipThis installer dropped non-admin scheduled task script
+filepath,<InstallDir>\update_task_ad.ps1,ZipThis installer dropped admin scheduled task script
+filepath,<InstallDir>\zipthisUserId.txt,ZipThis installer persistent user ID file
+filepath,%APPDATA%\SMCR\userId.txt,ZipThis installer shared backup user ID (cross-product with PDFSkills)
+filepath,%DESKTOP%\ZipThisApp.lnk,ZipThis installer desktop shortcut
+filepath,ziptest.txt,ZipThis installer test-run indicator file
+filepath,%APPDATA%\ZipThis\,ZipThis installer admin install folder
+filepath,%LOCALAPPDATA%\ZipThis\,ZipThis installer non-admin install folder
+filepath,Updates.zip,ZipThis installer embedded payload archive (contains Updater.exe)
+scheduled_task,UpdateTaskZT,ZipThis installer daily scheduled task running Updater.exe
+sha256,cbdfe04b8f754e5e6150936ee604f0a478b79c6d0466ee155775ead575adea90,ZipThis updater Updater.exe managed stub
+sha256,27a7ba032f7d6cf787454c2fd036c95d13be9fb489b26fd9050659aa23498dd6,ZipThis updater Updater.dll native loader
+domain,tzpdld.com,ZipThis updater primary C2 domain
+domain,can.thisilient.com,ZipThis updater telemetry C2 domain
+url,https://tzpdld.com/update/auth,ZipThis updater C2 authentication endpoint
+url,https://tzpdld.com/update/download,ZipThis updater C2 payload download endpoint
+url,https://can.thisilient.com/r,ZipThis updater telemetry exfiltration endpoint
+certificate.subject,LIGHTNER TOK LTD,ZipThis updater Updater.exe code-signing certificate subject (EV GlobalSign expired 2025-02-21)
+certificate.serial,4469809aa0e206829c99cd18,ZipThis updater Updater.exe code-signing certificate serial
+filepath,%APPDATA%\ZipThis\zipthisUserId.txt,ZipThis updater persistent user ID file read
+filepath,%LOCALAPPDATA%\ZipThis\zipthisUserId.txt,ZipThis updater alternate user ID file location
+filepath,%APPDATA%\ZipThis\ZipThisApp.exe,ZipThis updater installation date timestamp source
+filepath,Updater.exe,ZipThis updater managed stub binary
+filepath,Updater.dll,ZipThis updater native loader DLL

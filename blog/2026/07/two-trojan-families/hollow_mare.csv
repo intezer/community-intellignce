@@ -1,0 +1,122 @@
+type,value,comment
+sha256,287a3a052ff0b2c495658fa90c5a9bd76f16d832d82138f6f8e87f9e2f578ab1,SagePDF installer file hash
+domain,ralogoto.com,SagePDF installer C2 domain
+url,https://ralogoto.com/SGP,SagePDF installer C2 config URL
+url,https://ralogoto.com/SGPD,SagePDF installer C2 telemetry URL
+certificate.subject,Chrono Orion LTD,SagePDF installer code-signing certificate subject
+certificate.issuer,Sectigo Public Code Signing CA EV R36,SagePDF installer code-signing certificate issuer
+certificate.serial,009c2bafbcb665dc15d00e2767278e1656,SagePDF installer code-signing certificate serial
+filepath,%TEMP%\SagePdf\SageId.txt,SagePDF installer user ID file
+filepath,%TEMP%\UID\UID.txt,SagePDF installer legacy user ID file
+filepath,%TEMP%\Sage.Files.Pron.ico,SagePDF installer dropped icon file
+filepath,%USERPROFILE%\Desktop\<AppNick>.lnk,SagePDF installer dropped desktop shortcut
+sha256,9ee6348755a9162f52d79a9ddac460d35f071cbe5bf074d8e88a3c6d07cd8af9,SagePDF Stage 2 encrypted resource Sage.Resources.MainProcessLib.enc
+sha256,c0c7640bab371f198a6bbe58e1cfb124877eb73e27084f66e0d35ae2ed47c650,SagePDF Stage 2 decrypted MainProcessLib.dll
+filepath,C:\Git\v4_application\V4_Application\MainProcessLib\obj\Release\MainProcessLib.pdb,SagePDF Stage 2 PDB build path from MainProcessLib.dll
+certificate.subject,Chrono Orion LTD,SagePDF Stage 2 code signing certificate subject (Israel)
+sha256,3d82200083a86df09c3b16c9095b844738a76863b1b01092b6c4dbef3b974b12,ConvertyFile stealer/browser extension installer
+domain,olienti.com,ConvertyFile C2 server
+domain,convertyfileapp.com,ConvertyFile fake product website
+url,https://olienti.com/vars,ConvertyFile C2 victim registration endpoint
+url,https://olienti.com/pass,ConvertyFile C2 data exfiltration endpoint
+url,https://olienti.com/boom,ConvertyFile C2 success reporting endpoint
+url,https://www.convertyfileapp.com/converty-thank-you,ConvertyFile post-install redirect (thank-you page)
+certificate.subject,"TAU CENTAURI LTD, Central District, Ra'anana, IL",ConvertyFile code-signing certificate subject
+certificate.issuer,GlobalSign GCC R45 EV CodeSigning CA 2020,ConvertyFile code-signing certificate issuer
+certificate.serial,115d73560ce2dd101d5bd925,ConvertyFile code-signing certificate serial
+filepath,%TEMP%\ConvertyFile\CFInfo.txt,ConvertyFile dropped persistent victim UUID file
+filepath,%TEMP%\ConvertyFile\favicon.ico,ConvertyFile dropped extracted icon
+filepath,%TEMP%\ConvertyFile\uninstall.exe,ConvertyFile dropped extracted uninstaller
+filepath,%USERPROFILE%\Desktop\ConvertyFile.lnk,ConvertyFile created desktop shortcut (persistence)
+sha256,598da788600747cf3fa1f25cb4fa1e029eca1442316709c137690e645a0872bb,CrystalPDF stealer/installer main binary
+sha256,0f76f6a9f7c2575f9312953d37b51a8e1a7cc38a0758e272deef25bd6593306e,CrystalPDF embedded decoy payload Crystal PDF.exe
+domain,strongdwn.com,CrystalPDF primary C2 (data theft + telemetry)
+domain,negmari.com,CrystalPDF attribution/tracking server
+domain,cnvr.windwn.com,CrystalPDF embedded payload conversion API
+url,https://strongdwn.com/initiate,CrystalPDF session initialization
+url,https://strongdwn.com/convert,CrystalPDF Firefox data exfiltration
+url,https://strongdwn.com/merge,CrystalPDF Chrome data exfiltration
+url,https://strongdwn.com/abg,CrystalPDF telemetry reporting
+url,https://negmari.com/Cry,CrystalPDF visit info / campaign attribution
+url,https://negmari.com/st,CrystalPDF event notification
+url,https://cnvr.windwn.com/api,CrystalPDF embedded payload PDF conversion API
+certificate.subject,VAST LAKE LTD,CrystalPDF outer binary code-signing cert subject
+certificate.issuer,GlobalSign GCC R45 EV CodeSigning CA 2020,CrystalPDF outer binary code-signing cert issuer
+certificate.serial,032a466477d8c628044fd4b6,CrystalPDF outer binary code-signing cert serial
+certificate.subject,LONG SOUND LTD,CrystalPDF embedded payload code-signing cert subject
+certificate.issuer,GlobalSign GCC R45 EV CodeSigning CA 2020,CrystalPDF embedded payload code-signing cert issuer
+certificate.serial,56ed9a94b87a7231b56f6a02,CrystalPDF embedded payload code-signing cert serial
+filepath,%AppData%\FMCR\userId.txt,CrystalPDF victim ID persistence file
+filepath,%AppData%\FMCR\,CrystalPDF malware data directory
+filepath,%AppData%\file_backup.txt,CrystalPDF Firefox data theft transient backup
+filepath,%AppData%\myfile_backup.txt,CrystalPDF Chrome data theft transient backup
+filepath,%LocalAppData%\temp\crys\CrystalPDF.exe,CrystalPDF staged malware copy for scheduled task persistence
+filepath,%Desktop%\Crystal PDF.exe,CrystalPDF dropped decoy/benign payload on Desktop
+filepath,%USERPROFILE%\Downloads\*.pdf,CrystalPDF embedded payload output auto-opened
+scheduled_task,Crystal_updater,CrystalPDF daily persistence task running updater role
+sha256,e8b89b9fc60dc8ddb861369a7ab2cc319f23495022c4d1feb6e0cc4f3a87214c,OneZip installer/stealer
+domain,oneoni.com,OneZip primary C2 telemetry
+domain,zalp.oneoni.com,OneZip secondary C2 session/data theft
+url,https://oneoni.com/oz-st,OneZip initial check-in (SendVS)
+url,https://oneoni.com/oz-rep,OneZip telemetry report (SendMap)
+url,https://zalp.oneoni.com/start,OneZip session initiation
+url,https://zalp.oneoni.com/,OneZip stealer exfiltration endpoint
+certificate.subject,G.R.CIGAR. LTD,OneZip code signing subject (IL Herzliya)
+certificate.issuer,GlobalSign GCC R45 EV CodeSigning CA 2020,OneZip code signing issuer
+certificate.serial,11776a855f0ee7dbe11e08e1,OneZip code signing serial
+filepath,%TEMP%\O\OZInfo.txt,OneZip persistent victim UUID file
+filepath,%TEMP%\onezip\uninstall.exe,OneZip installation marker
+filepath,%LOCALAPPDATA%\Temp\onezip\uninstall.exe,OneZip installation marker (alt)
+filepath,%USERPROFILE%\Desktop\OneZip.lnk,OneZip desktop shortcut persistence
+filepath,file_backup.txt,OneZip backup of stolen Firefox profile file
+sha256,cb42e3a751ff526912bb41337a9205cbe145f5fe80869341c79d5358c863c549,PDFDoc installer/adware main binary
+domain,cliedoc.com,PDFDoc installer C2 domain
+domain,bolb.cliedoc.com,PDFDoc installer C2 subdomain
+url,https://bolb.cliedoc.com/PDoc,PDFDoc installer C2 config endpoint
+certificate.subject,TAMARISK INTERACTIVE LTD,PDFDoc installer code-signing cert subject
+certificate.issuer,GlobalSign GCC R45 EV CodeSigning CA 2020,PDFDoc installer code-signing cert issuer
+certificate.serial,58ef7daed3c6f44b1339b5f3,PDFDoc installer code-signing cert serial
+filepath,%DESKTOP%\PDFDoc.lnk,PDFDoc installer dropped desktop shortcut
+filepath,%TEMP%\Doc.Files.Pron.ico,PDFDoc installer dropped shortcut icon
+filepath,%TEMP%\DocID\DocID.txt,PDFDoc installer dropped machine GUID file
+filepath,%TEMP%\...\UID.txt,PDFDoc installer dropped machine identifier file
+sha256,865e689218d52d0d179659c1a9929231f9f4af0738835f768aff4242818b5a02,PowerDoc installer
+sha256,84f4a3abbda52c9e4cda6232d05d0b07406f6b4f2c2432cc34b153a663eb20bb,PowerDoc dropped native.exe (cover app)
+sha256,136876316fa5da917ab4d3b5b694dff98250d9f6b2151660a2b558bea870b0c0,PowerDoc dropped uninstall.exe
+domain,ulinikio.com,PowerDoc primary C2
+domain,lmbd.ulinikio.com,PowerDoc data exfiltration C2
+domain,itayh.ulinikio.com,PowerDoc API for native.exe
+domain,www.getpowerdoc.com,PowerDoc fake product website
+domain,getpowerdoc.com,PowerDoc uninstall redirect
+url,https://ulinikio.com/SlaPwrV,PowerDoc installer config fetch
+url,https://ulinikio.com/SlaPwrLog,PowerDoc installer telemetry exfil
+url,https://ulinikio.com/SlaPwrSuc,PowerDoc installer success beacon
+url,https://lmbd.ulinikio.com/run,PowerDoc installer session init
+url,https://lmbd.ulinikio.com/docMSlav,PowerDoc installer data exfil
+url,https://itayh.ulinikio.com/powerdoc/,PowerDoc native.exe PDF API
+url,https://www.getpowerdoc.com/powerd-welcome,PowerDoc installer post-install welcome page
+url,https://getpowerdoc.com/powerd-goodbye,PowerDoc uninstaller goodbye page
+certificate.subject,GOLD HARMONY LTD,PowerDoc installer/dropper signing cert subject
+certificate.issuer,GlobalSign GCC R45 EV CodeSigning CA 2020,PowerDoc installer/dropper signing cert issuer
+certificate.serial,4a6df66704fbd9b656c11ab6,PowerDoc installer/dropper signing cert serial
+filepath,%LocalAppData%\pwrDoc\PowerDoc.exe,PowerDoc dropped cover application
+filepath,%LocalAppData%\pwrDoc\uninstall.exe,PowerDoc dropped uninstaller
+filepath,%LocalAppData%\pwrDoc\PowerDocIco.ico,PowerDoc dropped icon
+filepath,%LocalAppData%\pwrDoc\pwrDoc.txt,PowerDoc machine GUID persistence file
+filepath,%AppData%\myfile_backup.txt,PowerDoc transient backup during browser file replacement
+filepath,%Desktop%\PowerDoc.lnk,PowerDoc installer desktop shortcut
+sha256,cf1ea5d89495986f22cda4b87170a97afecc662293554b15493c11a1520153d6,PowerPlayer installer
+domain,kolimau.com,PowerPlayer installer C2
+domain,haha.kolimau.com,PowerPlayer installer payload delivery
+url,https://kolimau.com/PowerPlayer-strings,PowerPlayer installer C2 config fetch
+url,https://kolimau.com/PowerPlayer,PowerPlayer installer telemetry exfil
+url,https://kolimau.com/Conv,PowerPlayer installer conversion tracking
+url,https://haha.kolimau.com/api/action/PowerPlayerLatestVersion,PowerPlayer installer payload download
+certificate.subject,TAMARISK INTERACTIVE LTD,PowerPlayer installer code-signing cert subject
+certificate.issuer,GlobalSign GCC R45 EV CodeSigning CA 2020,PowerPlayer installer code-signing cert issuer
+certificate.serial,32650e4c7423c72bda9565bf,PowerPlayer installer code-signing cert serial
+filepath,%TEMP%\PwrId\PwrId.txt,PowerPlayer installer persistent victim GUID
+filepath,%TEMP%\PowerPlayer.zip,PowerPlayer installer downloaded payload archive
+filepath,%TEMP%\PowerPlayer\NativePowerPlayer.exe,PowerPlayer installer extracted companion binary
+filepath,%TEMP%\PowerPlayer\UninstallPP.exe,PowerPlayer installer uninstaller
+filepath,%USERPROFILE%\Desktop\PowerPlayer.lnk,PowerPlayer installer desktop shortcut

