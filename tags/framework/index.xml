@@ -1113,6 +1113,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Detection Rules for Lightning Framework (and How to Make Them With Osquery)</title><link>https://research.intezer.com/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</link><pubDate>Wed, 03 Aug 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</guid><description>
 &lt;p&gt;On 21 July, 2022, we released a blog post about a new malware called
 &lt;a href="../../../2022/07/lightning-framework-new-linux-threat"&gt;Lightning Framework&lt;/a&gt;.
@@ -1293,6 +1299,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Lightning Framework: New Undetected "Swiss Army Knife" Linux Malware ⚡</title><link>https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/</link><pubDate>Thu, 21 Jul 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/</guid><description>
 &lt;p&gt;&lt;em&gt;Lightning Framework is a new undetected Swiss Army Knife-like Linux malware
@@ -1834,7 +1846,13 @@ data-copied-label="Copied!"
 &lt;td&gt;Data can be exfiltrated&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>Elephant Framework Delivered in Phishing Attacks Against Ukrainian Organizations</title><link>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</link><pubDate>Mon, 04 Apr 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</guid><description>
+&lt;/table&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Elephant Framework Delivered in Phishing Attacks Against Ukrainian Organizations</title><link>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</link><pubDate>Mon, 04 Apr 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</guid><description>
 &lt;p&gt;A recently developed malware framework called Elephant is being delivered in
 targeted spear phishing campaigns using spoofed Ukrainian governmental email
 addresses. The four malware components delivered are used for stealing
@@ -2212,6 +2230,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Vermilion Strike: Linux and Windows Re-implementation of Cobalt Strike</title><link>https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</link><pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</guid><description>
 &lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
 &lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
@@ -2454,7 +2478,13 @@ process.&lt;/em&gt;&lt;/p&gt;
 &lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;160.202.163.100&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;update.microsofthk[.]com&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;update.microsoftkernel[.]com&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;&lt;/p&gt;</description></item><item><title>How to Detect Cobalt Strike</title><link>https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</link><pubDate>Wed, 18 Aug 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</guid><description>
+&lt;p&gt;&lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>How to Detect Cobalt Strike</title><link>https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</link><pubDate>Wed, 18 Aug 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</guid><description>
 &lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
 &lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike is a penetration testing tool created by Raphael Mudge in 2012.
 To this day, it remains extremely popular in red team activities and used for
@@ -2766,7 +2796,13 @@ suspicious files that you encounter, including non-executable files such as
 Microsoft Office documents, scripts, archives, and more. Stay on top of
 analyzing and classifying Cobalt Strike among other threats.
 &lt;a href="https://analyze.intezer.com/create-account"target="_blank" rel="noopener"&gt;Get started&lt;/a&gt; for free and start
-with 50 file uploads per month.&lt;/p&gt;</description></item><item><title>Advanced Pasta Threat: Mapping Malware Use of Open Source Offensive Security Tools</title><link>https://research.intezer.com/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/</link><pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/</guid><description>
+with 50 file uploads per month.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Advanced Pasta Threat: Mapping Malware Use of Open Source Offensive Security Tools</title><link>https://research.intezer.com/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/</link><pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/</guid><description>
 &lt;p&gt;The term Offensive Security Tool, also known as OST, is a controversial subject
 within the InfoSec community. It often sparks fierce debate with both sides of
 the argument weighing in on how the uncontrolled publication of offensive
@@ -2812,7 +2848,13 @@ libraries:&lt;/p&gt;
 pre-recorded Virus Bulletin talk, which is available on demand from September
 30. &lt;a href="https://vblocalhost.com/"target="_blank" rel="noopener"&gt;Registration is free&lt;/a&gt; and I invite you to join
 the discussion. The full research report which will be made available via
-Intezer&amp;rsquo;s website following the conclusion of the conference.&lt;/p&gt;</description></item><item><title>MoP – "Master of Puppets" – Advanced malware tracking framework revealed at BlackHat Arsenal 2019</title><link>https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</link><pubDate>Wed, 14 Aug 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</guid><description>
+Intezer&amp;rsquo;s website following the conclusion of the conference.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>MoP – "Master of Puppets" – Advanced malware tracking framework revealed at BlackHat Arsenal 2019</title><link>https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</link><pubDate>Wed, 14 Aug 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</guid><description>
 &lt;p&gt;At BlackHat Arsenal 2019 Intezer’s researcher, Omri Ben-Bassat, revealed
 open-source tool called MoP (“Master of Puppets”) which is a framework for
 reverse engineers who wish to create and operate trackers for new malware found
@@ -2835,4 +2877,10 @@ known RATs, such as NjRAT and Gh0stRAT. Find it on
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/images/fig1.png" title="Real NjRAT server with fake victim connected from MoP instance" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Real NjRAT server with fake victim connected from MoP instance&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;/figure&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>

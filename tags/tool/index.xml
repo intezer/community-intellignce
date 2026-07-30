@@ -179,6 +179,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>SOC Level Up: Threat Hunting and Detection With Sigma</title><link>https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/</link><pubDate>Tue, 17 May 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/</guid><description>
 &lt;p&gt;In the last part of the SOC Level Up series, we introduced
 &lt;a href="../../../2022/03/intro-to-sigma-rules/"&gt;Sigma&lt;/a&gt; – an open-source framework to
@@ -491,7 +497,13 @@ the end of the day, our goal is to detect threats and stop them and for that we
 need to know which indicators are unique to a specific threat and less likely
 to change among the variants of the malware.&lt;/p&gt;
 &lt;p&gt;You can get IoCs, artifacts, and other detection opportunities for creating
-Sigma rules using Intezer.&lt;/p&gt;</description></item><item><title>How to Write YARA Rules That Minimize False Positives</title><link>https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/</link><pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/</guid><description>
+Sigma rules using Intezer.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>How to Write YARA Rules That Minimize False Positives</title><link>https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/</link><pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/</guid><description>
 &lt;h2&gt;Generate Advanced YARA Rules Based on Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="generate-advanced-yara-rules-based-on-code-reuse"&gt;&lt;/span&gt;
 &lt;a href="#generate-advanced-yara-rules-based-on-code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Incorporating YARA into daily security operations can accelerate incident
 response time, classify malware, empower threat intelligence and improve
@@ -691,7 +703,13 @@ more accurate YARA signatures for detecting future variants or new malware.&lt;/
 rules based on binary code, rather than simple strings. Code-based YARA rules
 are the most effective since they are tolerant to modifications and are more
 equipped to detect variants of the same threat.&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>SOC Level Up: Introduction to Sigma Rules</title><link>https://research.intezer.com/blog/2022/03/intro-to-sigma-rules/</link><pubDate>Tue, 22 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/03/intro-to-sigma-rules/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>SOC Level Up: Introduction to Sigma Rules</title><link>https://research.intezer.com/blog/2022/03/intro-to-sigma-rules/</link><pubDate>Tue, 22 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/03/intro-to-sigma-rules/</guid><description>
 &lt;p&gt;&lt;em&gt;Sigma rules are catching on more and more for SOC teams, as a way to write one
 rule that can be used across multiple environments. By learning how Sigma rules
 work and how to create them, you can take your SOC skills to the next level.&lt;/em&gt;&lt;/p&gt;
@@ -1068,7 +1086,13 @@ source and fields the rules use. Both rules will achieve the same result.&lt;/p&
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In this blog we presented Sigma rules – a well-defined and formatted structure
 for writing detection rules, that can be used in all types of operating systems
 and environments. Sigma allows you to share information but also consume it,
-making it easier to integrate new detection rules and protect your environment.&lt;/p&gt;</description></item><item><title>Radare Plugin is Here for Intezer Community</title><link>https://research.intezer.com/blog/2022/02/radare-plugin-automate-reverse-engineering/</link><pubDate>Tue, 08 Feb 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/02/radare-plugin-automate-reverse-engineering/</guid><description>
+making it easier to integrate new detection rules and protect your environment.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Radare Plugin is Here for Intezer Community</title><link>https://research.intezer.com/blog/2022/02/radare-plugin-automate-reverse-engineering/</link><pubDate>Tue, 08 Feb 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/02/radare-plugin-automate-reverse-engineering/</guid><description>
 &lt;p&gt;When you reverse engineer code as part of an incident response team, you want
 to quickly get information about what kind of threat you&amp;rsquo;re dealing with.&lt;/p&gt;
 &lt;p&gt;A while back we released Intezer Analyze plugins both for
@@ -1122,7 +1146,13 @@ malware families. Analyze malware and unknown files for free at
 &lt;a href="#additional-resources" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://intezer.com/blog/malware-analysis/ida-pro-plugin-now-available-to-the-community/"target="_blank" rel="noopener"&gt;IDA Pro plugin&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://intezer.com/blog/malware-analysis/community-ghidra-plugin-is-here/"target="_blank" rel="noopener"&gt;Ghidra plugin&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Make your First Malware Honeypot in Under 20 Minutes</title><link>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</link><pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Make your First Malware Honeypot in Under 20 Minutes</title><link>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</link><pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</guid><description>
 &lt;p&gt;&lt;em&gt;For a free honeypot, you can use one of the several open-source options listed below.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;A &amp;ldquo;honeypot&amp;rdquo; is a metaphor that references using honey as bait for a lure or trap. Honeypots have served many purposes in history, including recruiting spies and catching criminals in real life. Honeypots have also long made their way into computing as a way to gather information about potential threats targeting public facing assets.&lt;/p&gt;
 &lt;p&gt;Honeypots are a powerful tool for threat intelligence researchers, security engineers, and malware analysts. Honeypots come in many forms, collecting different information and serving distinct purposes. Honeypots can be used to collect:&lt;/p&gt;
@@ -1414,7 +1444,13 @@ data-copied-label="Copied!"
 &lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
 &lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;104.192.82[.]138&lt;/code&gt;&lt;/p&gt;
 &lt;h3&gt;Crypto Wallet&lt;span class="hx:absolute hx:-mt-20" id="crypto-wallet"&gt;&lt;/span&gt;
-&lt;a href="#crypto-wallet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;85X7JcgPpwQdZXaK2TKJb8baQAXc3zBsnW7JuY7MLi9VYSamf4bFwa7SEAK9Hgp2P53npV19w1zuaK5bft5m2NN71CmNLoh&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Detection Rules for Sysjoker (and How to Make Them With Osquery)</title><link>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</link><pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</guid><description>
+&lt;a href="#crypto-wallet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;85X7JcgPpwQdZXaK2TKJb8baQAXc3zBsnW7JuY7MLi9VYSamf4bFwa7SEAK9Hgp2P53npV19w1zuaK5bft5m2NN71CmNLoh&lt;/code&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Detection Rules for Sysjoker (and How to Make Them With Osquery)</title><link>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</link><pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</guid><description>
 &lt;p&gt;On January 11, 2022, we released a blog post on a new malware called &lt;a href="../../../2022/01/new-backdoor-sysjoker"&gt;SysJoker&lt;/a&gt;. SysJoker is a malware targeting Windows, macOS, and Linux. At the time of the publication, the Linux and macOS versions were not detected by any scanning engines on VirusTotal. As a consequence to this, we decided to release a followup blog posting showing how the information we released can be used to investigate whether you have been affected.&lt;/p&gt;
 &lt;p&gt;There are many tools available to gather system information and to perform threat hunting within an organization. We decided to use &lt;a href="https://osquery.io"target="_blank" rel="noopener"&gt;osquery&lt;/a&gt; in this blog post. The reason for choosing osquery is that it is supported for all the affected operating systems that SysJoker targets and it is open source allowing essentially anyone to follow along in this tutorial.&lt;/p&gt;
 &lt;h2&gt;Information Gathering with Osquery&lt;span class="hx:absolute hx:-mt-20" id="information-gathering-with-osquery"&gt;&lt;/span&gt;
@@ -1633,6 +1669,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Teaching Capa New Tricks: Analyzing Capabilities in PE and ELF Files</title><link>https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</link><pubDate>Wed, 15 Sep 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When analyzing malware, one of the goals in addition to identifying what
@@ -1769,7 +1811,13 @@ also enjoy providing improvements and bug fixes to open-source projects.
 Additionally, we also have
 &lt;a href="https://github.com/intezer"target="_blank" rel="noopener"&gt;released some of our own&lt;/a&gt;. Check out FireEye&amp;rsquo;s
 blog post on capa v3.0 release
-&lt;a href="https://www.fireeye.com/blog/threat-research/2021/09/elfant-in-the-room-capa-v3.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>MoP – "Master of Puppets" – Advanced malware tracking framework revealed at BlackHat Arsenal 2019</title><link>https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</link><pubDate>Wed, 14 Aug 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</guid><description>
+&lt;a href="https://www.fireeye.com/blog/threat-research/2021/09/elfant-in-the-room-capa-v3.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>MoP – "Master of Puppets" – Advanced malware tracking framework revealed at BlackHat Arsenal 2019</title><link>https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</link><pubDate>Wed, 14 Aug 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/</guid><description>
 &lt;p&gt;At BlackHat Arsenal 2019 Intezer’s researcher, Omri Ben-Bassat, revealed
 open-source tool called MoP (“Master of Puppets”) which is a framework for
 reverse engineers who wish to create and operate trackers for new malware found
@@ -1792,4 +1840,10 @@ known RATs, such as NjRAT and Gh0stRAT. Find it on
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2019/08/mop-master-of-puppets-advanced-malware-tracking-framework-revealed-at-blackhat-arsenal-2019/images/fig1.png" title="Real NjRAT server with fake victim connected from MoP instance" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Real NjRAT server with fake victim connected from MoP instance&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;/figure&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>

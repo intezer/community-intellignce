@@ -879,6 +879,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>When the AI Edits Its Own Trust Boundary: Remote Code Execution Vulnerability in AWS's Agentic IDE</title><link>https://research.intezer.com/blog/2026/07/remote-code-execution-kiro/</link><pubDate>Mon, 20 Jul 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/07/remote-code-execution-kiro/</guid><description>
 &lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
 &lt;div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"&gt;&lt;svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;&lt;/div&gt;
@@ -1273,7 +1279,13 @@ code execution.&lt;/p&gt;
 is clear. The security boundary cannot reside within the model&amp;rsquo;s judgment or in
 prompts the model can be talked out of. It has to live in the platform, on the
 actions that matter, and it has to hold even when the model has been fully
-convinced to do the wrong thing.&lt;/p&gt;</description></item><item><title>How attackers are gaining access to LLM inference</title><link>https://research.intezer.com/blog/2026/06/how-attackers-access-llm-inference/</link><pubDate>Wed, 03 Jun 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/06/how-attackers-access-llm-inference/</guid><description>
+convinced to do the wrong thing.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>How attackers are gaining access to LLM inference</title><link>https://research.intezer.com/blog/2026/06/how-attackers-access-llm-inference/</link><pubDate>Wed, 03 Jun 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/06/how-attackers-access-llm-inference/</guid><description>
 &lt;p&gt;&lt;em&gt;This article is based on joint research with Eran Segal, researcher at
 &lt;a href="https://www.kodemsecurity.com/"target="_blank" rel="noopener"&gt;Kodem Security&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;The most capable commercial AI models are now useful enough to attackers that
@@ -1845,7 +1857,13 @@ pay for it.&lt;/p&gt;
 &lt;td&gt;&lt;code&gt;SystemSettings.exe&lt;/code&gt; (OpenAI, Replicate, Voyage keys)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>OrBit (Re)turns: Tracking an Open-Source Linux Rootkit Across Four Years of Forks and Deployments</title><link>https://research.intezer.com/blog/2026/05/orbit-returns/</link><pubDate>Thu, 14 May 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/05/orbit-returns/</guid><description>
+&lt;/table&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>OrBit (Re)turns: Tracking an Open-Source Linux Rootkit Across Four Years of Forks and Deployments</title><link>https://research.intezer.com/blog/2026/05/orbit-returns/</link><pubDate>Thu, 14 May 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/05/orbit-returns/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In July 2022, we
 &lt;a href="https://intezer.com/blog/orbit-new-undetected-linux-threat/"target="_blank" rel="noopener"&gt;published the first analysis&lt;/a&gt;
@@ -2889,7 +2907,13 @@ multiple unrelated actor groups.&lt;/p&gt;
 &lt;td&gt;-&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>Tracing a Paper Werewolf Campaign Through Ai Generated Decoys and Excel Xlls</title><link>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</link><pubDate>Fri, 19 Dec 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</guid><description>
+&lt;/table&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Tracing a Paper Werewolf Campaign Through Ai Generated Decoys and Excel Xlls</title><link>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</link><pubDate>Fri, 19 Dec 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</guid><description>
 &lt;p&gt;An XLL is a native Windows DLL that Excel loads as an add-in, allowing it to
 execute arbitrary code through exported functions like xlAutoOpen. Since at
 least mid-2017, threat actors began abusing Microsoft Excel add-ins via the
@@ -3236,7 +3260,13 @@ indicating that their tradecraft is still developing.&lt;/p&gt;
 &lt;td&gt;(pdf document)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>Frankenstein Variant of the Toneshell Backdoor Targeting Myanmar</title><link>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</link><pubDate>Wed, 10 Sep 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</guid><description>
+&lt;/table&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Frankenstein Variant of the Toneshell Backdoor Targeting Myanmar</title><link>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</link><pubDate>Wed, 10 Sep 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</guid><description>
 &lt;p&gt;ToneShell is a lightweight backdoor tied to the China-nexus group Mustang
 Panda. Typically delivered via DLL sideloading inside compressed archives with
 legitimate signed executables and often spread through cloud-hosted lures.
@@ -3427,7 +3457,13 @@ ongoing research and threat hunting to counter cyber operations.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;543024edc9f160cc1cedcffc3de52bfa656daa0ec9ed351331d97faaa67d0d99&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;1272a0853651069ed4dc505007e8525f99e1454f9e033bcc2e58d60fdafa4f0&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;C2:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;146.70.29[.]229:443&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Fire in the Woods – A New Variant of FireWood</title><link>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</link><pubDate>Wed, 13 Aug 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</guid><description>
+&lt;p&gt;&lt;code&gt;146.70.29[.]229:443&lt;/code&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Fire in the Woods – A New Variant of FireWood</title><link>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</link><pubDate>Wed, 13 Aug 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</guid><description>
 &lt;p&gt;&lt;em&gt;A new and low-detected variant of the FireWood backdoor was discovered by
 Intezer’s Research Team, with some changes in the implementation and the
 configuration of the backdoor.&lt;/em&gt;&lt;/p&gt;
@@ -3565,7 +3601,13 @@ its code is identical to the one we analyzed:&lt;/p&gt;
 &lt;a href="#old-firewood-version" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;cff20753e36a4c942dc4dab5a91fd621a42330e17a89185a5b7262280bcd9263&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;4c293309a7541edb89e3ec99c4074584328a21309e75a46d0ddb4373652ee0d6&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Emerging Phishing Techniques New Threats and Attack Vectors</title><link>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</link><pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Emerging Phishing Techniques New Threats and Attack Vectors</title><link>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</link><pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</guid><description>
 &lt;p&gt;Phishing remains
 &lt;a href="https://www.crowdstrike.com/en-us/cybersecurity-101/cyberattacks/common-cyberattacks/"target="_blank" rel="noopener"&gt;one of the most prevalent&lt;/a&gt;
 and successful attack vectors used by cybercriminals today. It exploits human
@@ -3939,7 +3981,13 @@ track these shifts in real time. We encourage the community to remain
 proactive. These are not theoretical techniques; they are actively used in the
 wild, and we expect their adoption to increase.&lt;/p&gt;
 &lt;p&gt;Phishing isn’t going away, but with the right tools, analysis depth, and
-research collaboration, we can stay ahead of threats designed to go unnoticed.&lt;/p&gt;</description></item><item><title>Weaponized Software Targets Chinese</title><link>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</link><pubDate>Thu, 16 Jan 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</guid><description>
+research collaboration, we can stay ahead of threats designed to go unnoticed.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Weaponized Software Targets Chinese</title><link>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</link><pubDate>Thu, 16 Jan 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</guid><description>
 &lt;h2&gt;Overview of the Attack&lt;span class="hx:absolute hx:-mt-20" id="overview-of-the-attack"&gt;&lt;/span&gt;
 &lt;a href="#overview-of-the-attack" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Intezer Labs research team has identified a series of attacks targeting
 organizations in Chinese-speaking regions like Hong Kong, Taiwan, and China
@@ -4113,7 +4161,13 @@ prevention mechanisms to counter these stealthy and persistent attacks.&lt;/p&gt
 &lt;li&gt;&lt;code&gt;3fc35cab1272f769af309cb46375e21680f13d629181c7646cb0cf2c9b2e72e7&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;517b43bf057877727387316d8538dc07599856eb428d43f512e89964a5dfb331&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;e54ce9939679c691dc5719e309a8d541183b6672269fd61013109ef0d8509b1e&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Babble Babble Babble Babble Babble Babble BabbleLoader</title><link>https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/</link><pubDate>Sun, 17 Nov 2024 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Babble Babble Babble Babble Babble Babble BabbleLoader</title><link>https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/</link><pubDate>Sun, 17 Nov 2024 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2024/11/babble-babble-babble-babble-babble-babble-babbleloader/</guid><description>
 &lt;h2&gt;Loaders, an Ever Evolving Market&lt;span class="hx:absolute hx:-mt-20" id="loaders-an-ever-evolving-market"&gt;&lt;/span&gt;
 &lt;a href="#loaders-an-ever-evolving-market" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The pace of innovation and development in the malware detection market is
 relentless, the same goes for the development of malware itself. Constantly
@@ -4646,6 +4700,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Technical Analysis of a Novel IMEEX Framework</title><link>https://research.intezer.com/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/</link><pubDate>Thu, 10 Oct 2024 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2024/10/technical-analysis-of-a-novel-imeex-framework/</guid><description>
 &lt;p&gt;The IMEEX framework is a newly discovered, custom-built malware designed to
@@ -5762,6 +5822,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>WildCard: The APT Behind SysJoker Targets Critical Sectors in Israel</title><link>https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/</link><pubDate>Mon, 27 Nov 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/</guid><description>
 &lt;p&gt;&lt;em&gt;Our research team has identified a new APT group, dubbed &amp;ldquo;WildCard,&amp;rdquo; initially
 detected through its use of the SysJoker malware, which targeted Israel&amp;rsquo;s
@@ -6297,7 +6363,13 @@ blog.&lt;/strong&gt;&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;sharing-u-file[.]com&lt;/code&gt; (DMAdevice.exe)&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;audiosound-visual[.]com&lt;/code&gt; (AppMessagingRegistrar.exe)filestorage-short[.]org
 (SysJoker Downloader)&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Malware Reverse Engineering – Unraveling the Secrets of Encryption in Malware</title><link>https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/</link><pubDate>Mon, 07 Aug 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Malware Reverse Engineering – Unraveling the Secrets of Encryption in Malware</title><link>https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/</link><pubDate>Mon, 07 Aug 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/</guid><description>
 &lt;p&gt;Encryption is everywhere in our lives. You might not notice it, but you use it
 every single day. It is baked into even the most basic processes of our digital
 world. Every time you open a website, send a message, unlock your phone, or pay
@@ -6850,7 +6922,13 @@ being acquainted with common encryption algorithms are essential skills.
 Identifying crucial elements of these algorithms in malware samples can greatly
 aid researchers in recognizing the use of encryption in threats. This insight
 can lead to a deeper understanding of other capabilities and components of the
-threat, facilitating more effective analysis and response strategies.&lt;/p&gt;</description></item><item><title>CryptoClippy is Evolving to Pilfer Even More Financial Data</title><link>https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</link><pubDate>Wed, 24 May 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</guid><description>
+threat, facilitating more effective analysis and response strategies.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>CryptoClippy is Evolving to Pilfer Even More Financial Data</title><link>https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</link><pubDate>Wed, 24 May 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</guid><description>
 &lt;p&gt;A banking trojan is a malware designed to steal sensitive financial
 information, such as online banking login credentials, credit card numbers, and
 other financial data. Recently Unit42 released a detailed
@@ -7270,7 +7348,13 @@ rapidly evolving menace effectively.&lt;/p&gt;
 &lt;a href="#domains-used-by-the-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;nicerypx[.]com&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;flowmudy[.]com&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>How Hackers Use Binary Padding to Outsmart Sandboxes and Infiltrate Your Systems</title><link>https://research.intezer.com/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/</link><pubDate>Thu, 18 May 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>How Hackers Use Binary Padding to Outsmart Sandboxes and Infiltrate Your Systems</title><link>https://research.intezer.com/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/</link><pubDate>Thu, 18 May 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/</guid><description>
 &lt;p&gt;Binary padding is the process of adding extra or junk data to a portable
 executable (PE) file that, while not changing the behavior of the binary,
 changes certain characteristics that can help with either obfuscating relevant
@@ -7607,7 +7691,13 @@ Intezer is able to
 &lt;a href="https://analyze.intezer.com/files/dee4b71196dd36a2f350c1aaaea795d2242372bda7157f3bc37d76c17d7cc407"target="_blank" rel="noopener"&gt;unpack the sample&lt;/a&gt;
 from the ZIP file and remove the overlay. Give it a go yourself with padded
 samples. Submit the parent ZIP and Intezer will do the rest.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;</description></item><item><title>Phishing Campaign Targets Chinese Nuclear Energy Industry</title><link>https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</link><pubDate>Fri, 24 Mar 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</guid><description>
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Phishing Campaign Targets Chinese Nuclear Energy Industry</title><link>https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</link><pubDate>Fri, 24 Mar 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/</guid><description>
 &lt;p&gt;Intezer has been tracking activity targeting the energy sector and noted a
 campaign with techniques that align with those of
 &lt;a href="https://analyze.intezer.com/families/3b992ec8-b6b1-4ea4-a958-b5fca45f31bd?tab=detect"target="_blank" rel="noopener"&gt;Bitter APT&lt;/a&gt;,
@@ -7932,7 +8022,13 @@ data-copied-label="Copied!"
 &lt;td&gt;Data can be exfiltrated&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>Detection Rules for Lightning Framework (and How to Make Them With Osquery)</title><link>https://research.intezer.com/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</link><pubDate>Wed, 03 Aug 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</guid><description>
+&lt;/table&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Detection Rules for Lightning Framework (and How to Make Them With Osquery)</title><link>https://research.intezer.com/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</link><pubDate>Wed, 03 Aug 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/08/lightning-framework-linux-detection-rules-osquery/</guid><description>
 &lt;p&gt;On 21 July, 2022, we released a blog post about a new malware called
 &lt;a href="../../../2022/07/lightning-framework-new-linux-threat"&gt;Lightning Framework&lt;/a&gt;.
 Lightning is a modular malware framework targeting Linux. At the time of the
@@ -8112,6 +8208,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Lightning Framework: New Undetected "Swiss Army Knife" Linux Malware ⚡</title><link>https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/</link><pubDate>Thu, 21 Jul 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/</guid><description>
 &lt;p&gt;&lt;em&gt;Lightning Framework is a new undetected Swiss Army Knife-like Linux malware
@@ -8653,7 +8755,13 @@ data-copied-label="Copied!"
 &lt;td&gt;Data can be exfiltrated&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>OrBit: New Undetected Linux Threat Uses Unique Hijack of Execution Flow</title><link>https://research.intezer.com/blog/2022/07/orbit-new-undetected-linux-threat/</link><pubDate>Wed, 06 Jul 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/07/orbit-new-undetected-linux-threat/</guid><description>
+&lt;/table&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>OrBit: New Undetected Linux Threat Uses Unique Hijack of Execution Flow</title><link>https://research.intezer.com/blog/2022/07/orbit-new-undetected-linux-threat/</link><pubDate>Wed, 06 Jul 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/07/orbit-new-undetected-linux-threat/</guid><description>
 &lt;p&gt;Linux is a popular operating system for servers and cloud infrastructures, and
 as such it&amp;rsquo;s not a surprise that it attracts threat actors&amp;rsquo; interest and we see
 a &lt;a href="https://www.ibm.com/downloads/cas/ADLMYLAZ"target="_blank" rel="noopener"&gt;continued growth&lt;/a&gt; and innovation
@@ -8986,7 +9094,13 @@ persistent new malware can be.&lt;/p&gt;
 &lt;td&gt;Payload&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>YTStealer Malware: "YouTube Cookies! Om Nom Nom Nom"</title><link>https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/</link><pubDate>Wed, 29 Jun 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/</guid><description>
+&lt;/table&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>YTStealer Malware: "YouTube Cookies! Om Nom Nom Nom"</title><link>https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/</link><pubDate>Wed, 29 Jun 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/</guid><description>
 &lt;h2&gt;The Stage: The Dark Web Market for YouTube Account Access&lt;span class="hx:absolute hx:-mt-20" id="the-stage-the-dark-web-market-for-youtube-account-access"&gt;&lt;/span&gt;
 &lt;a href="#the-stage-the-dark-web-market-for-youtube-account-access" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In 2006, the term
 &lt;a href="https://ana.blogs.com/maestros/2006/11/data_is_the_new.html"target="_blank" rel="noopener"&gt;&amp;ldquo;data is the new oil&amp;rdquo;&lt;/a&gt;
@@ -9174,7 +9288,13 @@ legitimate software. We also saw fake installers for mods and cheats for games.
 When it comes to how to protect yourself, the classic security practice should
 be applied. Only use software from trusted sources.&lt;/p&gt;
 &lt;h2&gt;Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="indicators-of-compromise"&gt;&lt;/span&gt;
-&lt;a href="#indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href="https://github.com/intezer/community-intelligence/blob/master/YTStealer_hashes.txt"target="_blank" rel="noopener"&gt;IoCs can be found on GitHub here.&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Symbiote: Analysis of a New, Nearly-Impossible-to-Detect Linux Threat</title><link>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</link><pubDate>Wed, 22 Jun 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</guid><description>
+&lt;a href="#indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href="https://github.com/intezer/community-intelligence/blob/master/YTStealer_hashes.txt"target="_blank" rel="noopener"&gt;IoCs can be found on GitHub here.&lt;/a&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Symbiote: Analysis of a New, Nearly-Impossible-to-Detect Linux Threat</title><link>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</link><pubDate>Wed, 22 Jun 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</guid><description>
 &lt;p&gt;&lt;em&gt;This research is a joint effort between Joakim Kennedy, Security Researcher at
 Intezer, and the BlackBerry Threat Research &amp;amp; Intelligence team. It can be
 found in the BlackBerry blog here as well.&lt;/em&gt;&lt;/p&gt;
@@ -9694,6 +9814,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>SOC Level Up: Threat Hunting and Detection With Sigma</title><link>https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/</link><pubDate>Tue, 17 May 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/</guid><description>
 &lt;p&gt;In the last part of the SOC Level Up series, we introduced
 &lt;a href="../../../2022/03/intro-to-sigma-rules/"&gt;Sigma&lt;/a&gt; – an open-source framework to
@@ -10006,7 +10132,13 @@ the end of the day, our goal is to detect threats and stop them and for that we
 need to know which indicators are unique to a specific threat and less likely
 to change among the variants of the malware.&lt;/p&gt;
 &lt;p&gt;You can get IoCs, artifacts, and other detection opportunities for creating
-Sigma rules using Intezer.&lt;/p&gt;</description></item><item><title>How to Write YARA Rules That Minimize False Positives</title><link>https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/</link><pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/</guid><description>
+Sigma rules using Intezer.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>How to Write YARA Rules That Minimize False Positives</title><link>https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/</link><pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/05/yara-rules-minimize-false-positives/</guid><description>
 &lt;h2&gt;Generate Advanced YARA Rules Based on Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="generate-advanced-yara-rules-based-on-code-reuse"&gt;&lt;/span&gt;
 &lt;a href="#generate-advanced-yara-rules-based-on-code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Incorporating YARA into daily security operations can accelerate incident
 response time, classify malware, empower threat intelligence and improve
@@ -10206,7 +10338,13 @@ more accurate YARA signatures for detecting future variants or new malware.&lt;/
 rules based on binary code, rather than simple strings. Code-based YARA rules
 are the most effective since they are tolerant to modifications and are more
 equipped to detect variants of the same threat.&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Elephant Framework Delivered in Phishing Attacks Against Ukrainian Organizations</title><link>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</link><pubDate>Mon, 04 Apr 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Elephant Framework Delivered in Phishing Attacks Against Ukrainian Organizations</title><link>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</link><pubDate>Mon, 04 Apr 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/</guid><description>
 &lt;p&gt;A recently developed malware framework called Elephant is being delivered in
 targeted spear phishing campaigns using spoofed Ukrainian governmental email
 addresses. The four malware components delivered are used for stealing
@@ -10584,6 +10722,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>New Conversation Hijacking Campaign Delivering IcedID</title><link>https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/</link><pubDate>Mon, 28 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/03/conversation-hijacking-campaign-delivering-icedid/</guid><description>
 &lt;p&gt;&lt;em&gt;This post describes the technical analysis of a new campaign detected by
 Intezer&amp;rsquo;s research team, which initiates attacks with a phishing email that
@@ -10797,6 +10941,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>SOC Level Up: Introduction to Sigma Rules</title><link>https://research.intezer.com/blog/2022/03/intro-to-sigma-rules/</link><pubDate>Tue, 22 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/03/intro-to-sigma-rules/</guid><description>
 &lt;p&gt;&lt;em&gt;Sigma rules are catching on more and more for SOC teams, as a way to write one
@@ -11175,7 +11325,13 @@ source and fields the rules use. Both rules will achieve the same result.&lt;/p&
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In this blog we presented Sigma rules – a well-defined and formatted structure
 for writing detection rules, that can be used in all types of operating systems
 and environments. Sigma allows you to share information but also consume it,
-making it easier to integrate new detection rules and protect your environment.&lt;/p&gt;</description></item><item><title>Boost Your SOC Skills: How to Detect Good Apps Gone Bad</title><link>https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</link><pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</guid><description>
+making it easier to integrate new detection rules and protect your environment.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Boost Your SOC Skills: How to Detect Good Apps Gone Bad</title><link>https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</link><pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/03/boost-your-soc-skills-how-to-detect-good-apps-gone-bad/</guid><description>
 &lt;p&gt;Threat actors have a wide range of tools and techniques they can use in cyber
 attacks including: malware-as-a-service, open-source tools and malware code,
 red team or admin tools. Besides, there is an extended variety of legitimate
@@ -11539,6 +11695,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Radare Plugin is Here for Intezer Community</title><link>https://research.intezer.com/blog/2022/02/radare-plugin-automate-reverse-engineering/</link><pubDate>Tue, 08 Feb 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/02/radare-plugin-automate-reverse-engineering/</guid><description>
 &lt;p&gt;When you reverse engineer code as part of an incident response team, you want
 to quickly get information about what kind of threat you&amp;rsquo;re dealing with.&lt;/p&gt;
@@ -11593,7 +11755,13 @@ malware families. Analyze malware and unknown files for free at
 &lt;a href="#additional-resources" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://intezer.com/blog/malware-analysis/ida-pro-plugin-now-available-to-the-community/"target="_blank" rel="noopener"&gt;IDA Pro plugin&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://intezer.com/blog/malware-analysis/community-ghidra-plugin-is-here/"target="_blank" rel="noopener"&gt;Ghidra plugin&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>3 Ways to Save Incident Response Time</title><link>https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/</link><pubDate>Mon, 31 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>3 Ways to Save Incident Response Time</title><link>https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/</link><pubDate>Mon, 31 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/</guid><description>
 &lt;p&gt;When there is suspicious activity on an endpoint, the incident response team is responsible for investigating it to find out what happened in the network that caused the potential security breach. Is it a fast-spreading malware… or just a false positive? For anyone in digital forensics and incident response, you need to know ASAP if it&amp;rsquo;s the first, but you also don&amp;rsquo;t want to waste time investigating false positives.&lt;/p&gt;
 &lt;p&gt;There are several ways to collect files and forensics evidence, which we&amp;rsquo;ll dig into below with tips and free tools to save you time on each during incident response. These are three key areas we&amp;rsquo;ll look at where you can speed up investigations:&lt;/p&gt;
 &lt;ol&gt;
@@ -11663,7 +11831,13 @@ malware families. Analyze malware and unknown files for free at
 &lt;li&gt;&lt;a href="https://github.com/intezer/analyze-community-ghidra-plugin"target="_blank" rel="noopener"&gt;Ghidra plugin&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://analyze.intezer.com/?tab=endpoint"target="_blank" rel="noopener"&gt;Endpoint scanner&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://github.com/intezer/analyze-python-sdk"target="_blank" rel="noopener"&gt;Intezer&amp;rsquo;s SDK&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Make your First Malware Honeypot in Under 20 Minutes</title><link>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</link><pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Make your First Malware Honeypot in Under 20 Minutes</title><link>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</link><pubDate>Thu, 20 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/how-to-make-malware-honeypot/</guid><description>
 &lt;p&gt;&lt;em&gt;For a free honeypot, you can use one of the several open-source options listed below.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;A &amp;ldquo;honeypot&amp;rdquo; is a metaphor that references using honey as bait for a lure or trap. Honeypots have served many purposes in history, including recruiting spies and catching criminals in real life. Honeypots have also long made their way into computing as a way to gather information about potential threats targeting public facing assets.&lt;/p&gt;
 &lt;p&gt;Honeypots are a powerful tool for threat intelligence researchers, security engineers, and malware analysts. Honeypots come in many forms, collecting different information and serving distinct purposes. Honeypots can be used to collect:&lt;/p&gt;
@@ -11955,7 +12129,13 @@ data-copied-label="Copied!"
 &lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
 &lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;104.192.82[.]138&lt;/code&gt;&lt;/p&gt;
 &lt;h3&gt;Crypto Wallet&lt;span class="hx:absolute hx:-mt-20" id="crypto-wallet"&gt;&lt;/span&gt;
-&lt;a href="#crypto-wallet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;85X7JcgPpwQdZXaK2TKJb8baQAXc3zBsnW7JuY7MLi9VYSamf4bFwa7SEAK9Hgp2P53npV19w1zuaK5bft5m2NN71CmNLoh&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Detection Rules for Sysjoker (and How to Make Them With Osquery)</title><link>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</link><pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</guid><description>
+&lt;a href="#crypto-wallet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;85X7JcgPpwQdZXaK2TKJb8baQAXc3zBsnW7JuY7MLi9VYSamf4bFwa7SEAK9Hgp2P53npV19w1zuaK5bft5m2NN71CmNLoh&lt;/code&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Detection Rules for Sysjoker (and How to Make Them With Osquery)</title><link>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</link><pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/detection-rules-for-sysjoker-and-how-to-make-them-with-osquery/</guid><description>
 &lt;p&gt;On January 11, 2022, we released a blog post on a new malware called &lt;a href="../../../2022/01/new-backdoor-sysjoker"&gt;SysJoker&lt;/a&gt;. SysJoker is a malware targeting Windows, macOS, and Linux. At the time of the publication, the Linux and macOS versions were not detected by any scanning engines on VirusTotal. As a consequence to this, we decided to release a followup blog posting showing how the information we released can be used to investigate whether you have been affected.&lt;/p&gt;
 &lt;p&gt;There are many tools available to gather system information and to perform threat hunting within an organization. We decided to use &lt;a href="https://osquery.io"target="_blank" rel="noopener"&gt;osquery&lt;/a&gt; in this blog post. The reason for choosing osquery is that it is supported for all the affected operating systems that SysJoker targets and it is open source allowing essentially anyone to follow along in this tutorial.&lt;/p&gt;
 &lt;h2&gt;Information Gathering with Osquery&lt;span class="hx:absolute hx:-mt-20" id="information-gathering-with-osquery"&gt;&lt;/span&gt;
@@ -12173,6 +12353,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>New SysJoker Backdoor Targets Windows, Linux, and macOS</title><link>https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/</link><pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/</guid><description>
 &lt;p&gt;Malware targeting multiple operating systems has become no exception in the
@@ -12632,6 +12818,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>All Your Go Binaries are Belong to Us</title><link>https://research.intezer.com/blog/2021/12/all-your-go-binaries-are-belong-to-us/</link><pubDate>Thu, 02 Dec 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/12/all-your-go-binaries-are-belong-to-us/</guid><description>
 &lt;p&gt;The skillset of performing binary analysis may to some appear to be limited to
 a few undeadly souls. While it may look like a form of dark arts when someone
@@ -13081,7 +13273,13 @@ like to do some of their own binary analysis but do not want to write all the
 code to extract the data, there are libraries available. The
 &lt;a href="https://github.com/goretk"target="_blank" rel="noopener"&gt;Go Reverse Engineering Tool Kit&lt;/a&gt; can extract all
 the data covered in this post, allowing just your imagination with what to do
-with the data.&lt;/p&gt;</description></item><item><title>New Type of Supply Chain Attack Could Put Popular Admin Tools at Risk</title><link>https://research.intezer.com/blog/2021/11/chainjacking-supply-chain-attack-puts-popular-admin-tools-at-risk/</link><pubDate>Tue, 16 Nov 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/11/chainjacking-supply-chain-attack-puts-popular-admin-tools-at-risk/</guid><description>
+with the data.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>New Type of Supply Chain Attack Could Put Popular Admin Tools at Risk</title><link>https://research.intezer.com/blog/2021/11/chainjacking-supply-chain-attack-puts-popular-admin-tools-at-risk/</link><pubDate>Tue, 16 Nov 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/11/chainjacking-supply-chain-attack-puts-popular-admin-tools-at-risk/</guid><description>
 &lt;p&gt;Research between Intezer and &lt;a href="https://checkmarx.com/"target="_blank" rel="noopener"&gt;Checkmarx&lt;/a&gt; describes
 ChainJacking, a type of software supply chain attack that could be potentially
 exploited by threat actors and puts common admin tools at risk.&lt;/p&gt;
@@ -13368,7 +13566,13 @@ referenced their
 &lt;li&gt;10 Nov 21 – Response from Go security team acknowledging it as an issue but
 not something they could fix&lt;/li&gt;
 &lt;li&gt;16 Nov 21 – Full disclosure&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Conducting Digital Forensics Incident Response (DFIR) on an Infected GitLab Server</title><link>https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/</link><pubDate>Thu, 04 Nov 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Conducting Digital Forensics Incident Response (DFIR) on an Infected GitLab Server</title><link>https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/</link><pubDate>Thu, 04 Nov 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/</guid><description>
 &lt;h2&gt;GitLab servers are under attack with a now-patched critical vulnerability&lt;span class="hx:absolute hx:-mt-20" id="gitlab-servers-are-under-attack-with-a-now-patched-critical-vulnerability"&gt;&lt;/span&gt;
 &lt;a href="#gitlab-servers-are-under-attack-with-a-now-patched-critical-vulnerability" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Earlier this week we investigated an incident that occurred on a user&amp;rsquo;s GitLab
 server. After the user installed a sensor on their server, an initial runtime
@@ -13487,7 +13691,13 @@ Special thanks to Adir Shemesh.&lt;/p&gt;
 &lt;a href="#tmpsh" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;00fc15eadd33b1055cd3f30869363c6498d2668b8f1e244e82ba1a9abff58bf1&lt;/code&gt;&lt;/p&gt;
 &lt;h3&gt;Wallet IDs&lt;span class="hx:absolute hx:-mt-20" id="wallet-ids"&gt;&lt;/span&gt;
 &lt;a href="#wallet-ids" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;44wrH5Y3VXn577ZJHAJwZG8pLMNQXURsGKnNfbwUNmv3fJdHcedednZSna9hbFU5ojBkF83beV5CJYnqh9jnZNNdTJ4oXor&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;45P62r6YsHWagiRZ6K5tGeKPy2tFFwfYvdfatsKHCC7wATRrsKqqSFySocLVtrKFzYj1RzYu2mSD9HXBofYusbfdAiSCkvM&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Exposed Prefect Workflows Could Lead to Disruptive Attacks</title><link>https://research.intezer.com/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/</link><pubDate>Tue, 26 Oct 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/</guid><description>
+&lt;p&gt;&lt;code&gt;45P62r6YsHWagiRZ6K5tGeKPy2tFFwfYvdfatsKHCC7wATRrsKqqSFySocLVtrKFzYj1RzYu2mSD9HXBofYusbfdAiSCkvM&lt;/code&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Exposed Prefect Workflows Could Lead to Disruptive Attacks</title><link>https://research.intezer.com/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/</link><pubDate>Tue, 26 Oct 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/10/exposed-prefect-workflows-could-lead-to-disruptive-attacks/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Workflow management platforms are powerful tools for automating and managing
 complex tasks. Integrating workflow platforms can help companies coordinate and
@@ -13594,7 +13804,13 @@ platform. We advise on adding firewall rules to hide the instance from the
 internet and ensure that authentication is configured. If the application does
 not offer sufficient authentication mechanisms, consider leveraging tools
 provisioned by the cloud provider to implement your own authentication such as
-GCP&amp;rsquo;s Identity-Aware Proxy or AWS&amp;rsquo;s Session Manager.&lt;/p&gt;</description></item><item><title>Misconfigured Airflows Leak Thousands of Credentials from Popular Services</title><link>https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/</link><pubDate>Mon, 04 Oct 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/</guid><description>
+GCP&amp;rsquo;s Identity-Aware Proxy or AWS&amp;rsquo;s Session Manager.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Misconfigured Airflows Leak Thousands of Credentials from Popular Services</title><link>https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/</link><pubDate>Mon, 04 Oct 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/10/misconfigured-airflows-leak-credentials/</guid><description>
 &lt;p&gt;&lt;em&gt;This research refers to misconfigured Apache Airflow managed by individuals or
 organizations (&amp;lsquo;users&amp;rsquo;). As a result of the misconfiguration, the credentials
 of users are exposed, including their own credentials to the different
@@ -13847,7 +14063,13 @@ called
 &lt;a href="https://intezer.com/blog/container-security/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/"target="_blank" rel="noopener"&gt;Argo Workflows&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;In the event that an attacker has already exploited a misconfiguration or
 vulnerability, you will need to detect and terminate the malicious or
-unauthorized code in your production environment as soon as it is executed.&lt;/p&gt;</description></item><item><title>Teaching Capa New Tricks: Analyzing Capabilities in PE and ELF Files</title><link>https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</link><pubDate>Wed, 15 Sep 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</guid><description>
+unauthorized code in your production environment as soon as it is executed.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Teaching Capa New Tricks: Analyzing Capabilities in PE and ELF Files</title><link>https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</link><pubDate>Wed, 15 Sep 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/09/analyzing-capabilities-in-pe-and-elf-files/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When analyzing malware, one of the goals in addition to identifying what
 malware it is, is to understand what it does when it runs on a machine. There
@@ -13983,7 +14205,13 @@ also enjoy providing improvements and bug fixes to open-source projects.
 Additionally, we also have
 &lt;a href="https://github.com/intezer"target="_blank" rel="noopener"&gt;released some of our own&lt;/a&gt;. Check out FireEye&amp;rsquo;s
 blog post on capa v3.0 release
-&lt;a href="https://www.fireeye.com/blog/threat-research/2021/09/elfant-in-the-room-capa-v3.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Vermilion Strike: Linux and Windows Re-implementation of Cobalt Strike</title><link>https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</link><pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</guid><description>
+&lt;a href="https://www.fireeye.com/blog/threat-research/2021/09/elfant-in-the-room-capa-v3.html"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Vermilion Strike: Linux and Windows Re-implementation of Cobalt Strike</title><link>https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</link><pubDate>Mon, 13 Sep 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/09/vermilionstrike-reimplementation-cobaltstrike/</guid><description>
 &lt;h2&gt;Key Findings&lt;span class="hx:absolute hx:-mt-20" id="key-findings"&gt;&lt;/span&gt;
 &lt;a href="#key-findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Discovered Linux &amp;amp; Windows re-implementation of Cobalt Strike Beacon written
@@ -14225,7 +14453,13 @@ process.&lt;/em&gt;&lt;/p&gt;
 &lt;a href="#c2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;160.202.163.100&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;update.microsofthk[.]com&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;update.microsoftkernel[.]com&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;&lt;/p&gt;</description></item><item><title>How to Detect Cobalt Strike</title><link>https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</link><pubDate>Wed, 18 Aug 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</guid><description>
+&lt;p&gt;&lt;code&gt;amazon.hksupd[.]com&lt;/code&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>How to Detect Cobalt Strike</title><link>https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</link><pubDate>Wed, 18 Aug 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/</guid><description>
 &lt;h2&gt;Intro&lt;span class="hx:absolute hx:-mt-20" id="intro"&gt;&lt;/span&gt;
 &lt;a href="#intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Cobalt Strike is a penetration testing tool created by Raphael Mudge in 2012.
 To this day, it remains extremely popular in red team activities and used for
@@ -14537,7 +14771,13 @@ suspicious files that you encounter, including non-executable files such as
 Microsoft Office documents, scripts, archives, and more. Stay on top of
 analyzing and classifying Cobalt Strike among other threats.
 &lt;a href="https://analyze.intezer.com/create-account"target="_blank" rel="noopener"&gt;Get started&lt;/a&gt; for free and start
-with 50 file uploads per month.&lt;/p&gt;</description></item><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
+with 50 file uploads per month.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
 &lt;p&gt;Enterprises today rely on a wide range of cloud services—infrastructure as a
 service (IaaS), platform as a service (PaaS), software as a service (SaaS), and
 more—to meet their business needs. But the growing popularity of cloud has also
@@ -14830,7 +15070,13 @@ account. Even with the precautions detailed in this blog, breaches still
 happen—whether due to unknown vulnerabilities/misconfigurations, unauthorized
 access, or supply chain attacks. Having strong runtime threat detection and
 response capabilities is crucial.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Special thanks to Aner Izraeli for contributing to this post.&lt;/em&gt;&lt;/p&gt;</description></item><item><title>New Attacks on Kubernetes via Misconfigured Argo Workflows</title><link>https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/</link><pubDate>Tue, 20 Jul 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/</guid><description>
+&lt;p&gt;&lt;em&gt;Special thanks to Aner Izraeli for contributing to this post.&lt;/em&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>New Attacks on Kubernetes via Misconfigured Argo Workflows</title><link>https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/</link><pubDate>Tue, 20 Jul 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/</guid><description>
 &lt;h2&gt;Key Points&lt;span class="hx:absolute hx:-mt-20" id="key-points"&gt;&lt;/span&gt;
 &lt;a href="#key-points" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Intezer has detected a new attack vector against Kubernetes (K8s) clusters
@@ -14951,7 +15197,13 @@ that only trusted code is running in your environment. In the event that an
 attacker has exploited a misconfiguration or vulnerability in your K8s cluster
 or applications running on clusters, runtime protection solutions give
 immediate visibility over all code running on your pods, nodes, and clusters,
-and help you detect and respond to attacks in your environment.&lt;/p&gt;</description></item><item><title>Targeted Phishing Attack against Ukrainian Government Expands to Georgia</title><link>https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</guid><description>
+and help you detect and respond to attacks in your environment.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Targeted Phishing Attack against Ukrainian Government Expands to Georgia</title><link>https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</link><pubDate>Wed, 14 Jul 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/</guid><description>
 &lt;p&gt;In May 2021,
 &lt;a href="https://www.fortinet.com/blog/threat-research/spearphishing-attack-uses-covid-21-lure-to-target-ukrainian-government"target="_blank" rel="noopener"&gt;Fortinet published a report&lt;/a&gt;
 about the early stages of an ongoing phishing attack against the Ukrainian
@@ -15314,7 +15566,13 @@ for analyzing memory dumps.&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.justice.gov/file/1080281/download"target="_blank" rel="noopener"&gt;Mueller, R. Indictment – United States of America vs. Viktor Borisovich Netyksho, et al. Retrieved September 13, 2018&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://attack.mitre.org/groups/G0007/"target="_blank" rel="noopener"&gt;APT28 MITRE ATT&amp;amp;CK&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://attack.mitre.org/software/S0251/"target="_blank" rel="noopener"&gt;Zebrocy MITRE ATT&amp;amp;CK&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</description></item><item><title>Energy Sector and its Suppliers Targeted in Global Phishing Campaign</title><link>https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/</link><pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/</guid><description>
+&lt;/ol&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Energy Sector and its Suppliers Targeted in Global Phishing Campaign</title><link>https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/</link><pubDate>Wed, 07 Jul 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/</guid><description>
 &lt;p&gt;Our research team has found a sophisticated campaign, active for at least one
 year, targeting large international companies in the energy, oil &amp;amp; gas, and
 electronics industries. The attack also targets oil &amp;amp; gas suppliers, possibly
@@ -15642,7 +15900,13 @@ documents, PDF files, and scripts such as PowerShell and VBS.&lt;/em&gt;&lt;/p&g
 &lt;code&gt;14ae4b4b66588af22cf569a90c94e9dd6e2af708ad9dc0efde0cd7d2a809fb51&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;Attached file:
 &lt;code&gt;60dc089158d86e9fb10ace29eb6afd7f23d001181e8a4a6ba5083c3597733a71&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Klingon RAT Holding on for Dear Life</title><link>https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/</link><pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Klingon RAT Holding on for Dear Life</title><link>https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/</link><pubDate>Thu, 17 Jun 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/06/klingon-rat-holding-on-for-dear-life/</guid><description>
 &lt;p&gt;With more malware written in Golang than ever before, the threat from Go-based
 Remote Access Trojans (RATs) has never been higher. Not only has the number of
 Go malware increased but also the sophistication of these threats. This is a
@@ -16071,7 +16335,13 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1071/001/"target="_blank" rel="noopener"&gt;Web Protocols&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>Wrapping Up a Year of Infamous Bazar Campaigns</title><link>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</link><pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</guid><description>
+&lt;/table&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Wrapping Up a Year of Infamous Bazar Campaigns</title><link>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</link><pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</guid><description>
 &lt;h2&gt;Bazar is the latest tool developed by the TrickBot gang&lt;span class="hx:absolute hx:-mt-20" id="bazar-is-the-latest-tool-developed-by-the-trickbot-gang"&gt;&lt;/span&gt;
 &lt;a href="#bazar-is-the-latest-tool-developed-by-the-trickbot-gang" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Common malware used for cybercrime such as Agent Tesla, Dridex and Formbook
 have been around for at least five years and are still distributed and active.
@@ -16238,7 +16508,13 @@ and classifies them using genetic code analysis technology.&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://news.sophos.com/en-us/2021/04/15/bazarloader/"target="_blank" rel="noopener"&gt;https://news.sophos.com/en-us/2021/04/15/bazarloader/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.cybereason.com/blog/a-bazar-of-tricks-following-team9s-development-cycles#trickbot-connection"target="_blank" rel="noopener"&gt;https://www.cybereason.com/blog/a-bazar-of-tricks-following-team9s-development-cycles#trickbot-connection&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon"target="_blank" rel="noopener"&gt;https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Why Relying on the Cloud Provider for Security is Not Enough</title><link>https://research.intezer.com/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</link><pubDate>Thu, 20 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Why Relying on the Cloud Provider for Security is Not Enough</title><link>https://research.intezer.com/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</link><pubDate>Thu, 20 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</guid><description>
 &lt;p&gt;73% of organizations using the cloud are not sure which parts of security fall
 under their responsibility. Ultimately, the customer is responsible for
 security in the cloud, meaning protecting the workloads (applications and code)
@@ -16362,7 +16638,13 @@ will eventually get through, making the last line of defense a priority.
 Protecting the runtime environment buys you time to do larger programs to
 reduce risk and have a more holistic cloud security. Runtime protection is also
 needed to detect and respond to attacks. If an attacker exploits an unknown
-vulnerability or a backdoor in the supply chain you must be able to detect it.&lt;/p&gt;</description></item><item><title>CVE-2021-27075: Microsoft Azure Vulnerability Allows Privilege Escalation and Leak of Private Data</title><link>https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/</link><pubDate>Tue, 11 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/</guid><description>
+vulnerability or a backdoor in the supply chain you must be able to detect it.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>CVE-2021-27075: Microsoft Azure Vulnerability Allows Privilege Escalation and Leak of Private Data</title><link>https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/</link><pubDate>Tue, 11 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/cve-2021-27075-microsoft-azure-vulnerability-allows-privilege-escalation-and-leak-of-data/</guid><description>
 &lt;p&gt;In this post I will explain how the Microsoft Azure Virtual Machine (VM)
 extension works and how we found a fatal vulnerability in the extension
 mechanism affecting Azure VM Linux systems. As part of the responsible
@@ -16523,7 +16805,13 @@ more complete cloud security strategy, Intezer recommends adopting a
 two-pronged approach. Do the basics, like fixing known vulnerabilities and
 hardening your systems to reduce the likelihood of getting attacked. You also
 need runtime threat detection to identify and respond to attacks as they occur
-following unknown vulnerability exploitation or a backdoor in the supply chain.&lt;/p&gt;</description></item><item><title>HabitsRAT Used to Target Linux and Windows Servers</title><link>https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</link><pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</guid><description>
+following unknown vulnerability exploitation or a backdoor in the supply chain.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>HabitsRAT Used to Target Linux and Windows Servers</title><link>https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</link><pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/</guid><description>
 &lt;p&gt;We have discovered a new malware written in Go, which we are calling HabitsRAT,
 targeting both Windows and Linux machines. The Windows version of the malware
 was first reported on by
@@ -17092,6 +17380,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Rocke Group Actively Targeting the Cloud: Wants Your SSH Keys</title><link>https://research.intezer.com/blog/2021/04/rocke-group-actively-targeting-the-cloud-wants-your-ssh-keys/</link><pubDate>Tue, 06 Apr 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/04/rocke-group-actively-targeting-the-cloud-wants-your-ssh-keys/</guid><description>
 &lt;h2&gt;New Malware Variant Exploits Production Environment&lt;span class="hx:absolute hx:-mt-20" id="new-malware-variant-exploits-production-environment"&gt;&lt;/span&gt;
 &lt;a href="#new-malware-variant-exploits-production-environment" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Rocke Group is a Chinese-based threat actor most known for running
@@ -17374,5 +17668,11 @@ data-copied-label="Copied!"
 &lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description></item></channel></rss>

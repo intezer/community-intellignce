@@ -362,6 +362,12 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>3 Ways to Save Incident Response Time</title><link>https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/</link><pubDate>Mon, 31 Jan 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/</guid><description>
 &lt;p&gt;When there is suspicious activity on an endpoint, the incident response team is responsible for investigating it to find out what happened in the network that caused the potential security breach. Is it a fast-spreading malware… or just a false positive? For anyone in digital forensics and incident response, you need to know ASAP if it&amp;rsquo;s the first, but you also don&amp;rsquo;t want to waste time investigating false positives.&lt;/p&gt;
 &lt;p&gt;There are several ways to collect files and forensics evidence, which we&amp;rsquo;ll dig into below with tips and free tools to save you time on each during incident response. These are three key areas we&amp;rsquo;ll look at where you can speed up investigations:&lt;/p&gt;
@@ -432,7 +438,13 @@ data-copied-label="Copied!"
 &lt;li&gt;&lt;a href="https://github.com/intezer/analyze-community-ghidra-plugin"target="_blank" rel="noopener"&gt;Ghidra plugin&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://analyze.intezer.com/?tab=endpoint"target="_blank" rel="noopener"&gt;Endpoint scanner&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://github.com/intezer/analyze-python-sdk"target="_blank" rel="noopener"&gt;Intezer&amp;rsquo;s SDK&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Conducting Digital Forensics Incident Response (DFIR) on an Infected GitLab Server</title><link>https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/</link><pubDate>Thu, 04 Nov 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/</guid><description>
+&lt;/ul&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Conducting Digital Forensics Incident Response (DFIR) on an Infected GitLab Server</title><link>https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/</link><pubDate>Thu, 04 Nov 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/11/dfir-infected-gitlab-server/</guid><description>
 &lt;h2&gt;GitLab servers are under attack with a now-patched critical vulnerability&lt;span class="hx:absolute hx:-mt-20" id="gitlab-servers-are-under-attack-with-a-now-patched-critical-vulnerability"&gt;&lt;/span&gt;
 &lt;a href="#gitlab-servers-are-under-attack-with-a-now-patched-critical-vulnerability" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Earlier this week we investigated an incident that occurred on a user&amp;rsquo;s GitLab
 server. After the user installed a sensor on their server, an initial runtime
@@ -551,7 +563,13 @@ Special thanks to Adir Shemesh.&lt;/p&gt;
 &lt;a href="#tmpsh" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;00fc15eadd33b1055cd3f30869363c6498d2668b8f1e244e82ba1a9abff58bf1&lt;/code&gt;&lt;/p&gt;
 &lt;h3&gt;Wallet IDs&lt;span class="hx:absolute hx:-mt-20" id="wallet-ids"&gt;&lt;/span&gt;
 &lt;a href="#wallet-ids" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;44wrH5Y3VXn577ZJHAJwZG8pLMNQXURsGKnNfbwUNmv3fJdHcedednZSna9hbFU5ojBkF83beV5CJYnqh9jnZNNdTJ4oXor&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;45P62r6YsHWagiRZ6K5tGeKPy2tFFwfYvdfatsKHCC7wATRrsKqqSFySocLVtrKFzYj1RzYu2mSD9HXBofYusbfdAiSCkvM&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
+&lt;p&gt;&lt;code&gt;45P62r6YsHWagiRZ6K5tGeKPy2tFFwfYvdfatsKHCC7wATRrsKqqSFySocLVtrKFzYj1RzYu2mSD9HXBofYusbfdAiSCkvM&lt;/code&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Guide to Digital Forensics Incident Response in the Cloud</title><link>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</link><pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/08/guide-to-digital-forensics-incident-response-in-the-cloud/</guid><description>
 &lt;p&gt;Enterprises today rely on a wide range of cloud services—infrastructure as a
 service (IaaS), platform as a service (PaaS), software as a service (SaaS), and
 more—to meet their business needs. But the growing popularity of cloud has also
@@ -844,7 +862,13 @@ account. Even with the precautions detailed in this blog, breaches still
 happen—whether due to unknown vulnerabilities/misconfigurations, unauthorized
 access, or supply chain attacks. Having strong runtime threat detection and
 response capabilities is crucial.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Special thanks to Aner Izraeli for contributing to this post.&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Building Your Bullet Proof Incident Response Plan</title><link>https://research.intezer.com/blog/2018/03/building-your-bullet-proof-incident-response-plan/</link><pubDate>Thu, 15 Mar 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/03/building-your-bullet-proof-incident-response-plan/</guid><description>
+&lt;p&gt;&lt;em&gt;Special thanks to Aner Izraeli for contributing to this post.&lt;/em&gt;&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Building Your Bullet Proof Incident Response Plan</title><link>https://research.intezer.com/blog/2018/03/building-your-bullet-proof-incident-response-plan/</link><pubDate>Thu, 15 Mar 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/03/building-your-bullet-proof-incident-response-plan/</guid><description>
 &lt;p&gt;Cyber security is constantly evolving, and therefore rife with challenges.
 Whether hobbyist hackers or state-sponsored threat actors are targeting
 organizations, internal security operations center (SOC) teams must proactively
@@ -877,4 +901,10 @@ only half the battle. The other lies in capitalizing on available time and
 staff attention to address attacks before they wreak havoc on businesses.
 Intezer Analyze™ equips security professionals to do all of this and more,
 intelligently bolstering defenses and providing immunity against future
-threats.&lt;/p&gt;</description></item></channel></rss>
+threats.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>
