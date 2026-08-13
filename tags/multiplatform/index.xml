@@ -107,7 +107,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;p&gt;Finally on Windows we can query the registry table for keys similar to the registry key in the report:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;registry&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;HKEY_LOCAL_MACHINESoftwareMicrosoftWindowsCurrentVersionRun&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;igfxCUIService&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;registry&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;igfxCUIService&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -264,7 +264,7 @@ uploaded to VirusTotal as &lt;code&gt;style-loader.ts&lt;/code&gt; and has only 
 time of this writing.&lt;/p&gt;
 &lt;p&gt;The Dropper drops a zipped SysJoker (&lt;code&gt;53f1bb23f670d331c9041748e7e8e396&lt;/code&gt;) from
 C2 &lt;code&gt;https[://]github[.]url-mini[.]com/msg.zip&lt;/code&gt;, copies it to
-&lt;code&gt;C:\ProgramData\Recovery\Systemrecovery\Windows.zip&lt;/code&gt;, unzips it and executes
+&lt;code&gt;C:\ProgramData\RecoverySystem\recoveryWindows.zip&lt;/code&gt;, unzips it and executes
 it. All of these actions are executed via PowerShell commands.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig2.png" title="Process tree showing PowerShell commands." alt="" loading="lazy" /&gt;
@@ -323,6 +323,7 @@ hardcoded Google Drive link.&lt;/p&gt;
 &lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig6.png" title="Decoding with CyberChef." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decoding with CyberChef.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Decoded with &lt;a href="https://gchq.github.io/CyberChef/"target="_blank" rel="noopener"&gt;CyberChef&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;The Google Drive link hosts a text file named domain.txt that holds an encoded
 C2. The text file&amp;rsquo;s content changes over time, depending on the current
 available C2. SysJoker will decode the C2 and send the collected user&amp;rsquo;s
@@ -332,7 +333,7 @@ when the malware communicates with the C2.&lt;/p&gt;
 &lt;h3&gt;C2 Instructions&lt;span class="hx:absolute hx:-mt-20" id="c2-instructions"&gt;&lt;/span&gt;
 &lt;a href="#c2-instructions" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;SysJoker runs a while(1) loop that sends a request to the C2&amp;rsquo;s /api/req
 directory with the unique token and will process the C2&amp;rsquo;s response which is
-built as JSON using functions from this library. This is how SysJoker pings the
+built as JSON using functions from &lt;a href="https://github.com/nlohmann/json"target="_blank" rel="noopener"&gt;this library&lt;/a&gt;. This is how SysJoker pings the
 C2 for instructions (see step 2 in the image below):&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;If the server responds with data, SysJoker will parse the received payload (see
@@ -380,6 +381,7 @@ will provide you with visibility into the type and origin of all binary code
 that resides in your machine&amp;rsquo;s memory. The figure below shows an example of
 an endpoint infected with SysJoker:&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Use detection content to search in your EDR or SIEM. We provided you with IoCs
 and a rich list of detection content for each operating system below. Use these
 with your EDR to hunt for infected machines. We will publish a dedicated blog
@@ -399,7 +401,7 @@ with SysJoker, in the course of this investigation, check:
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;SysJoker&amp;rsquo;s Linux and Windows versions are now indexed in Intezer Analyze.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Final Points&lt;span class="hx:absolute hx:-mt-20" id="final-points"&gt;&lt;/span&gt;
 &lt;a href="#final-points" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are indications that SysJoker attack is performed by an advanced threat
 actor:&lt;/p&gt;
@@ -502,7 +504,7 @@ C:\ProgramData\SystemData\tempi2.txt
 C:\ProgramData\SystemData\temps1.txt
 C:\ProgramData\SystemData\temps2.txt
 C:\ProgramData\SystemData\tempu.txt
-C:\ProgramData\SystemData\microsoft_Windows.dll
+C:\ProgramData\SystemData\microsoft_windows.dll
 C:\ProgramData\xAE Operating System\ServiceHub.exe&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
@@ -650,9 +652,9 @@ data-copied-label="Copied!"
 &lt;code&gt;/Library/LaunchAgents/com.apple.update.plist&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Content:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;#34;1.0″ encoding=&amp;#34;UTF-8″?&amp;gt;&lt;/span&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;!DOCTYPE plist PUBLIC &amp;#34;-//Apple//DTD PLIST 1.0//EN&amp;#34; &amp;#34;http://www.apple.com/DTDs/PropertyList-1.0.dtd&amp;#34;&amp;gt;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;plist&lt;/span&gt; &lt;span class="na"&gt;version=&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;1.0″&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;plist&lt;/span&gt; &lt;span class="na"&gt;version=&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;1.0&amp;#34;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;dict&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;key&amp;gt;&lt;/span&gt;Label&lt;span class="nt"&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;com.apple.update&lt;span class="nt"&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;
@@ -1060,7 +1062,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;h3&gt;Installation&lt;span class="hx:absolute hx:-mt-20" id="installation"&gt;&lt;/span&gt;
 &lt;a href="#installation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When the binary is run, it installs itself into a folder. The Windows version&amp;rsquo;s
-location is &lt;code&gt;%SystemDrive%WindowsDefenderMsMpEng.exe&lt;/code&gt; while the Linux version
+location is &lt;code&gt;%SystemDrive%\Windows\Defender\MsMpEng.exe&lt;/code&gt; while the Linux version
 is &lt;code&gt;$HOME/.config/polkitd/polkitd&lt;/code&gt;. This will result in the malware being
 installed under &lt;code&gt;/root&lt;/code&gt; if it&amp;rsquo;s being run with root privileges.&lt;/p&gt;
 &lt;p&gt;After the malware has installed itself, it checks if the persistence method has
@@ -1169,8 +1171,8 @@ and an email address of &amp;ldquo;&lt;a href="mailto:a@a.a"&gt;a@a.a&lt;/a&gt;&
 &lt;p&gt;The key is stored and written to disk. The Linux version of HabitsRAT writes to
 &lt;code&gt;$HOME/.config/.accounts-daemon/accounts-daemon.login.conf&lt;/code&gt; if it is running as
 a normal user or to &lt;code&gt;/usr/share/accounts-daemon/accounts-daemon.so&lt;/code&gt;. The
-Windows version uses &lt;code&gt;%SystemDrive%WindowsDefenderMsMpEng.dll&lt;/code&gt; or
-&lt;code&gt;%APPDATA%Windows NTDefenderMsMpEng.dll&lt;/code&gt; instead.&lt;/p&gt;
+Windows version uses &lt;code&gt;%SystemDrive%\Windows\Defender\MsMpEng.dll&lt;/code&gt; or
+&lt;code&gt;%APPDATA%\Windows NT\Defender\MsMpEng.dll&lt;/code&gt; instead.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig2.png" title="Figure 2: Generation of public-private key pair using the open-source library from Proton Mail." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Generation of public-private key pair using the open-source library from Proton Mail.&lt;/figcaption&gt;
@@ -1810,7 +1812,8 @@ data-copied-label="Copied!"
 &lt;/div&gt;</description></item><item><title>A Storm is Brewing: IPStorm Now Has Linux Malware</title><link>https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</guid><description>
 &lt;h2&gt;UPDATE NOVEMBER 2023: IPStorm Infrastructure Dismantled by FBI&lt;span class="hx:absolute hx:-mt-20" id="update-november-2023-ipstorm-infrastructure-dismantled-by-fbi"&gt;&lt;/span&gt;
 &lt;a href="#update-november-2023-ipstorm-infrastructure-dismantled-by-fbi" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The FBI today revealed US law enforcement&amp;rsquo;s dismantlement of a botnet proxy
-network, along with a guilty plea for the individual responsible for the botnet
+network, along with a &lt;a href="https://www.justice.gov/usao-pr/pr/russian-and-moldovan-national-pleads-guilty-operating-illegal-botnet-proxy-service"target="_blank" rel="noopener"&gt;guilty plea&lt;/a&gt;
+for the individual responsible for the botnet
 infrastructure which was associated with the IPStorm malware. This achievement
 is a significant milestone in ongoing efforts to combat cyber threats. The
 research team at Intezer assisted in the FBI&amp;rsquo;s case, sharing our findings and

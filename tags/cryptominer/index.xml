@@ -5,7 +5,7 @@ cryptojacking malware on Linux machines. The group has been
 &lt;a href="https://blog.talosintelligence.com/2018/08/rocke-champion-of-monero-miners.html"target="_blank" rel="noopener"&gt;active since 2018&lt;/a&gt;
 and continues to evolve by modifying its tools and techniques to stay evasive.
 In 2019, we reported that Rocke Group was
-&lt;a href="https://intezer.com/blog/cloud-security/technical-analysis-cryptocurrency-mining-war-on-the-cloud/"target="_blank" rel="noopener"&gt;competing&lt;/a&gt;
+&lt;a href="../../../2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/"&gt;competing&lt;/a&gt;
 with Pacha Group for cryptomining positioning on Linux-based servers in the
 cloud. We have found a
 &lt;a href="https://analyze.intezer.com/files/fe27d4a8a5f299b0b25d10816e98cef2852af6dc3541bf25a77960b1573ca61d"target="_blank" rel="noopener"&gt;new malware variant&lt;/a&gt;
@@ -435,7 +435,7 @@ C2 via HTTPS, using the URL &lt;code&gt;&amp;lt;c2_address&amp;gt;/update.sh&lt;
 data as &lt;code&gt;/tmp/update.sh&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;It will then resolve the current process&amp;rsquo;s PID and path to be used as script
 arguments, and proceeds to execute the script by running:
-&lt;code&gt;/bin/sh -c ./update.sh \&amp;lt;process_id&amp;gt; \&amp;lt;process_path&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;code&gt;/bin/sh -c ./update.sh &amp;lt;process_id&amp;gt; &amp;lt;process_path&amp;gt;&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Meanwhile, the main thread of the malware reads from STDIN, expecting to
 receive binary data from that shell script. The arguments are passed to the
@@ -578,6 +578,7 @@ it is known that Rocke Group has &lt;a href="https://imgur.com/a/H7YuWuj"target=
 domain for their crypto-mining operations. The following are some domains that
 correspond to their hardcoded IPs in Linux.GreedyAntd’s blacklist that have
 Rocke Group correlations:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have presented evidence that Pacha Group is targeting cloud-based
 environments and being especially aggressive towards Rocke Group. We have based

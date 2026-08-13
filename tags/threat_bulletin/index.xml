@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Threat_bulletin</title><link>https://research.intezer.com/tags/threat_bulletin/</link><description>Recent content in Threat_bulletin on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 10 Sep 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/threat_bulletin/index.xml" rel="self" type="application/rss+xml"/><item><title>Frankenstein Variant of the Toneshell Backdoor Targeting Myanmar</title><link>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</link><pubDate>Wed, 10 Sep 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Threat_bulletin</title><link>https://research.intezer.com/tags/threat_bulletin/</link><description>Recent content in Threat_bulletin on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 10 Sep 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/threat_bulletin/index.xml" rel="self" type="application/rss+xml"/><item><title>Frankenstein Variant of the ToneShell Backdoor Targeting Myanmar</title><link>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</link><pubDate>Wed, 10 Sep 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/</guid><description>
 &lt;p&gt;ToneShell is a lightweight backdoor tied to the China-nexus group Mustang
 Panda. Typically delivered via DLL sideloading inside compressed archives with
 legitimate signed executables and often spread through cloud-hosted lures.
@@ -31,12 +31,12 @@ other revolutionary forces.&lt;/p&gt;
 &lt;figcaption&gt;Code reuse with ToneShell&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The backdoor first checks the current module path for the string
-&lt;code&gt;Google\\DriveFS\\Scratch&lt;/code&gt;. If not found, it enumerates processes to identify
+&lt;code&gt;Google\DriveFS\Scratch&lt;/code&gt;. If not found, it enumerates processes to identify
 the parent process, retrieves its image path, and verifies whether it contains
 &lt;strong&gt;GoogleDrive&lt;/strong&gt;. If found, the backdoor will terminate its execution. This
 check might be an attempt by the threat actor to prevent infecting themselves.
 If this validation fails, the code enforces a single-instance policy using a
-named mutex, &lt;code&gt;Global\\SingleCorporation12AD8B&lt;/code&gt;. It attempts to create the
+named mutex, &lt;code&gt;Global\SingleCorporation12AD8B&lt;/code&gt;. It attempts to create the
 mutex, storing the handle globally and setting a flag to indicate success or
 failure. If creation fails or the mutex already exists, it releases any handles
 and marks it as not created. Next, the backdoor checks its persistence
@@ -44,17 +44,17 @@ location. It compares its module path with the user profile directory
 (CSIDL_APPDATA, 0x1A). If the binary is not under the user profile, it copies
 itself and the following files: msvcr100.dll, msvcp100.dll, mfc100.dll to a new
 folder it creates. The new directory name consists of a 6-character random
-uppercase folder name (e.g., &lt;code&gt;C:\\Users\&amp;lt;user&amp;gt;\\AppData\&amp;lt;random-6-chars&amp;gt;&lt;/code&gt;).&lt;/p&gt;
+uppercase folder name (e.g., &lt;code&gt;C:\Users\&amp;lt;user&amp;gt;\AppData\&amp;lt;random-6-chars&amp;gt;&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig2.png" title="The function that copies the DLLs to a new folder in AppData" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The function that copies the DLLs to a new folder in AppData&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Once installed, it attempts to spin up the Task Scheduler COM service, connect
-to the local scheduler, open the root folder (&amp;quot;\&amp;quot;) and obtain an
+to the local scheduler, open the root folder (&lt;code&gt;&amp;quot;\&amp;quot;&lt;/code&gt;) and obtain an
 IRegisteredTask for a task named dokanctl. If the task doesn’t exist, it will
 create it using RegisterTaskDefinition. The task is set to execute every
 minute, it sets the execution path to the folder in AppData created earlier:
-&lt;code&gt;%APPDATA%\&amp;lt;random-6-chars&amp;gt;\\svchosts.exe&lt;/code&gt;, and sets it as the action Path. The
+&lt;code&gt;%APPDATA%\&amp;lt;random-6-chars&amp;gt;\svchosts.exe&lt;/code&gt;, and sets it as the action Path. The
 task is registered in the root folder with the name &lt;code&gt;dokanctl&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2025/09/frankenstein-variant-of-the-toneshell-backdoor-targeting-myanmar/images/fig3.png" title="Task creation" alt="" loading="lazy" /&gt;
@@ -132,7 +132,7 @@ sandboxing systems that expect short-lived, straightforward malware runs.&lt;/p&
 &lt;h3&gt;GUID Creation&lt;span class="hx:absolute hx:-mt-20" id="guid-creation"&gt;&lt;/span&gt;
 &lt;a href="#guid-creation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Similar to earlier versions, this variant of ToneShell generates a unique
 identifier for each infected machine. It first attempts to check if one was
-already created by reading 16 bytes from C:\ProgramData\SystemRuntimeLag.inc.
+already created by reading 16 bytes from &lt;code&gt;C:\ProgramData\SystemRuntimeLag.inc&lt;/code&gt;.
 The malware creates a new seed if the file is missing, unreadable, or does not
 provide exactly 16 bytes. The primary method is to generate a GUID via
 CoCreateGuid and use it as the seed. If that fails, it falls back to producing
@@ -195,7 +195,7 @@ ongoing research and threat hunting to counter cyber operations.&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Fire in the Woods – A New Variant of FireWood</title><link>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</link><pubDate>Wed, 13 Aug 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</guid><description>
+&lt;/div&gt;</description></item><item><title>Threat Bulletin: Fire in the Woods – A New Variant of FireWood</title><link>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</link><pubDate>Wed, 13 Aug 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/08/threat-bulletin-firewood/</guid><description>
 &lt;p&gt;&lt;em&gt;A new and low-detected variant of the FireWood backdoor was discovered by
 Intezer’s Research Team, with some changes in the implementation and the
 configuration of the backdoor.&lt;/em&gt;&lt;/p&gt;
@@ -339,7 +339,7 @@ its code is identical to the one we analyzed:&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Weaponized Software Targets Chinese</title><link>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</link><pubDate>Thu, 16 Jan 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</guid><description>
+&lt;/div&gt;</description></item><item><title>Threat Bulletin: Weaponized Software Targets Chinese-Speaking Organizations</title><link>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</link><pubDate>Thu, 16 Jan 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</guid><description>
 &lt;h2&gt;Overview of the Attack&lt;span class="hx:absolute hx:-mt-20" id="overview-of-the-attack"&gt;&lt;/span&gt;
 &lt;a href="#overview-of-the-attack" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Intezer Labs research team has identified a series of attacks targeting
 organizations in Chinese-speaking regions like Hong Kong, Taiwan, and China
@@ -376,7 +376,7 @@ for malware execution via the following steps:&lt;/p&gt;
 &lt;li&gt;Command-line Argument Parsing:
 &lt;ul&gt;
 &lt;li&gt;If the &lt;code&gt;/aut&lt;/code&gt; argument is present, the loader decrypts the registry path
-&lt;code&gt;Software\\DICKEXEPATH&lt;/code&gt; using XOR encryption and writes the down.exe path
+&lt;code&gt;Software\DICKEXEPATH&lt;/code&gt; using XOR encryption and writes the down.exe path
 to the registry (&lt;code&gt;HKEY_CURRENT_USER\Software\DICKEXEPATH&lt;/code&gt;). The loader then
 uses the
 &lt;a href="https://github.com/hasherezade/pe_to_shellcode/tree/a2458c96619b721677af0f9b906cd6a229364b4c"target="_blank" rel="noopener"&gt;pe_to_shellcode&lt;/a&gt;

@@ -47,9 +47,10 @@ analysis. With the messages being decrypted, this uncovered a
 Mary, along with her co-conspirators, was executed! Think of the consequences
 the next time you decide to use a weak cipher for your secret messages!&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig1.jpg" title="Part of the cipher used by Mary, Queen of Scots (https://www.nationalarchives.gov.uk/education/resources/elizabeth-monarchy/ciphers-used-by-mary-queen-of-scots/)" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Part of the cipher used by Mary, Queen of Scots (https://www.nationalarchives.gov.uk/education/resources/elizabeth-monarchy/ciphers-used-by-mary-queen-of-scots/)&lt;/figcaption&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig1.jpg" title="Part of the cipher used by Mary, Queen of Scots" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Part of the cipher used by Mary, Queen of Scots&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Source: &lt;a href="https://www.nationalarchives.gov.uk/education/resources/elizabeth-monarchy/ciphers-used-by-mary-queen-of-scots/"target="_blank" rel="noopener"&gt;The National Archives&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Fast forwarding to the modern era, with the development of technology, the
 complexity and speed of encryption have exploded. The information age has
 allowed encryption to be handled at the speed of computers. In the following
@@ -378,7 +379,7 @@ researchers quickly identify known malicious behaviors in a sample. As seen in
 the screenshot below, when running CAPA for the Vermilion Strike sample, it
 identifies the implementation of RSA and XOR encryption. It provides the
 addresses of the relevant functions.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig15.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Having said that, CAPA is not a magic bullet, and in some cases, it might fail
 to detect certain behaviors due to unorthodox techniques implemented by threat
 actors or novel and non-conventional implementations of certain methods. In
@@ -392,7 +393,7 @@ loading values from the stack (as can be seen in the screenshot below). These
 operations often indicate encryption-related transformations and can provide
 crucial insights into how the malware encrypts and manipulates data.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig15.png" title="Implementation of encryption using boolean algebra operations." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig16.png" title="Implementation of encryption using boolean algebra operations." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Implementation of encryption using boolean algebra operations.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;RC4&lt;span class="hx:absolute hx:-mt-20" id="rc4"&gt;&lt;/span&gt;
@@ -428,7 +429,7 @@ data-copied-label="Copied!"
 &lt;a href="../../../2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data"&gt;CryptoClippy&lt;/a&gt;
 malware, we can identify the two loops that are part of the KSA algorithm as
 described above.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h4&gt;ChaCha20&lt;span class="hx:absolute hx:-mt-20" id="chacha20"&gt;&lt;/span&gt;
 &lt;a href="#chacha20" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;In the key setup stage of the ChaCha20 encryption algorithm, a
 &lt;a href="https://xilinx.github.io/Vitis_Libraries/security/2019.2/guide_L1/internals/chacha20.html"target="_blank" rel="noopener"&gt;fixed constant&lt;/a&gt;
@@ -444,7 +445,7 @@ ChaCha20 encryption. Below is the constant string in StageClient, along with
 the beginning of the initialization state, with the
 &lt;a href="https://github.com/shiffthq/chacha20/blob/master/src/chacha20.c"target="_blank" rel="noopener"&gt;source code&lt;/a&gt;
 for comparison.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2023/08/unraveling-malware-encryption-secrets/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The following Yara rule can be used to check for the likely use of ChaCha20
 using the constant string.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;

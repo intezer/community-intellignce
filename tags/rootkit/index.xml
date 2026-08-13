@@ -1,7 +1,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Rootkit</title><link>https://research.intezer.com/tags/rootkit/</link><description>Recent content in Rootkit on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 14 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/rootkit/index.xml" rel="self" type="application/rss+xml"/><item><title>OrBit (Re)turns: Tracking an Open-Source Linux Rootkit Across Four Years of Forks and Deployments</title><link>https://research.intezer.com/blog/2026/05/orbit-returns/</link><pubDate>Thu, 14 May 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/05/orbit-returns/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In July 2022, we
-&lt;a href="https://intezer.com/blog/orbit-new-undetected-linux-threat/"target="_blank" rel="noopener"&gt;published the first analysis&lt;/a&gt;
+&lt;a href="../../../2022/07/orbit-new-undetected-linux-threat/"&gt;published the first analysis&lt;/a&gt;
 of OrBit, a then-undocumented Linux userland-rootkit that stood out for its
 comprehensive libc hooking, SSH backdoor access, and PAM-based credential
 harvesting. At the time, OrBit appeared as a single sample with a single
@@ -40,8 +40,8 @@ to hide files, processes, and network connections from administrators and
 security tools alike. The malware stores its harvested credentials and
 configuration data in &lt;code&gt;/lib/libntpVnQE6mk/&lt;/code&gt;, a directory that remains invisible
 to standard enumeration thanks to the rootkit&amp;rsquo;s own hooks.&lt;/p&gt;
-&lt;h3&gt;July 2002&lt;span class="hx:absolute hx:-mt-20" id="july-2002"&gt;&lt;/span&gt;
-&lt;a href="#july-2002" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+&lt;h3&gt;July 2022&lt;span class="hx:absolute hx:-mt-20" id="july-2022"&gt;&lt;/span&gt;
+&lt;a href="#july-2022" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
 &lt;th&gt;Hash&lt;/th&gt;
@@ -232,6 +232,7 @@ data-copied-label="Copied!"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;p&gt;&lt;em&gt;The exported xread function in sample 296d28eb.&lt;/em&gt;&lt;/p&gt;
 &lt;h4&gt;3ba6c174 / 4203271c: Lineage B lite build&lt;span class="hx:absolute hx:-mt-20" id="3ba6c174--4203271c-lineage-b-lite-build"&gt;&lt;/span&gt;
 &lt;a href="#3ba6c174--4203271c-lineage-b-lite-build" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Both files, 3ba6c174 and 4203271c, represent the first appearance of Lineage B,
 a deliberately lite fork of the OrBit rootkit. Both are dynamically linked
@@ -534,7 +535,7 @@ using two lookup tables at &lt;code&gt;.data&lt;/code&gt; offsets for the cipher
 different scheme from the XOR encryption used by the previous rootkit payloads.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-c++" data-lang="c++"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;mw_plain_table&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mh"&gt;0x4e&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;0123456789abcdefghijklmnopqrstuvzywxABCDEFGHIJKLMNOPQRSTUVZYWX|:. !#-/;&amp;amp;*&lt;/span&gt;&lt;span class="se"&gt;\&amp;#39;\&amp;#34;\n\r&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;mw_cipher_table&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mh"&gt;0x58&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;&amp;lt;&amp;gt;@o$:,.l+*^?=)(|AB&amp;amp;%;D!wkUxzvutsrqp_nm-ihgfFCcba~K23456789eyd1XSNQWTZMIRHGVOYLjPJE/][&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;mw_cipher_table&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mh"&gt;0x58&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#34;&amp;lt;&amp;gt;@o$:,.l+*^?=)(|AB&amp;amp;%;D{!wkUxzvutsrqp_nm-ihgfFCcba~K23456789eyd1XSNQWTZMIRHGVOYLjPJE/][&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -602,7 +603,7 @@ However, it is worth noting that this connection exists.&lt;/p&gt;
 &lt;td&gt;54&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;code&gt;2b2eeb22&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;d7b487d2&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;0xA2&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;/lib/libseconf/&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;57ill4Cu63&lt;/code&gt;&lt;/td&gt;

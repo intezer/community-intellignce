@@ -356,7 +356,7 @@ was written by the same attacker.&lt;/p&gt;
 &lt;p&gt;After the module is successfully dropped, a service is created under the name Spooler or SessionEnv, depending upon your environment, which then loads the newly dropped module.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig9.png" alt="" loading="lazy" /&gt;
 The new module being run by the service allocates memory, reads the registry where the other payload is located, and then copies it to memory
-&lt;img src="images/fig10.png" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig10.png" alt="" loading="lazy" /&gt;
 &lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The next payload is executed, which decrypts another module and loads it. If we look at the memory of the next decrypted payload, we can see something that looks like a PE header without the MZ signature. From here, it is as simple as modifying the first two bytes to represent MZ and we have a valid PE file. (&lt;code&gt;f0d1f88c59a005312faad902528d60acbf9cd5a7b36093db8ca811f763e1292a&lt;/code&gt;)&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
@@ -456,9 +456,15 @@ called PLA Unit 61398.&lt;/p&gt;
 report):&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Infected function:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig4.png" title="Infected function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Infected function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Load and execute the payload code:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig5.png" title="Load and execute the payload code" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Load and execute the payload code&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After the embedded code is decrypted and executed, the next step is a PE
 (portable executable) file loader. A PE file loader basically emulates the
 process of what happens when you load an executable file on Windows. Data is
@@ -470,7 +476,10 @@ the address of the location of the module in memory, VirtualAlloc to create
 memory for somewhere to copy the memory, and in some cases, when not
 implemented, and memcpy to copy the buffer to the newly allocated memory
 region.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig6.png" title="The PE loader" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The PE loader&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After the module is copied to memory, to load it properly, the proper loading
 procedure is executed. The relocation table is read to adjust the module to the
 base address of the allocated memory region, the import table is read, the
@@ -496,7 +505,7 @@ by the C&amp;amp;Cs.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;#ccleaner malware DLL w/ IAT fix &lt;a href="https://t.co/FprmtmkV64"target="_blank" rel="noopener"&gt;https://t.co/FprmtmkV64&lt;/a&gt;
 &lt;a href="https://t.co/dgWiQVd31k"target="_blank" rel="noopener"&gt;https://t.co/dgWiQVd31k&lt;/a&gt; @TalosSecurity @malwrhunterteam
-pic.twitter.com/TxsbveFoHJ&amp;gt;&lt;/p&gt;
+pic.twitter.com/TxsbveFoHJ&lt;/p&gt;
 &lt;p&gt;— Jay Rosenberg (@jaytezer) September 18, 2017&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;

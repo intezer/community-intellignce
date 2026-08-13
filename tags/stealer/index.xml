@@ -137,7 +137,7 @@ script. The data seen above satisfies the checks on the server side, and we
 obtained the payload for the 2nd stage of the attack.&lt;/p&gt;
 &lt;p&gt;The response contains 5 parts: 3 scripts, a loader, and a configuration file –
 as described by Unit 42. We noticed that in the first stage of the attack, a
-directory was created in AppDataRoaming, and the directory’s name changed based
+directory was created in &lt;code&gt;AppData\Roaming&lt;/code&gt;, and the directory’s name changed based
 on the response from the C2. We spotted the names Reposita or Flexizen, which
 is also the name of 3 of the scripts used in the first stage of the attack.&lt;/p&gt;
 &lt;p&gt;One of the PowerShell scripts (Reposita.ps) decodes the loader of the 2nd stage
@@ -184,7 +184,7 @@ the correct minor version is defined in the
 From this check, we understand that the malware targets Windows versions
 starting from Vista and above.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig7.png" title="Source: https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoa" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/images/fig8.png" title="Source: https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoa" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Source: https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoa&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Updates to the CryptoClippy Malware&lt;span class="hx:absolute hx:-mt-20" id="updates-to-the-cryptoclippy-malware"&gt;&lt;/span&gt;
@@ -244,7 +244,7 @@ effectively redirect all payments to their designated account.&lt;/p&gt;
 name, Windows version, and firmware information (using
 &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemfirmwaretable"target="_blank" rel="noopener"&gt;GetSystemFirmwareTable&lt;/a&gt;).
 It queries the value ‘RSMB’ repressing the SMBIOS firmware table provider. Then
-it opens the registry key &lt;code&gt;SOFTWARE\\GbPlugin\\Uni&lt;/code&gt; and gets the value of
+it opens the registry key &lt;code&gt;SOFTWARE\GbPlugin\Uni&lt;/code&gt; and gets the value of
 &lt;code&gt;gFaYEcJ9U3dI&lt;/code&gt; and &lt;code&gt;gFaYEcJ9U3RB&lt;/code&gt;. The key is created by a plugin called
 &lt;code&gt;gbplugin&lt;/code&gt; whose purpose is to secure the connection to internet banking
 services. It is not clear what sort of information is stored in these registry
@@ -253,7 +253,7 @@ the C2.&lt;/p&gt;
 &lt;h3&gt;Persistence&lt;span class="hx:absolute hx:-mt-20" id="persistence"&gt;&lt;/span&gt;
 &lt;a href="#persistence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;As reported, the malware sets persistence on the victim machine by creating an
 LNK at
-&lt;code&gt;AppData\Roaming\Microsoft\Windows\Start\ Menu\Programs\Startup\Reposita.lnk&lt;/code&gt;.&lt;/p&gt;
+&lt;code&gt;AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\Reposita.lnk&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;We identified a unique way in which the malware creates the LNK file. It calls
 the
 &lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cocreateinstance"target="_blank" rel="noopener"&gt;CoCreateInstance&lt;/a&gt;
@@ -284,7 +284,7 @@ security policy by checking the registry value at
 one of the following: EnableLUA, ConsentPromptBehaviorAdmin, or
 ConsentPromptBehaviorUser – the trojan will not execute the script at all. If
 none of these values are set, it checks the value of
-&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-token_elevation_type_"target="_blank" rel="noopener"&gt;TOKEN_ELEVATION_TYPE&lt;/a&gt;
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/winnt/ne-winnt-token_elevation_type"target="_blank" rel="noopener"&gt;TOKEN_ELEVATION_TYPE&lt;/a&gt;
 to examine the token type. If the value is TokenElevationTypeLimited (numerical
 value 3), it will use the CMSTPLUA COM &lt;code&gt;{3E5FC7F9-9A51-4367-9063-A120244FBEC7}&lt;/code&gt;
 interface to bypass UAC and execute the script with elevated permissions. This
@@ -305,7 +305,7 @@ established, it sets the userAuthentication to 0 -which specifies that
 Network-Level user authentication is not required before the remote desktop
 connection is established. Lastly, using a user name passed as an argument to
 the script, the script creates a new user account and appends it to:
-&lt;code&gt;HKLM\SOFTWAREM\icrosoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList&lt;/code&gt;
+&lt;code&gt;HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList&lt;/code&gt;
 to hide it from winlogon.&lt;/p&gt;
 &lt;p&gt;The script also sends information about the endpoint to the C2. The data
 contains the OS version, computer name, architecture, and indicators on

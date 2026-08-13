@@ -301,7 +301,8 @@ data-copied-label="Copied!"
 extension works and how we found a fatal vulnerability in the extension
 mechanism affecting Azure VM Linux systems. As part of the responsible
 disclosure policy, we reported the vulnerability to Microsoft Security Response
-Center (MSRC). They soon patched and assigned it CVE-2021-27075. This
+Center (MSRC). They soon patched and assigned it
+&lt;a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-27075"target="_blank" rel="noopener"&gt;CVE-2021-27075&lt;/a&gt;. This
 vulnerability would have allowed an unprivileged user to leak any Azure VM
 extension&amp;rsquo;s private data. Paired with the design of the VMAccess extension, an
 official Azure extension built for assisting system admins, we will demonstrate

@@ -41,8 +41,8 @@ project&amp;rsquo;s readme file. The framework is marketing itself for Red Teams
 pen-testers. It provides anti-debugging, anti-memory analysis, and anti-VM
 functionality.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig1.png" title="Figure 1: Part of Chacals README." alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 1: Part of Chacals README.&lt;/figcaption&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig1.png" title="Figure 1: Part of Chacal&amp;#39;s README." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Part of Chacal&amp;#39;s README.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;What sets YTStealer aside from other stealers sold on the Dark Web market is
 that it is solely focused on harvesting credentials for one single service
@@ -60,8 +60,8 @@ called &lt;a href="https://go-rod.github.io"target="_blank" rel="noopener"&gt;Ro
 control browsers over the DevTools Protocol and markets itself as a tool for
 web automation and scraping.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig2.png" title="Figure 2: Screenshot of Rods documentation describing the framework." alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 2: Screenshot of Rods documentation describing the framework.&lt;/figcaption&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig2.png" title="Figure 2: Screenshot of Rod&amp;#39;s documentation describing the framework." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: Screenshot of Rod&amp;#39;s documentation describing the framework.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Using the web browser, YTStealer navigates to YouTube&amp;rsquo;s Studio page which
 allows content creators to manage their content. From YouTube studio, the
@@ -118,8 +118,8 @@ profile picture for a user on the site. Figure 4 shows the profile page of the
 user. The profile page provided a link to a Twitter account. Figure 5 shows a
 screenshot of the Twitter account.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig4.png" title="Figure 4: Screenshot of Aparat user accounts profile page that uses YOUBOT SOLUTIONS LLCs logo as their profile image." alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 4: Screenshot of Aparat user accounts profile page that uses YOUBOT SOLUTIONS LLCs logo as their profile image.&lt;/figcaption&gt;
+&lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig4.png" title="Figure 4: Screenshot of Aparat user account&amp;#39;s profile page that uses YOUBOT SOLUTIONS LLC&amp;#39;s logo as their profile image." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: Screenshot of Aparat user account&amp;#39;s profile page that uses YOUBOT SOLUTIONS LLC&amp;#39;s logo as their profile image.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2022/06/ytstealer-malware-youtube-cookies/images/fig5.png" title="Figure 5: Twitter profile linked to in the Aparat user profile." alt="" loading="lazy" /&gt;
@@ -212,7 +212,7 @@ used to deploy another malware at the &amp;ldquo;purchaser&amp;rsquo;s request.&
 is IcedID (BokBot). IcedID was first reported on by
 &lt;a href="https://securityintelligence.com/new-banking-trojan-icedid-discovered-by-ibm-x-force-research/"target="_blank" rel="noopener"&gt;IBM X-Force in November 2017&lt;/a&gt;
 and the malware
-&lt;a href="https://intezer.com/blog/research/icedid-banking-trojan-shares-code-pony-2-0-trojan/"target="_blank" rel="noopener"&gt;shared some code with Pony&lt;/a&gt;.
+&lt;a href="../../../2017/11/icedid-banking-trojan-shares-code-pony-2-0-trojan/"&gt;shared some code with Pony&lt;/a&gt;.
 While initially designed to steal banking credentials, like many other banking
 trojans, the malware has been repurposed for deploying other malware on the
 infected machines.&lt;/p&gt;

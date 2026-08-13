@@ -143,7 +143,7 @@ screenshot below shows the malware using the &lt;code&gt;Wait&lt;/code&gt; funct
 seconds before allocating 200 mb of garbage data.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Persistence is established by adding a new key entry with the name &lt;code&gt;Java-3DK&lt;/code&gt;
-to the registry key &lt;code&gt;SoftwareMicrosoftWindowsCurrentVersionRun&lt;/code&gt;. After this,
+to the registry key &lt;code&gt;Software\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt;. After this,
 the malware checks if a new binary exists by comparing its MD5 hash with a hash
 from the server. If no update is needed, it downloads the other two components.&lt;/p&gt;
 &lt;p&gt;The downloader has some 3rd party libraries, whose metadata are listed in the
@@ -240,7 +240,7 @@ IP address, hostname, username, etc. In addition to the heartbeat message, the
 malware starts the &amp;ldquo;command&amp;rdquo; loop that checks for new commands to execute every
 3 seconds. If a command is received it executes it by spawning a PowerShell
 instance by executing
-&lt;code&gt;%windir%\SysWOW64\Windows\PowerShell\v1.0\powershell.exe&lt;/code&gt; and returns the
+&lt;code&gt;%windir%\SysWOW64\WindowsPowerShell\v1.0\powershell.exe&lt;/code&gt; and returns the
 result to the C2 server.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;service Implant {
@@ -364,8 +364,8 @@ C7051e88ae43c1bd4b869cf18280ec5e
 40b42005e9cfc5ea2a7cfc1ced975cbb
 Fbe3cb4dfce740c3728c459b853e4249 (email submitted and target Romania)
 Paths
-%HOME%AppDataLocalTempBase-Update.exe
-%HOME%.java-sdk&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+%HOME%\AppData\Local\Temp\Base-Update.exe
+%HOME%\.java-sdk&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -560,13 +560,13 @@ regions gives us reason to believe that Russia is behind the attack.&lt;/p&gt;
 &lt;li&gt;Victimology: APT28 has targeted Ukraine and Georgia in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;[3]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Phishing theme: APT28 previously used COVID-19-related phishing themes to
 target countries including Ukraine. APT28 also used NATO as a phishing theme
-in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;[4]&lt;/a&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;[5]&lt;/a&gt;&lt;/li&gt;
+in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="../../../2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"&gt;[4]&lt;/a&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;[5]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Use of AutoIt: One of Zebrocy&amp;rsquo;s (malware from APT28) variants is written in
 AutoIt. &lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;[6]&lt;/a&gt;&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;[7]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;File search with predefined extensions: Zebrocy searches for predefined file
 extensions on the victim machine. &lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2018/11/20/sednit-whats-going-zebrocy/"target="_blank" rel="noopener"&gt;[9]&lt;/a&gt;&lt;a href="https://attack.mitre.org/software/S0251/"target="_blank" rel="noopener"&gt;[13]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Compressed file holding both malicious and benign files was used in an APT28
-COVID-19 phishing attack last year and in other campaigns in the past. &lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;[4]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;/li&gt;
+COVID-19 phishing attack last year and in other campaigns in the past. &lt;a href="../../../2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"&gt;[4]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Use of spear phishing emails containing URL-shortener was documented in past
 APT28 campaigns. In one of the campaigns, this URL hosted a ZIP file
 containing a benign PDF and a malicious executable. &lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://www.justice.gov/opa/page/file/1098481/download"target="_blank" rel="noopener"&gt;[10]&lt;/a&gt;&lt;a href="https://www.justice.gov/file/1080281/download"target="_blank" rel="noopener"&gt;[11]&lt;/a&gt;&lt;/li&gt;
@@ -735,7 +735,7 @@ for analyzing memory dumps.&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;CNBC, Russian Hackers Target NATO, Military Secrets&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;FireEye, APT28: A Window Into Russia&amp;rsquo;s Cyber Espionage Operations?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;Kaspersky, GreyEnergy&amp;rsquo;s Overlap with Zebrocy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;Intezer, A Zebra in Gopher&amp;rsquo;s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="../../../2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"&gt;Intezer, A Zebra in Gopher&amp;rsquo;s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;Quointelligence, APT28 Delivers Zebrocy Malware Campaign using NATO Theme as Lure&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;ESET, Sednit Update: Analysis of Zebrocy&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;VK-Intel. Let&amp;rsquo;s Learn: Progression of APT28 AutoIt Zebrocy Downloaders: Source-Code Level Analysis&lt;/a&gt;&lt;/li&gt;
@@ -802,7 +802,7 @@ Kaspersky Labs reported in
 &lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;January 2019&lt;/a&gt;
 that they had discovered infrastructure used both by Zebrocy and GreyEnergy.
 GreyEnergy was discovered by ESET and reported on in
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2018/10/ESET_GreyEnergy.pdf"target="_blank" rel="noopener"&gt;October 2018&lt;/a&gt;.
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2018/10/ESET_GreyEnergy.pdf"target="_blank" rel="noopener"&gt;October 2018&lt;/a&gt;.
 The group is believed to be the successor of BlackEnergy, also known as
 Sandworm. Sandworm was recently attributed to Russia’s GRU by the United States
 government in an
@@ -1044,7 +1044,7 @@ different military and government entities inside Russia.&lt;/p&gt;
 &lt;p&gt;Russia is known to conduct a wide range of cyber espionage and sabotage
 operations for the last three decades. Beginning with the first publicly known
 attacks by
-&lt;a href="https://media.kasperskycontenthub.com//srv/htdocs/wp-content/uploads/sites/43/2018/03/07180251/Penquins_Moonlit_Maze_PDF_eng.pdf"target="_blank" rel="noopener"&gt;Moonlight Maze&lt;/a&gt;,
+&lt;a href="https://media.kasperskycontenthub.com/wp-content/uploads/sites/43/2018/03/07180251/Penquins_Moonlit_Maze_PDF_eng.pdf"target="_blank" rel="noopener"&gt;Moonlight Maze&lt;/a&gt;,
 in 1996, the
 &lt;a href="https://web.archive.org/web/20090221124901/http://articles.latimes.com/2008/nov/28/nation/na-cyberattack28"target="_blank" rel="noopener"&gt;Pentagon breach&lt;/a&gt;
 in 2008,
@@ -1302,8 +1302,8 @@ originated from the Pinch source code. Not only that several functions are
 mutual, but there are also mutual strings—as can be seen in the screenshots
 below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig5.png" title="Figure 5: PinchDuke 0ce Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 5: PinchDuke 0ce Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464&lt;/figcaption&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig5.png" title="Figure 5: Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig6.png" title="Figure 6: Black Energy 3cf46c68dccb989fbda3f853cc19025d39d38d9ea5786f4ae6a926677d6c5f62" alt="" loading="lazy" /&gt;
@@ -1330,7 +1330,7 @@ actors, but instead, was taken from a
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Potao Main Module &amp;lt;—&amp;gt; X-Agent&lt;span class="hx:absolute hx:-mt-20" id="potao-main-module--x-agent"&gt;&lt;/span&gt;
 &lt;a href="#potao-main-module--x-agent" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Both Potao’s main module sample from
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2015/07/Operation-Potao-Express_final_v2.pdf"target="_blank" rel="noopener"&gt;ESET&amp;rsquo;s publication&lt;/a&gt;
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2015/07/Operation-Potao-Express_final_v2.pdf"target="_blank" rel="noopener"&gt;ESET&amp;rsquo;s publication&lt;/a&gt;
 and X-Agent sample which was uncovered by
 &lt;a href="https://twitter.com/CNMF_VirusAlert"target="_blank" rel="noopener"&gt;USCYBERCOM&lt;/a&gt; share slightly similar PE
 Loader implementation. Due to the low percentage of shared code, we cannot call
@@ -1369,8 +1369,8 @@ Basically, this side-panel is a short identity-card of the entities on the map.&
 &lt;p&gt;The map and its data are available open-sourced in our repository and we are
 inviting you all to add more information and improve it.&lt;/p&gt;
 &lt;p&gt;Click here to open: &lt;a href="https://apt-ecosystem.com/russia/map/"target="_blank" rel="noopener"&gt;Russian APT Map&lt;/a&gt;&lt;/p&gt;
-&lt;h3&gt;Russian APT Map APT Scanning Tool&lt;span class="hx:absolute hx:-mt-20" id="russian-apt-map-apt-scanning-tool"&gt;&lt;/span&gt;
-&lt;a href="#russian-apt-map-apt-scanning-tool" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Having access to more than 3.5 million pieces of code that were shared between
+&lt;h3&gt;APT Scanning Tool&lt;span class="hx:absolute hx:-mt-20" id="apt-scanning-tool"&gt;&lt;/span&gt;
+&lt;a href="#apt-scanning-tool" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Having access to more than 3.5 million pieces of code that were shared between
 the Russian APT samples we gathered, allowed us to understand which unique
 genes are popular and more likely to be shared between samples, families, and
 actors. We used this knowledge to write a tool that can be used by
@@ -1380,7 +1380,9 @@ APTs.&lt;/p&gt;
 &lt;p&gt;The tool, which we named Russian APT Detector, is a set of YARA rules produced
 by Intezer’s platform. The rules contain byte-sequences of popular mutual code
 between one or more samples. We then wrapped it up in a binary to ease the use
-of the tool. The full ruleset can be found in our repository, and can be used
+of the tool. The full ruleset can be found in
+&lt;a href="https://github.com/ITAYC0HEN/APT-Ecosystem/tree/master/russia/detector"target="_blank" rel="noopener"&gt;our repository&lt;/a&gt;,
+and can be used
 freely using your favorite YARA scanner. Don’t hesitate to integrate this
 ruleset into your platform and toolset.&lt;/p&gt;
 &lt;p&gt;Click here to get:
@@ -1577,7 +1579,10 @@ unique pieces of code created by the malware’s authors.&lt;/p&gt;
 &lt;a href="#mysterious-magic-number" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After filtering out all of the common and library code, we were left with
 several unique functions that can be found in every version of the malware
 since 2007. The most prominent is the following function:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig2.png" title="Mysterious magic number" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Mysterious magic number&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;In the picture you can see the two, almost identical functions from the first
 version (Ch 1.0) on the right and the latest version (Ch 3.26) of Agent.BTZ on
 the left. This function is initially reading first four bytes of a given file,
@@ -1679,8 +1684,8 @@ due to GDATA’s 2014 publications.
 &lt;li&gt;Config &amp;amp; Log Files&lt;/li&gt;
 &lt;li&gt;Same 512 bytes encryption key as 3.26&lt;/li&gt;
 &lt;li&gt;Different file paths:&lt;/li&gt;
-&lt;li&gt;config: %appdata%MicrosoftWindowsPrivacIEHighdesktop.ini&lt;/li&gt;
-&lt;li&gt;log: %appdata%MicrosoftWindowsPrivacIEHighindex.dat&lt;/li&gt;
+&lt;li&gt;config: &lt;code&gt;%appdata%\Microsoft\Windows\PrivacIE\High\desktop.ini&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;log: &lt;code&gt;%appdata%\Microsoft\Windows\PrivacIE\High\index.dat&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="indicators-of-compromise"&gt;&lt;/span&gt;
 &lt;a href="#indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
@@ -1854,7 +1859,7 @@ can see in this
 &lt;p&gt;Once finished, the dropper renames and self delete using the following command
 line:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;C:\WINDOWS\system32\rundll32.exe C:\DOCUME~1\&amp;lt;USER&amp;gt;~1\APPLIC~1\MICROS~1\Windowsstdole2.tlb,UnInstall C:\~$.tmp&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C:\WINDOWS\system32\rundll32.exe C:\DOCUME~1\&amp;lt;USER&amp;gt;~1\APPLIC~1\MICROS~1\Windows\stdole2.tlb,UnInstall C:\~$.tmp&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Samples found:&lt;/p&gt;
 &lt;ul&gt;
@@ -1887,7 +1892,7 @@ the following screenshot:&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;Both of these files were uploaded almost three years ago to VT(!)&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="images3.png" title="A screenshot from the Intezer Analyze™ product displaying a list of files in our database that share pieces of code with one of the new samples. These pieces of code are specific to the Turla malware family, and were not seen in any other malicious or legitimate software." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/08/new-variants-of-agent-btz-comrat-found/images/fig3.png" title="A screenshot from the Intezer Analyze™ product displaying a list of files in our database that share pieces of code with one of the new samples. These pieces of code are specific to the Turla malware family, and were not seen in any other malicious or legitimate software." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;A screenshot from the Intezer Analyze™ product displaying a list of files in our database that share pieces of code with one of the new samples. These pieces of code are specific to the Turla malware family, and were not seen in any other malicious or legitimate software.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Samples found:&lt;/p&gt;

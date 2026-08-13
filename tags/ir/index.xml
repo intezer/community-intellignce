@@ -64,7 +64,7 @@ of PsExec. PsExec was used for remote execution and lateral movement across
 networks. The credentials were gathered by a credential theft module that was
 able to extract usernames and passwords from the LSASS process.&lt;/p&gt;
 &lt;p&gt;The Russian threat group APT29 (Cozy Bear) has also
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2019/10/ESET_Operation_Ghost_Dukes.pdf"target="_blank" rel="noopener"&gt;used&lt;/a&gt;
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2019/10/ESET_Operation_Ghost_Dukes.pdf"target="_blank" rel="noopener"&gt;used&lt;/a&gt;
 PsExec to laterally move across networks and deploy their custom backdoor
 FatDuke.&lt;/p&gt;
 &lt;h4&gt;How to Detect&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect"&gt;&lt;/span&gt;
@@ -348,10 +348,10 @@ additional payloads, and lateral movement.&lt;/p&gt;
 &lt;p&gt;WMI is often used in VBScript. To connect to a WMI namespace in VBScript, the
 function GetObject can be used with a WMI object path that specifies the
 namespace that holds the desired classes that you wish to use. The most popular
-are located in the rootcimv2 namespace.&lt;/p&gt;
+are located in the &lt;code&gt;root\cimv2&lt;/code&gt; namespace.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;strComputer = &amp;#34;.&amp;#34;
-Set objWMIService = GetObject(&amp;#34;winmgmts:\ &amp;amp; strComputer &amp;amp; &amp;#34;&amp;#34;rootcimv2&amp;#34;&amp;#34;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+Set objWMIService = GetObject(&amp;#34;winmgmts:\\&amp;#34; &amp;amp; strComputer &amp;amp; &amp;#34;\root\cimv2&amp;#34;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -400,7 +400,10 @@ data-copied-label="Copied!"
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This sample is identified as a Loki variant since it shares code genes with other samples from the same malware family, seen in the process tree resulting from the execution of the file in a sandbox.&lt;/p&gt;
 &lt;p&gt;Next, you can view the TTPs with each technique mapped to the MITRE ATT&amp;amp;CK® framework. Also, the IoCs tab provides network information and hashes of the files that were dropped by the malware. All of this information can be downloaded in a CSV format.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig3.png" title="TTPs with MITRE ATT&amp;amp;CK® framework" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;TTPs with MITRE ATT&amp;amp;CK® framework&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Under TTPs, you can see that among the capabilities of this sample are that it collects identification information about the system and has information stealing capabilities. This makes sense considering that the sample shares most of its code with Loki, an information stealing malware. The information presented further supports the classification of the file as Loki.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2022/01/save-incident-response-time-intezer-analyze/images/fig4.png" title="IoCs extracted from the Loki sample can be used to detect similar threats which use the same domains." alt="" loading="lazy" /&gt;
@@ -677,7 +680,7 @@ infrastructure. In the event of an incident, the investigators would have to
 collaborate with all of the entities in this chain of dependencies, each with
 their own incident response approaches and methods. Once again, this
 prolongates the
-&lt;a href="https://intezer.com/blog/malware-analysis/save-incident-response-time-intezer-analyze/"target="_blank" rel="noopener"&gt;incident response time&lt;/a&gt;.&lt;/p&gt;
+&lt;a href="../../../2022/01/save-incident-response-time-intezer-analyze/"&gt;incident response time&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Service-Level Agreement (SLA)&lt;span class="hx:absolute hx:-mt-20" id="service-level-agreement-sla"&gt;&lt;/span&gt;
 &lt;a href="#service-level-agreement-sla" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When it comes to SLAs, important terms related to forensics are often missing.
 This is due to both the failure of CSPs to provide full transparency in this

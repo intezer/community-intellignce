@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Apt_china</title><link>https://research.intezer.com/tags/apt_china/</link><description>Recent content in Apt_china on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 16 Jan 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/apt_china/index.xml" rel="self" type="application/rss+xml"/><item><title>Weaponized Software Targets Chinese</title><link>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</link><pubDate>Thu, 16 Jan 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Apt_china</title><link>https://research.intezer.com/tags/apt_china/</link><description>Recent content in Apt_china on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 16 Jan 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/apt_china/index.xml" rel="self" type="application/rss+xml"/><item><title>Threat Bulletin: Weaponized Software Targets Chinese-Speaking Organizations</title><link>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</link><pubDate>Thu, 16 Jan 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/01/weaponized-software-targets-chinese/</guid><description>
 &lt;h2&gt;Overview of the Attack&lt;span class="hx:absolute hx:-mt-20" id="overview-of-the-attack"&gt;&lt;/span&gt;
 &lt;a href="#overview-of-the-attack" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Intezer Labs research team has identified a series of attacks targeting
 organizations in Chinese-speaking regions like Hong Kong, Taiwan, and China
@@ -35,7 +35,7 @@ for malware execution via the following steps:&lt;/p&gt;
 &lt;li&gt;Command-line Argument Parsing:
 &lt;ul&gt;
 &lt;li&gt;If the &lt;code&gt;/aut&lt;/code&gt; argument is present, the loader decrypts the registry path
-&lt;code&gt;Software\\DICKEXEPATH&lt;/code&gt; using XOR encryption and writes the down.exe path
+&lt;code&gt;Software\DICKEXEPATH&lt;/code&gt; using XOR encryption and writes the down.exe path
 to the registry (&lt;code&gt;HKEY_CURRENT_USER\Software\DICKEXEPATH&lt;/code&gt;). The loader then
 uses the
 &lt;a href="https://github.com/hasherezade/pe_to_shellcode/tree/a2458c96619b721677af0f9b906cd6a229364b4c"target="_blank" rel="noopener"&gt;pe_to_shellcode&lt;/a&gt;
@@ -363,7 +363,8 @@ operations.&lt;/p&gt;
 &lt;th&gt;Packet&lt;/th&gt;
 &lt;th&gt;Offset (Bytes)&lt;/th&gt;
 &lt;th&gt;Size (Bytes)&lt;/th&gt;
-&lt;th&gt;Field Description&lt;/th&gt;
+&lt;th&gt;Field&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
@@ -372,22 +373,26 @@ operations.&lt;/p&gt;
 &lt;td&gt;0-3&lt;/td&gt;
 &lt;td&gt;4&lt;/td&gt;
 &lt;td&gt;Packet size&lt;/td&gt;
+&lt;td&gt;Specifies the size of the packet.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;/td&gt;
 &lt;td&gt;4-7&lt;/td&gt;
 &lt;td&gt;4&lt;/td&gt;
 &lt;td&gt;ID&lt;/td&gt;
+&lt;td&gt;Identifies the operation or response.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;/td&gt;
 &lt;td&gt;8-11&lt;/td&gt;
 &lt;td&gt;4&lt;/td&gt;
 &lt;td&gt;Checksum&lt;/td&gt;
+&lt;td&gt;Validates the integrity of the header data.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Data&lt;/td&gt;
 &lt;td&gt;12+&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt;Command parameters&lt;/td&gt;
 &lt;td&gt;Contains the actual data or payload.&lt;/td&gt;
 &lt;/tr&gt;
@@ -836,7 +841,7 @@ three possible options:&lt;/p&gt;
 &lt;li&gt;&lt;strong&gt;Load configuration from the Registry and execute (executionType = 2)&lt;/strong&gt;: The
 function checks if the module is in memory. If not, it loads it again and
 retrieves additional data from
-HKEY_LOCAL_MACHINESoftwareMicrosoftIMEEX&lt;moduleID&gt;P, invoking the &amp;ldquo;Execute&amp;rdquo;
+&lt;code&gt;HKEY_LOCAL_MACHINE\Software\Microsoft\IMEEX\&amp;lt;moduleID&amp;gt;\P&lt;/code&gt;, invoking the &amp;ldquo;Execute&amp;rdquo;
 function. If successful, the module&amp;rsquo;s execution state is updated to prevent
 re-execution.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Load and execute with predefined values (executionType = 3)&lt;/strong&gt;: Similar to
@@ -1156,7 +1161,7 @@ comprehensive Djibouti implementation.&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypt the data&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;107&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="err"&gt;–&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# XOR the first byte with 0xF0 as part of the decryption&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="mh"&gt;0xF0&lt;/span&gt;
@@ -1170,7 +1175,7 @@ comprehensive Djibouti implementation.&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;struct&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpack_from&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;lt;I&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypted string starts at offset 8&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rstrip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x00′).decode(&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;latin1&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rstrip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x00&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;latin1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypt the string using XOR with 0xE6&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;chr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;ord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt; &lt;span class="mh"&gt;0xE6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -1863,7 +1868,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;</description></item><item><title>ChinaZ Updates Toolkit by Introducing New, Undetected Malware</title><link>https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</link><pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;ChinaZ is a Chinese cybercrime group and the author of several
-&lt;a href="https://www.botconf.eu//srv/htdocs/wp-content/uploads/2014/12/2014-2.10-Chinese-Chicken-Multiplatform-DDoS-Botnets.pdf"target="_blank" rel="noopener"&gt;DDoS malware&lt;/a&gt;.
+&lt;a href="https://www.botconf.eu/wp-content/uploads/2014/12/2014-2.10-Chinese-Chicken-Multiplatform-DDoS-Botnets.pdf"target="_blank" rel="noopener"&gt;DDoS malware&lt;/a&gt;.
 We have profiled this group in a
 &lt;a href="../../../2019/01/chinaz-relations"&gt;previous article&lt;/a&gt; discussing connections
 between ChinaZ and other Chinese threat actors.&lt;/p&gt;
@@ -2127,11 +2132,13 @@ that DDoSManager uses different DDoS attack methodologies than AmpManager.&lt;/p
 artifacts, which are some of the most popular malware families leveraged by
 ChinaZ.&lt;/p&gt;
 &lt;p&gt;The following is a small write up from a
-&lt;a href="https://www.novetta.com//srv/htdocs/wp-content/uploads/2015/06/NTRG_ElasticBotnetReport_06102015.pdf"target="_blank" rel="noopener"&gt;report by Novetta&lt;/a&gt;
+&lt;a href="https://www.novetta.com/wp-content/uploads/2015/06/NTRG_ElasticBotnetReport_06102015.pdf"target="_blank" rel="noopener"&gt;report by Novetta&lt;/a&gt;
 covering in detail the internals of BillGates malware.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig20.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;If we take a closer look, we can see that these two C++ classes are also used
 in DDoSManager:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig20.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig21.jpeg" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig22.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This reinforces the connection between these malware samples and the developers
 of Elknot/BillGates, and with respect to the ChinaZ umbrella, in addition to
 the connections explained previously.&lt;/p&gt;
@@ -2139,25 +2146,28 @@ the connections explained previously.&lt;/p&gt;
 persistence mechanisms. The techniques applied are the same ones covered in
 NewManager and AmpManager as previously mentioned. DDoSManager will use the
 name SingTool to masquerade itself:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig21.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig23.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Interface and performance information will be collected as with the previous
 samples. However, an additional thread will be launched.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig22.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig24.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This thread is in charge of listening for packets to then decode and parse them
 for CNC communication.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig23.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig25.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When we intercepted the network traffic we noticed that the traffic was
 encoded:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig24.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig26.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After analysis we observed that packets were encoded and decoded with a simple
 sub/xor algorithm. This algorithm is the following:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig25.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig27.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After applying this algorithm to each given packet, we can retrieve their plain
 text version. The following is the structure of each packet after decoding:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig26.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig28.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Furthermore, the command ID will be extracted from each packet in order to
 execute the desired task.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig27.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig29.jpeg" title="Command selection implementation in DDoSManager" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Command selection implementation in DDoSManager&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;DDoSManager supports a total of seven commands. These are the following:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -2207,15 +2217,15 @@ execute the desired task.&lt;/p&gt;
 &lt;/table&gt;
 &lt;p&gt;The malware sets a configuration file for the targets it will attempt to DDoS.
 This configuration file is located at /tmp/Cfg.9:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig28.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig30.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When a DDoS command is executed, a series of fields will be provided from the
 CNC packet in order to execute the command. These fields are clearly shown on a
 debug message in the binary:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig29.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig31.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;There are three different DDoS amplification algorithms supported. These are
 SYN, UDP, and DNS amplifications. Interestingly, in the analyzed samples of
 DDoSManager we found that the DNS amplification algorithm was not implemented.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig30.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig32.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have analyzed three new malware variants in which we have named NewManager,
 AmpManager, and DDoSManager.&lt;/p&gt;
@@ -2344,7 +2354,7 @@ was written by the same attacker.&lt;/p&gt;
 &lt;p&gt;After the module is successfully dropped, a service is created under the name Spooler or SessionEnv, depending upon your environment, which then loads the newly dropped module.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig9.png" alt="" loading="lazy" /&gt;
 The new module being run by the service allocates memory, reads the registry where the other payload is located, and then copies it to memory
-&lt;img src="images/fig10.png" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig10.png" alt="" loading="lazy" /&gt;
 &lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The next payload is executed, which decrypts another module and loads it. If we look at the memory of the next decrypted payload, we can see something that looks like a PE header without the MZ signature. From here, it is as simple as modifying the first two bytes to represent MZ and we have a valid PE file. (&lt;code&gt;f0d1f88c59a005312faad902528d60acbf9cd5a7b36093db8ca811f763e1292a&lt;/code&gt;)&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
@@ -2444,9 +2454,15 @@ called PLA Unit 61398.&lt;/p&gt;
 report):&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Infected function:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig4.png" title="Infected function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Infected function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Load and execute the payload code:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig5.png" title="Load and execute the payload code" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Load and execute the payload code&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After the embedded code is decrypted and executed, the next step is a PE
 (portable executable) file loader. A PE file loader basically emulates the
 process of what happens when you load an executable file on Windows. Data is
@@ -2458,7 +2474,10 @@ the address of the location of the module in memory, VirtualAlloc to create
 memory for somewhere to copy the memory, and in some cases, when not
 implemented, and memcpy to copy the buffer to the newly allocated memory
 region.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig6.png" title="The PE loader" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The PE loader&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After the module is copied to memory, to load it properly, the proper loading
 procedure is executed. The relocation table is read to adjust the module to the
 base address of the allocated memory region, the import table is read, the
@@ -2484,7 +2503,7 @@ by the C&amp;amp;Cs.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;#ccleaner malware DLL w/ IAT fix &lt;a href="https://t.co/FprmtmkV64"target="_blank" rel="noopener"&gt;https://t.co/FprmtmkV64&lt;/a&gt;
 &lt;a href="https://t.co/dgWiQVd31k"target="_blank" rel="noopener"&gt;https://t.co/dgWiQVd31k&lt;/a&gt; @TalosSecurity @malwrhunterteam
-pic.twitter.com/TxsbveFoHJ&amp;gt;&lt;/p&gt;
+pic.twitter.com/TxsbveFoHJ&lt;/p&gt;
 &lt;p&gt;— Jay Rosenberg (@jaytezer) September 18, 2017&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;

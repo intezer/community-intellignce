@@ -156,6 +156,42 @@ and classifies them using genetic code analysis technology.&lt;/li&gt;
 &lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig6.png" title="Endpoint scan on an infected machine" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Endpoint scan on an infected machine&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
+&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;3d483689f373a12f6f9607079b9cebb9 signed BazarBackdoor
+bcda9eed7688400b654b88e4f0bdb3f0 signed BazarBackdoor
+52a8527e0d7cd86b1d04ccc80eb6595e signed BazarBackdoor
+06118d290e54e106d0571234946c2e0d signed BazarBackdoor
+3578e96b72cba790179d546f11e045ca Bazar loader injecting a fileless payload
+1d528a2e1d0a097421e57f86ba04e79f BazarLoader written in Nim&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
+&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;ds45x1[.]com
+x57gc[.]com
+x55gc[.]com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;h2&gt;References&lt;span class="hx:absolute hx:-mt-20" id="references"&gt;&lt;/span&gt;
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/"target="_blank" rel="noopener"&gt;https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/&lt;/a&gt;&lt;/li&gt;
@@ -184,7 +220,7 @@ detection in VirusTotal at the time of this publication.&lt;/p&gt;
 campaigns dating back to 2012. The group&amp;rsquo;s malware mainly consists of
 coin-miners and adware botnets.&lt;/p&gt;
 &lt;p&gt;In a 2017
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;white paper&lt;/a&gt;
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;white paper&lt;/a&gt;
 summarizing Stantinko&amp;rsquo;s operations, researchers at ESET analyzed a Linux trojan
 proxy. Up until now, this was the only known Linux malware belonging to
 Stantinko.&lt;/p&gt;
@@ -303,7 +339,7 @@ previous variant.&lt;/p&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the C&amp;amp;C paths hint at some of Stantinko&amp;rsquo;s earlier campaigns
 based on
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;ESET&amp;rsquo;s research&lt;/a&gt;.
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;ESET&amp;rsquo;s research&lt;/a&gt;.
 An example of the hard coded paths is shown in Figure 7. The root directory
 name is kbdmai. &lt;code&gt;KDBMAI.dll&lt;/code&gt; is a malware filename used by Stantinko in 2012.
 Also, the malware&amp;rsquo;s C&amp;amp;C was hosted on &lt;code&gt;kdbmai[.]net&lt;/code&gt;. Another interesting
@@ -365,7 +401,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;</description></item><item><title>ChinaZ Updates Toolkit by Introducing New, Undetected Malware</title><link>https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</link><pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;ChinaZ is a Chinese cybercrime group and the author of several
-&lt;a href="https://www.botconf.eu//srv/htdocs/wp-content/uploads/2014/12/2014-2.10-Chinese-Chicken-Multiplatform-DDoS-Botnets.pdf"target="_blank" rel="noopener"&gt;DDoS malware&lt;/a&gt;.
+&lt;a href="https://www.botconf.eu/wp-content/uploads/2014/12/2014-2.10-Chinese-Chicken-Multiplatform-DDoS-Botnets.pdf"target="_blank" rel="noopener"&gt;DDoS malware&lt;/a&gt;.
 We have profiled this group in a
 &lt;a href="../../../2019/01/chinaz-relations"&gt;previous article&lt;/a&gt; discussing connections
 between ChinaZ and other Chinese threat actors.&lt;/p&gt;
@@ -629,11 +665,13 @@ that DDoSManager uses different DDoS attack methodologies than AmpManager.&lt;/p
 artifacts, which are some of the most popular malware families leveraged by
 ChinaZ.&lt;/p&gt;
 &lt;p&gt;The following is a small write up from a
-&lt;a href="https://www.novetta.com//srv/htdocs/wp-content/uploads/2015/06/NTRG_ElasticBotnetReport_06102015.pdf"target="_blank" rel="noopener"&gt;report by Novetta&lt;/a&gt;
+&lt;a href="https://www.novetta.com/wp-content/uploads/2015/06/NTRG_ElasticBotnetReport_06102015.pdf"target="_blank" rel="noopener"&gt;report by Novetta&lt;/a&gt;
 covering in detail the internals of BillGates malware.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig20.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;If we take a closer look, we can see that these two C++ classes are also used
 in DDoSManager:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig20.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig21.jpeg" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig22.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This reinforces the connection between these malware samples and the developers
 of Elknot/BillGates, and with respect to the ChinaZ umbrella, in addition to
 the connections explained previously.&lt;/p&gt;
@@ -641,25 +679,28 @@ the connections explained previously.&lt;/p&gt;
 persistence mechanisms. The techniques applied are the same ones covered in
 NewManager and AmpManager as previously mentioned. DDoSManager will use the
 name SingTool to masquerade itself:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig21.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig23.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Interface and performance information will be collected as with the previous
 samples. However, an additional thread will be launched.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig22.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig24.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This thread is in charge of listening for packets to then decode and parse them
 for CNC communication.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig23.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig25.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When we intercepted the network traffic we noticed that the traffic was
 encoded:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig24.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig26.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After analysis we observed that packets were encoded and decoded with a simple
 sub/xor algorithm. This algorithm is the following:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig25.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig27.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After applying this algorithm to each given packet, we can retrieve their plain
 text version. The following is the structure of each packet after decoding:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig26.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig28.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Furthermore, the command ID will be extracted from each packet in order to
 execute the desired task.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig27.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig29.jpeg" title="Command selection implementation in DDoSManager" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Command selection implementation in DDoSManager&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;DDoSManager supports a total of seven commands. These are the following:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -709,15 +750,15 @@ execute the desired task.&lt;/p&gt;
 &lt;/table&gt;
 &lt;p&gt;The malware sets a configuration file for the targets it will attempt to DDoS.
 This configuration file is located at /tmp/Cfg.9:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig28.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig30.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When a DDoS command is executed, a series of fields will be provided from the
 CNC packet in order to execute the command. These fields are clearly shown on a
 debug message in the binary:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig29.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig31.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;There are three different DDoS amplification algorithms supported. These are
 SYN, UDP, and DNS amplifications. Interestingly, in the analyzed samples of
 DDoSManager we found that the DNS amplification algorithm was not implemented.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig30.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig32.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have analyzed three new malware variants in which we have named NewManager,
 AmpManager, and DDoSManager.&lt;/p&gt;
@@ -795,7 +836,7 @@ different military and government entities inside Russia.&lt;/p&gt;
 &lt;p&gt;Russia is known to conduct a wide range of cyber espionage and sabotage
 operations for the last three decades. Beginning with the first publicly known
 attacks by
-&lt;a href="https://media.kasperskycontenthub.com//srv/htdocs/wp-content/uploads/sites/43/2018/03/07180251/Penquins_Moonlit_Maze_PDF_eng.pdf"target="_blank" rel="noopener"&gt;Moonlight Maze&lt;/a&gt;,
+&lt;a href="https://media.kasperskycontenthub.com/wp-content/uploads/sites/43/2018/03/07180251/Penquins_Moonlit_Maze_PDF_eng.pdf"target="_blank" rel="noopener"&gt;Moonlight Maze&lt;/a&gt;,
 in 1996, the
 &lt;a href="https://web.archive.org/web/20090221124901/http://articles.latimes.com/2008/nov/28/nation/na-cyberattack28"target="_blank" rel="noopener"&gt;Pentagon breach&lt;/a&gt;
 in 2008,
@@ -1053,8 +1094,8 @@ originated from the Pinch source code. Not only that several functions are
 mutual, but there are also mutual strings—as can be seen in the screenshots
 below.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig5.png" title="Figure 5: PinchDuke 0ce Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Figure 5: PinchDuke 0ce Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464&lt;/figcaption&gt;
+&lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig5.png" title="Figure 5: Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: Pinch Duke 0ce3bfa972ced61884ae7c1d77c7d4c45e17c7d767e669610cf2ef72b636b464&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2019/09/russian-apt-ecosystem/images/fig6.png" title="Figure 6: Black Energy 3cf46c68dccb989fbda3f853cc19025d39d38d9ea5786f4ae6a926677d6c5f62" alt="" loading="lazy" /&gt;
@@ -1081,7 +1122,7 @@ actors, but instead, was taken from a
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Potao Main Module &amp;lt;—&amp;gt; X-Agent&lt;span class="hx:absolute hx:-mt-20" id="potao-main-module--x-agent"&gt;&lt;/span&gt;
 &lt;a href="#potao-main-module--x-agent" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Both Potao’s main module sample from
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2015/07/Operation-Potao-Express_final_v2.pdf"target="_blank" rel="noopener"&gt;ESET&amp;rsquo;s publication&lt;/a&gt;
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2015/07/Operation-Potao-Express_final_v2.pdf"target="_blank" rel="noopener"&gt;ESET&amp;rsquo;s publication&lt;/a&gt;
 and X-Agent sample which was uncovered by
 &lt;a href="https://twitter.com/CNMF_VirusAlert"target="_blank" rel="noopener"&gt;USCYBERCOM&lt;/a&gt; share slightly similar PE
 Loader implementation. Due to the low percentage of shared code, we cannot call
@@ -1120,8 +1161,8 @@ Basically, this side-panel is a short identity-card of the entities on the map.&
 &lt;p&gt;The map and its data are available open-sourced in our repository and we are
 inviting you all to add more information and improve it.&lt;/p&gt;
 &lt;p&gt;Click here to open: &lt;a href="https://apt-ecosystem.com/russia/map/"target="_blank" rel="noopener"&gt;Russian APT Map&lt;/a&gt;&lt;/p&gt;
-&lt;h3&gt;Russian APT Map APT Scanning Tool&lt;span class="hx:absolute hx:-mt-20" id="russian-apt-map-apt-scanning-tool"&gt;&lt;/span&gt;
-&lt;a href="#russian-apt-map-apt-scanning-tool" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Having access to more than 3.5 million pieces of code that were shared between
+&lt;h3&gt;APT Scanning Tool&lt;span class="hx:absolute hx:-mt-20" id="apt-scanning-tool"&gt;&lt;/span&gt;
+&lt;a href="#apt-scanning-tool" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Having access to more than 3.5 million pieces of code that were shared between
 the Russian APT samples we gathered, allowed us to understand which unique
 genes are popular and more likely to be shared between samples, families, and
 actors. We used this knowledge to write a tool that can be used by
@@ -1131,7 +1172,9 @@ APTs.&lt;/p&gt;
 &lt;p&gt;The tool, which we named Russian APT Detector, is a set of YARA rules produced
 by Intezer’s platform. The rules contain byte-sequences of popular mutual code
 between one or more samples. We then wrapped it up in a binary to ease the use
-of the tool. The full ruleset can be found in our repository, and can be used
+of the tool. The full ruleset can be found in
+&lt;a href="https://github.com/ITAYC0HEN/APT-Ecosystem/tree/master/russia/detector"target="_blank" rel="noopener"&gt;our repository&lt;/a&gt;,
+and can be used
 freely using your favorite YARA scanner. Don’t hesitate to integrate this
 ruleset into your platform and toolset.&lt;/p&gt;
 &lt;p&gt;Click here to get:
@@ -1298,6 +1341,7 @@ it is known that Rocke Group has &lt;a href="https://imgur.com/a/H7YuWuj"target=
 domain for their crypto-mining operations. The following are some domains that
 correspond to their hardcoded IPs in Linux.GreedyAntd’s blacklist that have
 Rocke Group correlations:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/technical-analysis-cryptocurrency-mining-war-on-the-cloud/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have presented evidence that Pacha Group is targeting cloud-based
 environments and being especially aggressive towards Rocke Group. We have based

@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Apt_iran</title><link>https://research.intezer.com/tags/apt_iran/</link><description>Recent content in Apt_iran on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Aug 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/apt_iran/index.xml" rel="self" type="application/rss+xml"/><item><title>Prince of Persia the Sands of Foudre</title><link>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</link><pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Apt_iran</title><link>https://research.intezer.com/tags/apt_iran/</link><description>Recent content in Apt_iran on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Aug 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/apt_iran/index.xml" rel="self" type="application/rss+xml"/><item><title>Prince of Persia: The Sands of Foudre</title><link>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</link><pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the past couple years, Palo Alto Networks reported on the &amp;ldquo;Prince of Persia&amp;rdquo;
 malware campaign which is believed to be of Iranian origin and ongoing for more
@@ -133,7 +133,7 @@ versions.&lt;/p&gt;
 &lt;p&gt;In the previous versions, the DGA algorithm was calculated by the following
 algorithm (credit to &lt;a href="https://twitter.com/xedi25"target="_blank" rel="noopener"&gt;Esmid Idrizovic&lt;/a&gt;):&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;ToHex(CRC32(“NRV1” &amp;#43; year &amp;#43; month &amp;#43; week_number)) &amp;#43; (“.space”|”.net”|”.top”)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;ToHex(CRC32(&amp;#34;NRV1&amp;#34; &amp;#43; year &amp;#43; month &amp;#43; week_number)) &amp;#43; (&amp;#34;.space&amp;#34;|&amp;#34;.net&amp;#34;|&amp;#34;.top&amp;#34;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -149,7 +149,7 @@ data-copied-label="Copied!"
 with NRTV1 and .dynu.net was added as suffix to the domain making the algorithm
 now:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;ToHex(CRC32(“NRTV1” &amp;#43; year &amp;#43; month &amp;#43; week_number)) &amp;#43; (“.space”|”.net”|”.top”|”.dynu.net”)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;ToHex(CRC32(&amp;#34;NRTV1&amp;#34; &amp;#43; year &amp;#43; month &amp;#43; week_number)) &amp;#43; (&amp;#34;.space&amp;#34;|&amp;#34;.net&amp;#34;|&amp;#34;.top&amp;#34;|&amp;#34;.dynu.net&amp;#34;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -198,15 +198,15 @@ data-copied-label="Copied!"
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;185[.]61[.]154.26
 ns1[.]cf75d89b[.]space
 ns2[.]cf75d89b[.]space
-Week 32 (Aug 5) – fe19f97f[.]space
-Week 33 (Aug 12) – 891ec9e9[.]space
-Week 34 (Sept 2) – 177a5c4a[.]space
-Week 35 (Sept 9) – 607d6cdc[.]space
-Week 36 (Sept 16) – f8b65751[.]space
-Week 37 (Sept 23) – 8fb167c7[.]space
-Week 38 (Sept 30) – 1f0e7a56[.]space
-Week 39 (Oct 7) – 68094ac0[.]space
-Week 40 (Oct 14) – 1d8bfc20[.]space&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+Week 32 (Aug 5) - fe19f97f[.]space
+Week 33 (Aug 12) - 891ec9e9[.]space
+Week 34 (Sept 2) - 177a5c4a[.]space
+Week 35 (Sept 9) - 607d6cdc[.]space
+Week 36 (Sept 16) - f8b65751[.]space
+Week 37 (Sept 23) - 8fb167c7[.]space
+Week 38 (Sept 30) - 1f0e7a56[.]space
+Week 39 (Oct 7) - 68094ac0[.]space
+Week 40 (Oct 14) - 1d8bfc20[.]space&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"

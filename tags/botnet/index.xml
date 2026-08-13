@@ -11,7 +11,7 @@ detection in VirusTotal at the time of this publication.&lt;/p&gt;
 campaigns dating back to 2012. The group&amp;rsquo;s malware mainly consists of
 coin-miners and adware botnets.&lt;/p&gt;
 &lt;p&gt;In a 2017
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;white paper&lt;/a&gt;
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;white paper&lt;/a&gt;
 summarizing Stantinko&amp;rsquo;s operations, researchers at ESET analyzed a Linux trojan
 proxy. Up until now, this was the only known Linux malware belonging to
 Stantinko.&lt;/p&gt;
@@ -130,7 +130,7 @@ previous variant.&lt;/p&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the C&amp;amp;C paths hint at some of Stantinko&amp;rsquo;s earlier campaigns
 based on
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;ESET&amp;rsquo;s research&lt;/a&gt;.
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;ESET&amp;rsquo;s research&lt;/a&gt;.
 An example of the hard coded paths is shown in Figure 7. The root directory
 name is kbdmai. &lt;code&gt;KDBMAI.dll&lt;/code&gt; is a malware filename used by Stantinko in 2012.
 Also, the malware&amp;rsquo;s C&amp;amp;C was hosted on &lt;code&gt;kdbmai[.]net&lt;/code&gt;. Another interesting
@@ -192,7 +192,8 @@ data-copied-label="Copied!"
 &lt;/div&gt;</description></item><item><title>A Storm is Brewing: IPStorm Now Has Linux Malware</title><link>https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</guid><description>
 &lt;h2&gt;UPDATE NOVEMBER 2023: IPStorm Infrastructure Dismantled by FBI&lt;span class="hx:absolute hx:-mt-20" id="update-november-2023-ipstorm-infrastructure-dismantled-by-fbi"&gt;&lt;/span&gt;
 &lt;a href="#update-november-2023-ipstorm-infrastructure-dismantled-by-fbi" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The FBI today revealed US law enforcement&amp;rsquo;s dismantlement of a botnet proxy
-network, along with a guilty plea for the individual responsible for the botnet
+network, along with a &lt;a href="https://www.justice.gov/usao-pr/pr/russian-and-moldovan-national-pleads-guilty-operating-illegal-botnet-proxy-service"target="_blank" rel="noopener"&gt;guilty plea&lt;/a&gt;
+for the individual responsible for the botnet
 infrastructure which was associated with the IPStorm malware. This achievement
 is a significant milestone in ongoing efforts to combat cyber threats. The
 research team at Intezer assisted in the FBI&amp;rsquo;s case, sharing our findings and
@@ -732,7 +733,7 @@ infect known hosts which the server has connected to in the past.&lt;/p&gt;
 using &lt;a href="https://github.com/sibears/IDAGolangHelper"target="_blank" rel="noopener"&gt;IDAGolangHelper&lt;/a&gt;. This
 technique works by retrieving function definitions embedded within the Golang
 binary which are not removed by the strip command.&lt;/p&gt;
-&lt;p&gt;Once the malware is executed, it copies itself to &lt;code&gt;/tmp/seeint&lt;/code&gt; log and
+&lt;p&gt;Once the malware is executed, it copies itself to &lt;code&gt;/tmp/seeintlog&lt;/code&gt; and
 launches a second instance which commences its malicious operations. Each
 operation is implemented within its own goroutine:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/kaiji-new-chinese-linux-malware-turning-to-golang/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
@@ -835,7 +836,7 @@ f4a64ab3ffc0b4a94fd07a55565f24915b7a1aaec58454df5e47d8f8a2eec22a
 cu.versiondat[.]xyz
 1.versionday[.]xyz
 www.aresboot[.]xyz
-www.6×66[.]com
+www.6x66[.]com
 www.2s11[.]com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
@@ -924,7 +925,10 @@ this post, analyzing them and their interactions with one another.&lt;/p&gt;
 &lt;h3&gt;Initial Deployment Script:&lt;span class="hx:absolute hx:-mt-20" id="initial-deployment-script"&gt;&lt;/span&gt;
 &lt;a href="#initial-deployment-script" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When we spotted these undetected files in VirusTotal it seemed that among the
 uploaded artifacts there was a bash script along with a trojan implant binary.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/05/hiddenwasp-malware-targeting-linux-systems/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/05/hiddenwasp-malware-targeting-linux-systems/images/fig4.png" title="Initial Deployment Script" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Initial Deployment Script&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;We observed that these files were uploaded to VirusTotal using a path
 containing the name of a Chinese-based forensics company known as
 &lt;a href="http://www.china-forensic.com/ccfc/en/"target="_blank" rel="noopener"&gt;Shen Zhou Wang Yun Information Technology Co., Ltd&lt;/a&gt;.&lt;/p&gt;
@@ -1261,7 +1265,7 @@ wild.&lt;/p&gt;
 &lt;p&gt;Processes with a filepath residing in &lt;code&gt;/tmp/&lt;/code&gt;, &lt;code&gt;/usr/tmp&lt;/code&gt; or &lt;code&gt;/dev/shm&lt;/code&gt; will be
 killed. We concluded that the purpose of this aggressive behavior is intended
 to discover further miner processes or malware that were not covered in the
-initial miner process blacklist. JBOSS compromised servers&lt;/p&gt;
+initial miner process blacklist.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/02/technical-analysis-pacha-group/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;We have also noticed that some implants were checking for potential JBOSS
 compromised servers by attempting to access specific paths in order to detect
@@ -1410,7 +1414,7 @@ account that both of them have indicators that suggest they have Chinese
 origin.&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;This
-&lt;a href="https://intezer.com/blog/research/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/"target="_blank" rel="noopener"&gt;cryptominer use&lt;/a&gt;
+&lt;a href="../../../2021/01/a-rare-look-inside-a-cryptojacking-campaign-and-its-profit/"&gt;cryptominer use&lt;/a&gt;
 case is another example of an undetected Linux malware operating in the wild.
 After conducting more research we concluded that the approach of
 interconnecting all second-stagers to a manager (this being the main dropper)
@@ -1589,7 +1593,7 @@ labeled as BX.exe, which is a Gh0st RAT variant.&lt;/p&gt;
 discovered HFS panel shared the same CNC, we can associate both implants to be
 components of a single botnet targeting both Linux and Windows systems. This
 same scenario was presented by Avast researchers as the
-&lt;a href="https://www.botconf.eu//srv/htdocs/wp-content/uploads/2014/12/2014-2.10-Chinese-Chicken-Multiplatform-DDoS-Botnets.pdf"target="_blank" rel="noopener"&gt;Chinese Chicken&lt;/a&gt;
+&lt;a href="https://www.botconf.eu/wp-content/uploads/2014/12/2014-2.10-Chinese-Chicken-Multiplatform-DDoS-Botnets.pdf"target="_blank" rel="noopener"&gt;Chinese Chicken&lt;/a&gt;
 DDoS botnets by exposing a series of multi-platform Chinese DDoS tools.&lt;/p&gt;
 &lt;p&gt;After one day threat actors behind this botnet updated the HFS panel by
 uploading two ChinaZ.DDoSClient samples compiled for x86 and x86_64 systems
@@ -1600,7 +1604,9 @@ accordingly.&lt;/p&gt;
 &lt;p&gt;DDoSClient malware is a DDoS client known to be leveraged by ChinaZ. As an
 interesting fact about the progression of this threat actor group, at some
 point in time the source code of this client was hosted in GitHub, although
-DDosClient was originally code of ChinaZ. MalwareMustDie exposed this source
+DDosClient was originally code of ChinaZ.
+&lt;a href="http://blog.malwaremustdie.org/2015/06/the-elf-chinaz-reloaded.html"target="_blank" rel="noopener"&gt;MalwareMustDie&lt;/a&gt;
+exposed this source
 code and the actor’s identity. The actor behind this client was a student hired
 by ChinaZ.&lt;/p&gt;
 &lt;p&gt;Furthermore, we can find a compressed archive labeled as &amp;lsquo;Black Wolf Linux
@@ -1818,7 +1824,7 @@ relatively active threat actor group that is slowly evolving in sophistication
 even though it is not making many changes to its overall infrastructure from
 early stages. To reflect the most relevant relationships discussed in this blog
 we have decided to present them with the following diagram:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/01/chinaz-relations/images/fig38.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/01/chinaz-relations/images/fig39.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
 &lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;ChinaZ Gh0st RAT variant with ‘Mother360’ key:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
@@ -2125,23 +2131,26 @@ with a specific UPX variant.&lt;/p&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;In the related samples section we observe that the same UPX variant has been
 seen in previous Kaiten variants reported by MalwareMustDie.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig16.png" alt="" loading="lazy" /&gt; &lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig17.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig16.png" alt="" loading="lazy" /&gt; &lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig17.png" alt="" loading="lazy" /&gt; &lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After unpacking the sample we see that the unpacked &lt;em&gt;Muhstik&lt;/em&gt; implant shares
 genes with Tsunami based on code reuse. Tsunami and STDBot are known to be
 derived from an IRC bot malware family called Kaiten. Therefore, this
 connection shows that &lt;em&gt;Muhstik&lt;/em&gt; implants are also based on Kaiten.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig18.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig19.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This implant operates with different &lt;em&gt;IRC&lt;/em&gt; servers, implementing &lt;em&gt;SSH&lt;/em&gt;, &lt;em&gt;HTTP&lt;/em&gt;
 scanning functionalities, and multiple &lt;em&gt;DDoS&lt;/em&gt; features which extends the usual
 functionalities of regular Kaiten variants.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig19.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig20.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Based on Netlab360’s report we can assume that this botnet has been active
 since May 2018. However, when we analyze the username the botnet uses at some
 point in one of its IRC channels, we notice the date as a suffix. We believe
 this naming convention is used to track new variants among the botnet’s IRC
 channels. This sample’s fixed IRC username suggests the build was released one
 day after Netlab360 published its blog about &lt;em&gt;Muhstik&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig20.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig21.png" title="Origins of Muhstik phpMyAdmin Scanner" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Origins of Muhstik phpMyAdmin Scanner&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Origins of Muhstik phpMyAdmin Scanner&lt;span class="hx:absolute hx:-mt-20" id="origins-of-muhstik-phpmyadmin-scanner"&gt;&lt;/span&gt;
 &lt;a href="#origins-of-muhstik-phpmyadmin-scanner" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After researching this newer Muhstik variant, we noticed several other pieces
 of malware not related to Muhstik, but using a similar scanner.&lt;/p&gt;
@@ -2150,7 +2159,7 @@ borrows code from is an open-source project called Pnscan. Pnscan was written
 by Peter Eriksson, a computer systems manager from Linköping University,
 Sweden.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig21.png" title="Pnscan’s Github Repository" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig22.png" title="Pnscan’s Github Repository" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Pnscan’s Github Repository&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;It is important to understand that this Pnscan tool is not directly related to
@@ -2162,21 +2171,28 @@ abbreviation of Parallel Network Scanner.&lt;/p&gt;
 phpMyAdmin Scanner against Pnscan, we observe undeniable evidence that they
 share a common code base. We can see this based on function, string, and symbol
 naming similarities.&lt;/p&gt;
-&lt;p&gt;Portion of Pnscan’s main function section&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig22.png" title="Pnscan’s get_ip_range" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig23.png" title="Portion of Pnscan’s Main Function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Portion of Pnscan’s Main Function&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig24.png" title="Portion of Muhstick’s phpMyAdmin Main’s Function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Portion of Muhstick’s phpMyAdmin Main’s Function&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig25.png" title="Pnscan’s get_ip_range" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Pnscan’s get_ip_range&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig23.png" title="Muhstick’s phpMyAdmin Scanner get_ip_range Function" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig26.png" title="Muhstick’s phpMyAdmin Scanner get_ip_range Function" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Muhstick’s phpMyAdmin Scanner get_ip_range Function&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig24.png" title="Pnscan’s get_port_range Function" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig27.png" title="Pnscan’s get_port_range Function" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Pnscan’s get_port_range Function&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig25.png" title="Muhstick’s phpMyAdmin get_port_range" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2018/11/muhstik-botnet-reloaded-new-variants-targeting-phpmyadmin-servers/images/fig28.png" title="Muhstick’s phpMyAdmin get_port_range" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Muhstick’s phpMyAdmin get_port_range&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;

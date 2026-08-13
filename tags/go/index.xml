@@ -143,7 +143,7 @@ screenshot below shows the malware using the &lt;code&gt;Wait&lt;/code&gt; funct
 seconds before allocating 200 mb of garbage data.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Persistence is established by adding a new key entry with the name &lt;code&gt;Java-3DK&lt;/code&gt;
-to the registry key &lt;code&gt;SoftwareMicrosoftWindowsCurrentVersionRun&lt;/code&gt;. After this,
+to the registry key &lt;code&gt;Software\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt;. After this,
 the malware checks if a new binary exists by comparing its MD5 hash with a hash
 from the server. If no update is needed, it downloads the other two components.&lt;/p&gt;
 &lt;p&gt;The downloader has some 3rd party libraries, whose metadata are listed in the
@@ -240,7 +240,7 @@ IP address, hostname, username, etc. In addition to the heartbeat message, the
 malware starts the &amp;ldquo;command&amp;rdquo; loop that checks for new commands to execute every
 3 seconds. If a command is received it executes it by spawning a PowerShell
 instance by executing
-&lt;code&gt;%windir%\SysWOW64\Windows\PowerShell\v1.0\powershell.exe&lt;/code&gt; and returns the
+&lt;code&gt;%windir%\SysWOW64\WindowsPowerShell\v1.0\powershell.exe&lt;/code&gt; and returns the
 result to the C2 server.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;service Implant {
@@ -364,8 +364,8 @@ C7051e88ae43c1bd4b869cf18280ec5e
 40b42005e9cfc5ea2a7cfc1ced975cbb
 Fbe3cb4dfce740c3728c459b853e4249 (email submitted and target Romania)
 Paths
-%HOME%AppDataLocalTempBase-Update.exe
-%HOME%.java-sdk&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+%HOME%\AppData\Local\Temp\Base-Update.exe
+%HOME%\.java-sdk&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"

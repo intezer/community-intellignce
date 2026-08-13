@@ -181,7 +181,7 @@ data-copied-label="Copied!"
 codebase is new, the malware consistently shares TTPs used by the WildCard
 threat actor in both SysJoker and its variants. The name of the malware is
 derived from the developers, as evidenced by a leftover PDB path:&lt;/p&gt;
-&lt;p&gt;– &lt;code&gt;C:\Code\Rust\Rust\Down-Belal\target\release\deps\RustDown.pdb&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;– &lt;code&gt;C:\Code\Rust\RustDown-Belal\target\release\deps\RustDown.pdb&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2023/11/wildcard-evolution-of-sysjoker-cyber-threat/images/fig5.png" title="RustDown PDB file path." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;RustDown PDB file path.&lt;/figcaption&gt;
@@ -364,7 +364,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;p&gt;The response is encoded using Base64 and XOR-ed with the same key that was used
 in the previous step. The decrypted result is the IP address of the C2:
-&lt;code&gt;{&amp;quot;url&amp;quot;:&amp;quot;http://85.31.231[.]49:443″}&lt;/code&gt;. During our investigation, we did not
+&lt;code&gt;{&amp;quot;url&amp;quot;:&amp;quot;http://85.31.231[.]49:443&amp;quot;}&lt;/code&gt;. During our investigation, we did not
 find other C2 domains that were served by this OneDrive link.&lt;/p&gt;
 &lt;p&gt;Next, the malware communicates with the C2 using the HTTP protocol. The URL is
 formatted in the following way: &lt;code&gt;&amp;lt;C2 domain&amp;gt;/api/&amp;lt;command&amp;gt;&lt;/code&gt;. In RustDown, we
@@ -426,7 +426,7 @@ latter was an attack that targeted the Israeli Electric Corporation (IEC) in
 2016-2017. In both cases, the following specific string is deobfuscated during
 execution and used to establish persistence.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-powershell" data-lang="powershell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;powershell&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34; -Command \&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$reg&lt;/span&gt;&lt;span class="p"&gt;=[&lt;/span&gt;&lt;span class="no"&gt;WMIClass&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ROOT\\DEFAULT:StdRegProv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="nv"&gt;$results&lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$reg&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="py"&gt;SetStringValue&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;amp;H80000001&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Software\\Microsoft\\Windows\\CurrentVersion\\Run&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;process&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;,&lt;/span&gt; &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-powershell" data-lang="powershell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s2"&gt;&amp;#34;powershell&amp;#34;&lt;/span&gt; &lt;span class="n"&gt;-Command&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$reg&lt;/span&gt;&lt;span class="s2"&gt;=[WMIClass]&amp;#39;ROOT\DEFAULT:StdRegProv&amp;#39;;&lt;/span&gt;&lt;span class="nv"&gt;$results&lt;/span&gt;&lt;span class="s2"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$reg&lt;/span&gt;&lt;span class="s2"&gt;.SetStringValue(&amp;#39;&amp;amp;H80000001&amp;#39;,&amp;#39;Software\Microsoft\Windows\CurrentVersion\Run&amp;#39;, &amp;lt;process&amp;gt;, &amp;lt;path&amp;gt; &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"

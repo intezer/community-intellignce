@@ -1,7 +1,8 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Machos</title><link>https://research.intezer.com/tags/machos/</link><description>Recent content in Machos on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 01 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/machos/index.xml" rel="self" type="application/rss+xml"/><item><title>A Storm is Brewing: IPStorm Now Has Linux Malware</title><link>https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/10/a-storm-is-brewing-ipstorm-now-has-linux-malware/</guid><description>
 &lt;h2&gt;UPDATE NOVEMBER 2023: IPStorm Infrastructure Dismantled by FBI&lt;span class="hx:absolute hx:-mt-20" id="update-november-2023-ipstorm-infrastructure-dismantled-by-fbi"&gt;&lt;/span&gt;
 &lt;a href="#update-november-2023-ipstorm-infrastructure-dismantled-by-fbi" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The FBI today revealed US law enforcement&amp;rsquo;s dismantlement of a botnet proxy
-network, along with a guilty plea for the individual responsible for the botnet
+network, along with a &lt;a href="https://www.justice.gov/usao-pr/pr/russian-and-moldovan-national-pleads-guilty-operating-illegal-botnet-proxy-service"target="_blank" rel="noopener"&gt;guilty plea&lt;/a&gt;
+for the individual responsible for the botnet
 infrastructure which was associated with the IPStorm malware. This achievement
 is a significant milestone in ongoing efforts to combat cyber threats. The
 research team at Intezer assisted in the FBI&amp;rsquo;s case, sharing our findings and

@@ -470,7 +470,10 @@ attackers, and that it&amp;rsquo;s not being analyzed or debugged. If any of the
 fail, the malware will exit immediately, without deleting itself, likely as an
 anti-analysis method not to raise suspicion. The main function flow graph is
 presented below:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig6.png" title="Overview of main payload function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Overview of main payload function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;In case the malware&amp;rsquo;s payload is executed, the malware will delete itself
 immediately afterwards.&lt;/p&gt;
 &lt;h2&gt;Part of a Targeted Attack Chain&lt;span class="hx:absolute hx:-mt-20" id="part-of-a-targeted-attack-chain"&gt;&lt;/span&gt;
@@ -500,7 +503,7 @@ used in ransomware.&lt;/p&gt;
 the familiar resolve-by-hash method to obtain the function addresses.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;It&amp;rsquo;s also worth noting that the
-&lt;a href="https://intezer.com/blog/research/acbackdoor-analysis-of-a-new-multiplatform-backdoor/"target="_blank" rel="noopener"&gt;malware uses low level Windows&lt;/a&gt;
+&lt;a href="../../../2019/11/acbackdoor-analysis-of-a-new-multiplatform-backdoor/"&gt;malware uses low level Windows&lt;/a&gt;
 API functions in ntdll.dll for most of its functionality—with some exceptions
 from kernel32.dll and advapi32.dll—notably for file manipulation. The malware
 also does not use the Windows Crypto API functions, instead relying on the
@@ -557,7 +560,10 @@ author. The lines of similarity are evident:&lt;/p&gt;
 identical evasion and anti-analysis methods&lt;/li&gt;
 &lt;li&gt;Identical string encoding and decoding methods&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/11/purelocker-ransomware-being-used-in-targeted-attacks-against-servers/images/fig10.png" title="COM Server DLL components written in PureBasic" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;COM Server DLL components written in PureBasic&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;These findings strongly suggest that the MaaS provider of &amp;ldquo;more_eggs&amp;rdquo; has added
 a new malware kit to its offerings, by modifying the &amp;ldquo;more_eggs&amp;rdquo; loader&amp;rsquo;s
 payload from a JScript backdoor to a ransomware.&lt;/p&gt;
@@ -630,7 +636,10 @@ technical analysis of the malware and the investigation of the entire campaign.&
 &lt;li&gt;&lt;a href="https://analyze.intezer.com/#/files/3d7ebe73319a3435293838296fbb86c2e920fd0ccc9169285cc2c4d7fa3f120d"target="_blank" rel="noopener"&gt;ARM variant&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://analyze.intezer.com/#/files/076a6fa4e051c061e19b9e3e37da9c63a9bc7c1a99111ac13b32eb2f70b7fa5c"target="_blank" rel="noopener"&gt;x86 variant&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig1.png" title="QNAPCrypt malware" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;QNAPCrypt malware&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;How the Ransomware Works&lt;span class="hx:absolute hx:-mt-20" id="how-the-ransomware-works"&gt;&lt;/span&gt;
 &lt;a href="#how-the-ransomware-works" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The QNAPCrypt ransomware works similarly to other ransomware, including
 encrypting all files and delivering a ransom note. However, there are several
@@ -651,7 +660,10 @@ encryption.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2&gt;How We Seized the Campaign&lt;span class="hx:absolute hx:-mt-20" id="how-we-seized-the-campaign"&gt;&lt;/span&gt;
-&lt;a href="#how-we-seized-the-campaign" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src="images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;a href="#how-we-seized-the-campaign" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig2.jpg" title="QNAPCrypt ransomware" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;QNAPCrypt ransomware&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;In order to further research the malware and its operation, we wrote a script
 to simulate infections on a wide scale to see how the wallet generation
 mechanism worked in the attackers’ back end.&lt;/p&gt;
@@ -697,7 +709,7 @@ section, we will be able to reconstruct symbol names and offsets. This
 methodology is illustrated in the following diagram:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;For further insights into populating function names in Go binaries we highly
-recommend to view Tim Strazzere’s presentation and scripts in GitHub which
+recommend to view Tim Strazzere’s presentation and &lt;a href="https://github.com/strazzere/golang_loader_assist"target="_blank" rel="noopener"&gt;scripts in GitHub&lt;/a&gt; which
 document this technique.&lt;/p&gt;
 &lt;p&gt;After retrieving Go function names, analyzing the binary becomes much less
 complex since we can highlight the relevant functions of the application. Let’s
@@ -710,7 +722,10 @@ compromised and that system locking is taking place:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After sending this GET request, the malware will attempt to retrieve victim
 keys configuration using a client for the SOCKS proxy protocol version 5.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig7.png" title="SOCKS proxy protocol version 5" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;SOCKS proxy protocol version 5&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This proxy will request to connect to an onion domain name. The following
 represents the relevant packets for this connection:&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
@@ -724,7 +739,10 @@ artifacts seem to be retrieved based on a specific campaign ID.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After victim configuration has been retrieved, the malware will proceed to
 remove itself and then it will parse the retrieved RSA public key.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/seizing-15-active-ransomware-campaigns-targeting-linux-file-storage-servers/images/fig11.png" title="RSA public key" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;RSA public key&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;This RSA public key will be used to encrypt a random sequence of bytes that
 would be used to encrypt the file system later on. This encrypted key will be
 base64 encoded and it will be written at the end of the ransom note file called
@@ -955,7 +973,10 @@ take a deeper look.&lt;/p&gt;
 &lt;a href="#code-reuse-analysis-of-hermes-21" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When examining new binaries, the first step we take in our research is to take
 the binary and upload it to our Intezer Analyze™ system in order to identify
 code reuse.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig1.jpg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig1.jpg" title="Code Reuse Analysis of Hermes" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code Reuse Analysis of Hermes&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Here we can see some code reuse between the Hermes samples that were originally
 discovered as well as the latest sample. Since the sample came out mostly
 unique — indicating that much of the binary has changed — we were still able to

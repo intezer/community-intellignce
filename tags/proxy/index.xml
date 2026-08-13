@@ -11,7 +11,7 @@ detection in VirusTotal at the time of this publication.&lt;/p&gt;
 campaigns dating back to 2012. The group&amp;rsquo;s malware mainly consists of
 coin-miners and adware botnets.&lt;/p&gt;
 &lt;p&gt;In a 2017
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;white paper&lt;/a&gt;
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;white paper&lt;/a&gt;
 summarizing Stantinko&amp;rsquo;s operations, researchers at ESET analyzed a Linux trojan
 proxy. Up until now, this was the only known Linux malware belonging to
 Stantinko.&lt;/p&gt;
@@ -130,7 +130,7 @@ previous variant.&lt;/p&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Interestingly, the C&amp;amp;C paths hint at some of Stantinko&amp;rsquo;s earlier campaigns
 based on
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;ESET&amp;rsquo;s research&lt;/a&gt;.
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2017/07/eset_stantinko_whitepaper_final.pdf"target="_blank" rel="noopener"&gt;ESET&amp;rsquo;s research&lt;/a&gt;.
 An example of the hard coded paths is shown in Figure 7. The root directory
 name is kbdmai. &lt;code&gt;KDBMAI.dll&lt;/code&gt; is a malware filename used by Stantinko in 2012.
 Also, the malware&amp;rsquo;s C&amp;amp;C was hosted on &lt;code&gt;kdbmai[.]net&lt;/code&gt;. Another interesting

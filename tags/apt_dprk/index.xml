@@ -30,7 +30,10 @@ reveal where we got the name CasperTroy from. The reused strings are in general
 Lazarus samples used throughout different cyber campaigns, Operation Troy, a
 Lazarus cyber campaign beginning in 2011, and Prioxer, another tool in their
 arsenal.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig3.png" title="Lazarus String" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Lazarus String&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;We see the same overlap of strings and decided to search &lt;code&gt;7d414e351603fa&lt;/code&gt; on
 Google, resulting in only 7 results, which will bring us to the next topic of
 this research – where did DPRK’s malware toolset originate?&lt;/p&gt;
@@ -81,8 +84,8 @@ third example below.&lt;/p&gt;
 &lt;img src="https://research.intezer.com/blog/2018/10/paleontology-the-unknown-origins-of-lazarus-malware/images/fig12.png" title="Various Lazarus samples" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Various Lazarus samples&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
-&lt;h2&gt;Conslusion&lt;span class="hx:absolute hx:-mt-20" id="conslusion"&gt;&lt;/span&gt;
-&lt;a href="#conslusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Although there are many modifications Lazarus made to CasperPhpTrojan, the base
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Although there are many modifications Lazarus made to CasperPhpTrojan, the base
 is primarily the same and we believe that when the source code is compiled
 under the correct environment with the correct flags, we can find even more
 correlations between the compiled code and Lazarus binaries. It looks like it
@@ -386,7 +389,10 @@ share more code, making them closer variants.&lt;/p&gt;
 &lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig7.png" title="Code overlap in a NavRAT sample" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Code overlap in a NavRAT sample&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/08/examining-code-reuse-reveals-undiscovered-links-among-north-koreas-malware-families/images/fig8.png" title="Code overlap in a NavRAT sample" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code overlap in a NavRAT sample&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;Unique net share&lt;span class="hx:absolute hx:-mt-20" id="unique-net-share"&gt;&lt;/span&gt;
 &lt;a href="#unique-net-share" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The third example, responsible for launching a cmd.exe with a net share, has
 been seen in 2009’s Brambul, also known as SierraBravo, as well as KorDllBot in
@@ -525,7 +531,10 @@ take a deeper look.&lt;/p&gt;
 &lt;a href="#code-reuse-analysis-of-hermes-21" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When examining new binaries, the first step we take in our research is to take
 the binary and upload it to our Intezer Analyze™ system in order to identify
 code reuse.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig1.jpg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2018/02/another-distraction-new-version-north-korean-ransomware-hermes/images/fig1.jpg" title="Code Reuse Analysis of Hermes" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Code Reuse Analysis of Hermes&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Here we can see some code reuse between the Hermes samples that were originally
 discovered as well as the latest sample. Since the sample came out mostly
 unique — indicating that much of the binary has changed — we were still able to
@@ -571,7 +580,7 @@ well known Blockbuster campaign and connections between other malware
 attributed to the Lazarus group, a cyber threat organization attributed to
 North Korea. You can read about excellent research on Lazarus and the
 Blockbuster campaign by looking at reports by
-&lt;a href="https://www.operationblockbuster.com//srv/htdocs/wp-content/uploads/2016/02/Operation-Blockbuster-Report.pdf"target="_blank" rel="noopener"&gt;Novetta&lt;/a&gt;,
+&lt;a href="https://www.operationblockbuster.com/wp-content/uploads/2016/02/Operation-Blockbuster-Report.pdf"target="_blank" rel="noopener"&gt;Novetta&lt;/a&gt;,
 &lt;a href="https://securelist.com/operation-blockbuster-revealed/73914/"target="_blank" rel="noopener"&gt;Kaspersky&lt;/a&gt;, and
 &lt;a href="https://researchcenter.paloaltonetworks.com/2017/11/unit42-operation-blockbuster-goes-mobile/"target="_blank" rel="noopener"&gt;Palo Alto&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The Lazarus group has been responsible for different campaigns and variations

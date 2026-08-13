@@ -342,7 +342,7 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;Execution&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0002/"target="_blank" rel="noopener"&gt;Execution&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1059/001/"target="_blank" rel="noopener"&gt;T1059.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1059/001/"target="_blank" rel="noopener"&gt;PowerShell&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
@@ -357,7 +357,7 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1047/"target="_blank" rel="noopener"&gt;Windows Management Instrumentation&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Persistence&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0003/"target="_blank" rel="noopener"&gt;Persistence&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1547/001/"target="_blank" rel="noopener"&gt;T1547.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1547/001/"target="_blank" rel="noopener"&gt;Registry Run Keys / Startup Folder&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
@@ -382,12 +382,12 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1053/005/"target="_blank" rel="noopener"&gt;Scheduled Task&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Privilege Escalation&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0004/"target="_blank" rel="noopener"&gt;Privilege Escalation&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1548/002/"target="_blank" rel="noopener"&gt;T1548.002&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1548/002/"target="_blank" rel="noopener"&gt;Bypass User Account Control&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Defense Evasion&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0005/"target="_blank" rel="noopener"&gt;Defense Evasion&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1562/001/"target="_blank" rel="noopener"&gt;T1562.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1562/001/"target="_blank" rel="noopener"&gt;Disable or Modify Tools&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
@@ -397,12 +397,12 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1070/004/"target="_blank" rel="noopener"&gt;File Deletion&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Credential Access&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0006/"target="_blank" rel="noopener"&gt;Credential Access&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1003/001/"target="_blank" rel="noopener"&gt;T1003.001&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1003/001/"target="_blank" rel="noopener"&gt;LSASS Memory&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Discovery&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0007/"target="_blank" rel="noopener"&gt;Discovery&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1082/"target="_blank" rel="noopener"&gt;T1082&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1082/"target="_blank" rel="noopener"&gt;System Information Discovery&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
@@ -417,7 +417,7 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1018/"target="_blank" rel="noopener"&gt;Remote System Discovery&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Command and Control&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://attack.mitre.org/tactics/TA0011/"target="_blank" rel="noopener"&gt;Command and Control&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1571/"target="_blank" rel="noopener"&gt;T1571&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;&lt;a href="https://attack.mitre.org/techniques/T1571/"target="_blank" rel="noopener"&gt;Non-Standard Port&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
@@ -558,7 +558,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;h3&gt;Installation&lt;span class="hx:absolute hx:-mt-20" id="installation"&gt;&lt;/span&gt;
 &lt;a href="#installation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When the binary is run, it installs itself into a folder. The Windows version&amp;rsquo;s
-location is &lt;code&gt;%SystemDrive%WindowsDefenderMsMpEng.exe&lt;/code&gt; while the Linux version
+location is &lt;code&gt;%SystemDrive%\Windows\Defender\MsMpEng.exe&lt;/code&gt; while the Linux version
 is &lt;code&gt;$HOME/.config/polkitd/polkitd&lt;/code&gt;. This will result in the malware being
 installed under &lt;code&gt;/root&lt;/code&gt; if it&amp;rsquo;s being run with root privileges.&lt;/p&gt;
 &lt;p&gt;After the malware has installed itself, it checks if the persistence method has
@@ -667,8 +667,8 @@ and an email address of &amp;ldquo;&lt;a href="mailto:a@a.a"&gt;a@a.a&lt;/a&gt;&
 &lt;p&gt;The key is stored and written to disk. The Linux version of HabitsRAT writes to
 &lt;code&gt;$HOME/.config/.accounts-daemon/accounts-daemon.login.conf&lt;/code&gt; if it is running as
 a normal user or to &lt;code&gt;/usr/share/accounts-daemon/accounts-daemon.so&lt;/code&gt;. The
-Windows version uses &lt;code&gt;%SystemDrive%WindowsDefenderMsMpEng.dll&lt;/code&gt; or
-&lt;code&gt;%APPDATA%Windows NTDefenderMsMpEng.dll&lt;/code&gt; instead.&lt;/p&gt;
+Windows version uses &lt;code&gt;%SystemDrive%\Windows\Defender\MsMpEng.dll&lt;/code&gt; or
+&lt;code&gt;%APPDATA%\Windows NT\Defender\MsMpEng.dll&lt;/code&gt; instead.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2021/04/habitsrat-used-to-target-linux-and-windows-servers/images/fig2.png" title="Figure 2: Generation of public-private key pair using the open-source library from Proton Mail." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 2: Generation of public-private key pair using the open-source library from Proton Mail.&lt;/figcaption&gt;
@@ -1446,7 +1446,10 @@ unique pieces of code created by the malware’s authors.&lt;/p&gt;
 &lt;a href="#mysterious-magic-number" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After filtering out all of the common and library code, we were left with
 several unique functions that can be found in every version of the malware
 since 2007. The most prominent is the following function:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig2.png" title="Mysterious magic number" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Mysterious magic number&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;In the picture you can see the two, almost identical functions from the first
 version (Ch 1.0) on the right and the latest version (Ch 3.26) of Agent.BTZ on
 the left. This function is initially reading first four bytes of a given file,
@@ -1548,8 +1551,8 @@ due to GDATA’s 2014 publications.
 &lt;li&gt;Config &amp;amp; Log Files&lt;/li&gt;
 &lt;li&gt;Same 512 bytes encryption key as 3.26&lt;/li&gt;
 &lt;li&gt;Different file paths:&lt;/li&gt;
-&lt;li&gt;config: %appdata%MicrosoftWindowsPrivacIEHighdesktop.ini&lt;/li&gt;
-&lt;li&gt;log: %appdata%MicrosoftWindowsPrivacIEHighindex.dat&lt;/li&gt;
+&lt;li&gt;config: &lt;code&gt;%appdata%\Microsoft\Windows\PrivacIE\High\desktop.ini&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;log: &lt;code&gt;%appdata%\Microsoft\Windows\PrivacIE\High\index.dat&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="indicators-of-compromise"&gt;&lt;/span&gt;
 &lt;a href="#indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
@@ -1723,7 +1726,7 @@ can see in this
 &lt;p&gt;Once finished, the dropper renames and self delete using the following command
 line:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;C:\WINDOWS\system32\rundll32.exe C:\DOCUME~1\&amp;lt;USER&amp;gt;~1\APPLIC~1\MICROS~1\Windowsstdole2.tlb,UnInstall C:\~$.tmp&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C:\WINDOWS\system32\rundll32.exe C:\DOCUME~1\&amp;lt;USER&amp;gt;~1\APPLIC~1\MICROS~1\Windows\stdole2.tlb,UnInstall C:\~$.tmp&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Samples found:&lt;/p&gt;
 &lt;ul&gt;
@@ -1756,7 +1759,7 @@ the following screenshot:&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;Both of these files were uploaded almost three years ago to VT(!)&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="images3.png" title="A screenshot from the Intezer Analyze™ product displaying a list of files in our database that share pieces of code with one of the new samples. These pieces of code are specific to the Turla malware family, and were not seen in any other malicious or legitimate software." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/08/new-variants-of-agent-btz-comrat-found/images/fig3.png" title="A screenshot from the Intezer Analyze™ product displaying a list of files in our database that share pieces of code with one of the new samples. These pieces of code are specific to the Turla malware family, and were not seen in any other malicious or legitimate software." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;A screenshot from the Intezer Analyze™ product displaying a list of files in our database that share pieces of code with one of the new samples. These pieces of code are specific to the Turla malware family, and were not seen in any other malicious or legitimate software.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Samples found:&lt;/p&gt;

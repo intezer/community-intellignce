@@ -183,7 +183,8 @@ operations.&lt;/p&gt;
 &lt;th&gt;Packet&lt;/th&gt;
 &lt;th&gt;Offset (Bytes)&lt;/th&gt;
 &lt;th&gt;Size (Bytes)&lt;/th&gt;
-&lt;th&gt;Field Description&lt;/th&gt;
+&lt;th&gt;Field&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
@@ -192,22 +193,26 @@ operations.&lt;/p&gt;
 &lt;td&gt;0-3&lt;/td&gt;
 &lt;td&gt;4&lt;/td&gt;
 &lt;td&gt;Packet size&lt;/td&gt;
+&lt;td&gt;Specifies the size of the packet.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;/td&gt;
 &lt;td&gt;4-7&lt;/td&gt;
 &lt;td&gt;4&lt;/td&gt;
 &lt;td&gt;ID&lt;/td&gt;
+&lt;td&gt;Identifies the operation or response.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;/td&gt;
 &lt;td&gt;8-11&lt;/td&gt;
 &lt;td&gt;4&lt;/td&gt;
 &lt;td&gt;Checksum&lt;/td&gt;
+&lt;td&gt;Validates the integrity of the header data.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Data&lt;/td&gt;
 &lt;td&gt;12+&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
 &lt;td&gt;Command parameters&lt;/td&gt;
 &lt;td&gt;Contains the actual data or payload.&lt;/td&gt;
 &lt;/tr&gt;
@@ -656,7 +661,7 @@ three possible options:&lt;/p&gt;
 &lt;li&gt;&lt;strong&gt;Load configuration from the Registry and execute (executionType = 2)&lt;/strong&gt;: The
 function checks if the module is in memory. If not, it loads it again and
 retrieves additional data from
-HKEY_LOCAL_MACHINESoftwareMicrosoftIMEEX&lt;moduleID&gt;P, invoking the &amp;ldquo;Execute&amp;rdquo;
+&lt;code&gt;HKEY_LOCAL_MACHINE\Software\Microsoft\IMEEX\&amp;lt;moduleID&amp;gt;\P&lt;/code&gt;, invoking the &amp;ldquo;Execute&amp;rdquo;
 function. If successful, the module&amp;rsquo;s execution state is updated to prevent
 re-execution.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Load and execute with predefined values (executionType = 3)&lt;/strong&gt;: Similar to
@@ -976,7 +981,7 @@ comprehensive Djibouti implementation.&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypt the data&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;107&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="err"&gt;–&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# XOR the first byte with 0xF0 as part of the decryption&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="mh"&gt;0xF0&lt;/span&gt;
@@ -990,7 +995,7 @@ comprehensive Djibouti implementation.&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;struct&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unpack_from&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;lt;I&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypted string starts at offset 8&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rstrip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x00′).decode(&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;latin1&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data_buffer&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rstrip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;b&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;x00&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;latin1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="c1"&gt;# Decrypt the string using XOR with 0xE6&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;chr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;ord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;^&lt;/span&gt; &lt;span class="mh"&gt;0xE6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;decrypted_string&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -1332,6 +1337,10 @@ malware being used in attacks in the wild.&lt;/p&gt;
 &lt;a href="#technical-analysis-of-lightning-framework" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The framework consists of a downloader and core module, with a number of
 plugins. Some of the plugins used by the malware are open-source tools. Below
 is a figure of the framework layout:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig1.jpeg" title="Diagram of the Lightning Framework layout: the downloader and core module with their plugins." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Diagram of the Lightning Framework layout: the downloader and core module with their plugins.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Overview of the Modules&lt;span class="hx:absolute hx:-mt-20" id="overview-of-the-modules"&gt;&lt;/span&gt;
 &lt;a href="#overview-of-the-modules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
 &lt;thead&gt;
@@ -1393,7 +1402,7 @@ is a figure of the framework layout:&lt;/p&gt;
 &lt;a href="#lightningdownloader" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The main function of the downloader module is to fetch the other components and
 execute the core module.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig1.png" title="Lightning Downloader result in Intezer Analyze" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig2.png" title="Lightning Downloader result in Intezer Analyze" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Lightning Downloader result in Intezer Analyze&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The downloader module starts by checking if it is located in the working
@@ -1405,7 +1414,7 @@ itself to that working directory and execute that copy. The downloader will
 fingerprint the host name and network adapters to generate a GUID, which will
 be sent to the command and control (C2) server.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig2.png" title="Building the GUID" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig3.png" title="Building the GUID" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Building the GUID&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The downloader will then contact the C2 to fetch the following modules and
@@ -1419,14 +1428,14 @@ plugins:&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;Lightning.Core&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig3.png" title="Resources fetched from the C2" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig4.png" title="Resources fetched from the C2" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Resources fetched from the C2&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The method of contacting the C2 will be described below in the malleable C2
 section (click here to jump to that section). The downloader will then execute
 the core module (&lt;code&gt;kkdmflush&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig4.png" title="Execution of the core module" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig5.png" title="Execution of the core module" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Execution of the core module&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Lightning.Core&lt;span class="hx:absolute hx:-mt-20" id="lightningcore"&gt;&lt;/span&gt;
@@ -1438,7 +1447,7 @@ under the radar.&lt;/p&gt;
 &lt;p&gt;The core module modifies the name of the calling thread of the module to
 &lt;code&gt;kdmflush&lt;/code&gt;, to make it appear that it is a kernel thread.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig5.png" title="Using prctl to modify calling thread name" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig6.png" title="Using prctl to modify calling thread name" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Using prctl to modify calling thread name&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Next the core module sets up persistence by creating a script that is executed
@@ -1464,7 +1473,7 @@ data-copied-label="Copied!"
 &lt;p&gt;This script will execute the downloader module upon boot. The service is then
 added using the &lt;code&gt;chkconfig&lt;/code&gt; utility.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig6.png" title="Creation of the init.d script and service" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig7.png" title="Creation of the init.d script and service" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Creation of the init.d script and service&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The timestamp of the file is modified to hide artifacts, a technique known as
@@ -1473,7 +1482,7 @@ its last modified time edited to match that of either &lt;code&gt;whoami&lt;/cod
 &lt;code&gt;su&lt;/code&gt;. It will look for each file respectively until it finds one. This
 technique is used for most of the files that the framework creates.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig7.png" title="File timestamp modification function" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig8.png" title="File timestamp modification function" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;File timestamp modification function&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The malware will attempt to hide its Process ID (PID) and any related network
@@ -1484,7 +1493,7 @@ installed. The PIDs are written to &lt;code&gt;proc/y.y&lt;/code&gt; for use by 
 scrub any reference to files running in the framework from commands such as
 &lt;code&gt;ps&lt;/code&gt; and &lt;code&gt;netstat&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig8.png" title="Writing PID to proc/y.y if it exists (Indication that rootkit exists)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig9.png" title="Writing PID to proc/y.y if it exists (Indication that rootkit exists)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Writing PID to proc/y.y if it exists (Indication that rootkit exists)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The core module will generate a GUID in the same manner as the downloader and
@@ -1611,18 +1620,18 @@ encoded configuration file that is unique for every single creation. This means
 that configuration files will not be able to be detected through techniques
 such as hashes. The key is built into the start of the encoded file.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig9.png" title="Encoded malleable C2 configuration profile" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig10.png" title="Encoded malleable C2 configuration profile" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Encoded malleable C2 configuration profile&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig10.png" title="The dynamic XOR decoding routine" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig11.png" title="The dynamic XOR decoding routine" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The dynamic XOR decoding routine&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The decoded configuration is structured in JSON. The default configuration in
 the analyzed sample uses a local IP address &lt;code&gt;10.2.22[.]67&lt;/code&gt; with the port
 &lt;code&gt;33229&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig11.png" title="Decoded default configuration" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig12.png" title="Decoded default configuration" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decoded default configuration&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;There is a passive mode of communication available if the actor executes the
@@ -1631,7 +1640,7 @@ the &lt;code&gt;Linux.Plugin.Lightning.Sshd&lt;/code&gt; plugin. The plugin is a
 has hardcoded private and host keys, allowing the attacker to SSH into the
 machine with their own SSH key, creating a secondary backdoor.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig12.png" title="Hardcoded keys inside the modified OpenSSH daemon" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig13.png" title="Hardcoded keys inside the modified OpenSSH daemon" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Hardcoded keys inside the modified OpenSSH daemon&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Summary&lt;span class="hx:absolute hx:-mt-20" id="summary"&gt;&lt;/span&gt;
@@ -1997,7 +2006,7 @@ screenshot below shows the malware using the &lt;code&gt;Wait&lt;/code&gt; funct
 seconds before allocating 200 mb of garbage data.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/04/elephant-malware-targeting-ukrainian-orgs/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Persistence is established by adding a new key entry with the name &lt;code&gt;Java-3DK&lt;/code&gt;
-to the registry key &lt;code&gt;SoftwareMicrosoftWindowsCurrentVersionRun&lt;/code&gt;. After this,
+to the registry key &lt;code&gt;Software\Microsoft\Windows\CurrentVersion\Run&lt;/code&gt;. After this,
 the malware checks if a new binary exists by comparing its MD5 hash with a hash
 from the server. If no update is needed, it downloads the other two components.&lt;/p&gt;
 &lt;p&gt;The downloader has some 3rd party libraries, whose metadata are listed in the
@@ -2094,7 +2103,7 @@ IP address, hostname, username, etc. In addition to the heartbeat message, the
 malware starts the &amp;ldquo;command&amp;rdquo; loop that checks for new commands to execute every
 3 seconds. If a command is received it executes it by spawning a PowerShell
 instance by executing
-&lt;code&gt;%windir%\SysWOW64\Windows\PowerShell\v1.0\powershell.exe&lt;/code&gt; and returns the
+&lt;code&gt;%windir%\SysWOW64\WindowsPowerShell\v1.0\powershell.exe&lt;/code&gt; and returns the
 result to the C2 server.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;service Implant {
@@ -2218,8 +2227,8 @@ C7051e88ae43c1bd4b869cf18280ec5e
 40b42005e9cfc5ea2a7cfc1ced975cbb
 Fbe3cb4dfce740c3728c459b853e4249 (email submitted and target Romania)
 Paths
-%HOME%AppDataLocalTempBase-Update.exe
-%HOME%.java-sdk&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+%HOME%\AppData\Local\Temp\Base-Update.exe
+%HOME%\.java-sdk&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -2751,7 +2760,7 @@ into capabilities specific to the injected Cobalt Strike process.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The &amp;ldquo;IoCs&amp;rdquo; tab in Intezer Analyze shows indicators that can help you pivot and
 search in your environment during investigations to map out the scope of an
-attack. IoCs provides you with file hashes and network indicators such as URLs,
+attack. IoCs provide you with file hashes and network indicators such as URLs,
 and IP addresses being contacted through irregular ports.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2021/08/cobalt-strike-detect-this-persistent-threat/images/fig11.png" title="IoCs tab showing file and network indicators." alt="" loading="lazy" /&gt;
@@ -2802,7 +2811,7 @@ with 50 file uploads per month.&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Advanced Pasta Threat: Mapping Malware Use of Open Source Offensive Security Tools</title><link>https://research.intezer.com/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/</link><pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/</guid><description>
+&lt;/div&gt;</description></item><item><title>VB2020 - Advanced Pasta Threat: Mapping Malware Use of Open Source Offensive Security Tools</title><link>https://research.intezer.com/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/</link><pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/09/advanced-pasta-threat-mapping-malware-use-of-open-source-offensive-security-tools/</guid><description>
 &lt;p&gt;The term Offensive Security Tool, also known as OST, is a controversial subject
 within the InfoSec community. It often sparks fierce debate with both sides of
 the argument weighing in on how the uncontrolled publication of offensive

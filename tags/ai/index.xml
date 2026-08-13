@@ -848,31 +848,31 @@ identified five malware families doing this.&lt;/p&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;MalTerminal&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://www.sentinelone.com/labs/prompts-as-code-embedded-keys-the-hunt-for-llm-enabled-malware/"target="_blank" rel="noopener"&gt;MalTerminal&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Reverse shell or ransomware generation&lt;/td&gt;
 &lt;td&gt;OpenAI GPT-4 (deprecated chat completions endpoint)&lt;/td&gt;
 &lt;td&gt;Hardcoded API key&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;LameHug/PROMPTSTEAL&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://www.splunk.com/en_us/blog/security/lamehug-ai-driven-malware-llm-cyber-intrusion-analysis.html"target="_blank" rel="noopener"&gt;LameHug/PROMPTSTEAL&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Reconnaissance and infostealer&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;Qwen 2.5-Coder-32B-Instruct&lt;/code&gt; via HuggingFace&lt;/td&gt;
 &lt;td&gt;Public HuggingFace Inference API (no embedded key observed)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;Ransomware 3.0/PROMPTLOCK&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://arxiv.org/abs/2508.20444"target="_blank" rel="noopener"&gt;Ransomware 3.0&lt;/a&gt;/&lt;a href="https://www.welivesecurity.com/en/ransomware/first-known-ai-powered-ransomware-uncovered-eset-research/"target="_blank" rel="noopener"&gt;PROMPTLOCK&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Ransomware with exfiltration and wipe capability&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;gpt-oss-20b&lt;/code&gt;&lt;/td&gt;
 &lt;td&gt;Local Ollama API on the infected host&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;PROMPTFLUX&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools"target="_blank" rel="noopener"&gt;PROMPTFLUX&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Dropper with AI-driven polymorphism&lt;/td&gt;
 &lt;td&gt;Google Gemini (&lt;code&gt;gemini-1.5-flash-latest&lt;/code&gt;)&lt;/td&gt;
 &lt;td&gt;Hardcoded API key&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;QUIETVAULT&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools"target="_blank" rel="noopener"&gt;QUIETVAULT&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;GitHub/NPM token stealer that uses AI to find additional secrets&lt;/td&gt;
 &lt;td&gt;Whatever AI CLI is installed on the victim (provider not named)&lt;/td&gt;
 &lt;td&gt;AI CLI tools already on the infected host&lt;/td&gt;
@@ -913,6 +913,11 @@ on the stolen-credential method, using an on-host AI session instead of just a
 key. PROMPTLOCK is different because it uses a local model and only works on
 one victim at a time, so it doesn&amp;rsquo;t fit into the four main routes and isn&amp;rsquo;t
 discussed further.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/06/how-attackers-access-llm-inference/images/fig1.png" title="AI-enabled malware families and the inference-access route each one uses." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;AI-enabled malware families and the inference-access route each one uses.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Source: &lt;a href="https://cloud.google.com/blog/topics/threat-intelligence/threat-actor-usage-of-ai-tools"target="_blank" rel="noopener"&gt;Google Cloud threat intelligence&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Across four routes: offensive LLMs for sale, free-tier and keyless public APIs,
 hardcoded keys in distributed artifacts, and exposed LLM servers on victim

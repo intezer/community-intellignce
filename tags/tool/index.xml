@@ -253,6 +253,7 @@ also much harder to change the behavior of the threat and stay undetected.&lt;/p
 &lt;img src="https://research.intezer.com/blog/2022/05/threat-hunting-sigma-detection-rules/images/fig1.png" title="Pyramid of Pain by David J Bianco" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Pyramid of Pain by David J Bianco&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Source: &lt;a href="https://www.sans.org/tools/the-pyramid-of-pain/"target="_blank" rel="noopener"&gt;The Pyramid of Pain, SANS&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;Using Sigma to Write Detection Rules for Emotet&lt;span class="hx:absolute hx:-mt-20" id="using-sigma-to-write-detection-rules-for-emotet"&gt;&lt;/span&gt;
 &lt;a href="#using-sigma-to-write-detection-rules-for-emotet" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let&amp;rsquo;s take a look at
 &lt;a href="https://analyze.intezer.com/families/db6abbcc-d292-4991-bc90-207c077f5e53"target="_blank" rel="noopener"&gt;Emotet&lt;/a&gt;
@@ -945,7 +946,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;We wrote one rule that can be easily integrated into two entirely different
-environments and that&amp;rsquo;s the power of Sigma rules. You can run sigmac –list to
+environments and that&amp;rsquo;s the power of Sigma rules. You can run &lt;code&gt;sigmac --list&lt;/code&gt; to
 view the full list of supported targets.&lt;/p&gt;
 &lt;h3&gt;Configuration File&lt;span class="hx:absolute hx:-mt-20" id="configuration-file"&gt;&lt;/span&gt;
 &lt;a href="#configuration-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Each environment and organization can use different log sources or index the
@@ -1559,7 +1560,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;p&gt;Finally on Windows we can query the registry table for keys similar to the registry key in the report:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;registry&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;HKEY_LOCAL_MACHINESoftwareMicrosoftWindowsCurrentVersionRun&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;igfxCUIService&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;registry&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;igfxCUIService&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -1737,7 +1738,7 @@ code with Mimikatz.&lt;/p&gt;
 &lt;p&gt;If we look at the related TeleBots samples, we can see (Figure 3) that they
 share code with a sample labeled XData. XData was a ransomware that targeted
 Ukraine a month before the
-&lt;a href="../../../2021/09/notpetya-returns-bad-rabbit/"&gt;NotPetya&lt;/a&gt; incident. According
+&lt;a href="../../../2017/10/notpetya-returns-bad-rabbit/"&gt;NotPetya&lt;/a&gt; incident. According
 to an ESET
 &lt;a href="https://www.welivesecurity.com/2017/06/30/telebots-back-supply-chain-attacks-against-ukraine/"target="_blank" rel="noopener"&gt;report&lt;/a&gt;,
 the malware was launched just after M.E.Doc had been executed on the machine,

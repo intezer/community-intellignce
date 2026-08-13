@@ -24,6 +24,10 @@ malware being used in attacks in the wild.&lt;/p&gt;
 &lt;a href="#technical-analysis-of-lightning-framework" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The framework consists of a downloader and core module, with a number of
 plugins. Some of the plugins used by the malware are open-source tools. Below
 is a figure of the framework layout:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig1.jpeg" title="Diagram of the Lightning Framework layout: the downloader and core module with their plugins." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Diagram of the Lightning Framework layout: the downloader and core module with their plugins.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Overview of the Modules&lt;span class="hx:absolute hx:-mt-20" id="overview-of-the-modules"&gt;&lt;/span&gt;
 &lt;a href="#overview-of-the-modules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
 &lt;thead&gt;
@@ -85,7 +89,7 @@ is a figure of the framework layout:&lt;/p&gt;
 &lt;a href="#lightningdownloader" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The main function of the downloader module is to fetch the other components and
 execute the core module.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig1.png" title="Lightning Downloader result in Intezer Analyze" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig2.png" title="Lightning Downloader result in Intezer Analyze" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Lightning Downloader result in Intezer Analyze&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The downloader module starts by checking if it is located in the working
@@ -97,7 +101,7 @@ itself to that working directory and execute that copy. The downloader will
 fingerprint the host name and network adapters to generate a GUID, which will
 be sent to the command and control (C2) server.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig2.png" title="Building the GUID" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig3.png" title="Building the GUID" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Building the GUID&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The downloader will then contact the C2 to fetch the following modules and
@@ -111,14 +115,14 @@ plugins:&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;Lightning.Core&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig3.png" title="Resources fetched from the C2" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig4.png" title="Resources fetched from the C2" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Resources fetched from the C2&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The method of contacting the C2 will be described below in the malleable C2
 section (click here to jump to that section). The downloader will then execute
 the core module (&lt;code&gt;kkdmflush&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig4.png" title="Execution of the core module" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig5.png" title="Execution of the core module" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Execution of the core module&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h3&gt;Lightning.Core&lt;span class="hx:absolute hx:-mt-20" id="lightningcore"&gt;&lt;/span&gt;
@@ -130,7 +134,7 @@ under the radar.&lt;/p&gt;
 &lt;p&gt;The core module modifies the name of the calling thread of the module to
 &lt;code&gt;kdmflush&lt;/code&gt;, to make it appear that it is a kernel thread.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig5.png" title="Using prctl to modify calling thread name" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig6.png" title="Using prctl to modify calling thread name" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Using prctl to modify calling thread name&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Next the core module sets up persistence by creating a script that is executed
@@ -156,7 +160,7 @@ data-copied-label="Copied!"
 &lt;p&gt;This script will execute the downloader module upon boot. The service is then
 added using the &lt;code&gt;chkconfig&lt;/code&gt; utility.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig6.png" title="Creation of the init.d script and service" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig7.png" title="Creation of the init.d script and service" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Creation of the init.d script and service&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The timestamp of the file is modified to hide artifacts, a technique known as
@@ -165,7 +169,7 @@ its last modified time edited to match that of either &lt;code&gt;whoami&lt;/cod
 &lt;code&gt;su&lt;/code&gt;. It will look for each file respectively until it finds one. This
 technique is used for most of the files that the framework creates.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig7.png" title="File timestamp modification function" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig8.png" title="File timestamp modification function" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;File timestamp modification function&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The malware will attempt to hide its Process ID (PID) and any related network
@@ -176,7 +180,7 @@ installed. The PIDs are written to &lt;code&gt;proc/y.y&lt;/code&gt; for use by 
 scrub any reference to files running in the framework from commands such as
 &lt;code&gt;ps&lt;/code&gt; and &lt;code&gt;netstat&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig8.png" title="Writing PID to proc/y.y if it exists (Indication that rootkit exists)" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig9.png" title="Writing PID to proc/y.y if it exists (Indication that rootkit exists)" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Writing PID to proc/y.y if it exists (Indication that rootkit exists)&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The core module will generate a GUID in the same manner as the downloader and
@@ -303,18 +307,18 @@ encoded configuration file that is unique for every single creation. This means
 that configuration files will not be able to be detected through techniques
 such as hashes. The key is built into the start of the encoded file.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig9.png" title="Encoded malleable C2 configuration profile" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig10.png" title="Encoded malleable C2 configuration profile" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Encoded malleable C2 configuration profile&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig10.png" title="The dynamic XOR decoding routine" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig11.png" title="The dynamic XOR decoding routine" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;The dynamic XOR decoding routine&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;The decoded configuration is structured in JSON. The default configuration in
 the analyzed sample uses a local IP address &lt;code&gt;10.2.22[.]67&lt;/code&gt; with the port
 &lt;code&gt;33229&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig11.png" title="Decoded default configuration" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig12.png" title="Decoded default configuration" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decoded default configuration&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;There is a passive mode of communication available if the actor executes the
@@ -323,7 +327,7 @@ the &lt;code&gt;Linux.Plugin.Lightning.Sshd&lt;/code&gt; plugin. The plugin is a
 has hardcoded private and host keys, allowing the attacker to SSH into the
 machine with their own SSH key, creating a secondary backdoor.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig12.png" title="Hardcoded keys inside the modified OpenSSH daemon" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/lightning-framework-new-linux-threat/images/fig13.png" title="Hardcoded keys inside the modified OpenSSH daemon" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Hardcoded keys inside the modified OpenSSH daemon&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;h2&gt;Summary&lt;span class="hx:absolute hx:-mt-20" id="summary"&gt;&lt;/span&gt;
@@ -782,7 +786,10 @@ command and gets the result from the output file. Next it omits records that
 contain the symlink one of the following: the malicious library
 (&lt;code&gt;MALWARE_FOLDER/.l&lt;/code&gt;), the GID which is used by the malware (&lt;code&gt;920366&lt;/code&gt;) and its
 folder path.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/07/orbit-new-undetected-linux-threat/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2022/07/orbit-new-undetected-linux-threat/images/fig5.png" title="OrBit malware folder path" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;OrBit malware folder path&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;h4&gt;Achieving Persistence&lt;span class="hx:absolute hx:-mt-20" id="achieving-persistence"&gt;&lt;/span&gt;
 &lt;a href="#achieving-persistence" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The malware uses two methods to achieve persistence. The reason the malware
 uses both of the methods is to make it hard removing the malware from an
@@ -883,10 +890,10 @@ persistent new malware can be.&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Symbiote: Analysis of a New, Nearly-Impossible-to-Detect Linux Threat</title><link>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</link><pubDate>Wed, 22 Jun 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</guid><description>
+&lt;/div&gt;</description></item><item><title>Symbiote Deep-Dive: Analysis of a New, Nearly-Impossible-to-Detect Linux Threat</title><link>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</link><pubDate>Thu, 09 Jun 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2022/06/new-linux-threat-symbiote/</guid><description>
 &lt;p&gt;&lt;em&gt;This research is a joint effort between Joakim Kennedy, Security Researcher at
 Intezer, and the BlackBerry Threat Research &amp;amp; Intelligence team. It can be
-found in the BlackBerry blog here as well.&lt;/em&gt;&lt;/p&gt;
+found in the BlackBerry blog &lt;a href="https://blogs.blackberry.com/en/2022/06/symbiote-a-new-nearly-impossible-to-detect-linux-threat"target="_blank" rel="noopener"&gt;here&lt;/a&gt; as well.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;In biology, a symbiote is an organism that lives in symbiosis with another
 organism. The symbiosis can be mutually beneficial to both organisms, but
 sometimes it can be parasitic when one benefits and the other is harmed. A few
@@ -1057,7 +1064,7 @@ option suggests that this malware was written by a skilled developer.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;; Load Ether frame type from the packet.
 0x00: 0x28 0x00 0x00 0x000c ldabsh 0xc
-; Jump if it’s not IPv6 (0x86DD)
+; Jump if it&amp;#39;s not IPv6 (0x86DD)
 0x01: 0x15 0x00 0x0b 0x86dd jeq r0, 0x86dd, &amp;#43;0, &amp;#43;0x0b (jump to 0xd)
 ; Load IPv6 next header into register.
 0x02: 0x30 0x00 0x00 0x0014 ldabsb 0x14
@@ -1518,7 +1525,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;p&gt;Finally on Windows we can query the registry table for keys similar to the registry key in the report:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;registry&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;HKEY_LOCAL_MACHINESoftwareMicrosoftWindowsCurrentVersionRun&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;igfxCUIService&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;SELECT&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;registry&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;WHERE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;LIKE&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;AND&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;igfxCUIService&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -1675,7 +1682,7 @@ uploaded to VirusTotal as &lt;code&gt;style-loader.ts&lt;/code&gt; and has only 
 time of this writing.&lt;/p&gt;
 &lt;p&gt;The Dropper drops a zipped SysJoker (&lt;code&gt;53f1bb23f670d331c9041748e7e8e396&lt;/code&gt;) from
 C2 &lt;code&gt;https[://]github[.]url-mini[.]com/msg.zip&lt;/code&gt;, copies it to
-&lt;code&gt;C:\ProgramData\Recovery\Systemrecovery\Windows.zip&lt;/code&gt;, unzips it and executes
+&lt;code&gt;C:\ProgramData\RecoverySystem\recoveryWindows.zip&lt;/code&gt;, unzips it and executes
 it. All of these actions are executed via PowerShell commands.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig2.png" title="Process tree showing PowerShell commands." alt="" loading="lazy" /&gt;
@@ -1734,6 +1741,7 @@ hardcoded Google Drive link.&lt;/p&gt;
 &lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig6.png" title="Decoding with CyberChef." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Decoding with CyberChef.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Decoded with &lt;a href="https://gchq.github.io/CyberChef/"target="_blank" rel="noopener"&gt;CyberChef&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;The Google Drive link hosts a text file named domain.txt that holds an encoded
 C2. The text file&amp;rsquo;s content changes over time, depending on the current
 available C2. SysJoker will decode the C2 and send the collected user&amp;rsquo;s
@@ -1743,7 +1751,7 @@ when the malware communicates with the C2.&lt;/p&gt;
 &lt;h3&gt;C2 Instructions&lt;span class="hx:absolute hx:-mt-20" id="c2-instructions"&gt;&lt;/span&gt;
 &lt;a href="#c2-instructions" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;SysJoker runs a while(1) loop that sends a request to the C2&amp;rsquo;s /api/req
 directory with the unique token and will process the C2&amp;rsquo;s response which is
-built as JSON using functions from this library. This is how SysJoker pings the
+built as JSON using functions from &lt;a href="https://github.com/nlohmann/json"target="_blank" rel="noopener"&gt;this library&lt;/a&gt;. This is how SysJoker pings the
 C2 for instructions (see step 2 in the image below):&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;If the server responds with data, SysJoker will parse the received payload (see
@@ -1791,6 +1799,7 @@ will provide you with visibility into the type and origin of all binary code
 that resides in your machine&amp;rsquo;s memory. The figure below shows an example of
 an endpoint infected with SysJoker:&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Use detection content to search in your EDR or SIEM. We provided you with IoCs
 and a rich list of detection content for each operating system below. Use these
 with your EDR to hunt for infected machines. We will publish a dedicated blog
@@ -1810,7 +1819,7 @@ with SysJoker, in the course of this investigation, check:
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;SysJoker&amp;rsquo;s Linux and Windows versions are now indexed in Intezer Analyze.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2022/01/new-backdoor-sysjoker/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Final Points&lt;span class="hx:absolute hx:-mt-20" id="final-points"&gt;&lt;/span&gt;
 &lt;a href="#final-points" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are indications that SysJoker attack is performed by an advanced threat
 actor:&lt;/p&gt;
@@ -1913,7 +1922,7 @@ C:\ProgramData\SystemData\tempi2.txt
 C:\ProgramData\SystemData\temps1.txt
 C:\ProgramData\SystemData\temps2.txt
 C:\ProgramData\SystemData\tempu.txt
-C:\ProgramData\SystemData\microsoft_Windows.dll
+C:\ProgramData\SystemData\microsoft_windows.dll
 C:\ProgramData\xAE Operating System\ServiceHub.exe&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
@@ -2061,9 +2070,9 @@ data-copied-label="Copied!"
 &lt;code&gt;/Library/LaunchAgents/com.apple.update.plist&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Content:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;#34;1.0″ encoding=&amp;#34;UTF-8″?&amp;gt;&lt;/span&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-xml" data-lang="xml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;&amp;lt;!DOCTYPE plist PUBLIC &amp;#34;-//Apple//DTD PLIST 1.0//EN&amp;#34; &amp;#34;http://www.apple.com/DTDs/PropertyList-1.0.dtd&amp;#34;&amp;gt;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;plist&lt;/span&gt; &lt;span class="na"&gt;version=&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;1.0″&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;plist&lt;/span&gt; &lt;span class="na"&gt;version=&lt;/span&gt;&lt;span class="s"&gt;&amp;#34;1.0&amp;#34;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;&amp;lt;dict&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;key&amp;gt;&lt;/span&gt;Label&lt;span class="nt"&gt;&amp;lt;/key&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;com.apple.update&lt;span class="nt"&gt;&amp;lt;/string&amp;gt;&lt;/span&gt;
@@ -2807,7 +2816,7 @@ C2 via HTTPS, using the URL &lt;code&gt;&amp;lt;c2_address&amp;gt;/update.sh&lt;
 data as &lt;code&gt;/tmp/update.sh&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;It will then resolve the current process&amp;rsquo;s PID and path to be used as script
 arguments, and proceeds to execute the script by running:
-&lt;code&gt;/bin/sh -c ./update.sh \&amp;lt;process_id&amp;gt; \&amp;lt;process_path&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;code&gt;/bin/sh -c ./update.sh &amp;lt;process_id&amp;gt; &amp;lt;process_path&amp;gt;&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/07/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Meanwhile, the main thread of the malware reads from STDIN, expecting to
 receive binary data from that shell script. The arguments are passed to the
@@ -2917,7 +2926,7 @@ forensics tools do retrieve the process name from this location.&lt;/p&gt;
 &lt;p&gt;The names to rewrite &lt;code&gt;argv[0]&lt;/code&gt; chosen by the authors were:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;/lib/sys/temd/sys/temd-udevd&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;/bin/bash&lt;/code&gt; different Rekoobe versions&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/bin/bash&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2020/01/linux-rekoobe-operating-with-new-undetected-malware-samples/images/fig4.png" title="Shared secret retrieval comparison between different Rekoobe versions" alt="" loading="lazy" /&gt;
@@ -3037,7 +3046,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;</description></item><item><title>ChinaZ Updates Toolkit by Introducing New, Undetected Malware</title><link>https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</link><pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;ChinaZ is a Chinese cybercrime group and the author of several
-&lt;a href="https://www.botconf.eu//srv/htdocs/wp-content/uploads/2014/12/2014-2.10-Chinese-Chicken-Multiplatform-DDoS-Botnets.pdf"target="_blank" rel="noopener"&gt;DDoS malware&lt;/a&gt;.
+&lt;a href="https://www.botconf.eu/wp-content/uploads/2014/12/2014-2.10-Chinese-Chicken-Multiplatform-DDoS-Botnets.pdf"target="_blank" rel="noopener"&gt;DDoS malware&lt;/a&gt;.
 We have profiled this group in a
 &lt;a href="../../../2019/01/chinaz-relations"&gt;previous article&lt;/a&gt; discussing connections
 between ChinaZ and other Chinese threat actors.&lt;/p&gt;
@@ -3301,11 +3310,13 @@ that DDoSManager uses different DDoS attack methodologies than AmpManager.&lt;/p
 artifacts, which are some of the most popular malware families leveraged by
 ChinaZ.&lt;/p&gt;
 &lt;p&gt;The following is a small write up from a
-&lt;a href="https://www.novetta.com//srv/htdocs/wp-content/uploads/2015/06/NTRG_ElasticBotnetReport_06102015.pdf"target="_blank" rel="noopener"&gt;report by Novetta&lt;/a&gt;
+&lt;a href="https://www.novetta.com/wp-content/uploads/2015/06/NTRG_ElasticBotnetReport_06102015.pdf"target="_blank" rel="noopener"&gt;report by Novetta&lt;/a&gt;
 covering in detail the internals of BillGates malware.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig20.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;If we take a closer look, we can see that these two C++ classes are also used
 in DDoSManager:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig20.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig21.jpeg" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig22.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This reinforces the connection between these malware samples and the developers
 of Elknot/BillGates, and with respect to the ChinaZ umbrella, in addition to
 the connections explained previously.&lt;/p&gt;
@@ -3313,25 +3324,28 @@ the connections explained previously.&lt;/p&gt;
 persistence mechanisms. The techniques applied are the same ones covered in
 NewManager and AmpManager as previously mentioned. DDoSManager will use the
 name SingTool to masquerade itself:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig21.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig23.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Interface and performance information will be collected as with the previous
 samples. However, an additional thread will be launched.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig22.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig24.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;This thread is in charge of listening for packets to then decode and parse them
 for CNC communication.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig23.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig25.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When we intercepted the network traffic we noticed that the traffic was
 encoded:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig24.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig26.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After analysis we observed that packets were encoded and decoded with a simple
 sub/xor algorithm. This algorithm is the following:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig25.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig27.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;After applying this algorithm to each given packet, we can retrieve their plain
 text version. The following is the structure of each packet after decoding:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig26.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig28.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Furthermore, the command ID will be extracted from each packet in order to
 execute the desired task.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig27.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig29.jpeg" title="Command selection implementation in DDoSManager" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Command selection implementation in DDoSManager&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;DDoSManager supports a total of seven commands. These are the following:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -3381,15 +3395,15 @@ execute the desired task.&lt;/p&gt;
 &lt;/table&gt;
 &lt;p&gt;The malware sets a configuration file for the targets it will attempt to DDoS.
 This configuration file is located at /tmp/Cfg.9:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig28.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig30.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;When a DDoS command is executed, a series of fields will be provided from the
 CNC packet in order to execute the command. These fields are clearly shown on a
 debug message in the binary:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig29.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig31.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;There are three different DDoS amplification algorithms supported. These are
 SYN, UDP, and DNS amplifications. Interestingly, in the analyzed samples of
 DDoSManager we found that the DNS amplification algorithm was not implemented.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig30.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/images/fig32.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
 &lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We have analyzed three new malware variants in which we have named NewManager,
 AmpManager, and DDoSManager.&lt;/p&gt;
@@ -3788,7 +3802,7 @@ reuse from another malware named Pony, written about in a
 by Proofpoint.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;#IcedID banking trojan payload – code overlap with #pony more details soon
-&lt;a href="https://t.co/baS1fciJHX@malwrhunterteam"target="_blank" rel="noopener"&gt;https://t.co/baS1fciJHX@malwrhunterteam&lt;/a&gt; @campuscod&amp;gt;&lt;/p&gt;
+&lt;a href="https://t.co/baS1fciJHX"target="_blank" rel="noopener"&gt;https://t.co/baS1fciJHX&lt;/a&gt; @malwrhunterteam @campuscod&lt;/p&gt;
 &lt;p&gt;— Jay Rosenberg (@jaytezer)
 &lt;a href="https://x.com/jaytezer/status/930054725290078213?ref_src=twsrc%5Etfw"target="_blank" rel="noopener"&gt;November 13, 2017&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -3965,7 +3979,7 @@ was written by the same attacker.&lt;/p&gt;
 &lt;p&gt;After the module is successfully dropped, a service is created under the name Spooler or SessionEnv, depending upon your environment, which then loads the newly dropped module.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig9.png" alt="" loading="lazy" /&gt;
 The new module being run by the service allocates memory, reads the registry where the other payload is located, and then copies it to memory
-&lt;img src="images/fig10.png" alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig10.png" alt="" loading="lazy" /&gt;
 &lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;The next payload is executed, which decrypts another module and loads it. If we look at the memory of the next decrypted payload, we can see something that looks like a PE header without the MZ signature. From here, it is as simple as modifying the first two bytes to represent MZ and we have a valid PE file. (&lt;code&gt;f0d1f88c59a005312faad902528d60acbf9cd5a7b36093db8ca811f763e1292a&lt;/code&gt;)&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/10/evidence-aurora-operation-still-active-part-2-more-ties-uncovered-between-ccleaner-hack-chinese-hackers/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
@@ -4065,9 +4079,15 @@ called PLA Unit 61398.&lt;/p&gt;
 report):&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
 &lt;p&gt;Infected function:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig4.png" title="Infected function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Infected function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Load and execute the payload code:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig5.png" title="Load and execute the payload code" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Load and execute the payload code&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After the embedded code is decrypted and executed, the next step is a PE
 (portable executable) file loader. A PE file loader basically emulates the
 process of what happens when you load an executable file on Windows. Data is
@@ -4079,7 +4099,10 @@ the address of the location of the module in memory, VirtualAlloc to create
 memory for somewhere to copy the memory, and in some cases, when not
 implemented, and memcpy to copy the buffer to the newly allocated memory
 region.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/evidence-aurora-operation-still-active-supply-chain-attack-through-ccleaner/images/fig6.png" title="The PE loader" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The PE loader&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;After the module is copied to memory, to load it properly, the proper loading
 procedure is executed. The relocation table is read to adjust the module to the
 base address of the allocated memory region, the import table is read, the
@@ -4105,7 +4128,7 @@ by the C&amp;amp;Cs.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;#ccleaner malware DLL w/ IAT fix &lt;a href="https://t.co/FprmtmkV64"target="_blank" rel="noopener"&gt;https://t.co/FprmtmkV64&lt;/a&gt;
 &lt;a href="https://t.co/dgWiQVd31k"target="_blank" rel="noopener"&gt;https://t.co/dgWiQVd31k&lt;/a&gt; @TalosSecurity @malwrhunterteam
-pic.twitter.com/TxsbveFoHJ&amp;gt;&lt;/p&gt;
+pic.twitter.com/TxsbveFoHJ&lt;/p&gt;
 &lt;p&gt;— Jay Rosenberg (@jaytezer) September 18, 2017&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
@@ -4167,7 +4190,10 @@ unique pieces of code created by the malware’s authors.&lt;/p&gt;
 &lt;a href="#mysterious-magic-number" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After filtering out all of the common and library code, we were left with
 several unique functions that can be found in every version of the malware
 since 2007. The most prominent is the following function:&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2017/09/new-variants-of-agent-btz-comrat-found-part-2/images/fig2.png" title="Mysterious magic number" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Mysterious magic number&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;In the picture you can see the two, almost identical functions from the first
 version (Ch 1.0) on the right and the latest version (Ch 3.26) of Agent.BTZ on
 the left. This function is initially reading first four bytes of a given file,
@@ -4269,8 +4295,8 @@ due to GDATA’s 2014 publications.
 &lt;li&gt;Config &amp;amp; Log Files&lt;/li&gt;
 &lt;li&gt;Same 512 bytes encryption key as 3.26&lt;/li&gt;
 &lt;li&gt;Different file paths:&lt;/li&gt;
-&lt;li&gt;config: %appdata%MicrosoftWindowsPrivacIEHighdesktop.ini&lt;/li&gt;
-&lt;li&gt;log: %appdata%MicrosoftWindowsPrivacIEHighindex.dat&lt;/li&gt;
+&lt;li&gt;config: &lt;code&gt;%appdata%\Microsoft\Windows\PrivacIE\High\desktop.ini&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;log: &lt;code&gt;%appdata%\Microsoft\Windows\PrivacIE\High\index.dat&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="indicators-of-compromise"&gt;&lt;/span&gt;
 &lt;a href="#indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
@@ -4444,7 +4470,7 @@ can see in this
 &lt;p&gt;Once finished, the dropper renames and self delete using the following command
 line:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;C:\WINDOWS\system32\rundll32.exe C:\DOCUME~1\&amp;lt;USER&amp;gt;~1\APPLIC~1\MICROS~1\Windowsstdole2.tlb,UnInstall C:\~$.tmp&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;C:\WINDOWS\system32\rundll32.exe C:\DOCUME~1\&amp;lt;USER&amp;gt;~1\APPLIC~1\MICROS~1\Windows\stdole2.tlb,UnInstall C:\~$.tmp&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Samples found:&lt;/p&gt;
 &lt;ul&gt;
@@ -4477,7 +4503,7 @@ the following screenshot:&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;Both of these files were uploaded almost three years ago to VT(!)&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
-&lt;img src="images3.png" title="A screenshot from the Intezer Analyze™ product displaying a list of files in our database that share pieces of code with one of the new samples. These pieces of code are specific to the Turla malware family, and were not seen in any other malicious or legitimate software." alt="" loading="lazy" /&gt;
+&lt;img src="https://research.intezer.com/blog/2017/08/new-variants-of-agent-btz-comrat-found/images/fig3.png" title="A screenshot from the Intezer Analyze™ product displaying a list of files in our database that share pieces of code with one of the new samples. These pieces of code are specific to the Turla malware family, and were not seen in any other malicious or legitimate software." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;A screenshot from the Intezer Analyze™ product displaying a list of files in our database that share pieces of code with one of the new samples. These pieces of code are specific to the Turla malware family, and were not seen in any other malicious or legitimate software.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;Samples found:&lt;/p&gt;
