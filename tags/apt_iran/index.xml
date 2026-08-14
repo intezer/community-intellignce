@@ -1,4 +1,265 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Apt_iran</title><link>https://research.intezer.com/tags/apt_iran/</link><description>Recent content in Apt_iran on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 17 Aug 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/apt_iran/index.xml" rel="self" type="application/rss+xml"/><item><title>Prince of Persia: The Sands of Foudre</title><link>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</link><pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Apt_iran</title><link>https://research.intezer.com/tags/apt_iran/</link><description>Recent content in Apt_iran on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 30 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/apt_iran/index.xml" rel="self" type="application/rss+xml"/><item><title>New Iranian Campaign Tailored to US Companies Utilizes an Updated Toolset</title><link>https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/</link><pubDate>Thu, 30 Jan 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Our researchers Paul Litvak and Michael Kajilolti have discovered a new
+campaign conducted by APT34 employing an updated toolset. Based on uncovered
+phishing documents, we believe this Iranian actor is targeting Westat
+employees, or
+&lt;a href="https://www.westat.com/about-us/clients"target="_blank" rel="noopener"&gt;United States organizations&lt;/a&gt; hiring
+Westat services.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://en.wikipedia.org/wiki/Westat"target="_blank" rel="noopener"&gt;Westat&lt;/a&gt; is a United States-based company
+that &amp;ldquo;provides research services to agencies of the U.S. Government, as well as
+businesses, foundations, and state and local governments&amp;rdquo;. One example of the
+services Westat offers is a
+&lt;a href="https://www.westat.com/project/surveying-federal-workers-ensure-engaged-workforce"target="_blank" rel="noopener"&gt;survey&lt;/a&gt;
+for federal workers, which leads us to believe this attack may target Westat
+customers.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Official Westat response:&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Westat understands that in their effort to identify threats and malware,
+Intezer has identified a malicious file that uses the Westat name and logo.
+This file was not created by, hosted by, or sent from Westat, and is likely
+the result of a bad actor stealing the Westat brand name and logo. Our
+cybersecurity team is working with Intezer and others to fully understand the
+nature of this report. We will continue to monitor the situation and respond
+accordingly.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;APT34 Background&lt;span class="hx:absolute hx:-mt-20" id="apt34-background"&gt;&lt;/span&gt;
+&lt;a href="#apt34-background" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href="https://attack.mitre.org/groups/G0049/"target="_blank" rel="noopener"&gt;APT34&lt;/a&gt; (also known as OilRig or Helix
+Kitten) is a cluster of Iranian government-backed cyber espionage activities
+that has been active since 2014. The group is known to target various
+international organizations, mainly in the Middle East. Among their targeted
+industries are government agencies, financial services, energy and utilities,
+&lt;a href="https://intezer.com/blog/incident-response/cyber-threats-telecom-industry/"target="_blank" rel="noopener"&gt;telecommunications&lt;/a&gt;,
+and oil and gas.&lt;/p&gt;
+&lt;p&gt;More light was shed on this group in April 2019 as
+&lt;a href="https://www.zdnet.com/article/source-code-of-iranian-cyber-espionage-tools-leaked-on-telegram/"target="_blank" rel="noopener"&gt;leaks&lt;/a&gt;
+emerged from a mysterious individual with the pseudonym &amp;ldquo;Lab Dookhtegan&amp;rdquo;. This
+individual exposed data belonging to victims of this group, together with
+source code of hacking tools and data about previous APT34 operations;
+including IP addresses and domains where the group hosted web shells related to
+past operations.&lt;/p&gt;
+&lt;p&gt;Most recently,
+&lt;a href="https://www.fireeye.com/blog/threat-research/2019/07/hard-pass-declining-apt34-invite-to-join-their-professional-network.html"target="_blank" rel="noopener"&gt;FireEye&lt;/a&gt;
+exposed a spear-phishing operation conducted by APT34, which enabled us to
+connect this operation to this Iranian actor due to similarities in the
+techniques and tools employed in both campaigns.&lt;/p&gt;
+&lt;h2&gt;Initial Vector&lt;span class="hx:absolute hx:-mt-20" id="initial-vector"&gt;&lt;/span&gt;
+&lt;a href="#initial-vector" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In late January 2020, we discovered a file named &lt;code&gt;survey.xls&lt;/code&gt; that was designed
+to look like an employee satisfaction survey tailored to either Westat
+employees or Westat customers.&lt;/p&gt;
+&lt;p&gt;At first the spreadsheet appeared to be blank. Only once the victim enables
+macros, the survey is displayed to the user and the malicious VBA code begins
+to execute.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig1.png" title="survey.xls" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;survey.xls&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The embedded VBA code unpacks a zip file into a temporary folder, extracts a
+&lt;code&gt;Client update.exe&lt;/code&gt; executable file and installs it to
+&lt;code&gt;C:Users&amp;lt;User&amp;gt;valsClient update.exe&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Client update.exe&lt;/code&gt; is actually a highly modified version of the TONEDEAF
+malware, which we named TONEDEAF 2.0. Finally, the &lt;code&gt;crtt&lt;/code&gt; function creates a
+scheduled task &lt;code&gt;CheckUpdate&lt;/code&gt; that runs the unpacked executable five minutes
+after being infected by it, as well as on future log-ons.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig3.png" title="Survey.xls VBA Code" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Survey.xls VBA Code&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Both the extracted VBA code and the functionality of the code look similar to
+the one analyzed in the FireEye report:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig4.png" title="APT34 VBA Code from the FireEye Report" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;APT34 VBA Code from the FireEye Report&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;In addition, we found a similar document labelled as
+&lt;code&gt;Employee satisfaction survey.xls&lt;/code&gt; containing the same survey as the previous
+document.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig5.png" title="Employee Satisfaction survey.xls" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Employee Satisfaction survey.xls&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;However, it&amp;rsquo;s important to highlight that the code page field of this document
+is Arabic as can be seen when examining its file metadata, denoting the
+preferred language installed on the document author&amp;rsquo;s version of Microsoft
+Excel:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig6.png" title="Employee Satisfaction survey.xls Metadata" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Employee Satisfaction survey.xls Metadata&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;TONEDEAF 2.0&lt;span class="hx:absolute hx:-mt-20" id="tonedeaf-20"&gt;&lt;/span&gt;
+&lt;a href="#tonedeaf-20" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;At first glance, &lt;code&gt;Client update.exe&lt;/code&gt; seems like a completely new backdoor
+malware. However, further examination reveals it&amp;rsquo;s most likely a highly
+modified version of the previously seen TONEDEAF backdoor. TONEDEAF is a
+backdoor that communicates with its Command and Control server via HTTP in
+order to receive and execute commands. It was mentioned in FireEye&amp;rsquo;s recent
+report about an ongoing APT34 operation, as one of the group&amp;rsquo;s custom tools. We
+have named the new variant TONEDEAF 2.0.&lt;/p&gt;
+&lt;p&gt;TONEDEAF 2.0 is an advanced version of TONEDEAF, serving the same purpose as
+the original, but with a revamped C2 communication protocol and a substantially
+modified code base. In contrast to the original TONEDEAF, TONEDEAF 2.0 contains
+solely arbitrary shell execution capabilities, and doesn&amp;rsquo;t support any
+predefined commands. It&amp;rsquo;s also more stealthy and contains new tricks such as
+dynamic importing, string decoding, and a victim deception method.&lt;/p&gt;
+&lt;h3&gt;New Tricks&lt;span class="hx:absolute hx:-mt-20" id="new-tricks"&gt;&lt;/span&gt;
+&lt;a href="#new-tricks" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Upon execution the backdoor checks whether it was executed with &lt;code&gt;...&lt;/code&gt; as an
+argument, which is the way it&amp;rsquo;s configured to execute by the scheduled task, as
+part of the proper infection chain.&lt;/p&gt;
+&lt;p&gt;In the case it&amp;rsquo;s executed without the correct argument, such as by launching it
+via a double click, it will display a blank GUI Window to the user. This is
+most likely intended to serve as a deception method, to make the malware appear
+like a legitimate (alibiet broken) application titled &amp;ldquo;Bee&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig7.png" title="GUI Window Used for Deception" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;GUI Window Used for Deception&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;TONEDEAF 2.0 also attempts to be more stealthy than its predecessor by hiding
+many of the interesting API imports it uses. The names of these APIs, and the
+DLLs that contain them, are stored as encoded strings and are decoded and
+resolved on demand during runtime.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig8.png" title="Decoding and Resolving API Functions" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decoding and Resolving API Functions&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;C2 Communication&lt;span class="hx:absolute hx:-mt-20" id="c2-communication"&gt;&lt;/span&gt;
+&lt;a href="#c2-communication" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The backdoor uses HTTP for C2 communication, with a custom encoding and
+handshake mechanisms. Messages sent by the backdoor always contain the HTTP
+query parameter &lt;code&gt;?ser=&amp;lt;6 digits&amp;gt;&lt;/code&gt; as an identifier. The first three digits are
+the &lt;code&gt;&amp;lt;server_id&amp;gt;&lt;/code&gt; and the last three are the &lt;code&gt;&amp;lt;client_id&amp;gt;&lt;/code&gt;. The backdoor will
+use one of the following two messages:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;GET /dow?ser=&amp;lt;server_id&amp;gt;&amp;lt;client_id&amp;gt;&lt;/code&gt; - request message, used to obtain
+commands to execute from the server.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;POST /upl?ser==&amp;lt;server_id&amp;gt;&amp;lt;client_id&amp;gt;&lt;/code&gt; - reply to command message, used to
+send the executed command&amp;rsquo;s output to the server.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Before performing the first request, the malware will generate the
+&lt;code&gt;&amp;lt;client_id&amp;gt;&lt;/code&gt; derived from the environment variables &lt;code&gt;%HOMEPATH%&lt;/code&gt; and
+&lt;code&gt;%COMPUTERNAME%&lt;/code&gt; using a custom formula.&lt;/p&gt;
+&lt;p&gt;It will then send an initial GET message to the C2 using that ID.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig9.png" title="C2 Request" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;C2 Request&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;One odd element about the communication is the usage of a Windows Phone
+&lt;code&gt;User-Agent&lt;/code&gt; value in the HTTP message.&lt;/p&gt;
+&lt;p&gt;During our analysis the C2 was alive but continuously replied with a 403
+Forbidden HTTP error code to our requests. It&amp;rsquo;s possible that the C2 is
+filtering the targets since this backdoor is part of a targeted operation and
+our &lt;code&gt;client_id&lt;/code&gt; parameter does not match that of one of the intended victims.&lt;/p&gt;
+&lt;p&gt;Should the C2 accept the ID, it will reply with an encoded message that
+contains the &lt;code&gt;&amp;lt;server_id&amp;gt;&lt;/code&gt; and the command the backdoor needs to execute. The
+malware extracts the command by looking for an HTTP div element in the response
+with a special class name.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig10.png" title="Parsing of C2 Response" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Parsing of C2 Response&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The malware will then execute the command by prepending it with &lt;code&gt;cmd U c&lt;/code&gt; and
+will send the output of the command back to the C2 using the &lt;em&gt;POST reply
+message (2)&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;When entering the C2 via a browser, the site tries to imitate
+&lt;a href="https://docs.microsoft.com/en-us/"target="_blank" rel="noopener"&gt;https://docs.microsoft.com/en-us/&lt;/a&gt;,
+although it fails to display it properly due to a misconfiguration with the
+CSS, as can be seen in the console:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig11.png" title="manygoodnews[.]com C2 webpage" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;manygoodnews[.]com C2 webpage&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We have also observed that an SSL certificate has been recently generated that
+matches the domain of the C2.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig12.png" title="SSL Certificate for the C2 Domain that was Issued One Month Ago" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;SSL Certificate for the C2 Domain that was Issued One Month Ago&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;a href="https://community.riskiq.com/search/certificate/sha1/86bfaced2e6568f9820b18a5600bfffada64c254"target="_blank" rel="noopener"&gt;SSL Certificate&lt;/a&gt;
+for the C2 Domain that was Issued One Month Ago&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;These findings might indicate that the attackers are in the process of
+transitioning into HTTPS for C2 communication, in an attempt to improve their
+OPSEC capabilities and avoid detection.&lt;/p&gt;
+&lt;h3&gt;Traces from the Original TONEDEAF&lt;span class="hx:absolute hx:-mt-20" id="traces-from-the-original-tonedeaf"&gt;&lt;/span&gt;
+&lt;a href="#traces-from-the-original-tonedeaf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;With all of the changes and new additions, there are still enough similarities
+that link TONEDEAF 2.0 to the original. While the code is mostly modified, the
+general flow and functionality are similar. The C2 communication is different
+but still has similarities to its predecessor, such as the usage of three digit
+identifiers for both the victim and the server. However, most notably there are
+several places in the code where the similarity is most clear. One such place
+is a function that exists in both variants, which oddly enough creates a
+notification icon in the Windows status bar. The only notable changes are the
+usage of dynamic API resolution and the shortening of the notification message
+from &lt;code&gt;Updating&lt;/code&gt; to &lt;code&gt;up&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig13.png" title="Specific Function Comparison" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Specific Function Comparison&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Another instance is the code that sets the working directory of the program. It
+appears in different stages for each variant, but is identical:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig14.png" title="Similar Code Snippets" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Similar Code Snippets&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;VALUEVAULT 2.0&lt;span class="hx:absolute hx:-mt-20" id="valuevault-20"&gt;&lt;/span&gt;
+&lt;a href="#valuevault-20" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We were unable to download further modules, however, we believe this operation
+also includes the usage of a VALUEVAULT implant. VALUEVAULT is a browser
+credential theft tool built in Golang, discovered by FireEye in the
+aforementioned APT34 operation analysis.&lt;/p&gt;
+&lt;p&gt;We found the &lt;code&gt;survey.xls&lt;/code&gt; file uploaded to VirusTotal with a VALUEVAULT
+instance and a TONEDEAF 2.0 instance, uploaded from Lebanon by the same user,
+only a few minutes apart. This may indicate that these malware were delivered
+together as part of the same attack.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig15.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This VALUEVAULT takes a more minimalistic approach than its predecessor. Many
+functionalities and strings were stripped from the new binary in order to lower
+its noise. Only Chrome password dumping is now supported, although
+interestingly the use of the file &lt;code&gt;fsociety.dat&lt;/code&gt; as a password data store under
+the &lt;code&gt;AppDataRoaming&lt;/code&gt; directory stayed the same.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig16.png" title="VALUEVAULT 2.0 Compilation Paths" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VALUEVAULT 2.0 Compilation Paths&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2020/01/new-iranian-campaign-tailored-to-us-companies-uses-updated-toolset/images/fig17.png" title="VALUEVAULT 1.0 Compilation Paths" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;VALUEVAULT 1.0 Compilation Paths&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Furthermore, VALUEVAULT 2.0 is a 64-bit binary as opposed to VALUEVAULT 1.0
+which is a 32-bit binary. These relatively minor changes were enough to create
+a fully undetected implant.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The last APT34 operation was exposed only a few months ago by FireEye, and
+judging by our current findings we can confidently state that the group has
+since evolved its operations. The technical analysis of the new malware
+variants reveals this Iranian government-backed group has invested substantial
+efforts into upgrading its toolset in an attempt to evade future detection.&lt;/p&gt;
+&lt;p&gt;The binary code from these new malware samples are now indexed in our Genetic
+&lt;a href="https://intezer.com/intezer-analyze/"target="_blank" rel="noopener"&gt;Malware Analysis platform&lt;/a&gt;, Intezer
+Analyze. We encourage you to use our
+&lt;a href="https://analyze.intezer.com/#/analyze"target="_blank" rel="noopener"&gt;free community edition&lt;/a&gt; to detect and
+classify threats that share code with APT34 malware.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;manygoodnews[.]com
+c10cd1c78c180ba657e3921ee9421b9abd5b965c4cdfaa94a58e383b45bb72ca
+4c323bc11982b95266732c01645c39618550e68f25c34f6d3d79288eae7d4378
+a897164e3547f0ce3aaa476b0364a200769e8c07ce825bcfdc43939dd1314bb1
+20b3d046ed617b7336156a64a0550d416afdd80a2c32ce332be6bbfd4829832c
+d61eecd7492dfa461344076a93fc2668dc28943724190faf3d9390f8403b6411&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Prince of Persia: The Sands of Foudre</title><link>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</link><pubDate>Fri, 17 Aug 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2018/08/prince-of-persia-the-sands-of-foudre/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the past couple years, Palo Alto Networks reported on the &amp;ldquo;Prince of Persia&amp;rdquo;
 malware campaign which is believed to be of Iranian origin and ongoing for more

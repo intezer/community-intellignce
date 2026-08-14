@@ -1,0 +1,1012 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Executable and Linkable Format (ELF) files</title><link>https://research.intezer.com/docs/elf/</link><description>Recent content in Executable and Linkable Format (ELF) files on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 25 Jun 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/docs/elf/index.xml" rel="self" type="application/rss+xml"/><item><title>Sections and Segments</title><link>https://research.intezer.com/docs/elf/part1/</link><pubDate>Wed, 03 Jan 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/elf/part1/</guid><description>
+&lt;p&gt;This marks the first of several blog posts that will focus on Executable and
+Linkable Format (ELF) files. In this series, we&amp;rsquo;ll introduce various topics,
+ranging from the basics of ELF files built upon Linux
+&lt;a href="https://intezer.com/blog/malware-analysis/analyzing-capabilities-in-PE-and-ELF-files/"target="_blank" rel="noopener"&gt;malware technologies&lt;/a&gt;
+such as infection vectors, custom packer techniques and common malware
+practices like dynamic API resolving techniques or ELF header crafting.&lt;/p&gt;
+&lt;p&gt;The overall goal of the series is to help both advanced and beginner Linux
+users to acquire a sound knowledge of ELF files, along with improving their
+understanding of the threat landscape in Linux systems.&lt;/p&gt;
+&lt;p&gt;Why focus on ELF? Our team is preparing for its flagship product, Intezer
+Analyze, to be able to support these files. Because malware also strikes Linux
+systems&amp;ndash;and it can often happen through this file type&amp;ndash;we thought it would be
+a helpful place to start.&lt;/p&gt;
+&lt;p&gt;Here, we&amp;rsquo;ll discuss the basics of ELF files in order to set a technical
+foundation for readers with no previous experience on the subject. (Feel free
+to skip ahead in the post if this isn&amp;rsquo;t you!)&lt;/p&gt;
+&lt;h2&gt;Overview of The Executable and Linkable Format&lt;span class="hx:absolute hx:-mt-20" id="overview-of-the-executable-and-linkable-format"&gt;&lt;/span&gt;
+&lt;a href="#overview-of-the-executable-and-linkable-format" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Executable and Linkable Format, also known as ELF, is the generic file
+format for executables in Linux systems. Generally speaking, ELF files are
+composed of three major components:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ELF Header&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Sections&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Segments&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Each of these elements play a different role in the linking/loading process of
+ELF executables. We&amp;rsquo;ll discuss each of these components and the relationship
+between segments and sections. First, let&amp;rsquo;s become familiar with the structure
+of each constituent:&lt;/p&gt;
+&lt;h3&gt;ELF Header&lt;span class="hx:absolute hx:-mt-20" id="elf-header"&gt;&lt;/span&gt;
+&lt;a href="#elf-header" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The ELF header is denoted by an &lt;code&gt;Elfxx_Ehdr&lt;/code&gt; structure. Mainly, this contains
+general information about the binary. Definitions of these structure&amp;rsquo;s fields
+are the following:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part1/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;e_ident&lt;/code&gt;: Array of 16 bytes containing identification flags about the file,
+which serve to decode and interpret the file&amp;rsquo;s contents. Examples of these
+identification flags include:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;EI_MAG0-3&lt;/code&gt;: ELF magic&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;EI_CLASS&lt;/code&gt;: File class.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;EI_DATA&lt;/code&gt;: File&amp;rsquo;s data encoding.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;EI_VERSION&lt;/code&gt;: File&amp;rsquo;s version.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;EI_OSABI&lt;/code&gt;: OS/ABI identification.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;EI_ABIVERSION&lt;/code&gt;: ABI version&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;EI_PAD&lt;/code&gt;: Start of padding bytes.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;EI_NIDENT&lt;/code&gt;: Size of &lt;code&gt;ei_ident&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_type&lt;/code&gt;: Type of executable.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_machine&lt;/code&gt;: File&amp;rsquo;s architecture.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_version&lt;/code&gt;: Object file version.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_entry&lt;/code&gt;: Entry point of application.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_phoff&lt;/code&gt;: File offset of the Program Header Table.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_shoff&lt;/code&gt;: File offset of the Section Header Table.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_flags&lt;/code&gt;: Processor-specific flags associated with the file.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_ehsize&lt;/code&gt;: ELF header size.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_phentsize&lt;/code&gt;: Program Header entry size in Program Header Table.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_phnum&lt;/code&gt;: Number of Program Headers.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_shentsize&lt;/code&gt;: Section Header entry size in Section Header Table.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_shnum&lt;/code&gt;: Number of Section Headers.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e_shstrndx&lt;/code&gt;: index in Section Header Table Denoting Section dedicated to
+Hold Section names.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In order to preview these fields for a given ELF binary, we can use any ELF
+parser of choice. A common tool to quickly parse ELF files is the &lt;code&gt;readelf&lt;/code&gt;
+utility from GNU binutils.&lt;/p&gt;
+&lt;p&gt;In order to use &lt;code&gt;readelf&lt;/code&gt; so that we can display the contents of the ELF header
+for a given executable, we can use the following command:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;readelf -h &amp;lt;executable&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Sections&lt;span class="hx:absolute hx:-mt-20" id="sections"&gt;&lt;/span&gt;
+&lt;a href="#sections" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Sections comprise all information needed for linking a target object file in
+order to build a working executable. (It&amp;rsquo;s important to highlight that sections
+are needed on linktime but they are not needed on runtime.) In every ELF
+executable, there is a Section Header Table. This table is an array of
+&lt;code&gt;Elfxx_Shdr&lt;/code&gt; structures, having one &lt;code&gt;Elfxx_Shdr&lt;/code&gt; entry per section. Definitions
+of these structure&amp;rsquo;s fields involve:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part1/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;sh_name&lt;/code&gt;: index of section name in section header string table.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sh_type&lt;/code&gt;: section type.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sh_flags&lt;/code&gt;: section attributes.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sh_addr&lt;/code&gt;: virtual address of section.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sh_offset&lt;/code&gt;: section offset in disk.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sh_size&lt;/code&gt;: section size.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sh_link&lt;/code&gt;: section link index.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sh_Info&lt;/code&gt;: Section extra information.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sh_addralign&lt;/code&gt;: section alignment.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sh_entsize&lt;/code&gt;: size of entries contained in section.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Some common sections are the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;.text&lt;/code&gt;: code.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.data&lt;/code&gt;: initialised data.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.rodata&lt;/code&gt;: initialised read-only data.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.bss&lt;/code&gt;: uninitialized data.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.plt&lt;/code&gt;: PLT (Procedure Linkage Table) (IAT equivalent).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.got&lt;/code&gt;: GOT entries dedicated to dynamically linked global variables.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.got.plt&lt;/code&gt;: GOT entries dedicated to dynamically linked functions.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.symtab&lt;/code&gt;: global symbol table.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.dynamic&lt;/code&gt;: Holds all needed information for dynamic linking.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.dynsym&lt;/code&gt;: symbol tables dedicated to dynamically linked symbols.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.strtab&lt;/code&gt;: string table of &lt;code&gt;.symtab&lt;/code&gt; section.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.dynstr&lt;/code&gt;: string table of &lt;code&gt;.dynsym&lt;/code&gt; section.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.interp&lt;/code&gt;: RTLD embedded string.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.rel.dyn&lt;/code&gt;: global variable relocation table.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.rel.plt&lt;/code&gt;: function relocation table.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In order to display sections using &lt;code&gt;readelf&lt;/code&gt;, we can use the following command:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;readelf -S &amp;lt;executable&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Segments&lt;span class="hx:absolute hx:-mt-20" id="segments"&gt;&lt;/span&gt;
+&lt;a href="#segments" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Segments, which are commonly known as Program Headers, break down the structure
+of an &lt;a href="../../elf-malware/part2/"&gt;ELF binary&lt;/a&gt; into suitable chunks to prepare
+the executable to be loaded into memory. In contrast with Section Headers,
+Program Headers are not needed on linktime.&lt;/p&gt;
+&lt;p&gt;On the other hand, similarly to Section Headers, every ELF binary contains a
+Program Header Table which comprises of a single &lt;code&gt;Elfxx_Phdr&lt;/code&gt; structure per
+existing segment. Definitions of these structure&amp;rsquo;s fields are the following:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part1/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;p_type&lt;/code&gt;: Segment type.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;p_flags&lt;/code&gt;: Segment attributes.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;p_offset&lt;/code&gt;: File offset of segment.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;p_vaddr&lt;/code&gt;: Virtual address of segment.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;p_paddr&lt;/code&gt;: Physical address of segment.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;p_filesz&lt;/code&gt;: Size of segment on disk.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;p_memsz&lt;/code&gt;: Size of segment in memory.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;P_align&lt;/code&gt;: segment alignment in memory.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There are a wide range of segment types. Some of common types are the following&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;PT_NULL&lt;/code&gt;: unassigned segment (usually first entry of Program Header Table).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PT_LOAD&lt;/code&gt;: Loadable segment.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PT_INTERP&lt;/code&gt;: Segment holding &lt;code&gt;.interp&lt;/code&gt; section.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PT_TLS&lt;/code&gt;: Thread Local Storage segment (Common in statically linked
+binaries).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PT_DYNAMIC&lt;/code&gt;: Holding &lt;code&gt;.dynamic&lt;/code&gt; section.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Something important to highlight about segments is that only &lt;code&gt;PT_LOAD&lt;/code&gt; segments
+get loaded into memory. Therefore, every other segment is mapped within the
+memory range of one of the &lt;code&gt;PT_LOAD&lt;/code&gt; segments.&lt;/p&gt;
+&lt;p&gt;The following screenshot is a generic Segment layout for a dynamically linked
+executable:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part1/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In order to use &lt;code&gt;readelf&lt;/code&gt; to display segment information we can execute the
+following command:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;readelf -l &amp;lt;executable&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Sections and Segments&lt;span class="hx:absolute hx:-mt-20" id="sections-and-segments"&gt;&lt;/span&gt;
+&lt;a href="#sections-and-segments" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In contrast from other File formats, ELF files are composed of sections and
+segments. As previously mentioned, sections gather all needed information to
+link a given object file and build an executable, while Program Headers split
+the executable into segments with different attributes, which will eventually
+be loaded into memory.&lt;/p&gt;
+&lt;p&gt;In order to understand the relationship between Sections and Segments, we can
+picture segments as a tool to make the linux loader&amp;rsquo;s life easier, as they
+group sections by attributes into single segments in order to make the loading
+process of the executable more efficient, instead of loading each individual
+section into memory. The following diagram attempts to illustrate this concept:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part1/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Another important aspect of segments is that their offsets and virtual
+addresses must be congruent modulo the page size and their &lt;code&gt;p_align&lt;/code&gt; field must
+be a multiple of the system page size.&lt;/p&gt;
+&lt;p&gt;The reason for this alignment is to prevent the mapping of two different
+segments within a single memory page. This is due to the fact that different
+segments usually have different access attributes, and these cannot be enforced
+if two segments are mapped within the same memory page. Therefore, the default
+segment alignment for &lt;code&gt;PT_LOAD&lt;/code&gt; segments is usually a system page size.&lt;/p&gt;
+&lt;p&gt;The value of this alignment will vary in different architectures.&lt;/p&gt;</description></item><item><title>Symbols</title><link>https://research.intezer.com/docs/elf/part2/</link><pubDate>Wed, 07 Feb 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/elf/part2/</guid><description>
+&lt;h2&gt;Defining Symbols&lt;span class="hx:absolute hx:-mt-20" id="defining-symbols"&gt;&lt;/span&gt;
+&lt;a href="#defining-symbols" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the development process of a program, we often use names to refer toa
+objects in our code, such as functions or variables that are used all
+throughout the program. This information is what is known as the program&amp;rsquo;s
+symbolic information. Symbolic references in machine code get translated into
+offsets and addresses on the compilation process.&lt;/p&gt;
+&lt;p&gt;However, compilers are not limited to machine code generation; they also export
+symbolic information from source code. Symbolic information is exported in
+order to improve the interpretation of the generated machine code. The ELF file
+format has a means to hold this symbolic information and provides an interface
+for local and external ELF objects to access it.&lt;/p&gt;
+&lt;p&gt;A wide range of tools interact with symbols to enforce their functionality. One
+example of these tools are Linkers. Linkers usually interact with a Symbol
+Table in order to match/reference/modify a given symbol inside an ELF object at
+linktime. Without Symbols, Linkers would not work, since they won&amp;rsquo;t know which
+relocations must take place, and therefore would not have a mechanism to match
+a given symbolic reference to its corresponding value.&lt;/p&gt;
+&lt;p&gt;Another example of tools that heavily depend on symbolic information are
+Debuggers. Without Symbols, the process of Debugging can become considerably
+harder or even worthless, especially for projects with massive code bases such
+as the Linux Kernel. Debugging without symbols implies that one has no ability
+to identify functions or variables by name among other impediments. This would
+considerably reduce the features afforded by debuggers.&lt;/p&gt;
+&lt;p&gt;Interestingly, Malware also interacts with symbol tables as an anti-analysis
+mechanism. Symbol Tables can appear to be completely removed from the binary as
+an attempt to harden the analysis process, or in other cases their String Table
+entries may be swapped so that symbols will be miss-interpreted. (We&amp;rsquo;ll cover
+malware anti-analysis techniques in coming posts.)&lt;/p&gt;
+&lt;h2&gt;ELF Symbol structure&lt;span class="hx:absolute hx:-mt-20" id="elf-symbol-structure"&gt;&lt;/span&gt;
+&lt;a href="#elf-symbol-structure" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the ELF file format, each Symbol is represented as an instance of an
+&lt;code&gt;Elfxx_Sym&lt;/code&gt; structure inside a given Symbol Table.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part2/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The Elements of this structure include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;st_name&lt;/code&gt;: index in string table of symbol name. If this field is not
+initialized, then the symbol doesn&amp;rsquo;t have a name&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;st_info&lt;/code&gt;: contains symbol bind and type attributes. Binding attributes
+determine the linkage visibility and behavior when a given symbol is
+referenced by an external object. The most common symbol binds are the
+following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;STB_LOCAL&lt;/code&gt;: Symbol is not visible outside the ELF object containing the
+symbol definition.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;STB_GLOBAL&lt;/code&gt;: Symbol is visible to all object files.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;STB_WEAK&lt;/code&gt;: Representing global symbols, but their definition can be
+overridden.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The most common symbol types are the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;STT_NOTYPE&lt;/code&gt;: symbol type is not specified&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;STT_OBJECT&lt;/code&gt;: symbol is a data object (variable).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;STT_FUNC&lt;/code&gt;: symbol is a code object (function).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;STT_SECTION&lt;/code&gt;: symbol is a section.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In order to retrieve these fields, a set of bitmasks are used. These bitmasks
+include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ELF64_ST_BIND(info) ((info) &amp;gt;&amp;gt; 4)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ELF64_ST_TYPE(info) ((info) &amp;amp; 0xf)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;st_other&lt;/code&gt;: information about symbol visibility. Symbol visibility defines
+how a given symbol may be accessed once the symbol has become part of an
+executable or shared object. Some common symbol visibilities are the
+following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;STV_DEFAULT&lt;/code&gt;: for default visibility symbols, its attribute is specified
+by the symbol&amp;rsquo;s binding type.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;STV_PROTECTED&lt;/code&gt;: symbol is visible by other objects, but cannot be
+preempted.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;STV_HIDDEN&lt;/code&gt;: symbol is not visible to other objects.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;STV_INTERNAL&lt;/code&gt;: symbol visibility is reserved.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The major difference between symbol visibility and symbol binding is that the
+former is enforced on the host object of a given symbol and applies to any
+external object referencing it. Symbol binding, on the other hand, is
+specified by an external object referencing the symbol and is enforced at
+link-time. In other words, object binding depends on the object referencing
+the symbol, while symbol visibility depends on how the object containing the
+symbol was compiled.&lt;/p&gt;
+&lt;p&gt;The only relevant contents of this field are its three last significant bits.
+Other bit fields do not contain specific meaning. In order to retrieve
+visibility information, the following macro is used:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ELF64_ST_VISIBILITY(o) ((o) &amp;amp; 0x3)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;st_shndx&lt;/code&gt;: Every symbol entry within the Symbol Table is associated with a
+section. This value specifies the section index within the Section Header
+Table associated with the given symbol. Common values for section type field
+include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;SHT_UNDEF&lt;/code&gt;: section is not present in current object. This value is
+typically set in symbols that have been imported from external objects.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SHT_PROGBITS&lt;/code&gt;: section is defined in current object.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SHT_SYMTAB&lt;/code&gt;, &lt;code&gt;SHT_DYNSYM&lt;/code&gt;: Symbol Table (&lt;code&gt;.symtab&lt;/code&gt;, &lt;code&gt;.dynsym&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SHT_STRTAB&lt;/code&gt;, &lt;code&gt;SHT_DYNSTR&lt;/code&gt;: String Table (&lt;code&gt;.strtab&lt;/code&gt;, &lt;code&gt;.dynstr&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SHT_REL&lt;/code&gt;: Relocation Table without explicit addends (&lt;code&gt;.rel.dyn&lt;/code&gt;,
+&lt;code&gt;.rel.plt&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SHT_RELA&lt;/code&gt;: Relocation Table with explicit addends (&lt;code&gt;.rela.dyn&lt;/code&gt;,
+&lt;code&gt;.rela.plt&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SHT_HASH&lt;/code&gt;: Hash Table for dynamic symbol resolution (&lt;code&gt;.gnu.hash&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SHT_DYNAMIC&lt;/code&gt;: section holding Dynamic Linking information (&lt;code&gt;.dynamic&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SHT_NOBITS&lt;/code&gt;: section takes no space in disk (&lt;code&gt;.bss&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;st_value&lt;/code&gt;: This field specifies the symbol value for a given Symbol Table
+entry. The interpretation of this field can vary depending on the object
+type.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;For &lt;code&gt;ET_REL&lt;/code&gt; files &lt;code&gt;st_value&lt;/code&gt; holds a section offset. The section in which
+this offset resides is specified on its &lt;code&gt;st_shndx&lt;/code&gt; field.&lt;/li&gt;
+&lt;li&gt;For &lt;code&gt;ET_EXEC&lt;/code&gt; / &lt;code&gt;ET_DYN&lt;/code&gt; files, &lt;code&gt;st_value&lt;/code&gt; holds a virtual address. If this
+field contains a value of 0 and the symbol&amp;rsquo;s section pointed by &lt;code&gt;st_shndx&lt;/code&gt;
+has a &lt;code&gt;sh_type&lt;/code&gt; field of type &lt;code&gt;SHT_UNDEF&lt;/code&gt;, the symbol is an imported
+relocation, and its value will be resolved at runtime by the RTLD
+(&lt;code&gt;ld.so&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;st_size&lt;/code&gt;: Field containing symbol&amp;rsquo;s size.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Symbol and String Tables&lt;span class="hx:absolute hx:-mt-20" id="symbol-and-string-tables"&gt;&lt;/span&gt;
+&lt;a href="#symbol-and-string-tables" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A single ELF object may contain a maximum of two Symbol Tables. These are
+&lt;code&gt;.symtab&lt;/code&gt; and &lt;code&gt;.dynsym&lt;/code&gt;. The difference between these two instances involves
+the number and type of symbols they contain. We refer &lt;code&gt;.symtab&lt;/code&gt; as the binary&amp;rsquo;s
+global Symbol Table, containing all symbol references in the current object.
+The section &lt;code&gt;.strtab&lt;/code&gt; is the String Table of &lt;code&gt;.symtab&lt;/code&gt; Symbol Table. String
+Tables store null-terminated strings used to reference objects from a different
+section. Each String Table contains the exact number of entries as its
+corresponding Symbol Table. This entails that each string entry at a given
+index in &lt;code&gt;.strtab&lt;/code&gt; corresponds to an &lt;code&gt;Elfxx_Sym&lt;/code&gt; entry at the same index in
+&lt;code&gt;.symtab&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;On the other hand, we have &lt;code&gt;.dynsym&lt;/code&gt; Symbol Table. This Symbol Table only holds
+symbols needed for Dynamic Linking. (We&amp;rsquo;ll cover Dynamic Linking extensively in
+future posts.) As an overview, when developing an application, sometimes we&amp;rsquo;d
+want to use symbols that don&amp;rsquo;t reside within the context of our program but are
+instead defined in external objects such as libraries (Shared Objects). Dynamic
+Linking is the process where the linker tries to dynamically bind those
+external symbols at runtime in order for them to be referenced safely within
+the context of a program.&lt;/p&gt;
+&lt;p&gt;If a given binary has been stripped (&lt;code&gt;.symtab&lt;/code&gt;/&lt;code&gt;.strtab&lt;/code&gt; have been removed) and
+this same binary has been compiled so that a subset of its symbols will be
+dynamically linked, this subset of symbols can be recovered by parsing
+&lt;code&gt;.dynsym&lt;/code&gt; table located at &lt;code&gt;DT_SYMTAB&lt;/code&gt; entry within &lt;code&gt;PT_DYNAMIC&lt;/code&gt; segment. For
+dynamically linked executables, &lt;code&gt;.dynsym&lt;/code&gt; will not be removed even if target
+binary has been stripped, since it is needed at runtime by the RTLD in the
+process of Dynamic Linking.&lt;/p&gt;
+&lt;p&gt;As with &lt;code&gt;.symtab&lt;/code&gt;, &lt;code&gt;.dynsym&lt;/code&gt; has its own string table called &lt;code&gt;.dynstr&lt;/code&gt;. All the
+relationships previously covered between &lt;code&gt;.symtab&lt;/code&gt; and &lt;code&gt;.strtab&lt;/code&gt; also apply
+between &lt;code&gt;.dynsym&lt;/code&gt; and &lt;code&gt;.dynstr&lt;/code&gt;. The following diagram illustrates the concepts
+of Symbols and String tables that we&amp;rsquo;ve just discussed:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part2/images/fig2.jpeg" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In this diagram, we see an example representation of various data structures
+from a binary containing the symbol &lt;code&gt;_IO_stdin_used&lt;/code&gt;. This symbol is
+represented as the second &lt;code&gt;Elf32_Sym&lt;/code&gt; instance in &lt;code&gt;.dynsym&lt;/code&gt; Symbol Table. Note
+that &lt;code&gt;.dynsym&lt;/code&gt; is a section represented as an &lt;code&gt;Elf32_Shdr&lt;/code&gt; structure, and the
+index of its String Table within the Section Header Table can be retrieved by
+its &lt;code&gt;Elf32_Shdr&lt;/code&gt;&amp;rsquo;s &lt;code&gt;sh_link&lt;/code&gt; field.&lt;/p&gt;
+&lt;p&gt;Moreover, This symbol resides within the &lt;code&gt;.rodata&lt;/code&gt; section as shown by its
+&lt;code&gt;Elf32_Sym&lt;/code&gt; &lt;code&gt;st_shndx&lt;/code&gt; field, which denotes the fourth &lt;code&gt;Elf32_Shdr&lt;/code&gt; instance
+within the Section Header Table. This &lt;code&gt;Elf32_Shdr&lt;/code&gt; instance&amp;rsquo;s &lt;code&gt;sh_name&lt;/code&gt; field
+points to the second null terminated string within the Section Header String
+Table, which is the &amp;lsquo;&lt;code&gt;.rodata&lt;/code&gt;&amp;rsquo; string.&lt;/p&gt;
+&lt;p&gt;Furthermore, we can obtain &lt;code&gt;_IO_stdin_used&lt;/code&gt;&amp;rsquo;s attributes based on its
+&lt;code&gt;Elf32_Sym&lt;/code&gt; instance. We can see that it is of type &lt;code&gt;OBJECT&lt;/code&gt;, and its binding
+is of type &lt;code&gt;GLOBAL&lt;/code&gt;. Therefore, we can assume this symbol is a Global variable.
+Note that the &lt;code&gt;st_value&lt;/code&gt; field may lead to misconceptions since it contains a
+virtual address denoting the symbol&amp;rsquo;s location within its correspondent
+section, but not the actual value of the Symbol.&lt;/p&gt;</description></item><item><title>Relocations</title><link>https://research.intezer.com/docs/elf/part3/</link><pubDate>Fri, 23 Mar 2018 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/elf/part3/</guid><description>
+&lt;h2&gt;1. Defining ELF Relocations&lt;span class="hx:absolute hx:-mt-20" id="1-defining-elf-relocations"&gt;&lt;/span&gt;
+&lt;a href="#1-defining-elf-relocations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In our previous post we covered what it means for a file to have symbolic
+information - when a file contains symbolic information it means that it
+contains source code exported metadata, in order to better interpret the
+generated machine code.&lt;/p&gt;
+&lt;p&gt;However, symbolic information by itself is useless. Symbolic references and
+symbolic definitions have to be connected with one another. The mechanism of
+connecting symbolic references with their correspondent symbolic definitions is
+what is know as Relocations.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s say we have a program that adds the value of two global variables
+together. In order for those variables to be successfully referenced in our
+program, their addresses within the process virtual address space have to be
+resolved. As an additional example, If our program is calling a function from
+an external dependency, the address of that function will also have to be
+computed prior to transferring control of execution to it. These two scenarios
+are examples of where relocations have to be applied.&lt;/p&gt;
+&lt;p&gt;During the compilation process of a program there is a specific stage were
+relocatable objects are generated. These relocatable objects contain all the
+information required to map symbolic references to its corresponding
+definitions. Populating symbolic references on symbolic definitions takes place
+during the linking phase of the compilation process.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/elf/part3/images/fig1.png" title="Figure1: compilation process" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure1: compilation process&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;There are different types of relocatable files:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Generic object files (&lt;code&gt;*.o&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Kernel object files (&lt;code&gt;*.ko&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Shared object files (&lt;code&gt;*.so&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Generic object files are the ones that are used for static linking, they are
+only relevant in the compilation process and essentially, any given symbolic
+definition will become part of the main executable being generated.&lt;/p&gt;
+&lt;p&gt;Obviously, this linking type has its benefits and flaws. On the benefits side,
+we should note that there is no need to rely on external dependencies to make
+the main executable work across different hosts. On the other hand, statically
+linked executables can become particularly large, since all needed dependencies
+of a given program will become part of the generated binary itself as
+previously mentioned.&lt;/p&gt;
+&lt;p&gt;Furthermore, another type of relocatable object are Kernel objects. These type
+of objects support being loaded to the kernel as a module (commonly known as
+LKM), without the need to restart the system. We will talk about Loadable
+Kernel Modules more thoroughly in future posts.&lt;/p&gt;
+&lt;p&gt;There are also shared objects. These type of relocatable files support being
+linked on runtime, and they may be shared across different processes.
+Consequently, relocations of dynamic dependencies have to be done at runtime.
+This process is known as Dynamic Linking.&lt;/p&gt;
+&lt;p&gt;The reason these relocations take place at runtime, is that as opposed to
+static linking, the symbolic definitions do not exist within the main binary&amp;rsquo;s
+context, but within external shared objects. These dynamic references will not
+be populated until the correspondent external dependencies are loaded into
+memory.&lt;/p&gt;
+&lt;p&gt;Image bases of dynamically linked dependencies are not deterministic, since
+they will differ even between different process instances of the same
+executable. Furthermore, as an interesting fact, dynamic dependencies in Linux
+systems do not have preferred based image bases, as is the case with Windows
+systems - Process A &lt;code&gt;libc.so&lt;/code&gt; will not be mapped at the same address as process
+B &lt;code&gt;libc.so&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;2. Relocation entries&lt;span class="hx:absolute hx:-mt-20" id="2-relocation-entries"&gt;&lt;/span&gt;
+&lt;a href="#2-relocation-entries" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Relocation information is held in relocatable entries, located in specific
+relocation sections within an ELF object. These entries are implemented in the
+form of structures. There are two different Relocation entry structures:
+&lt;code&gt;Elfxx_Rel&lt;/code&gt; and &lt;code&gt;Elfxx_Rela&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/elf/part3/images/fig2.png" title="Figure 2: ELF32 relocation entries" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: ELF32 relocation entries&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;As seen in the figure above, the only difference between both structures is
+that &lt;code&gt;Elfxx_Rela&lt;/code&gt; contains one additional field dedicated as a relocation
+addend. It is important to note that these relocation entry types are mutually
+exclusive within the context of a given ELF object. This means that if one type
+of entry is used, the other one will not be used consequently.&lt;/p&gt;
+&lt;p&gt;The reason for using one type of entry over the other, is usually architecture
+dependant. For example, in x86 only &lt;code&gt;Elf32_Rel&lt;/code&gt; is used, while on x86_64 only
+&lt;code&gt;Elf64_Rela&lt;/code&gt; is used. However this is not always valid for every architecture,
+for instance, SPARC always uses some instance of &lt;code&gt;Elfxx_Rela&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The different fields in these structures are the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;r_offset&lt;/code&gt;: This field holds the location where a particular relocation has
+to take place, however it may have different interpretations depending on ELF
+object type.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;For &lt;code&gt;ET_REL&lt;/code&gt; type binaries, this value denotes an offset within a section
+header. in which the relocations have to take place&lt;/li&gt;
+&lt;li&gt;For &lt;code&gt;ET_EXEC&lt;/code&gt; type binaries, this value denotes a virtual address affected
+by a relocation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;r_info&lt;/code&gt;: This field denotes both the symbol index within a symbol table of
+the correspondent symbol that has to be relocated, as well as the relocation
+type for that specific symbol. Both of these pieces of information can be
+retrieved from this field using the following macros:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ELF32_R_SYM(info) ((info)&amp;gt;&amp;gt;8)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ELF32_R_TYPE(info) ((unsigned char)(info))&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ELF64_R_SYM(info) ((info)&amp;gt;&amp;gt;32)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ELF64_R_TYPE(info) ((Elf64_Word)(info))&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;r_addend&lt;/code&gt;: This field specifies a constant addend to be added to compute the
+value to be stored in a given relocation reference.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These relocation entries are always found in some relocation section. Every
+relocation section may reference two additional sections.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A relocation section will always be linked to its correspondent symbol table.
+This symbol table can be located as a section in the Section Header Table,
+and its index can be retrieved by the &lt;code&gt;sh_link&lt;/code&gt; field of the relocation
+section&amp;rsquo;s &lt;code&gt;Elfxx_Shdr&lt;/code&gt; instance.&lt;/li&gt;
+&lt;li&gt;As previously mentioned, if a file is of type &lt;code&gt;ET_REL&lt;/code&gt;, a given relocation
+entry&amp;rsquo;s &lt;code&gt;r_offset&lt;/code&gt; will be an offset to a particular
+&lt;a href="../part1/"&gt;ELF section&lt;/a&gt; where a relocation has to take place. The section
+index where to apply that offset can be retrieved by the relocation section&amp;rsquo;s
+&lt;code&gt;Elfxx_Shdr&lt;/code&gt; &lt;code&gt;sh_info&lt;/code&gt; field.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The following diagram illustrates the previous relationships of the relocation
+section.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/elf/part3/images/fig3.png" title="Figure 3 : Section relationships involved in relocation entries." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3 : Section relationships involved in relocation entries.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The diagram above is a generic representation of the relationship between the
+different data structures involved in relocations. As mentioned before, the
+relocation section is linked to two other sections. One of them is the symbol
+table, where the symbols that will be relocated are held. In this case, the
+section is the &lt;code&gt;.dynsym&lt;/code&gt; section, the symbol table that holds symbols for
+Dynamic Linking.&lt;/p&gt;
+&lt;p&gt;The additional section linked to the relocation section is where the
+relocations are going to take place. In this case, the section is the
+&lt;code&gt;.got.plt&lt;/code&gt; section, which is a specific section dedicated to hold a table of
+pointers, as an interface for the application to access relocated dynamically
+linked procedures addresses. This table of pointers is also known as the Global
+Offset Table (GOT). We will discuss the exact usage and mechanisms involved
+with this section in the next post.&lt;/p&gt;
+&lt;h2&gt;3. Relocation types&lt;span class="hx:absolute hx:-mt-20" id="3-relocation-types"&gt;&lt;/span&gt;
+&lt;a href="#3-relocation-types" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;As mentioned before, the &lt;code&gt;r_info&lt;/code&gt; field of &lt;code&gt;Elfxx_Rel&lt;/code&gt; and &lt;code&gt;Elfxx_Rela&lt;/code&gt;
+contains two encoded values, which are the symbol index where the relocation is
+being applied to and the relocation type to apply accordingly. There are
+various relocations types and usually, these relocation types are architecture
+dependant. In this post, we cover relocation types of &lt;strong&gt;x86&lt;/strong&gt; and &lt;strong&gt;x86_64&lt;/strong&gt;,
+but it is advised to rely on the ELF documentation of a given architecture to
+know its specific relocation types.&lt;/p&gt;
+&lt;p&gt;The difference between relocation types resides in the way the relocated value
+is calculated. There are different variables that can potentially be involved
+in the calculation process. These variables are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;A&lt;/code&gt;: Addend of &lt;code&gt;Elfxx_Rela&lt;/code&gt; entries.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;B&lt;/code&gt;: Image base where the shared object was loaded in process virtual address
+space.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;G&lt;/code&gt;: Offset to the GOT relative to the address of the correspondent
+relocation entry&amp;rsquo;s symbol.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;GOT&lt;/code&gt;: Address of the Global Offset Table&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;L&lt;/code&gt;: Section offset or address of the procedure linkage table (PLT,
+&lt;code&gt;.got.plt&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;P&lt;/code&gt;: The section offset or address of the storage unit being relocated.
+retrieved via &lt;code&gt;r_offset&lt;/code&gt; relocation entry&amp;rsquo;s field.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;S&lt;/code&gt;: Relocation entry&amp;rsquo;s correspondent symbol value.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Z&lt;/code&gt;: Size of Relocations entry&amp;rsquo;s symbol.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Usually the relocation type name is descriptible enough to interpret its needed
+calculation. The following list presents the most common suffix names and their
+meaning for different relocation types in x86 and x86_64:&lt;/p&gt;
+&lt;p&gt;Generic relocation suffixes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;*_NONE&lt;/code&gt;: Neglected entry.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_64&lt;/code&gt;: qword relocation value.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_32&lt;/code&gt;: dword relocation value.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_16&lt;/code&gt;: word relocation value.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_8&lt;/code&gt;: byte relocation value.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_PC&lt;/code&gt;: relative to program counter.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_GOT&lt;/code&gt;: relative to GOT.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_PLT&lt;/code&gt;: relative to PLT (Procedure Linkage Table).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_COPY&lt;/code&gt;: value copied directly from shared object at load-time.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_GLOB_DAT&lt;/code&gt;: global variable.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_JMP_SLOT&lt;/code&gt;: PLT entry.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_RELATIVE&lt;/code&gt;: relative to image base of program&amp;rsquo;s image.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_GOTOFF&lt;/code&gt;: absolute address within GOT.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*_GOTPC&lt;/code&gt;: program counter relative GOT offset.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This being said, in the following tables x86 and x86_64 relocation types and
+their correspondent calculations are defined:&lt;/p&gt;
+&lt;h3&gt;x86 Relocation types&lt;span class="hx:absolute hx:-mt-20" id="x86-relocation-types"&gt;&lt;/span&gt;
+&lt;a href="#x86-relocation-types" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;Name&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Value&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Field&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Calculation&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_NONE&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;0&lt;/td&gt;
+&lt;td style="text-align: left"&gt;None&lt;/td&gt;
+&lt;td style="text-align: left"&gt;None&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_32&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;2&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_PC32&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;1&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_GOT32&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;3&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;G + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_PLT32&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;4&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;L + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_COPY&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;5&lt;/td&gt;
+&lt;td style="text-align: left"&gt;None&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Value is copied directly from shared object&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_GLOB_DAT&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;6&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_JMP_SLOT&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;7&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_RELATIVE&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;8&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;B + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_GOTOFF&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;9&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A - GOT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_GOTPC&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;10&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;GOT + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_32PLT&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;11&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;L + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_16&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;20&lt;/td&gt;
+&lt;td style="text-align: left"&gt;word&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_PC16&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;21&lt;/td&gt;
+&lt;td style="text-align: left"&gt;word&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_8&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;22&lt;/td&gt;
+&lt;td style="text-align: left"&gt;byte&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_PC8&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;23&lt;/td&gt;
+&lt;td style="text-align: left"&gt;byte&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_386_SIZE32&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;38&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;z + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;x86_64 Relocation types&lt;span class="hx:absolute hx:-mt-20" id="x86_64-relocation-types"&gt;&lt;/span&gt;
+&lt;a href="#x86_64-relocation-types" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;Name&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Value&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Field&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Calculation&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_NONE&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;0&lt;/td&gt;
+&lt;td style="text-align: left"&gt;None&lt;/td&gt;
+&lt;td style="text-align: left"&gt;None&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_64&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;1&lt;/td&gt;
+&lt;td style="text-align: left"&gt;qword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_PC32&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;2&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_GOT32&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;3&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;G + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_PLT32&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;4&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;L + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_COPY&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;5&lt;/td&gt;
+&lt;td style="text-align: left"&gt;None&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Value is copied directly from shared object&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_GLOB_DAT&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;6&lt;/td&gt;
+&lt;td style="text-align: left"&gt;qword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_JUMP_SLOT&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;7&lt;/td&gt;
+&lt;td style="text-align: left"&gt;qword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_RELATIVE&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;8&lt;/td&gt;
+&lt;td style="text-align: left"&gt;qword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;B + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_GOTPCREL&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;9&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;G + GOT + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_32&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;10&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_32S&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;11&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_16&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;12&lt;/td&gt;
+&lt;td style="text-align: left"&gt;word&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_PC16&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;13&lt;/td&gt;
+&lt;td style="text-align: left"&gt;word&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_8&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;14&lt;/td&gt;
+&lt;td style="text-align: left"&gt;word8&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_PC8&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;15&lt;/td&gt;
+&lt;td style="text-align: left"&gt;word8&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_PC64&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;24&lt;/td&gt;
+&lt;td style="text-align: left"&gt;qword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_GOTOFF64&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;25&lt;/td&gt;
+&lt;td style="text-align: left"&gt;qword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;S + A - GOT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_GOTPC32&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;26&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;GOT + A - P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_SIZE32&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;32&lt;/td&gt;
+&lt;td style="text-align: left"&gt;dword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Z + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;R_X86_64_SIZE64&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;33&lt;/td&gt;
+&lt;td style="text-align: left"&gt;qword&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Z + A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</description></item><item><title>Dynamic Linking</title><link>https://research.intezer.com/docs/elf/part4/</link><pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/elf/part4/</guid><description>
+&lt;h2&gt;Linking Overview&lt;span class="hx:absolute hx:-mt-20" id="linking-overview"&gt;&lt;/span&gt;
+&lt;a href="#linking-overview" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In order to understand dynamic linking, we must first define linking.
+&lt;strong&gt;Linking&lt;/strong&gt; is the process of joining together multiple object files, to create
+a shared library or an executable.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig1.png" title="Compilation of an object file" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Compilation of an object file&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;When one object file references functions or variables—which do not exist
+within the file&amp;rsquo;s context—but rather in other object files (dependencies), they
+must be linked. Linkers allow the use of separate, independent sources of code
+by providing a way to merge the code together into a single file, so the
+developer will be spared of this low-level detail.&lt;/p&gt;
+&lt;p&gt;For example:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;main.c&lt;/code&gt; does not implement the &lt;code&gt;printf&lt;/code&gt; function, so in order to invoke
+&lt;code&gt;printf&lt;/code&gt;, &lt;code&gt;main.o&lt;/code&gt; will have to be linked against &lt;code&gt;printf.o&lt;/code&gt; (the
+&lt;code&gt;include &amp;lt;stdio.h&amp;gt;&lt;/code&gt; directive only imports the definition of &lt;code&gt;printf&lt;/code&gt;—it does
+not contain its implementation).&lt;/p&gt;
+&lt;h3&gt;There are two linking types:&lt;span class="hx:absolute hx:-mt-20" id="there-are-two-linking-types"&gt;&lt;/span&gt;
+&lt;a href="#there-are-two-linking-types" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Static linking:&lt;/strong&gt; Completed at the end of the compilation process&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Dynamic linking:&lt;/strong&gt; Completed at load time by the system&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Static linking&lt;/strong&gt; is fairly simple:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The compile-time linker (&lt;code&gt;ld&lt;/code&gt;) collects all relevant object files—&lt;code&gt;main.o&lt;/code&gt; and
+the &lt;code&gt;libc.a&lt;/code&gt; static library (a bundle of object-files)—applies relocations and
+combines the files into a single binary. As such, when many object files are
+linked, the resulting binary file size can become very large.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Dynamic linking&lt;/strong&gt;, on the other hand, is a more complex process. Unlike in
+static linking, &lt;code&gt;ld&lt;/code&gt; requires shared libraries to create a dynamically linked
+executable. The output file will contain the executable&amp;rsquo;s code and the names of
+the shared libraries required, embedded within the binary:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;When the binary is executed, the dynamic linker will find the required
+dependencies to load and link them together. Thereby, deferring the linking
+stage from compile-time to run-time. We will detail how this process works
+shortly.&lt;/p&gt;
+&lt;p&gt;There are pros and cons to these two approaches:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Static linking&lt;/strong&gt; allows containing all dependencies in a single binary,
+making it more portable and simple to execute, at the expense of the file
+size.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Dynamic linking&lt;/strong&gt; allows the binary to be smaller, at the expense of having
+to ensure that the required dependencies exist in the target system that the
+binary will be executed in.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;The Dynamic Linking Process&lt;span class="hx:absolute hx:-mt-20" id="the-dynamic-linking-process"&gt;&lt;/span&gt;
+&lt;a href="#the-dynamic-linking-process" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The dynamic linking process begins immediately after execution.&lt;/p&gt;
+&lt;p&gt;For statically linked programs, execution is straight forward. The system
+creates the memory layout from the file&amp;rsquo;s segments and passes control to the
+file&amp;rsquo;s entry point.&lt;/p&gt;
+&lt;p&gt;With dynamically linked programs, the system executes the file&amp;rsquo;s &amp;ldquo;interpreter&amp;rdquo;,
+which is an intermediate program that should set up the environment and only
+then execute the main binary. The interpreter lies in the &lt;code&gt;PT_INTERP&lt;/code&gt; segment
+created by the compile-time linker (&lt;code&gt;ld&lt;/code&gt;). In this case, the interpreter is the
+dynamic linker program &lt;code&gt;ld-linux.so.2&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig5.png" title="The .interp section is mapped in the same address as the PT_INTERP segment" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The .interp section is mapped in the same address as the PT_INTERP segment&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The dynamic linker will set up the environment using dynamic entries from the
+&lt;code&gt;.dynamic&lt;/code&gt; section:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;These entries are crucial to the dynamic linker, which include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;DT_NEEDED&lt;/code&gt;&lt;/strong&gt; - the name of a required dependency to load.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;DT_SYMTAB&lt;/code&gt;&lt;/strong&gt; - the address of the dynamic symbol table (covered in our
+&lt;a href="../part2/"&gt;previous blog post&lt;/a&gt; about symbols).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;DT_FLAGS&lt;/code&gt;&lt;/strong&gt; - such as the &lt;code&gt;BIND_NOW&lt;/code&gt; flag that instructs the dynamic
+linker to perform all linking before handing over control to the program.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When the binary is executed, the system loads the dynamic linker into memory
+and execution will be passed to the dynamic linker&amp;rsquo;s entry point. The dynamic
+linker begins preparing the environment as follows:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig7.png" title="Memory view during dynamic linking" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Memory view during dynamic linking&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Load the original file&amp;rsquo;s &lt;code&gt;PT_LOAD&lt;/code&gt; segments in memory.&lt;/li&gt;
+&lt;li&gt;Use the &lt;code&gt;.dynamic&lt;/code&gt; section/segment to read dependencies, search for them on
+disk and load them in memory as well. This is done recursively for dependent
+libraries—they can be dynamically linked as well. The dependency searching
+algorithm is outlined in the
+&lt;a href="http://man7.org/linux/man-pages/man8/ld.so.8.html"target="_blank" rel="noopener"&gt;ld.so man page&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Perform relocations - shared libraries are loaded into non-deterministic
+addresses and must have absolute addresses patched, as well as resolving
+references to other object files.&lt;/li&gt;
+&lt;li&gt;Invoke shared library initialization functions (registered in the
+&lt;code&gt;.preinit_array&lt;/code&gt;, &lt;code&gt;.init&lt;/code&gt;, &lt;code&gt;.init_array&lt;/code&gt; sections).&lt;/li&gt;
+&lt;li&gt;Finally, pass control back to the original binary&amp;rsquo;s entry point, making it
+seem to the binary that control was passed directly from &lt;code&gt;exec&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;It is important to mention the &lt;strong&gt;&lt;code&gt;LD_PRELOAD&lt;/code&gt;&lt;/strong&gt; feature, which enables defined
+libraries to precede the loading of other dependencies. This is useful for
+overriding functions in other linked modules. This feature can be configured
+via the &lt;code&gt;LD_PRELOAD&lt;/code&gt; environment variable, or via the &lt;code&gt;/etc/ld.so.preload&lt;/code&gt;
+file.&lt;/p&gt;
+&lt;p&gt;This feature is often abused by malware developers to hook known functions. Our
+recent
+&lt;a href="../../../blog/2019/05/hiddenwasp-malware-targeting-linux-systems/"&gt;HiddenWasp Linux-based malware discovery&lt;/a&gt;
+demonstrates such use:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig10.png" title="Hooked libc functions by malicious preloaded libse1linux.so" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Hooked libc functions by malicious preloaded libse1linux.so&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Another interesting feature is &lt;strong&gt;&lt;code&gt;LD_LIBRARY_PATH&lt;/code&gt;&lt;/strong&gt;. This environment variable
+holds the path to the first directory where dependencies will be searched for,
+and is therefore abused by some malware developers as well.&lt;/p&gt;
+&lt;p&gt;Additional environment variables and configuration files that can alter the
+dynamic linker&amp;rsquo;s behavior do exist, and will be covered in the future
+dedicatedly.&lt;/p&gt;
+&lt;h3&gt;Lazy Linking&lt;span class="hx:absolute hx:-mt-20" id="lazy-linking"&gt;&lt;/span&gt;
+&lt;a href="#lazy-linking" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We mentioned earlier that the dynamic linker performs all relocations before
+handing over control to the main binary, however, this is not always the case.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s examine the following code example which will be dynamically compiled:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The program checks for the correct input in its command line
+&lt;code&gt;&amp;quot;s3cr3t_password&amp;quot;&lt;/code&gt;. If the input matches, the program will begin executing its
+main logic. If not, the program will immediately terminate.&lt;/p&gt;
+&lt;p&gt;If the program receives an incorrect input, it will terminate, rendering
+useless all of the relocation work performed by the dynamic linker. One can
+imagine how many relocations would be applied on a codebase with thousands of
+symbols. Precious time would be wasted by enforcing each and every symbol
+relocation.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Lazy linking&lt;/strong&gt; is an optimization for this problem. Lazy linking instructs
+the dynamic linker to resolve function references when they are called (lazily)
+instead of at load-time (eagerly).&lt;/p&gt;
+&lt;p&gt;This is enabled by the &lt;strong&gt;Procedure Linkage Table (PLT)&lt;/strong&gt; and the &lt;strong&gt;Global
+Offset Table (GOT)&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The GOT holds entries of addresses of global variables and external functions.&lt;/p&gt;
+&lt;p&gt;The PLT consists of short entries of instructions (often called &amp;ldquo;trampolines&amp;rdquo;
+or &amp;ldquo;thunks&amp;rdquo;), used to reach external functions by redirecting control flow of
+execution to its corresponding GOT entry.&lt;/p&gt;
+&lt;p&gt;Generally speaking, in dynamically linked executables, external functions are
+reached by calling their respective PLT entry:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The PLT entry will retrieve the function&amp;rsquo;s address from the function&amp;rsquo;s GOT
+entry, and call it:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;With early binding, GOT entries are relocated by the dynamic linker at
+load-time.&lt;/li&gt;
+&lt;li&gt;With lazy linking, the GOT entries will be relocated on-demand by a function
+call. At a function&amp;rsquo;s first invocation, the PLT will be used to call the
+dynamic linker to link the missing function.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We will compile the last example with lazy linking this time.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Now, we can see what happens when a function is called for the first time:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig15.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The &lt;code&gt;printf&lt;/code&gt; PLT entry is called, the GOT entry is retrieved and jumped to.&lt;/li&gt;
+&lt;li&gt;At load-time, the dynamic linker fills every GOT entry with the address
+pointing to the second instruction of the respective PLT entry. Therefore,
+&lt;code&gt;printf&lt;/code&gt;&amp;rsquo;s GOT entry will point back to &lt;code&gt;printf@plt+0x6&lt;/code&gt;. The dynamic linker
+needs to know which function needs to be relocated, so we push a number to
+the stack (I.E. 0): An index, which serves as the index of the relocation in
+the &lt;code&gt;.rel.plt&lt;/code&gt; section, is used to calculate the requested entry in the GOT
+(&lt;code&gt;GOT[index+3]&lt;/code&gt;—the first three indexes are reserved to addresses related to
+the dynamic linker as seen in the illustration).&lt;/li&gt;
+&lt;li&gt;The first PLT entry (&lt;code&gt;PLT[0]&lt;/code&gt;) is called, whose purpose is to call the
+dynamic linker&amp;rsquo;s &lt;code&gt;_dl_runtime_resolve&lt;/code&gt; to resolve the designated relocation.&lt;/li&gt;
+&lt;li&gt;Consequently, control will be passed to the dynamic linker. The dynamic
+linker will relocate the &lt;code&gt;printf&lt;/code&gt; GOT entry to point to the correct address
+within &lt;code&gt;libc.so&lt;/code&gt;, and finally pass control to &lt;code&gt;printf&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;A resolved GOT entry:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/elf/part4/images/fig16.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Future calls to &lt;code&gt;printf@plt&lt;/code&gt; will retrieve &lt;code&gt;printf&lt;/code&gt;&amp;rsquo;s resolved address residing
+in the GOT and jump there immediately.&lt;/p&gt;
+&lt;h3&gt;Summary&lt;span class="hx:absolute hx:-mt-20" id="summary"&gt;&lt;/span&gt;
+&lt;a href="#summary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This post explained the differences between static and dynamic linking.
+Furthermore, the information presented the dynamic linking process, and its
+lazy linking feature.&lt;/p&gt;
+&lt;p&gt;It is interesting to see malware in the wild abusing dynamic linker features as
+it does require some degree of knowledge and sophistication.&lt;/p&gt;
+&lt;p&gt;We hope you enjoyed reading this series! If you have any questions, please feel
+free to contact us.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Here are some additional resources for further reading:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;How ELF loads: &lt;a href="https://lwn.net/Articles/631631/"target="_blank" rel="noopener"&gt;https://lwn.net/Articles/631631/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;ld.so man page: &lt;a href="http://man7.org/linux/man-pages/man8/ld.so.8.html"target="_blank" rel="noopener"&gt;http://man7.org/linux/man-pages/man8/ld.so.8.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://codywu2010.wordpress.com/2014/11/29/about-elf-pie-pic-and-else/"target="_blank" rel="noopener"&gt;https://codywu2010.wordpress.com/2014/11/29/about-elf-pie-pic-and-else/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://medium.com/@HockeyInJune/relro-relocation-read-only-c8d0933faef3"target="_blank" rel="noopener"&gt;https://medium.com/@HockeyInJune/relro-relocation-read-only-c8d0933faef3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

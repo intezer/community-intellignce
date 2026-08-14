@@ -1,0 +1,393 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – URL Analysis 101</title><link>https://research.intezer.com/docs/url-analysis/</link><description>Recent content in URL Analysis 101 on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 03 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/docs/url-analysis/index.xml" rel="self" type="application/rss+xml"/><item><title>A Beginner's Guide to Phishing URLs</title><link>https://research.intezer.com/docs/url-analysis/part1/</link><pubDate>Tue, 22 Feb 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/url-analysis/part1/</guid><description>
+&lt;p&gt;&lt;strong&gt;October 2023 Update:&lt;/strong&gt; &lt;em&gt;Intezer analyzes all URLs that we collect as evidence
+for &lt;a href="https://intezer.com/pricing/"target="_blank" rel="noopener"&gt;automated alert triage&lt;/a&gt;, which now includes
+&lt;a href="https://intezer.com/reported-phishing/"target="_blank" rel="noopener"&gt;detecting and extracting QR codes for phishing email investigations.&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;At Intezer, we recently launched a URL analysis feature that will allow
+&lt;a href="https://intezer.com/blog/product-updates/automatically-scan-urls-and-analyze-malware/"target="_blank" rel="noopener"&gt;detecting phishing or malicious URLs.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;To do so, we have multiple integrations with services such as URLscan and
+APIVoid, and additionally, we are adding in-house built tools and an update to
+public API so you can integrate Intezer into your organizations&amp;rsquo; phishing
+investigation pipelines.&lt;/p&gt;
+&lt;p&gt;The aim of the first part of this two-part blog series is to introduce you to
+some common URL manipulation techniques and the URL structure. In part 2, when
+we&amp;rsquo;ll shed some light on how
+&lt;a href="../part2/"&gt;machine learning can prove useful for detecting phishing or malicious URLs.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The techniques we are going to review in this part of the blog are focused on
+human-detectable techniques, which you could use for links you receive in
+emails. Some of these techniques can help you spot URL manipulation before you
+click on links, without the need for any additional resources or requests.&lt;/p&gt;
+&lt;h2&gt;Breaking Down the Structure of a URL&lt;span class="hx:absolute hx:-mt-20" id="breaking-down-the-structure-of-a-url"&gt;&lt;/span&gt;
+&lt;a href="#breaking-down-the-structure-of-a-url" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let&amp;rsquo;s start with a little exercise.&lt;/p&gt;
+&lt;p&gt;Out of the following URLs, which one would you click on?&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;ftp://ftp.microsoft.com/software/patches/fixit.exe&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;https://www.micosoft.com/software/patches/fixit.exe&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;http://securitycenter.microsoft.us.admin-mcas-gov.ms&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Keep your answer in mind and let&amp;rsquo;s start investigating!&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/url-analysis/part1/images/fig1.png" title="fig 1: URL structure" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;fig 1: URL structure&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s quickly describe the different parts of the URL (see fig 1):&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;The protocol:&lt;/strong&gt; describes the way a browser should retrieve information
+from a certain web source. What matters for us here is the distinction
+between &lt;a href="https://en.wikipedia.org/wiki/HTTPS"target="_blank" rel="noopener"&gt;HTTPS&lt;/a&gt; and
+&lt;a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol"target="_blank" rel="noopener"&gt;HTTP&lt;/a&gt; which
+basically differ by being secure (or encrypted) and not secure. Another
+protocol to transfer files is
+&lt;a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol"target="_blank" rel="noopener"&gt;FTP&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The hostname&lt;/strong&gt;: is made of the domain name and the subdomain name.
+&lt;ul&gt;
+&lt;li&gt;The domain name consists of the second-level domain which is the name of
+your website and the top-level domain which specifies the type of website
+it is going to be, for example, &lt;code&gt;.com&lt;/code&gt; is intended for commercial, &lt;code&gt;.edu&lt;/code&gt;
+for educational and so on. The combination of the top-level and
+second-level domain is the &lt;strong&gt;only part that is unique&lt;/strong&gt; in the URL and we
+can&amp;rsquo;t stress enough how important that is.&lt;/li&gt;
+&lt;li&gt;The subdomain is like a specific &amp;ldquo;zone&amp;rdquo; inside your website. For example,
+you might have a URL like this: &lt;code&gt;your-organization.salesforce.com&lt;/code&gt; which
+basically says salesforce has a sub-website for your organization.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The path&lt;/strong&gt; is basically like a path on your personal computer to a
+specific file. It indicates what resource you want to get from the website.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We will now leverage the URL structure to understand how to read a URL.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s try with an example:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;http://securitycenter.microsoft.us.admin-mcas-gov.ms&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;So this looks like Microsoft, right?&lt;/p&gt;
+&lt;p&gt;Well, it does if you assume that the fact that the word &amp;ldquo;microsoft&amp;rdquo; is inside
+the URL text is enough proof&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s start discussing the &lt;strong&gt;domain name&lt;/strong&gt;. The domain name is the only thing
+that is unique in each URL, so most of the phishing URLs are going to try to
+fool you into thinking the domain name is legitimate (while it is not).&lt;/p&gt;
+&lt;p&gt;The domain name is composed of the top-level domain and the second-level domain
+which appear before the path separated by a dot. In our &amp;ldquo;microsoft&amp;rdquo; example
+above the second-level domain is &lt;code&gt;admin-mcas-gov&lt;/code&gt; and the top-level domain is
+&lt;code&gt;ms&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So the correct way to read the URL, in this case, would be from &lt;strong&gt;right to
+left&lt;/strong&gt; starting with the hostname on the right side. Doing so, we would
+immediately notice that the actual domain name we are going to be taken to is
+&lt;code&gt;admin-mcas-gov.ms&lt;/code&gt; which has a subdomain called &lt;code&gt;microsoft&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So this understanding is key for the rest of the blog: the actual website you
+are going to is, first of all, going to be defined by the unique domain name.
+(top-level + second-level domain)&lt;/p&gt;
+&lt;p&gt;So let&amp;rsquo;s revisit our previous exercise and analyze what the hell was going on
+there.&lt;/p&gt;
+&lt;p&gt;Basically, we are always going to ask ourselves, what is the domain for each
+URL?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;First URL - &lt;code&gt;ftp://ftp.microsoft.com/software/patches/fixit.exe&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;So this is actually our legit URL, so how was I trying to fool you? Well, I
+used the FTP protocol which is a completely legit protocol but less common.
+Here the domain or website we will land on is &lt;code&gt;microsoft.com&lt;/code&gt; which is
+completely legit.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Second URL - &lt;code&gt;https://www.micosoft.com/software/patches/fixit.exe&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Well everything seems clean there except&amp;hellip; OH wait a second there is an &amp;ldquo;r&amp;rdquo;
+missing so we actually get to a website called &lt;code&gt;micosoft.com&lt;/code&gt;, this is not the
+domain we wanted.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Third URL - &lt;code&gt;http://securitycenter.microsoft.us.admin-mcas-gov.ms&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This one should be obvious by now: the actual website here is
+&lt;code&gt;admin-mcas-gov.ms&lt;/code&gt; and not Microsoft.&lt;/p&gt;
+&lt;p&gt;So the answer was: The first URL is the real Microsoft one!&lt;/p&gt;
+&lt;h2&gt;Hacking the Human Brain&lt;span class="hx:absolute hx:-mt-20" id="hacking-the-human-brain"&gt;&lt;/span&gt;
+&lt;a href="#hacking-the-human-brain" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let&amp;rsquo;s review some manipulation techniques like the ones we discussed above and
+give them some really cool-sounding names and look at new examples. In every
+section, we are going to give some intuition about how to think about detecting
+those manipulations, and what suspicious attributes you could find by looking
+at a URL.&lt;/p&gt;
+&lt;p&gt;The general name we are going to give to URL manipulation is
+&lt;strong&gt;Cybersquatting&lt;/strong&gt; (sounds cool right?).&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s give a formal definition:&lt;/p&gt;
+&lt;p&gt;The term &lt;strong&gt;cybersquatting&lt;/strong&gt; refers to the unauthorized registration and use of
+Internet domain names that are identical or similar to trademarks, service
+marks, company names, or personal names (for example celebrity names).&lt;/p&gt;
+&lt;h3&gt;Subdomain Cybersquatting&lt;span class="hx:absolute hx:-mt-20" id="subdomain-cybersquatting"&gt;&lt;/span&gt;
+&lt;a href="#subdomain-cybersquatting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The problem:&lt;/p&gt;
+&lt;p&gt;We already have seen this kind of manipulation in our exercise with
+&lt;code&gt;https://login.microsoft.activate-account.com/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The main &amp;ldquo;brain hacking&amp;rdquo; that is going on here is that we are used to reading
+English from the left to the right. As users are encountering the name
+&amp;ldquo;Microsoft&amp;rdquo; or any other big company name for that matter (Facebook, Instagram,
+etc.) in the URL, most users immediately tend to trust the URL.&lt;/p&gt;
+&lt;p&gt;Intuition:&lt;/p&gt;
+&lt;p&gt;There are multiple subdomains, some digits in there, and the URL (at least the
+hostname) is very long. Also, we notice that a popular brand name is inside one
+of the subdomains.&lt;/p&gt;
+&lt;h3&gt;TLD (Top Level Domain) Cybersquatting&lt;span class="hx:absolute hx:-mt-20" id="tld-top-level-domain-cybersquatting"&gt;&lt;/span&gt;
+&lt;a href="#tld-top-level-domain-cybersquatting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;The problem:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Imagine you have a very nice company called &amp;ldquo;myamazingcompany&amp;rdquo; and you want to
+create a website, &lt;code&gt;https://www.myamazingcompany.com&lt;/code&gt; and you register the
+domain &lt;code&gt;myamazingcompany.com&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;But after a while, you start getting complaints that your website is a phishing
+scam. Astonished, you investigate the issue and notice something peculiar about
+the website in question, it is &lt;code&gt;https://www.myamazingcompany.so&lt;/code&gt; !! This means
+someone targeted your website by using a top-level domain you didn&amp;rsquo;t own &lt;code&gt;so&lt;/code&gt;
+and was able to make customers believe that this is your company&amp;rsquo;s website. (In
+our exercise above, number 3 used this technique.)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Intuition:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;So one way to try to flag this kind of manipulation automatically is a basic
+heuristic stating the following: if the popular domain is found inside as
+second-level domain, but has a different top-level domain, then flag it as
+suspicious.&lt;/p&gt;
+&lt;p&gt;In general, big companies buy most of the top-level domains to prevent this
+kind of cybersquatting. But smaller companies often have a hard time keeping
+track of this.&lt;/p&gt;
+&lt;h3&gt;Typosquatting&lt;span class="hx:absolute hx:-mt-20" id="typosquatting"&gt;&lt;/span&gt;
+&lt;a href="#typosquatting" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;The problem:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This one is very basic, it basically means counting on people making typos when
+writing popular domain names. A couple of examples could be &lt;code&gt;yutube&lt;/code&gt;,
+&lt;code&gt;arifrance&lt;/code&gt;, &lt;code&gt;goggle&lt;/code&gt;, &lt;code&gt;facdebook&lt;/code&gt;, &lt;code&gt;micosoft&lt;/code&gt; Fun fact, the autocorrection
+module while writing this blog suggested correcting these typos multiple times.&lt;/p&gt;
+&lt;p&gt;Another closely related problem is &lt;strong&gt;similar-domain cybersquatting&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;In this case, attackers are not only going to focus on typos but are going to
+focus on the similarity of the domain.&lt;/p&gt;
+&lt;p&gt;Some examples could be:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cnn-news.com&lt;/code&gt; (added &amp;ldquo;-news&amp;rdquo;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Facebook1.com&lt;/code&gt; (Added the digit &amp;ldquo;1&amp;rdquo;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;flarecloud.com&lt;/code&gt; (inverted the word order, instead of Cloudflare)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Intuition:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;So we can intuitively already think of some ways to detect manipulations like
+these by keeping a list of very popular domains that are potential targets for
+phishing attacks like Facebook, Google, banks, credit cards, and many more.&lt;/p&gt;
+&lt;p&gt;Using this list we could test the string distance (e.g. Levenshtein distance)
+to each of the words in the popular domain list, if the string distance would
+be bigger than 1 but less than another value, we could assume that some
+malicious intent was present and flag it.&lt;/p&gt;
+&lt;p&gt;In addition, in the similar-domain cybersquatting case, we also notice there
+are digits inside some of the URLs or special characters like &amp;ldquo;-&amp;rdquo; that are
+rarer in trusted URLs. So flagging URLs for these might also make sense.&lt;/p&gt;
+&lt;h3&gt;Additional Information: Suggestive Words&lt;span class="hx:absolute hx:-mt-20" id="additional-information-suggestive-words"&gt;&lt;/span&gt;
+&lt;a href="#additional-information-suggestive-words" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Another thing we would like to note about phishing URLs is that usually, they
+will try to get you to input your credentials for some service. That is why we
+can also raise the probability that something is phishing if we notice some
+suggestive words inside the URL, these could be words like &amp;ldquo;login,&amp;rdquo; &amp;ldquo;account,&amp;rdquo;
+&amp;ldquo;activate,&amp;rdquo; &amp;ldquo;bank,&amp;rdquo; and more&amp;hellip;&lt;/p&gt;
+&lt;p&gt;This is easily detectable by again keeping a word list of suggestive words
+found in phishing URLs and seeing if they are included anywhere inside the URL.
+The same applies to a suggestive word list. A suggestive word would be a word
+that would raise the probability of the URL being connected to phishing.
+(&amp;ldquo;login,&amp;rdquo; &amp;ldquo;account,&amp;rdquo; &amp;ldquo;activate,&amp;rdquo; etc.)&lt;/p&gt;
+&lt;p&gt;Before we continue, let&amp;rsquo;s show off our new URL feature and test it on the third
+URL of the exercise, &lt;code&gt;http://securitycenter.microsoft.us.admin-mcas-gov.ms&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/url-analysis/part1/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;URL Analysis -
+&lt;a href="https://analyze.intezer.com/url/5a70c8a2-2a7a-4f37-bfec-f82fcceca855"target="_blank" rel="noopener"&gt;https://analyze.intezer.com/url/5a70c8a2-2a7a-4f37-bfec-f82fcceca855&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;Hacking the Browser&lt;span class="hx:absolute hx:-mt-20" id="hacking-the-browser"&gt;&lt;/span&gt;
+&lt;a href="#hacking-the-browser" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Next I would like to discuss a slightly different kind of manipulation, which
+is based on browser behavior. I put these in a different section because they
+are mostly exploiting technology fallacies and less human fallacies as we saw
+before.&lt;/p&gt;
+&lt;p&gt;These techniques are still detectable by human intervention as we&amp;rsquo;ll
+demonstrate, but require more time if you are just clicking your way through
+the internet.&lt;/p&gt;
+&lt;p&gt;Also, they may require some basic HTML knowledge.&lt;/p&gt;
+&lt;h3&gt;Use of special characters&lt;span class="hx:absolute hx:-mt-20" id="use-of-special-characters"&gt;&lt;/span&gt;
+&lt;a href="#use-of-special-characters" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;1. The &amp;ldquo;&lt;a href="https://en.wikipedia.org/wiki/Soft_hyphen"target="_blank" rel="noopener"&gt;Soft Hyphen&lt;/a&gt;&amp;rdquo; character
+or &lt;code&gt;&amp;amp;shy&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;So this is a rather weird manipulation, it leverages that HTML does not show
+the &lt;code&gt;&amp;amp;shy&lt;/code&gt; character, like the actual URL the user is referred to, is
+&lt;code&gt;http://int&amp;amp;shyezer.com&lt;/code&gt; but the URL that is shown in the web page is&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/url-analysis/part1/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Hex encoding &amp;amp; special login technique&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s look at this URL:
+&lt;code&gt;http://www.google.com:login@%69%6E%74%65%7A%65%72%2E%63%6F%6D&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;So here we are going to have two main techniques, the first one is hexadecimal
+encoding, in this case, the URL above is going to redirect us to &lt;code&gt;intezer.com&lt;/code&gt;
+since that is the hexadecimal value I inserted above. How about the first part
+which led you to believe this was actually &lt;code&gt;google.com&lt;/code&gt;?&lt;/p&gt;
+&lt;p&gt;Well, some websites allow you to log in by setting passwords and usernames
+inside the URL itself. If the website does not allow this it has no effect.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s quickly investigate what&amp;rsquo;s going on:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Protocol: HTTP (not secure)&lt;/li&gt;
+&lt;li&gt;Login-username: &lt;code&gt;www.google.com&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Login-password: &lt;code&gt;login&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Actual website - &lt;code&gt;intezer.com&lt;/code&gt; (written in hexadecimal)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Short URLs&lt;span class="hx:absolute hx:-mt-20" id="short-urls"&gt;&lt;/span&gt;
+&lt;a href="#short-urls" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Basically here you just hide the true URL by using a short redirect URL. In
+this fashion, is it possible to know what page you&amp;rsquo;re going to without clicking
+on the below link?&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://tinyurl.com/intezer-tiny"target="_blank" rel="noopener"&gt;https://tinyurl.com/intezer-tiny&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So in this case you have a couple of options:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Use the preview feature these short URL services have, by putting &amp;ldquo;preview&amp;rdquo;
+between the &lt;code&gt;https://&lt;/code&gt; and the first word of the URL in the following
+fashion:
+&lt;a href="https://preview.tinyurl.com/intezer-tiny"target="_blank" rel="noopener"&gt;https://preview.tinyurl.com/intezer-tiny&lt;/a&gt;
+They way you get redirected to a page of the url service which shows you the
+intended URL.&lt;/li&gt;
+&lt;li&gt;Use a service like
+&lt;a href="https://analyze.intezer.com/?tab=url"target="_blank" rel="noopener"&gt;Intezer Analyze&lt;/a&gt; to scan the URL and
+get an analysis that tells you both what page the URL is redirecting to and
+if it is malicious.&lt;/li&gt;
+&lt;li&gt;Use an &amp;ldquo;un-shorten&amp;rdquo; URL service like
+&lt;a href="https://unshorten.it/"target="_blank" rel="noopener"&gt;https://unshorten.it/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Also, as a last resort, after clicking, you can take a look at the actual
+URL of the website you were directed to and search for manipulation
+techniques as we saw before.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;HTML concealment&lt;span class="hx:absolute hx:-mt-20" id="html-concealment"&gt;&lt;/span&gt;
+&lt;a href="#html-concealment" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This one is pretty straightforward, this is just putting something different in
+the &lt;code&gt;href&lt;/code&gt; than what is displayed by the HTML. You can discover this pretty
+quickly using the inspect panel.&lt;/p&gt;
+&lt;p&gt;An automatic way to detect this behavior could be done pretty simply by loading
+the HTML page and comparing all the &lt;code&gt;href&lt;/code&gt; to the displayed text.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/url-analysis/part1/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Of course, there are many other browser manipulations
+(&lt;a href="https://en.wikipedia.org/wiki/Punycode#:~:text=The%20Punycode%20syntax%20is%20a,IETF%20Request%20for%20Comments%203492."target="_blank" rel="noopener"&gt;Puny code&lt;/a&gt;
+for example) and suspicious features that can be extracted from the HTML of a
+website but they are not necessarily directly related to the URL itself so we
+will leave this out of scope for this blog.&lt;/p&gt;</description></item><item><title>Automating Phishing Investigations with Machine Learning</title><link>https://research.intezer.com/docs/url-analysis/part2/</link><pubDate>Thu, 03 Mar 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/url-analysis/part2/</guid><description>
+&lt;p&gt;Analyzing suspicious URLs on an individual basis can be tricky, but when you&amp;rsquo;re
+facing a large volume of potentially malicious URLs then other approaches that
+leverage automation (like machine learning) become critical.&lt;/p&gt;
+&lt;p&gt;At Intezer, we recently launched a
+&lt;a href="https://intezer.com/blog/product-updates/automatically-scan-urls-and-analyze-malware/"target="_blank" rel="noopener"&gt;URL scanning feature that will allow detecting phishing/malicious URLs&lt;/a&gt;.
+To do so, we have multiple integrations with services such as URLscan and
+APIVoid, and additionally, we are adding in-house built tools. We built our URL
+scanner to be capable of both automated use cases (adding a deeper layer of
+automated triage and analysis into phishing investigation pipelines with
+thousands of suspicious URLs), as well as &amp;ldquo;manual&amp;rdquo; analysis of individual URLs
+discovered during investigations.&lt;/p&gt;
+&lt;p&gt;This blog is the second of a URL analysis 101 series.
+&lt;a href="../part1/"&gt;In the previous part&lt;/a&gt;, we discussed how people with malicious
+intent can modify URLs to leverage human and browser weaknesses to successfully
+&amp;ldquo;phish&amp;rdquo; people clicking on URLs. In this part, we are going to discuss
+automatic detection for URLs and some of the reasoning behind the various
+methods. We are going to emphasize the popular use of &lt;strong&gt;machine learning&lt;/strong&gt; for
+such a task.&lt;/p&gt;
+&lt;h2&gt;Motivation for Using Machine Learning&lt;span class="hx:absolute hx:-mt-20" id="motivation-for-using-machine-learning"&gt;&lt;/span&gt;
+&lt;a href="#motivation-for-using-machine-learning" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;To understand the motivation behind this blog, we first must understand the
+general methods of &lt;strong&gt;automatic URL detection&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;In general two methods are discussed:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;List-based&lt;/strong&gt; - Blocklisting or allowlisting of websites, examples for
+these kinds of lists are:
+&lt;ul&gt;
+&lt;li&gt;URLHaus&lt;/li&gt;
+&lt;li&gt;Phishstats&lt;/li&gt;
+&lt;li&gt;Alexa rank (a high rank will give credibility to the trustworthiness of
+the website)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Machine learning-based&lt;/strong&gt; - Usage of labeled URLs and extracted features
+from the URLs to train ML models.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Pros And Cons of List-Methods and Machine Learning Methods&lt;span class="hx:absolute hx:-mt-20" id="pros-and-cons-of-list-methods-and-machine-learning-methods"&gt;&lt;/span&gt;
+&lt;a href="#pros-and-cons-of-list-methods-and-machine-learning-methods" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h3&gt;List-based methods&lt;span class="hx:absolute hx:-mt-20" id="list-based-methods"&gt;&lt;/span&gt;
+&lt;a href="#list-based-methods" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Pros: These methods are very precise, meaning if a URL is included in a
+blocklist it is malicious with a very high probability and will generate a
+very low rate of false positives.&lt;/li&gt;
+&lt;li&gt;Cons: The problem with list-based methods is that they will not be able to
+detect new phishing websites, because any URL that is not in the list will
+not be identified.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Machine learning-based methods&lt;span class="hx:absolute hx:-mt-20" id="machine-learning-based-methods"&gt;&lt;/span&gt;
+&lt;a href="#machine-learning-based-methods" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Pros: ML methods are able to detect new malicious URLs based on the URLs
+and/or web page characteristics.&lt;/li&gt;
+&lt;li&gt;Cons: ML methods will generally generate more false positives than list-based
+methods.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Machine Learning: A Small Intro&lt;span class="hx:absolute hx:-mt-20" id="machine-learning-a-small-intro"&gt;&lt;/span&gt;
+&lt;a href="#machine-learning-a-small-intro" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Don&amp;rsquo;t panic! No maths and not very complicated material in this section.&lt;/p&gt;
+&lt;p&gt;Please note that we are &lt;em&gt;not&lt;/em&gt; going to give a full machine learning solution to
+the problem but merely give an intuition of a machine learning approach.&lt;/p&gt;
+&lt;p&gt;In order for our machine learning model to learn the differences between
+phishing and trusted URLs, you need to be able to provide it with labeled data,
+in our case, &amp;ldquo;trusted&amp;rdquo;/&amp;ldquo;phishing&amp;rdquo; for each URL.&lt;/p&gt;
+&lt;p&gt;When we have labeled data we call the machine learning process
+&lt;a href="https://en.wikipedia.org/wiki/Supervised_learning#:~:text=Supervised%20learning%20%28SL%29%20is%20the,on%20example%20input%2Doutput%20pairs.&amp;amp;text=In%20supervised%20learning%2C%20each%20example,also%20called%20the%20supervisory%20signal%29."target="_blank" rel="noopener"&gt;supervised&lt;/a&gt;
+as opposed to
+&lt;a href="https://en.wikipedia.org/wiki/Unsupervised_learning"target="_blank" rel="noopener"&gt;unsupervised learning&lt;/a&gt;
+where we get a dataset that does not have the labels which we need to learn.&lt;/p&gt;
+&lt;h3&gt;What Information Can We Extract From A URL&lt;span class="hx:absolute hx:-mt-20" id="what-information-can-we-extract-from-a-url"&gt;&lt;/span&gt;
+&lt;a href="#what-information-can-we-extract-from-a-url" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Usually we refer to information or a characteristic about something we need to
+learn from in machine learning as
+&lt;a href="https://en.wikipedia.org/wiki/Feature_%28machine_learning%29"target="_blank" rel="noopener"&gt;features&lt;/a&gt;. The main
+categories of interesting features we can extract, from a URL, are the
+following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Lexical features&lt;/strong&gt; - These are features that are based on the text of the
+URL itself, a couple of examples include URL length (usually to do some URL
+manipulation you need to add more text to the URL), the number of digits in
+the hostname (in legit URLs digits are rarer), the number of subdomains,
+&lt;a href="https://en.wikipedia.org/wiki/Entropy_%28information_theory%29"target="_blank" rel="noopener"&gt;entropy&lt;/a&gt;, the
+number of special characters like &amp;ldquo;@&amp;rdquo; and many more.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Domain features&lt;/strong&gt; - These are features that are related to the website
+registration based on the
+&lt;a href="https://en.wikipedia.org/wiki/WHOIS"target="_blank" rel="noopener"&gt;whois information&lt;/a&gt; and can include:
+the number of days since the registration or expiration of the domain of the
+website, and more.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Webpage features&lt;/strong&gt; - It is also possible to extract features from the
+webpage you are directed to, however, this requires getting the full web
+page and is kind of a heavy process. Features from the webpage could include
+the number of links, images or HTML titles, and others.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;For simplicity&amp;rsquo;s sake: let&amp;rsquo;s take URL length (number of characters) as a first
+feature and the number of digits in the URL as a second feature and look at
+some examples:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/url-analysis/part2/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;So let&amp;rsquo;s take a look at the first phishing URL and the first trusted URL in the
+above example.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Phishing URL&lt;/strong&gt; -
+&lt;code&gt;http://postsfb-hg36wq99.novitium.ca/profile.html?countUser=92f5f58259eedaddcef524ed5d2040eb&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;So here we have URL length 91, the number of digits is 20 and it is phishing
+(notice the &lt;code&gt;fb&lt;/code&gt; inside of the URL which wants to make us believe it&amp;rsquo;s
+Facebook).&lt;/p&gt;
+&lt;p&gt;So let&amp;rsquo;s turn this into a numeric vector!&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;[91, 20]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Amazing isn&amp;rsquo;t it? The first value if the vector represents the URL length and
+the second represents the number of digits inside the URL.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s look at a second example.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Trusted URL&lt;/strong&gt; - &lt;code&gt;http://distritoforestal.es/&lt;/code&gt; which gives us this numerical
+vector =&amp;gt; &lt;code&gt;[27, 0]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Now that we have these numeric vectors, let&amp;rsquo;s plot a couple of these URLs using
+URL length and the number of digits inside the URL:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/url-analysis/part2/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;In this plot, we see 40 points in total representing 20 for each category. The
+Y-axis represents the number of digits and the X-axis represents the URL
+length.&lt;/p&gt;
+&lt;p&gt;The main reason we chose to use only two features is that they are easily
+plottable and can give a good visual sense of how we could mathematically
+separate the groups.&lt;/p&gt;
+&lt;p&gt;In this process, we actually took the text of the URL, transformed it into a
+numeric vector and we plotted them on a 2-dimensional plane. The line you see
+on the plot was learned by a Machine Learning algorithm called
+&lt;a href="https://www.analyticsvidhya.com/blog/2017/09/understaing-support-vector-machine-example-code/"target="_blank" rel="noopener"&gt;SVM or Supplied Vector Machines.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Using this very simple model we can now divide the plane as you can see in the
+visualization, every new URL that will arrive in the lower part below the
+classification line will be classified as a trusted URL and above the
+classification, the URL will be classified as phishing.&lt;/p&gt;
+&lt;p&gt;For example, a new URL getting to this classifier with lengths 50 and 20 digits
+will be classified as a phishing URL and a URL with length 50 and less than 5
+digits will be classified as trusted.&lt;/p&gt;
+&lt;p&gt;Another important point is we can notice that using only two features, the
+length and the number of digits will create some false negatives as 3 phishing
+URLs are incorrectly classified as trusted URLs.&lt;/p&gt;
+&lt;h2&gt;Automating URL Analysis&lt;span class="hx:absolute hx:-mt-20" id="automating-url-analysis"&gt;&lt;/span&gt;
+&lt;a href="#automating-url-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Large organizations are increasingly looking for automation to scale
+high-volume phishing investigation pipelines, including methods like machine
+learning for URL detection. In this part of the blog, we discussed how machine
+learning can be used for automatic URL detection. We discussed the advantages
+and disadvantages of using machine learning and list-based detection methods.&lt;/p&gt;
+&lt;p&gt;We hope that you enjoyed reading this blog and feel free to contact us for any
+further questions regarding our products and our URL analysis tools.&lt;/p&gt;</description></item></channel></rss>

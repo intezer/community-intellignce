@@ -538,6 +538,481 @@ data-copied-label="Copied!"
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Dissecting SSLoad Malware: A Comprehensive Technical Analysis</title><link>https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/</link><pubDate>Mon, 10 Jun 2024 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/</guid><description>
+&lt;p&gt;SSLoad is a stealthy malware that is used to infiltrate systems through
+phishing emails, gather reconnaissance and transmit it back to its operators
+while delivering various payloads. Recently, Unit42 highlighted an active
+campaign leveraging SSLoad in their attack arsenal.
+&lt;a href="https://twitter.com/Unit42_Intel/status/1781326222019932535"target="_blank" rel="noopener"&gt;One attack vector&lt;/a&gt;
+involves a decoy Word document that delivers an SSLoad DLL, which eventually
+executes Cobalt Strike.
+&lt;a href="https://twitter.com/Unit42_Intel/status/1780021135813337366"target="_blank" rel="noopener"&gt;The other attack&lt;/a&gt;
+utilizes a phishing email that leads to a fake Azure page, downloading a
+JavaScript script that ultimately downloads an MSI installer, which loads the
+SSLoad payload.&lt;/p&gt;
+&lt;p&gt;SSLoad is a new malware that has been targeting victims since April 2024. A
+recent
+&lt;a href="https://www.securonix.com/blog/securonix-threat-research-security-advisory-frozenshadow-attack-campaign/"target="_blank" rel="noopener"&gt;report&lt;/a&gt;
+by Secournix highlighted the latest SSLoad activity, and we are already seeing
+additional delivery variants. The diverse delivery methods uncovered by our
+technical analysis suggest its use in &lt;strong&gt;Malware-as-a-Service (MaaS)&lt;/strong&gt;
+operations, highlighting its versatile nature.&lt;/p&gt;
+&lt;p&gt;This blog presents a detailed technical analysis of the loaders and payloads
+used in these campaigns. We examined the payloads, techniques, and
+functionality at each stage of the malware execution chain. Our analysis also
+includes conclusions drawn from additional IOCs identified through
+threat-hunting and pivoting efforts. We aim to shed more light on the technical
+functionality of this rapidly evolving malware.&lt;/p&gt;
+&lt;h2&gt;MSI Installer&lt;span class="hx:absolute hx:-mt-20" id="msi-installer"&gt;&lt;/span&gt;
+&lt;a href="#msi-installer" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We began our analysis by dissecting the MSI file identified in one of the
+campaigns. This installer initiates a delivery chain comprising several
+loaders, ultimately deploying the final payload.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;SHA256:
+&lt;a href="https://analyze.intezer.com/files/90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750"target="_blank" rel="noopener"&gt;&lt;code&gt;90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Using &lt;a href="https://github.com/GNOME/msitools"target="_blank" rel="noopener"&gt;msitools&lt;/a&gt;, we can determine what
+actions the installer will execute:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;❯ msiinfo export 90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750.sample CustomAction
+[...]
+SET_APPDIR 307 APPDIR [AppDataFolder][Manufacturer][ProductName]
+LaunchFile 1026 viewer.exe C:WindowsSystem32regsvr32.exe /S [LocalAppDataFolder]sharepointMenuEx.dll&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;The Loader: PhantomLoader&lt;span class="hx:absolute hx:-mt-20" id="the-loader-phantomloader"&gt;&lt;/span&gt;
+&lt;a href="#the-loader-phantomloader" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The initial loader is a 32-bit DLL written in C/C++, serving as the first-stage
+loader. We named it &amp;ldquo;PhantomLoader&amp;rdquo; to emphasize its elusive and stealthy
+behavior. The loader is added to a legitimate DLL, usually EDR or AV products,
+by binary patching the file and employing self-modifying techniques to evade
+detection. This loader has not been reported or documented previously.&lt;/p&gt;
+&lt;p&gt;Analysis of its metadata reveals that the PhantomLoader attempts to disguise
+itself as a legitimate DLL named &lt;code&gt;MenuEx.dll&lt;/code&gt;, associated with 360 Total
+Security, a Chinese antivirus program. Additionally, we discovered a PDB path
+in the metadata: &lt;code&gt;C:vmagent_newbinjoblist500965outReleaseMenuEx.pdb&lt;/code&gt;. The
+loader also shares code with the antivirus software and retains remnants of a
+digital signature, as shown by Intezer&amp;rsquo;s analysis.&lt;/p&gt;
+&lt;p&gt;SHA256:
+&lt;a href="https://analyze.intezer.com/files/09ffc4188bf11bf059b616491fcb8a09a474901581f46ec7f2c350fbda4e1e1c"target="_blank" rel="noopener"&gt;&lt;code&gt;09ffc4188bf11bf059b616491fcb8a09a474901581f46ec7f2c350fbda4e1e1c&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig2.png" title="String and Code reuse between the loader and 360 Total Security." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;String and Code reuse between the loader and 360 Total Security.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig3.png" title="File metadata." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;File metadata.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The payload is stored encrypted in the resource section, which exhibits a high
+entropy level, as shown in the screenshot below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig4.png" title="The sections of the PhantomLoader." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The sections of the PhantomLoader.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Phantom Loader is a self-modifying loader. It first decrypts the stub function,
+which then extracts the payload from the resource section. The screenshot above
+shows that the &lt;code&gt;.text&lt;/code&gt; section has RWX permissions, which is uncommon. However,
+since the loader is self-modifying, this explains the unusual permissions.&lt;/p&gt;
+&lt;p&gt;The decoding logic employs an XOR decryption method. Each byte of the encrypted
+code at a specified address is XORed with a corresponding byte from a
+predefined encryption key. The key repeats cyclically if the code&amp;rsquo;s length
+exceeds the key&amp;rsquo;s length.&lt;/p&gt;
+&lt;p&gt;The XOR key is a stack string with the following value:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;71 21 2a 43 74 52 4f 42 65 6a 6c 64 57 46 37 45 33 40 31 4c 69 79 55 53 00&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Below is an IDA Python script that modifies the code based on the logic
+described above:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;ida_bytes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;ida_auto&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;decode_code&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;start_addr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;key_hex&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="c1"&gt;# Convert the hex key string into a byte array&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="n"&gt;key_bytes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;bytearray&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fromhex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;key_hex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="c1"&gt;# Read the current encrypted data from the IDB&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="n"&gt;encrypted_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ida_bytes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;start_addr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="c1"&gt;# Create a bytearray for the encrypted data to perform mutable operations&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="n"&gt;encrypted_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;bytearray&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;encrypted_data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="n"&gt;key_length&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;key_bytes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="c1"&gt;# Perform the XOR decryption&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;        &lt;span class="n"&gt;encrypted_data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;^=&lt;/span&gt; &lt;span class="n"&gt;key_bytes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;key_length&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="c1"&gt;# Write the decrypted data back to the IDB&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="c1"&gt;# Convert bytearray back to bytes since patch_bytes expects a &amp;#39;bytes&amp;#39; type&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="n"&gt;ida_bytes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;patch_bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;start_addr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;bytes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;encrypted_data&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="c1"&gt;# Optionally, inform IDA to reanalyze modified areas to reflect changes in disassembly&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="n"&gt;ida_auto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;auto_make_code&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;start_addr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;    &lt;span class="n"&gt;ida_auto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;auto_wait&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Constants&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;encryption_key_hex&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;71212a4374524f42656a6c64574637453340314c6979555300&amp;#34;&lt;/span&gt;  &lt;span class="c1"&gt;# The decryption key in hex&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;code_region_length&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x76C&lt;/span&gt;  &lt;span class="c1"&gt;# Length of the code region&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;start_address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x1000AF77&lt;/span&gt;  &lt;span class="c1"&gt;# Starting address of the encrypted code&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Decode the encrypted code region&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;decode_code&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;start_address&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;code_region_length&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;encryption_key_hex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Decryption complete. The code region has been updated.&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Once the code is decrypted, the instruction pointer (EIP) will point to the
+first instruction. The stub then implements the same XOR decryption using the
+same key to extract the encoded payload from the resource section. After
+decoding the payload, the stub loads and executes it. This payload is another
+loader.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig5.png" title="Encoded resource." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Encoded resource.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Another version of the loader, observed in the attack that uses the decoy
+document, follows the same logic but employs a different XOR key:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;25 5e 47 51 4d 4a 42 44 77 42 64 58 4c 41 46 57 75 28 21 46 61 67 32 24 34 46 47 00&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;SHA256:
+&lt;a href="https://analyze.intezer.com/files/73774861d946d62c2105fef4718683796cb77de7ed42edaec7affcee5eb0a0ee"target="_blank" rel="noopener"&gt;&lt;code&gt;73774861d946d62c2105fef4718683796cb77de7ed42edaec7affcee5eb0a0ee&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;Second Stage of The Phantom Loader&lt;span class="hx:absolute hx:-mt-20" id="second-stage-of-the-phantom-loader"&gt;&lt;/span&gt;
+&lt;a href="#second-stage-of-the-phantom-loader" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The second stage of the Phantom Loader is a small, simple 32-bit DLL written in
+C/C++. It loads the payload and sets the entry point to the
+&lt;code&gt;DllRegisterServer&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;SHA256:
+&lt;a href="https://analyze.intezer.com/files/09ffc4188bf11bf059b616491fcb8a09a474901581f46ec7f2c350fbda4e1e1c/sub/3bb8aaec-62fa-46f2-a616-0235bb406ec2"target="_blank" rel="noopener"&gt;&lt;code&gt;6aa3daefee979a0efbd30de15a1fc7c0d05a6e8e3f439d5af3982878c3901a1c&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;SSLoad: The Downloader&lt;span class="hx:absolute hx:-mt-20" id="ssload-the-downloader"&gt;&lt;/span&gt;
+&lt;a href="#ssload-the-downloader" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The payload is a 32-bit DLL written in Rust, identified as SSLoad. This stage
+has not been documented in previous blogs, indicating it might be an additional
+step in the delivery chain. Key strings, such as the user agent and domains,
+are encrypted using a unique algorithm.&lt;/p&gt;
+&lt;p&gt;SHA256:
+&lt;a href="https://analyze.intezer.com/files/265514c8b91b96062fd2960d52ee09d67ea081c56ebadd7a8661f479124133e9"target="_blank" rel="noopener"&gt;&lt;code&gt;265514c8b91b96062fd2960d52ee09d67ea081c56ebadd7a8661f479124133e9&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This SSLoad variant begins by decrypting a URL and a user agent. The URL
+directs to a Telegram channel named SSLoad, which serves as a dead-drop site,
+as shown in the screenshot below. This channel contains another encrypted
+string that indicates the Command-and-Control (C2) server responsible for
+delivering the final payload.&lt;/p&gt;
+&lt;p&gt;The variant we have analyzed uses the following address with the corresponding
+user agent.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;https://t[.]me/+st2YadnCIU1iNmQy&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig7.png" title="SSLoad Telegram channel." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;SSLoad Telegram channel.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The Telegram channel is used as a dead drop host.&lt;/p&gt;
+&lt;p&gt;Once the C2 address is decrypted, the malware decrypts another user agent
+string, &lt;code&gt;SSLoad/1.1&lt;/code&gt;, and the string &lt;code&gt;/api/g&lt;/code&gt;. This string is appended to the
+C2 address, forming the URL &lt;code&gt;http://85[.]239.53.219/api/g&lt;/code&gt;. The malware then
+sends an HTTP GET request to this URL to retrieve the next payload from the C2
+server.&lt;/p&gt;
+&lt;h3&gt;String Decoding&lt;span class="hx:absolute hx:-mt-20" id="string-decoding"&gt;&lt;/span&gt;
+&lt;a href="#string-decoding" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This SSLoad variant employs a custom and unique method to decrypt strings,
+utilizing the standard RC4 algorithm. Notably, each string is encrypted with
+its own distinct key, which is stored alongside the encrypted string.&lt;/p&gt;
+&lt;p&gt;We&amp;rsquo;ll use the first string as an example to explain the decryption logic. The
+blob below contains both the encrypted string and the RC4 key.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;uTjvTPJayj/5Af1pr&amp;#43;qBtvkwh9KKDV2mKF0C&amp;#43;7lBoOJHnmLwZJzKE&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Converted to hexadecimal:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;75 54 6A 76 54 50 4A 61 79 6A 2F 35 41 66 31 70 72 2B 71 42 74 76 6B 77 68 39 4B 4B 44 56 32 6D 4B 46 30 43 2B 37 6C 42 6F 4F 4A 48 6E 6D 4C 77 5A 4A 7A 4B 45&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The decryption key for each string is composed of the first 6 bytes of the
+encoded string concatenated with the last 7 bytes. For the given example, the
+key is:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;75 54 6A 76 54 50 4C 77 5A 4A 7A 4B 45&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The remaining part of the blob (from the 7th byte up to the length of the blob
+minus 7 bytes) is processed by a custom function that calculates the length of
+the encrypted string using the following logic:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;scaled_length&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;scaled_length&lt;/span&gt; &lt;span class="o"&gt;-=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="n"&gt;scaled_length&lt;/span&gt; &lt;span class="o"&gt;*=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Essentially, the encrypted string starts at the 7th byte of the blob, and the
+value of &lt;code&gt;scaled_length&lt;/code&gt; determines its length.&lt;/p&gt;
+&lt;p&gt;The malware uses Base64 encoding. In this example, the &lt;code&gt;scaled_length&lt;/code&gt; is
+calculated to be 30 (&lt;code&gt;0x1E&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig8.png" title="Base64 decryption." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Base64 decryption.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The Base64-decoded payload is then decrypted using the RC4 algorithm with the
+key derived earlier. This process decrypts the URL of the Telegram channel.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;SSLoad: The Payload&lt;span class="hx:absolute hx:-mt-20" id="ssload-the-payload"&gt;&lt;/span&gt;
+&lt;a href="#ssload-the-payload" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The extracted payload from this file is:
+&lt;a href="https://analyze.intezer.com/files/6329244cfb3480eae11070f1aa880bff2fd52b374e12ac37f1eacb6379c72b80"target="_blank" rel="noopener"&gt;&lt;code&gt;6329244cfb3480eae11070f1aa880bff2fd52b374e12ac37f1eacb6379c72b80&lt;/code&gt;&lt;/a&gt;
+which is another Rust file.&lt;/p&gt;
+&lt;p&gt;The payload will first create a mutex, using a hardcoded string. This is a
+check if the machine is already infected. If the mutex exists, it will cease
+execution.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;SSLoad will check the Process-Environment-Block (PEB) to see if the
+&lt;code&gt;BeingDebugged&lt;/code&gt; flag is set, as an anti-debugging technique.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Next the library &lt;code&gt;Advapi32.dll&lt;/code&gt; will be dynamically located in memory&lt;/p&gt;
+&lt;p&gt;The DLL uses multiple arithmetic operations to derive a rolling XOR key. This
+key is used to decode strings dynamically. Every single string that is
+decrypted in this format has a unique stub of arithmetic operations and inputs,
+therefore every string has a unique XOR key. This is used in order to hamper
+static configuration extraction and differs from the method used by the
+downloader.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The library &lt;code&gt;Advapi32.dll&lt;/code&gt; is dynamically loaded in order to get the function
+&lt;code&gt;RtlGenRandom&lt;/code&gt; (&lt;code&gt;SystemFunction036&lt;/code&gt;). This randomly generated number is used to
+help generate a unique name for a working folder. Located under
+&lt;code&gt;AppDataRoamingMicrosoft&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig13.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Some library calls are dynamically located using a common malware technique.
+SSLoad does this by locating the PEB, and finding the
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb_ldr_data"target="_blank" rel="noopener"&gt;&lt;code&gt;PEB_LDR_DATA&lt;/code&gt; structure&lt;/a&gt;.
+This structure contains information about the currently loaded modules for the
+executed process. In this structure it will jump forward to the
+&lt;code&gt;InMemoryOrderModuleList&lt;/code&gt;. This is a list of
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb_ldr_data#remarks"target="_blank" rel="noopener"&gt;&lt;code&gt;LDR_DATA_TABLE_ENTRY&lt;/code&gt;&lt;/a&gt;
+structures. It will loop through the names of these modules and perform a
+simple hash routine comparing it to a hardcoded hash. If the hash matches,
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlea"target="_blank" rel="noopener"&gt;the handle&lt;/a&gt;
+(&lt;code&gt;HMODULE&lt;/code&gt;) of the module will be returned.&lt;/p&gt;
+&lt;p&gt;Similarly, the malware resolves functions by hash, looping through the
+functions of the matching module to locate the corresponding function address
+based on the hash. It stores these pointers as local variables to be called at
+the appropriate time. This technique is most commonly used for the
+&lt;code&gt;winhttp.dll&lt;/code&gt; module to evade static analysis that detects network
+capabilities.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig14.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Next the DLL will start the fingerprinting process, in preparation for sending
+a registration beacon to the C2. The fingerprint results are built into a JSON
+object. Below are the following fields:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;Field&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;version&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;The version of the loader. Hardcoded into the binary.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;ip&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;The public IP address, obtained using &lt;code&gt;api.ipify[.]org&lt;/code&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;domain&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;The Windows network domain&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;hostname&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Computer host name taken from environment variable&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;arch&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Architecture of the infected machine, taken from environment variable&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;os_version&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;The version of the Windows operating system. Retrieved using &lt;a href="https://learn.microsoft.com/en-us/windows/win32/sysinfo/operating-system-version"target="_blank" rel="noopener"&gt;GetVersionExW&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;cur_user&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;String indicating whether the current user is an administrator or not&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;owner&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Appears to indicate campaign name&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/06/ssload-technical-malware-analysis/images/fig15.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This JSON fingerprint is sent to the C2 over plaintext via a HTTP POST request.
+If the registration is successful, the C2 will respond with a JSON object
+containing a key and an ID. The &lt;code&gt;key&lt;/code&gt; field is a Base64 string that is used as
+an RC4 key in later communications. The ID is a unique identifier for the
+infected host that is primarily used to identify itself to the C2 during
+further HTTP requests. When the registration is complete, SSLoad will begin its
+task beaconing loop. The malware will send a HTTP POST request to the C2, using
+the unique identifier as a URL path. No data is sent from the client in this
+POST request.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;POST /api/[unique_identifier]/tasks&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;If the C2 has a task for the infected host, it will send over a JSON structure
+containing a &lt;code&gt;job&lt;/code&gt; and another unique identifier for this job. The job is an
+RC4 encrypted struct that is encoded in a Base64 string. The job structure has
+two fields, a &lt;code&gt;command&lt;/code&gt;, and an array of arguments. We have only observed the
+command &lt;code&gt;exe&lt;/code&gt; in communications, with an argument that is a URL pointing to a
+server to download an additional payload. The way that the job struct is formed
+means that the malware is designed to be easily expanded to support more
+commands in the future.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The comprehensive SSLoad analysis reveals this malware&amp;rsquo;s intricate nature.
+SSLoad demonstrates its capability to gather reconnaissance, attempt to evade
+detection and deploy further payloads through various delivery methods and
+techniques. Its use of a Rust-based downloader, a never-seen-before loader,
+implements dynamic string decryption, and anti-debugging measures emphasize its
+complexity and adaptability.&lt;/p&gt;
+&lt;p&gt;As SSLoad continues to evolve, it highlights the necessity for ongoing
+monitoring and advanced threat detection methods to combat malware campaigns
+effectively. This analysis deepens our understanding of SSLoad and emphasizes
+the importance of adaptive cybersecurity measures in the face of ever-evolving
+threats.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Files&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;SHA256&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Type&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;MSI Installer&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;09ffc4188bf11bf059b616491fcb8a09a474901581f46ec7f2c350fbda4e1e1c&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;PhantomLoader&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;73774861d946d62c2105fef4718683796cb77de7ed42edaec7affcee5eb0a0ee&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;PhantomLoader&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;6aa3daefee979a0efbd30de15a1fc7c0d05a6e8e3f439d5af3982878c3901a1c&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Second stage of the PhantomLoader&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;265514c8b91b96062fd2960d52ee09d67ea081c56ebadd7a8661f479124133e9&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SSLoad Downaloder&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;6329244cfb3480eae11070f1aa880bff2fd52b374e12ac37f1eacb6379c72b80&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SSLoad Payload&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Network&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;https://t[.]me/&amp;#43;st2YadnCIU1iNmQy
+85.239.53[.]219&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>Wrapping Up a Year of Infamous Bazar Campaigns</title><link>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</link><pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</guid><description>
 &lt;h2&gt;Bazar is the latest tool developed by the TrickBot gang&lt;span class="hx:absolute hx:-mt-20" id="bazar-is-the-latest-tool-developed-by-the-trickbot-gang"&gt;&lt;/span&gt;
 &lt;a href="#bazar-is-the-latest-tool-developed-by-the-trickbot-gang" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Common malware used for cybercrime such as Agent Tesla, Dridex and Formbook

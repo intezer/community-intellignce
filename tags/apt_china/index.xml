@@ -1865,6 +1865,298 @@ data-copied-label="Copied!"
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>The Evolution of APT15's Codebase 2020</title><link>https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/</link><pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/</guid><description>
+&lt;p&gt;The Ke3chang group, also known as APT15, is an alleged Chinese
+government-backed cluster of teams known to target various high-profile
+entities spanning multiple continents. Examples include attacks on
+&lt;a href="https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/wp-operation-ke3chang.pdf"target="_blank" rel="noopener"&gt;European ministries&lt;/a&gt;,
+&lt;a href="https://unit42.paloaltonetworks.com/operation-ke3chang-resurfaces-with-new-tidepool-malware/"target="_blank" rel="noopener"&gt;Indian embassies&lt;/a&gt;,
+and
+&lt;a href="https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2018/march/apt15-is-alive-and-strong-an-analysis-of-royalcli-and-royaldns/"target="_blank" rel="noopener"&gt;British military contractors&lt;/a&gt;.
+The group&amp;rsquo;s activities have been traced back to 2010 and it is known to boast a
+large number of custom tools, most often tailored to their specific target.&lt;/p&gt;
+&lt;p&gt;In mid May, we identified three recently uploaded samples from VirusTotal that
+share code with older APT15 implants. We named this new family of samples,
+&amp;ldquo;Ketrum&amp;rdquo;, due to the merger of features in the documented backdoor families
+&amp;ldquo;Ketrican&amp;rdquo; and &amp;ldquo;Okrum&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;We believe the operation was conducted very recently. Below we present a
+technical analysis of these samples and explain the evolution of APT15&amp;rsquo;s
+codebase over the last year.&lt;/p&gt;
+&lt;h2&gt;Overview&lt;span class="hx:absolute hx:-mt-20" id="overview"&gt;&lt;/span&gt;
+&lt;a href="#overview" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The three samples we discovered seem to be a mix of the Ketrican and Okrum
+backdoors documented by researchers at
+&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2019/07/ESET_Okrum_and_Ketrican.pdf"target="_blank" rel="noopener"&gt;ESET&lt;/a&gt;
+in 2019. Features have been merged from these two malware families to create a
+different RAT class for the group. We&amp;rsquo;ve decided to call this umbrella of
+malware &amp;ldquo;Ketrum.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;The new samples we found continue the Ke3chang group&amp;rsquo;s strategy of using a
+basic backdoor to gain control over the victim&amp;rsquo;s device, so that an operator
+can then connect to it and run commands manually to conduct further operations.&lt;/p&gt;
+&lt;p&gt;Before beginning our technical analysis, we were able to connect these binaries
+to Ke3chang using &lt;a href="https://analyze.intezer.com/"target="_blank" rel="noopener"&gt;Intezer Analyze&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;a href="https://analyze.intezer.com/#/files/271384a078f2a2f58e14d7703febae8a28c6e2d7ddb00a3c8d3eead4ea87a0c0"target="_blank" rel="noopener"&gt;Genetic Analysis&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;All three samples contacted the same C2 server and appear to have been used in
+two different time periods, judging by the PE timestamps and VirusTotal upload
+date:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;SHA256s&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Name&lt;/th&gt;
+&lt;th style="text-align: left"&gt;VirusTotal Date&lt;/th&gt;
+&lt;th style="text-align: left"&gt;PE Timestamp&lt;/th&gt;
+&lt;th style="text-align: left"&gt;C2&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Family&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;a142625512e5372a1728595be19dbee23eea50524b4827cb64ed5aaeaaa0270b&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;RavAudio64.exe&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;2019-12-03&lt;/td&gt;
+&lt;td style="text-align: left"&gt;7 Jan 2010&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;menu.thehuguardian[.]com&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Ketrum1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;271384a078f2a2f58e14d7703febae8a28c6e2d7ddb00a3c8d3eead4ea87a0c0&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;-&lt;/td&gt;
+&lt;td style="text-align: left"&gt;2020-05-16&lt;/td&gt;
+&lt;td style="text-align: left"&gt;13 May 2020&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;www.thehuguardian[.]com&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Ketrum2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;aacaf0d4729dd6fda2e452be763d209f92d107ecf24d8a341947c545de9b7311&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;-&lt;/td&gt;
+&lt;td style="text-align: left"&gt;2020-05-17&lt;/td&gt;
+&lt;td style="text-align: left"&gt;13 May 2020&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;www.thehuguardian[.]com&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Ketrum2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The C2 was registered towards the end of 2019, which makes us believe the first
+PE timestamp was tampered with, and the latter two timestamps are at least
+close to the real compilation date.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s also important to note the C2 was registered in China and ceased operating
+in mid May.&lt;/p&gt;
+&lt;h2&gt;The Best of Two Worlds&lt;span class="hx:absolute hx:-mt-20" id="the-best-of-two-worlds"&gt;&lt;/span&gt;
+&lt;a href="#the-best-of-two-worlds" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We documented several interesting differences between the backdoors:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Ketrican&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Okrum&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Ketrum1&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Ketrum2&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;Identify installed proxy servers and use them for HTTP requests&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;Special folder retrieval using registry key &lt;code&gt;[HKEY_CURRENT_USERSoftwareMicrosoftWindowsCurrentVersionExplorerShell Folders]&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;The response from the server is an HTTP page with backdoor commands and arguments included in the HTML fields&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;Backdoor commands are determined by a hashing value received from C2&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;Communication with the C&amp;amp;C server is hidden in the Cookie and Set-Cookie headers of HTTP requests&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;Impersonate a logged in user&amp;rsquo;s security context&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;Create a copy of &lt;code&gt;cmd.exe&lt;/code&gt; in their working directory and use it to interpret backdoor commands&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;Usual Ke3chang backdoor functionalities - download, upload, execute files/shell commands and configure sleep time&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;Screenshot-grabbing functionality&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;td style="text-align: left"&gt;✅&lt;/td&gt;
+&lt;td style="text-align: left"&gt;❌&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;Ketrum 1&lt;span class="hx:absolute hx:-mt-20" id="ketrum-1"&gt;&lt;/span&gt;
+&lt;a href="#ketrum-1" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The Ketrum 1 sample was uploaded to VirusTotal in December 2019. This version
+registers itself as a &amp;ldquo;WMI Provider Host&amp;rdquo; service &lt;em&gt;if&lt;/em&gt; it is able to obtain
+&lt;code&gt;SeDebugPrivilege&lt;/code&gt;; otherwise it creates an entry in the startup directory.&lt;/p&gt;
+&lt;p&gt;This sample incorporates many features from Okrum as can be seen in the table
+above, however, it abandons more advanced Okrum features such as offering a
+reflective injection via an export and the use of hashes to receive command
+IDs.&lt;/p&gt;
+&lt;p&gt;In the past, APT15 has used the
+&lt;a href="https://bohops.com/2018/03/17/abusing-exported-functions-and-exposed-dcom-interfaces-for-pass-thru-command-execution-and-lateral-movement/"target="_blank" rel="noopener"&gt;IWebBrowser2&lt;/a&gt;
+COM interface to manage its network communications. This time, the Ketrum
+developer abandoned this technique and used simple HTTP APIs:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Interestingly, this sample also incorporates a screenshot-grabbing command.&lt;/p&gt;
+&lt;h2&gt;Ketrum 2&lt;span class="hx:absolute hx:-mt-20" id="ketrum-2"&gt;&lt;/span&gt;
+&lt;a href="#ketrum-2" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Ketrum 2 seems to have been built for minimalism. As can be seen in Table 2,
+many functionalities have been dropped.&lt;/p&gt;
+&lt;p&gt;Unlike the Ketrican variant, Ketrum implants no longer try to weaken the
+system&amp;rsquo;s security configurations. In previous implants, Powershell was used for
+this end. Interestingly, a string still remains in Ketrum 2, which refers to
+this deleted feature—perhaps an unintentional left-over from copy-pasting:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Several other interesting unused file names are included in the binary such as
+&lt;code&gt;%sadult.sft&lt;/code&gt; and &lt;code&gt;%sMessage&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The malware first collects basic system information to track the infected
+endpoint and then sends it to the C2 server together with a hash of the system
+info:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;All incoming and outcoming payloads are fed through an RC4 encryption and
+base64 encoding. The RC4 encryption uses an unusual key:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;These are actually constants used in the MD5 and SHA1 algorithms. The Ketrum
+developer most likely intended to confuse researchers reversing this function.&lt;/p&gt;
+&lt;p&gt;A command is then extracted from the HTML in the response:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This backdoor only supports a limited number of commands, which is typical of
+Okrum and Ketrican backdoors. Unlike Ketrum 1, Ketrum 2 does not support
+screenshot grabbing. This is the list of possible backdoor commands:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;Command ID&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;1&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Adjust sleep time&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;2&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Execute a shell command&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;3&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Upload a file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;4&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Download a file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;5&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Execute a file&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;7 (there is no 6)&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Execute a shell command with adjusted sleep time&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;8&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Adjust execute shell sleep time&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;9&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Download &amp;ldquo;Notice&amp;rdquo; file to working directory - * it is unclear how this is used&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;Code Reuse&lt;span class="hx:absolute hx:-mt-20" id="code-reuse"&gt;&lt;/span&gt;
+&lt;a href="#code-reuse" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Both Ketrum samples resemble a similar layout to previous Ke3chang tools, apart
+from low level implementation and use of system APIs. Even in the two Ketrum
+samples, there are differences between the low-level APIs used to achieve the
+same functionality. For example, the file upload feature is implemented using
+different APIs throughout the families; mostly using a constant value of
+&lt;code&gt;0x20000&lt;/code&gt; when reading files:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ketrum 1 — Ketrum 2&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2020/05/the-evolution-of-apt15s-codebase-2020/images/fig11.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ketrican 2018 — Okrum&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;As reported by FireEye and ESET, it&amp;rsquo;s likely the Ke3chang cluster of malware is
+developed by multiple teams and the developers of Ketrican/Okrum belong to a
+different team than the developers of Ketrum, albeit related. This could
+explain the high-level and flow similarities but also the low-level
+differences.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Ke3chang&amp;rsquo;s numerous tools such as Okrum, Ketrican, TidePool, Mirage, Ketrum,
+and others all serve the same purpose, give or take a few techniques or
+functionalities tailored for specific targets. We can regard these tools under
+the same umbrella of BS2005 malware, distributed as different versions per
+operation. However, the distinction created by naming them differently is
+useful for tracking the group&amp;rsquo;s operations and different development cycles.&lt;/p&gt;
+&lt;p&gt;The Ke3chang&amp;rsquo;s group tools have not deviated much from the same tools reported
+in FireEye&amp;rsquo;s first Ke3chang report. The group continues to morph its code and
+switch basic functionalities in their various backdoors. This strategy has been
+working for the group for years and there is no indication yet that it will
+deviate from this modus operandi.&lt;/p&gt;
+&lt;p&gt;The information security field has seen many improvements since the group&amp;rsquo;s
+inception, however, surprisingly, this is not reflected in the group&amp;rsquo;s
+persistence to use the same old TTPs in their tools.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;271384a078f2a2f58e14d7703febae8a28c6e2d7ddb00a3c8d3eead4ea87a0c0
+aacaf0d4729dd6fda2e452be763d209f92d107ecf24d8a341947c545de9b7311
+a142625512e5372a1728595be19dbee23eea50524b4827cb64ed5aaeaaa0270b
+thehuguardian[.]com
+45.56.84[.]25&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>ChinaZ Updates Toolkit by Introducing New, Undetected Malware</title><link>https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</link><pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/12/chinaz-updates-toolkit-by-introducing-new-undetected-malware/</guid><description>
 &lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
 &lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;ChinaZ is a Chinese cybercrime group and the author of several

@@ -1,0 +1,411 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Memory Analysis 101</title><link>https://research.intezer.com/docs/memory/</link><description>Recent content in Memory Analysis 101 on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 23 Apr 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/docs/memory/index.xml" rel="self" type="application/rss+xml"/><item><title>Understanding Memory Threats and Forensic Tools</title><link>https://research.intezer.com/docs/memory/tools/</link><pubDate>Tue, 23 Apr 2024 00:00:00 +0000</pubDate><guid>https://research.intezer.com/docs/memory/tools/</guid><description>
+&lt;p&gt;Memory forensics is an important part of incident response and threat analysis,
+as new threats and sophistication emerge in the evolving cybersecurity
+landscape. Unlike traditional methods focusing on hard drive analysis, memory
+forensics dives into the &lt;em&gt;volatile memory&lt;/em&gt;, aiming to uncover evidence of
+malware infections and other illicit activities that leave footprints in a
+system&amp;rsquo;s RAM.&lt;/p&gt;
+&lt;p&gt;Investigators use memory forensics to collect valuable information and evidence
+from compromised systems. As threat actors try to evade detection using various
+techniques,
+&lt;a href="https://intezer.com/blog/incident-response/what-is-fileless-malware-explained-with-examples/"target="_blank" rel="noopener"&gt;fileless malware&lt;/a&gt;
+is particularly challenging. This technique allows malicious code to be
+executed directly in memory without being written to the disk. Memory forensics
+proves very handy in these situations.&lt;/p&gt;
+&lt;p&gt;Memory forensics is the process of analyzing the contents of a computer&amp;rsquo;s
+memory to investigate and identify potential security threats or forensic
+evidence. This analysis is valuable immediately after a security breach or as
+part of a comprehensive, proactive security assessment. By examining the raw
+binary data residing in memory, investigators can access different types of
+information, from
+&lt;a href="https://www.varonis.com/blog/how-to-use-volatility#:~:text=be%20potentially%20malicious.-,Identifying%20Malicious%20Network%20Connections,-When%20a%20RAM"target="_blank" rel="noopener"&gt;running processes&lt;/a&gt;
+and
+&lt;a href="https://www.varonis.com/blog/how-to-use-volatility#:~:text=be%20potentially%20malicious.-,Identifying%20Malicious%20Network%20Connections,-When%20a%20RAM"target="_blank" rel="noopener"&gt;network connections&lt;/a&gt;
+to the previously executed commands and malware artifacts.&lt;/p&gt;
+&lt;p&gt;As we explore the complexities of memory forensics in the subsequent sections,
+we will examine its applications, the challenges faced by practitioners, the
+distinctions between in-memory and disk-based threats, and the leading tools
+and methodologies in this captivating field. (If you already know the basics of
+memory forensics, you can jump to the section
+&lt;a href="#traditional-memory-forensic-tools-in-action"&gt;Memory Forensic Tools in Action.&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Through this examination, we aim to highlight the critical role of memory
+forensics in contemporary cybersecurity strategies and the continuous fight
+against digital menaces lurking in our systems&amp;rsquo; memory.&lt;/p&gt;
+&lt;h2&gt;What&amp;rsquo;s Memory Forensics?&lt;span class="hx:absolute hx:-mt-20" id="whats-memory-forensics"&gt;&lt;/span&gt;
+&lt;a href="#whats-memory-forensics" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Memory forensics is the process of capturing and analyzing a computer&amp;rsquo;s
+memory to uncover valuable digital artifacts.&lt;/strong&gt; These artifacts can include
+information about currently running processes, open files, network connections,
+system and user configurations, and, crucially, evidence of malware or hacker
+activity that might not be detectable through traditional disk-based analysis.
+This is because many advanced threats operate solely in memory, leaving little
+to no footprint on the hard drive.&lt;/p&gt;
+&lt;p&gt;Memory forensics is a specialized branch of digital forensics that analyzes
+volatile data in a computer&amp;rsquo;s memory (RAM). Unlike disk forensics, which
+examines data stored on hard drives and other permanent storage media, memory
+forensics targets the transient, fleeting data that exists only while a device
+is powered on. This volatile nature of RAM data presents unique challenges and
+opportunities for forensic analysts.&lt;/p&gt;
+&lt;h3&gt;Types of Data Retrieved&lt;span class="hx:absolute hx:-mt-20" id="types-of-data-retrieved"&gt;&lt;/span&gt;
+&lt;a href="#types-of-data-retrieved" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Memory forensics can retrieve a wide array of data types that provide a
+snapshot of the system&amp;rsquo;s state at the time of capture. Some of these data types
+include, but are not limited to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Running Processes&lt;/strong&gt;: Details about processes currently running on the
+system, including their memory addresses, execution state, and parent-child
+relationships.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Network Connections&lt;/strong&gt;: Information about active and listening network
+connections, which can help trace back network-based attacks or data
+exfiltration attempts.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Binary Executables and Loaded DLLs&lt;/strong&gt;: Insights into the executable files
+and dynamic link libraries loaded into memory, which are crucial for
+identifying unauthorized or malicious code execution.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Registry Keys and Configuration Settings&lt;/strong&gt;: Real-time data on system
+configuration and registry settings, which can indicate system tampering or
+policy violations.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Digital Artifacts&lt;/strong&gt;: User actions, such as command history, file access,
+and clipboard contents, can be pivotal in reconstructing user behavior or
+attacker activities.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;On-Disk vs. In-Memory Cyber Attacks&lt;span class="hx:absolute hx:-mt-20" id="on-disk-vs-in-memory-cyber-attacks"&gt;&lt;/span&gt;
+&lt;a href="#on-disk-vs-in-memory-cyber-attacks" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The distinction between in-memory threats and those residing on disk lies in
+their method of operation and persistence mechanisms, each presenting unique
+challenges for detection and mitigation. In-memory threats and fileless malware
+execute and reside entirely within a system&amp;rsquo;s volatile memory. This volatile
+nature allows them to evade traditional antivirus and disk-based forensics
+tools that rely on scanning files and persistent storage for indicators of
+compromise.&lt;/p&gt;
+&lt;p&gt;On the other hand, threats that persist on disk involve malware or malicious
+activities that write files or configurations for non-volatile storage. These
+threats often include executable files, scripts, or altered system files. In
+some cases, they are designed to initiate malicious activities upon system
+startup, thereby ensuring their persistence even after a reboot. Disk-based
+threats are more readily detectable by conventional security solutions, as they
+involve tangible artifacts that can be scanned, analyzed, and remediated.
+However, the increasing sophistication of attackers who employ advanced
+obfuscation and evasion techniques complicates the detection of both in-memory
+and on-disk threats, necessitating a comprehensive security strategy that
+includes memory forensics to uncover and address the full spectrum of cyber
+threats.&lt;/p&gt;
+&lt;h2&gt;Challenges That Make Manual Memory Forensics Painful&lt;span class="hx:absolute hx:-mt-20" id="challenges-that-make-manual-memory-forensics-painful"&gt;&lt;/span&gt;
+&lt;a href="#challenges-that-make-manual-memory-forensics-painful" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Despite memory forensics&amp;rsquo; critical importance in cybersecurity and digital
+forensics, it is challenging to analyze memory manually. These challenges stem
+from various technical, logistical, and operational factors contributing to the
+complexity and sometimes the frustration associated with memory forensics.&lt;/p&gt;
+&lt;h3&gt;Technical Challenges&lt;span class="hx:absolute hx:-mt-20" id="technical-challenges"&gt;&lt;/span&gt;
+&lt;a href="#technical-challenges" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Volatile nature of memory&lt;/strong&gt;: The essence of what makes memory forensics
+valuable also complicates it. Data in RAM is transient, existing only while
+a system is powered on and constantly changing. Capturing a truly
+representative memory snapshot requires precise timing and can be influenced
+by different factors, from running processes to the system&amp;rsquo;s load at the
+moment of capture.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Large volume of data&lt;/strong&gt;: Modern systems come with gigabytes to gigabytes of
+RAM, leading to massive datasets for analysis. Sifting through this vast
+amount of data to find relevant artifacts is time-consuming and requires
+significant computational resources.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Maintaining the integrity of the data:&lt;/strong&gt; The volatility of RAM means
+crucial evidence can be lost upon power loss or system reboot, making it
+difficult to preserve data in its original state. Additionally, because data
+extraction requires the system to run, the tools used for collection can
+inadvertently modify the memory contents. Furthermore, as the system
+operates, ongoing processes may overwrite memory areas containing valuable
+evidence, complicating efforts to keep the collected data intact.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Logistical Challenges&lt;span class="hx:absolute hx:-mt-20" id="logistical-challenges"&gt;&lt;/span&gt;
+&lt;a href="#logistical-challenges" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Collection Difficulties&lt;/strong&gt;: Memory dumps must be collected carefully to
+avoid altering or damaging the data. This may requires physical access to
+the machine, which is not always feasible, especially in remote or
+distributed environments.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Skill Gap&lt;/strong&gt;: Memory forensics is a highly specialized field that requires
+deep technical knowledge and expertise. There is a significant skill gap in
+the industry, with a shortage of professionals who understand advanced
+analysis techniques.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Legal and Ethical Considerations&lt;/strong&gt;: The process of memory capture and
+analysis must navigate legal and ethical considerations, particularly
+regarding privacy and data protection. Analysts must ensure compliance with
+laws and regulations, adding an additional layer of complexity to forensic
+investigations.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Mitigating These Challenges with Advanced Memory Forensics Tools and Best Practices&lt;span class="hx:absolute hx:-mt-20" id="mitigating-these-challenges-with-advanced-memory-forensics-tools-and-best-practices"&gt;&lt;/span&gt;
+&lt;a href="#mitigating-these-challenges-with-advanced-memory-forensics-tools-and-best-practices" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;While memory forensics presents significant challenges for many organizations,
+advancements in tools, techniques, and training help to mitigate these
+difficulties. Automation and machine learning are leveraged to sift through
+large datasets more efficiently. Community-driven efforts are improving the
+sharing of knowledge and best practices. Furthermore, the development of
+&lt;a href="https://intezer.com/blog/incident-response/simplifying-endpoint-forensics-and-memory-analysis/"target="_blank" rel="noopener"&gt;more intuitive and powerful forensic tools&lt;/a&gt;
+is gradually lowering the barrier to entry, making memory forensics more
+accessible to a broader range of professionals. (More on this below!)&lt;/p&gt;
+&lt;h2&gt;Examples of Memory Threats&lt;span class="hx:absolute hx:-mt-20" id="examples-of-memory-threats"&gt;&lt;/span&gt;
+&lt;a href="#examples-of-memory-threats" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Regarding examples of threats in memory, we do not lack choice. From novices
+using snippets of code and scripts, to sophisticated APT groups, many malicious
+actors use memory payloads.&lt;/p&gt;
+&lt;h3&gt;Cobalt Strike&lt;span class="hx:absolute hx:-mt-20" id="cobalt-strike"&gt;&lt;/span&gt;
+&lt;a href="#cobalt-strike" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;One of the most famous examples of a memory threat is the penetration testing
+tool
+&lt;a href="../../../blog/2021/08/cobalt-strike-detect-this-persistent-threat/"&gt;Cobalt Strike&lt;/a&gt;.
+Used by both red teams and threat actors alike, Cobalt Strike has multiple ways
+to sneakily inject its Beacon into memory. The easiest way is using a
+&lt;em&gt;stageless payload artifact&lt;/em&gt;. The stageless Cobalt Strike payload starts by
+executing an EXE or script that involves the creation of a thread that sets up
+a named pipe for privilege escalation. Once the shellcode is written to the
+named pipe, it is decrypted and executed in a separate thread in memory. More
+commonly with Cobalt Strike, a stager is used. A stager is an extra step in the
+deployment of the Beacon payload that uses a small snippet of shellcode that
+can be delivered using any multitude of methods. Cobalt Strike stagers are
+designed to be loaded and executed only in-memory. This opens up many
+possibilities for how this shellcode is shipped, making signature-based
+detection on the delivery method a cat-and-mouse game. Depending on how the
+code is delivered, the code can be injected into other legitimate running
+processes, bypassing defenses that do not scan legitimate processes or code
+in-memory.&lt;/p&gt;
+&lt;h3&gt;Operation HamsaUpdate&lt;span class="hx:absolute hx:-mt-20" id="operation-hamsaupdate"&gt;&lt;/span&gt;
+&lt;a href="#operation-hamsaupdate" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In the
+&lt;a href="../../../blog/2023/12/stealth-wiper-israeli-infrastructure/"&gt;Operation HamsaUpdate&lt;/a&gt;
+campaign, a payload was delivered and executed only in memory. The chain
+started with a Delphi executable that dropped an AutoIt interpreter and an
+obfuscated AutoIt script. The AutoIt script contained shellcode and an
+encrypted payload. First, the shellcode was injected into memory. The shellcode
+is an RC4 decryption routine that was used to decrypt the payload, and the
+decrypted payload was itself then executed in memory.&lt;/p&gt;
+&lt;h3&gt;Hijacking Execution Flow&lt;span class="hx:absolute hx:-mt-20" id="hijacking-execution-flow"&gt;&lt;/span&gt;
+&lt;a href="#hijacking-execution-flow" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;A really common method used to execute malware in memory is using
+&lt;a href="https://attack.mitre.org/techniques/T1574/002/"target="_blank" rel="noopener"&gt;DLL Side-Loading&lt;/a&gt;. To perform
+this, some threat actors use a trifecta of a legitimate EXE, a malicious DLL
+loader, and an encrypted payload to execute payloads in memory. This method is
+especially prevalently used by China-based threat actors to execute payloads
+such as &lt;a href="https://www.secureworks.com/research/shadowpad-malware-analysis"target="_blank" rel="noopener"&gt;PlugX&lt;/a&gt;
+or &lt;a href="https://www.secureworks.com/research/shadowpad-malware-analysis"target="_blank" rel="noopener"&gt;ShadowPad&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Popular Tools for Manual Memory Forensics&lt;span class="hx:absolute hx:-mt-20" id="popular-tools-for-manual-memory-forensics"&gt;&lt;/span&gt;
+&lt;a href="#popular-tools-for-manual-memory-forensics" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are a number of existing tools for memory forensics, many of which are
+open-source. Let&amp;rsquo;s talk about a few of the options for manual analysis now.
+(We&amp;rsquo;ll look at one more tool for
+&lt;a href="#automating-memory-forensics-at-scale"&gt;automating memory analysis at the end of the blog.&lt;/a&gt;)&lt;/p&gt;
+&lt;h3&gt;Volatility Framework&lt;span class="hx:absolute hx:-mt-20" id="volatility-framework"&gt;&lt;/span&gt;
+&lt;a href="#volatility-framework" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;One of the most popular frameworks for memory forensics is the Volatility
+Framework, which contains a collection of tools that can extract digital
+artifacts from memory samples. It supports a variety of file formats and has a
+plethora of community plugins that extend its capabilities. Intezer also has a
+&lt;a href="https://docs.intezer.com/docs/memory-dump-analysis"target="_blank" rel="noopener"&gt;plugin for Volatility&lt;/a&gt;,
+which helps you efficiently analyze memory dumps.&lt;/p&gt;
+&lt;h3&gt;YARA&lt;span class="hx:absolute hx:-mt-20" id="yara"&gt;&lt;/span&gt;
+&lt;a href="#yara" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;a href="https://github.com/VirusTotal/yara"target="_blank" rel="noopener"&gt;YARA&lt;/a&gt; is mostly known for its ability in
+signature-based malware detection, and is also invaluable in memory forensics.
+With YARA, forensics investigators are able to to easily identify and
+characterize malware residing solely in RAM. YARA&amp;rsquo;s flexibility and ease of use
+make it a very popular tool for rapid and accurate identification of malicious
+artifacts within volatile memory dumps.&lt;/p&gt;
+&lt;h3&gt;WinPmem&lt;span class="hx:absolute hx:-mt-20" id="winpmem"&gt;&lt;/span&gt;
+&lt;a href="#winpmem" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Originally part of the Rekall Framework,
+&lt;a href="https://github.com/Velocidex/WinPmem"target="_blank" rel="noopener"&gt;WinPmem&lt;/a&gt; is a memory acquisition tool to
+dump the volatile memory of a machine. With WinPmem, analysts can extract a
+snapshot of the system&amp;rsquo;s memory state, including running processes, network
+connections, and loaded kernel modules, facilitating in-depth forensic analysis
+and incident response.&lt;/p&gt;
+&lt;h3&gt;Memoryze&lt;span class="hx:absolute hx:-mt-20" id="memoryze"&gt;&lt;/span&gt;
+&lt;a href="#memoryze" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;a href="https://fireeye.market/apps/211368"target="_blank" rel="noopener"&gt;Memoryze&lt;/a&gt; is a free tool provided by
+Mandiant for data collection and analysis. It is able to acquire memory images;
+it has analysis features built in that are similar to some of the plugins
+provided by Volatility.&lt;/p&gt;
+&lt;h3&gt;GRR&lt;span class="hx:absolute hx:-mt-20" id="grr"&gt;&lt;/span&gt;
+&lt;a href="#grr" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;a href="https://github.com/google/grr"target="_blank" rel="noopener"&gt;GRR&lt;/a&gt; is a tool maintained by Google that is an
+incident response framework focused on remote live forensics. It works by
+installing an agent on target systems that an admin is able to use to query the
+live system. GRR used the physical memory analysis functionality that came from
+the Rekall Forensics Framework, as well as using YARA for detection.&lt;/p&gt;
+&lt;h2&gt;Traditional Memory Forensic Tools in Action&lt;span class="hx:absolute hx:-mt-20" id="traditional-memory-forensic-tools-in-action"&gt;&lt;/span&gt;
+&lt;a href="#traditional-memory-forensic-tools-in-action" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;If you&amp;rsquo;re looking to understand the basics and explore memory forensics, then
+starting with a free and open-source tool that is popular in the industry, like
+the Volatility Framework, is a great place to start. Let&amp;rsquo;s take an example
+using this classic forensic tool.&lt;/p&gt;
+&lt;p&gt;First, we need to dump the volatile memory of our machine. For the purpose of
+this, we will use WinPmem, to dump a raw image.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/memory/tools/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;With this raw image we can now analyze using the Volatility Framework. First,
+we can look at what running processes there were when the image was taken by
+running the &lt;code&gt;pslist&lt;/code&gt; command.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;python3 vol.py -f &amp;lt;your_memory_dump.raw&amp;gt; windows.pslist | less&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/memory/tools/images/fig2.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;This is useful as it provides a comprehensive list of all processes running in
+memory, including their process IDs (PIDs), parent process IDs (PPIDs), and
+other relevant information such as process names and command line arguments.&lt;/p&gt;
+&lt;p&gt;Maybe there is nothing that immediately sticks out to you. With Volatility, you
+can also check all the network connections that were established at the time
+that the image was taken. It might be easier to read if you pipe out the
+results to a text file, rather than trying to scroll through a terminal.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;python3 vol.py -f &amp;lt;your_memory_dump.raw&amp;gt; windows.netscan &amp;gt; netscan.txt&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Maybe that connection to &lt;code&gt;10.0.0.13&lt;/code&gt; is suspicious?&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/memory/tools/images/fig3.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Another very helpful plugin for Volatility is the
+&amp;ldquo;&lt;a href="https://github.com/volatilityfoundation/volatility/wiki/Command-Reference-Mal"target="_blank" rel="noopener"&gt;malfind&lt;/a&gt;&amp;rdquo;
+plugin. Malfind helps find hidden or injected code/DLLs in user mode memory,
+based on characteristics such as VAD tag and page permissions. The malfind
+plugin looks for specific anomalies or indicators that suggest the presence of
+injected code. These indicators may include characteristics such as executable
+code in non-executable memory regions, suspicious memory permissions (e.g.,
+executable memory in read-only regions), or unexpected changes in memory
+protection flags.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;python3 vol.py -f &amp;lt;your_memory_dump.raw&amp;gt; windows.malfind.Malfind &amp;gt; malfind.txt&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Malfind brings up quite a lot of results, as even many legitimate programs can
+have suspicious indicators, such as Microsoft Edge, but one result really
+sticks out to us, the very stealthily named &lt;code&gt;my_payload.exe&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/memory/tools/images/fig4.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;One thing that may be obvious to some experienced malware researchers or
+forensics investigators is this snippet of shellcode. The very obvious stub
+looks like the
+&lt;a href="https://www.cobaltstrike.com/blog/cobalt-strike-and-yara-can-i-have-your-signature"target="_blank" rel="noopener"&gt;Reflective Loader Stub for Cobalt Strike&lt;/a&gt;.
+Here is it annotated below:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-asm" data-lang="asm"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;pop&lt;/span&gt; &lt;span class="no"&gt;r10&lt;/span&gt; &lt;span class="c1"&gt;; MZ Header
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;push&lt;/span&gt; &lt;span class="no"&gt;r10&lt;/span&gt; &lt;span class="c1"&gt;; undo action above
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;push&lt;/span&gt; &lt;span class="no"&gt;rbp&lt;/span&gt; &lt;span class="c1"&gt;; save the stack base pointer
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;mov&lt;/span&gt; &lt;span class="no"&gt;rbp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;rsp&lt;/span&gt; &lt;span class="c1"&gt;; create a new stack frame
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;sub&lt;/span&gt; &lt;span class="no"&gt;rsp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0x20&lt;/span&gt; &lt;span class="c1"&gt;; create shadow space (x64 __fastcall)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;lea&lt;/span&gt; &lt;span class="no"&gt;rbx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;rip&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;0x16&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; obtain shellcode base address
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;mov&lt;/span&gt; &lt;span class="no"&gt;rdi&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;rbx&lt;/span&gt; &lt;span class="c1"&gt;; save shellcode base address
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;add&lt;/span&gt; &lt;span class="no"&gt;rbx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0x16EA4&lt;/span&gt; &lt;span class="c1"&gt;; add file offset of ReflectiveLoader to shellcode base
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt; &lt;span class="no"&gt;rbx&lt;/span&gt; &lt;span class="c1"&gt;; call ReflectiveLoader (returns DllMain address)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;mov&lt;/span&gt; &lt;span class="no"&gt;r8d&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0X56A2B5F0&lt;/span&gt; &lt;span class="c1"&gt;; EXITFUNC value
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;push&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="c1"&gt;; push 4 to stack
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;pop&lt;/span&gt; &lt;span class="no"&gt;rdx&lt;/span&gt; &lt;span class="c1"&gt;; pop the value into rdx (second argument of call)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;mov&lt;/span&gt; &lt;span class="no"&gt;rcx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;rdi&lt;/span&gt; &lt;span class="c1"&gt;; move shellcode base address to rcx (first argument of call)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nf"&gt;call&lt;/span&gt; &lt;span class="no"&gt;rax&lt;/span&gt; &lt;span class="err"&gt;;&lt;/span&gt; &lt;span class="no"&gt;call&lt;/span&gt; &lt;span class="no"&gt;DllMain&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;There may be a way to double confirm whether this is indeed a Cobalt Strike
+infection. In this case we are going to use YARA. You have the option of using
+YARA stand alone by itself, but there are also plugins in Volatility to run
+YARA also. In this case we will use
+&lt;a href="https://volatility3.readthedocs.io/en/latest/volatility3.plugins.windows.vadyarascan.html"target="_blank" rel="noopener"&gt;VadYaraScan&lt;/a&gt;.
+The ruleset that we will provide it with is going to be the really great YARA
+rule set created by
+&lt;a href="https://github.com/avast/ioc/blob/master/CobaltStrike/yara_rules/cs_rules.yar"target="_blank" rel="noopener"&gt;Avast Security&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/memory/tools/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Nice! We see that we have detected a CobaltStrike HTTP stager in memory! If you
+wish to investigate it further, we recommend that you use the
+&lt;a href="https://volatility3.readthedocs.io/en/latest/volatility3.plugins.windows.dumpfiles.html"target="_blank" rel="noopener"&gt;dumpfiles&lt;/a&gt;
+module to isolate the memory of the target process. Another helpful tool is a
+&lt;a href="https://github.com/Sentinel-One/CobaltStrikeParser"target="_blank" rel="noopener"&gt;Beacon parser provided by SentinelOne&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Many investigators are familiar with forensic tools like Volatility, which are
+valuable for learning about memory analysis or security research. But they also
+bring along challenges as discussed, like a steep learning curve and
+time-intensive process required for manually analyzing memory.&lt;/p&gt;
+&lt;h2&gt;Automating Memory Forensics, At Scale&lt;span class="hx:absolute hx:-mt-20" id="automating-memory-forensics-at-scale"&gt;&lt;/span&gt;
+&lt;a href="#automating-memory-forensics-at-scale" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In a real-life Security Operations Center (SOC), a team could receive thousands
+of daily alerts and need to respond promptly. Ideally, every alert potentially
+indicating an in-memory threat would be investigated. However, due to the high
+volume of alerts and the complexity and time required for memory forensics,
+this is not always feasible. Tools like Volatility simplify the analysis, but
+they do not address all challenges related to manual memory acquisition and
+analysis.&lt;/p&gt;
+&lt;p&gt;One solution can be automating memory acquisition and forensic processes upon
+receiving certain alerts. For instance, imagine if SOC teams could
+&lt;em&gt;automatically initiate a memory forensics process whenever an alert about
+&amp;ldquo;suspicious behavior detected&amp;rdquo; is received.&lt;/em&gt; The acquisition and analysis of
+memory would occur automatically, and the analyst would receive a final report
+with the findings, based on which they can decide if the alert should be
+escalated. Based on this report, they could decide whether the alert should be
+escalated. This automated approach would help SOC teams overcome both technical
+and logistical challenges.&lt;/p&gt;
+&lt;p&gt;At Intezer, this automated approach is how we perform memory forensics for
+customers using our
+&lt;a href="https://docs.intezer.com/docs/live-endpoint-analysis"target="_blank" rel="noopener"&gt;Endpoint Scanner&lt;/a&gt;. This
+memory forensics process can be initiated automatically based on the original
+alert, or manually to provide flexibility based on the user&amp;rsquo;s needs. The
+Endpoint Scanner efficiently handles the acquisition and analysis of memory,
+culminating in a detailed report for further action.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s look at an example of a memory threat using the Endpoint Scanner manually
+first: simply double-click on the Scanner executable, enter your API key, and
+watch the magic happen! After a few short seconds, the endpoint scanner will
+scan the running processes, look for injected memory modules and dump any
+suspicious code. The whole process takes anywhere from 15 seconds up to one
+minute.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/memory/tools/images/fig6.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;Looking at the scan result, we very clearly see that we have identified Cobalt
+Strike injected into memory (and which offsets that the payload lies) and under
+which process. The UI is designed to be very easy to identify suspicious
+processes. You never know what you might find in memory!&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/memory/tools/images/fig7.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;The endpoint scanner will also provide IOCs and check points of persistence,
+allowing you to understand how the payload might be maintaining its presence on
+the victim machine.&lt;/p&gt;
+&lt;p&gt;The endpoint scanner &lt;strong&gt;also works for Linux&lt;/strong&gt;. It works similarly to what we
+have seen in Windows: download the scanner and run it with your API key:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/memory/tools/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;And we can see the result of the scan as can be seen in the screenshot below:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/memory/tools/images/fig9.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h3&gt;Best Practices for Memory Forensics Automation&lt;span class="hx:absolute hx:-mt-20" id="best-practices-for-memory-forensics-automation"&gt;&lt;/span&gt;
+&lt;a href="#best-practices-for-memory-forensics-automation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Our scanner is designed with automation at its core. Because of the demands of
+incident response and proactive hunting workflows, analysts often lack the time
+to execute endpoint scans manually. Since many security teams leverage Endpoint
+Detection and Response (EDR) or Mobile Device Management (MDM) products to
+monitor and manage their endpoints, we can&lt;/p&gt;
+&lt;p&gt;With this, we built an easy way to &lt;strong&gt;automate the endpoint analysis process&lt;/strong&gt;.
+Intezer provides stand-alone executables integrates with MDM solutions,
+providing the API key either as a command line parameter or as an environment
+variable.&lt;/p&gt;
+&lt;p&gt;Endpoint protection and XDR products, such as SentinelOne and CrowdStrike, have
+automation capabilities that enable Intezer&amp;rsquo;s endpoint scanner to integrate
+easily. Detailed instructions for integrating with &lt;strong&gt;CrowdStrike&lt;/strong&gt;,
+&lt;strong&gt;SentinelOne&lt;/strong&gt;, and &lt;strong&gt;Microsoft Defender for Endpoints&lt;/strong&gt; can be found
+&lt;a href="https://docs.intezer.com/docs/live-endpoint-analysis"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For added convenience, Intezer provides scripts for both
+&lt;a href="https://github.com/intezer/EDRConnectDeployment/blob/main/intezer_endpoint_scanner.ps1"target="_blank" rel="noopener"&gt;Windows&lt;/a&gt;
+and
+&lt;a href="https://github.com/intezer/EDRConnectDeployment/blob/main/intezer_linux_endpoint_scanner.sh"target="_blank" rel="noopener"&gt;Linux&lt;/a&gt;
+platforms, which can be easily uploaded as automation within EDR products, For
+example, SentinelOne:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/docs/memory/tools/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Memory forensics is very important in the ongoing battle against cyber threats.
+This area helps us find harmful activities that normal checks might miss,
+especially the sneaky attacks that don&amp;rsquo;t leave files behind. While manual memory
+forensics is tricky because it deals with complex data and fast-changing
+malware, now the cybersecurity community has more advanced, new solutions like
+Intezer&amp;rsquo;s endpoint memory scanner for Windows and Linux which make memory
+forensics more accessible for every analyst and incident investigation.&lt;/p&gt;</description></item></channel></rss>

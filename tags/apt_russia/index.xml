@@ -1460,6 +1460,318 @@ the APT Detector tool.&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>EvilGnome: Rare Malware Spying on Linux Desktop Users</title><link>https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/</link><pubDate>Wed, 17 Jul 2019 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/</guid><description>
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Linux desktop remains an unpopular choice among mainstream desktop users,
+making up a little more than
+&lt;a href="https://netmarketshare.com/operating-system-market-share.aspx?options=%7B%22filter%22%3A%7B%22%24and%22%3A%5B%7B%22deviceType%22%3A%7B%22%24in%22%3A%5B%22Desktop%2Flaptop%22%5D%7D%7D%5D%7D%2C%22dateLabel%22%3A%22Trend%22%2C%22attributes%22%3A%22share%22%2C%22group%22%3A%22platform%22%2C%22sort%22%3A%7B%22share%22%3A-1%7D%2C%22id%22%3A%22platformsDesktop%22%2C%22dateInterval%22%3A%22Monthly%22%2C%22dateStart%22%3A%222018-07%22%2C%22dateEnd%22%3A%222019-06%22%2C%22segments%22%3A%22-1000%22%7D"target="_blank" rel="noopener"&gt;2%&lt;/a&gt;
+of the desktop operating system market share. This is in contrast to the web
+server market share, which consists of
+&lt;a href="https://w3techs.com/technologies/overview/operating_system/all"target="_blank" rel="noopener"&gt;70%&lt;/a&gt; of
+Linux-based operating systems. Consequently, the Linux malware ecosystem is
+plagued by financial driven crypto-miners and DDoS botnet tools which mostly
+target vulnerable servers.&lt;/p&gt;
+&lt;p&gt;This explains our surprise when in the beginning of July, we discovered a new,
+fully undetected &lt;strong&gt;Linux backdoor implant&lt;/strong&gt;, containing rarely seen
+functionalities with regards to Linux malware, targeting desktop users.&lt;/p&gt;
+&lt;p&gt;Throughout our investigation, we have found evidence that shows operational
+similarities between this implant and &lt;strong&gt;Gamaredon Group&lt;/strong&gt;. We have investigated
+this connection and in this blog we will present a technical analysis of the
+tool.&lt;/p&gt;
+&lt;p&gt;We have named the implant &lt;strong&gt;EvilGnome&lt;/strong&gt;, for its disguise as a Gnome extension.
+The malware is currently fully undetected across all major security solutions:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig1.png" title="Figure 1: VirusTotal detections of an EvilGnome sample" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: VirusTotal detections of an EvilGnome sample&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We believe this is a test version that was uploaded to VirusTotal, perhaps by
+mistake. The implant contains an unfinished keylogger functionality, comments,
+symbol names and compilation metadata which typically do not appear in
+production versions. EvilGnome&amp;rsquo;s functionalities include desktop screenshots,
+file stealing, allowing capturing audio recording from the user&amp;rsquo;s microphone
+and the ability to download and execute further modules.&lt;/p&gt;
+&lt;h2&gt;Gamaredon Group Connection&lt;span class="hx:absolute hx:-mt-20" id="gamaredon-group-connection"&gt;&lt;/span&gt;
+&lt;a href="#gamaredon-group-connection" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href="https://unit42.paloaltonetworks.com/unit-42-title-gamaredon-group-toolset-evolution/"target="_blank" rel="noopener"&gt;Gamaredon Group&lt;/a&gt;
+is an alleged Russian threat group. It has been active since at least 2013, and
+has targeted individuals likely involved with the Ukrainian government.
+Gamaredon Group infects victims using malicious attachments, delivered via
+spear phishing techniques. The group&amp;rsquo;s implants are characterized by the
+employment of information stealing tools—among them being screenshot and
+document stealers delivered via a SFX, and made to achieve persistence through
+a scheduled task. Gamaredon Group primarily makes use of Russian hosting
+providers in order to distribute its malware.&lt;/p&gt;
+&lt;p&gt;Our investigation into EvilGnome yielded several similarities between the
+threat actors behind EvilGnome and Gamaredon Group:&lt;/p&gt;
+&lt;h3&gt;Hosting Similarities&lt;span class="hx:absolute hx:-mt-20" id="hosting-similarities"&gt;&lt;/span&gt;
+&lt;a href="#hosting-similarities" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The operators of EvilGnome use a hosting provider that has been used by
+Gamaredon Group for years, and continues to be used by the group.&lt;/p&gt;
+&lt;p&gt;More specifically, EvilGnome&amp;rsquo;s C2 IP address (&lt;code&gt;195.62.52.101&lt;/code&gt;) was resolved two
+months ago by the domains &lt;code&gt;gamework.ddns.net&lt;/code&gt; and &lt;code&gt;workan.ddns.net&lt;/code&gt;,
+&lt;a href="https://x.threatbook.cn/nodev4/vb4/article?threatInfoID=1417"target="_blank" rel="noopener"&gt;associated&lt;/a&gt; with
+the Gamaredon Group:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig2.png" title="Figure 2: RiskIQ EvilGnome C2 IP query" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: RiskIQ EvilGnome C2 IP query&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We used &lt;a href="https://community.riskiq.com/search/gamework.ddns.net"target="_blank" rel="noopener"&gt;RiskIQ&lt;/a&gt; to map
+the history of the &lt;code&gt;gamework.ddns.net&lt;/code&gt; domain:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig3.png" title="Figure 3: gamework.ddns.net DNS timeline" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: gamework.ddns.net DNS timeline&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The finding shows that EvilGnome operates on an IP address that was controlled
+by the Gamaredon group two months ago.&lt;/p&gt;
+&lt;h3&gt;Infrastructure Similarities&lt;span class="hx:absolute hx:-mt-20" id="infrastructure-similarities"&gt;&lt;/span&gt;
+&lt;a href="#infrastructure-similarities" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;While investigating the EvilGnome C2, we observed that it served SSH over port
+3436.&lt;/p&gt;
+&lt;p&gt;We then checked for the 3436 port over three currently operating Gamaredon
+Group C2 servers, and found one server with this port open, serving SSH:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig4.png" title="Figure 4: SSH served on port 3436 both on EvilGnome C2 and Gamaredons rnbo-ua.ddns.net" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: SSH served on port 3436 both on EvilGnome C2 and Gamaredons rnbo-ua.ddns.net&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We proceeded to scan for this network fingerprint under EvilGnome&amp;rsquo;s host
+provider and we identified two additional servers with domain names similar to
+the naming pattern of Gamaredon domains (the use of the .space TTLD and ddns):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;185.158.115.44&lt;/code&gt; -&amp;gt; &lt;a href="https://community.riskiq.com/search/kotl.space"target="_blank" rel="noopener"&gt;kotl.space&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;185.158.115.154&lt;/code&gt; -&amp;gt; &lt;a href="https://community.riskiq.com/search/clsass.ddns.net"target="_blank" rel="noopener"&gt;clsass.ddns.net&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Tool Similarities&lt;span class="hx:absolute hx:-mt-20" id="tool-similarities"&gt;&lt;/span&gt;
+&lt;a href="#tool-similarities" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Gamaredon Group does not use any known Linux implants. It is difficult to make
+comparisons between tools built for different operating systems because they
+are developed with different challenges and objectives in mind. We can,
+however, observe similarities at a high-level. The techniques and modules
+employed by EvilGnome—that is the use of SFX, persistence with task scheduler
+and the deployment of information stealing tools—remind us of Gamaredon Group&amp;rsquo;s
+Windows tools. We present a thorough analysis of EvilGnome in the following
+section.&lt;/p&gt;
+&lt;h2&gt;Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Deployment with Makeself SFX&lt;span class="hx:absolute hx:-mt-20" id="deployment-with-makeself-sfx"&gt;&lt;/span&gt;
+&lt;a href="#deployment-with-makeself-sfx" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This implant is delivered in the form of a self-extracting archive shell script
+created with &lt;a href="https://github.com/megastep/makeself"target="_blank" rel="noopener"&gt;makeself&lt;/a&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;&lt;a href="https://makeself.io/"target="_blank" rel="noopener"&gt;makeself.sh&lt;/a&gt; is a small shell script that generates a
+self-extractable compressed tar archive from a directory. The resulting file
+appears as a shell script (many of those have a &lt;code&gt;.run&lt;/code&gt; suffix), and can be
+launched as is. The archive will then uncompress itself to a temporary
+directory and an optional arbitrary command will be executed (for example an
+installation script). This is pretty similar to archives generated with
+WinZip Self-Extractor in the Windows world.&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Interestingly, the tool&amp;rsquo;s operator did not omit metadata from the generated
+makeself SFX. The packaging date, development paths and the tool&amp;rsquo;s filename
+were all left exposed. We can observe that the sample is very recent, created
+on Thursday, July 4:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig5.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig6.png" title="Figure 5: Makeself packaging metadata and the archived files metadata" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: Makeself packaging metadata and the archived files metadata&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;As can be observed in the illustration above, the makeself script is instructed
+to run &lt;code&gt;./setup.sh&lt;/code&gt; after unpacking.&lt;/p&gt;
+&lt;p&gt;Using &lt;code&gt;makeself&lt;/code&gt;&amp;rsquo;s options, we are able to instruct the script to unpack itself
+without executing:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig7.png" title="Figure 6: Unpacking Makeself" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: Unpacking Makeself&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The archive contains four files:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;gnome-shell-ext&lt;/code&gt; - the spy agent executable&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gnome-shell-ext.sh&lt;/code&gt; - checks if &lt;code&gt;gnome-shell-ext&lt;/code&gt; is already running and if
+not, executes it&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;rtp.dat&lt;/code&gt; - configuration file for &lt;code&gt;gnome-shell-ext&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;setup.sh&lt;/code&gt; - the setup script that is run by makeself after unpacking&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The setup script installs the agent to
+&lt;code&gt;~/.cache/gnome-software/gnome-shell-extensions/&lt;/code&gt;, in an attempt to masquerade
+itself as a Gnome shell extension. Gnome shell extensions allow tweaking the
+Gnome desktop and add functionalities. They are the desktop equivalent to
+browser extensions.&lt;/p&gt;
+&lt;p&gt;Persistence is achieved by registering &lt;code&gt;gnome-shell-ext.sh&lt;/code&gt; to run every minute
+in crontab.&lt;/p&gt;
+&lt;p&gt;Finally, the script executes &lt;code&gt;gnome-shell-ext.sh&lt;/code&gt;, which in turn launches the
+main executable &lt;code&gt;gnome-shell-ext&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig8.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig9.png" title="Figure 7: setup.sh" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 7: setup.sh&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;The Spy Agent&lt;span class="hx:absolute hx:-mt-20" id="the-spy-agent"&gt;&lt;/span&gt;
+&lt;a href="#the-spy-agent" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Analyzing the agent with Intezer Analyze demonstrated to us that the code was
+never seen before by the system:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig10.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Figure 8:
+&lt;a href="https://analyze.intezer.com/#/analyses/8db39fae-8f82-42b2-9816-b353a7dbb16b"target="_blank" rel="noopener"&gt;Intezer Analyze report of the Spy Agent sample&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;This large amount of unique genes located within this file is not a trend we
+regularly see in Linux files and therefore it seems suspicious.&lt;/p&gt;
+&lt;p&gt;The Spy Agent was built in C++, using classes with an object oriented
+structure. The binary was not stripped, which allowed us to read symbols and
+understand the developer&amp;rsquo;s intentions.&lt;/p&gt;
+&lt;p&gt;At launch, the agent forks to run in a new process. The agent then reads the
+&lt;code&gt;rtp.dat&lt;/code&gt; configuration file and loads it directly into memory:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig11.png" title="Figure 9: Loading configuration from rtp.dat" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 9: Loading configuration from rtp.dat&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We marked interesting fields within the configuration file:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig12.png" title="Figure 10: Configuration dissection" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 10: Configuration dissection&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The first four bytes are a hexadecimal representation of the C2&amp;rsquo;s IP address:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;0x65343ec3 -&amp;gt; 0xc3.0x3e.0x34.0x65 -&amp;gt; 195.62.52.101&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Modules&lt;span class="hx:absolute hx:-mt-20" id="modules"&gt;&lt;/span&gt;
+&lt;a href="#modules" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The spy agent contains five modules called &amp;ldquo;Shooters&amp;rdquo;:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig13.png" title="Figure 11: Shooter modules" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 11: Shooter modules&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ShooterSound&lt;/code&gt; - captures audio from the user&amp;rsquo;s microphone and uploads to C2&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ShooterImage&lt;/code&gt; - captures screenshots and uploads to C2&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ShooterFile&lt;/code&gt; - scans the file system for newly created files and uploads them
+to C2&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ShooterPing&lt;/code&gt; - receives new commands from C2&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ShooterKey&lt;/code&gt; - unimplemented and unused, most likely an unfinished keylogging
+module&lt;/p&gt;
+&lt;p&gt;Each module is run in a separate thread, and access to shared resources (such
+as the configuration) is safeguarded by mutexes.&lt;/p&gt;
+&lt;p&gt;The modules encrypt their output and decrypt data from the C2 with RC5 with the
+key &amp;ldquo;&lt;code&gt;sdg62_AS.sa$die3&lt;/code&gt;&amp;rdquo;, using a modified version of a Russian open source
+library
+&lt;a href="https://webhamster.ru/site/page/index/articles/projectcode/157"target="_blank" rel="noopener"&gt;https://webhamster.ru/site/page/index/articles/projectcode/157&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig14.png" title="Figure 12: RC5 library" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 12: RC5 library&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;On connection failure, or if instructed by the C2, these modules store their
+output at &lt;code&gt;~/.cache/gnome-software/gnome-shell-extensions/tmp/&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig15.png" title="Figure 13: Stored files" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 13: Stored files&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We will now dive into each of the five modules and their options:&lt;/p&gt;
+&lt;h4&gt;ShooterPing&lt;span class="hx:absolute hx:-mt-20" id="shooterping"&gt;&lt;/span&gt;
+&lt;a href="#shooterping" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The ShooterPing module processes commands received from the C2:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig16.png" title="Figure 14: C2 commands" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 14: C2 commands&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;These include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Download &amp;amp; execute new files&lt;/li&gt;
+&lt;li&gt;Set new filters for file scanning&lt;/li&gt;
+&lt;li&gt;Download &amp;amp; set new runtime configuration&lt;/li&gt;
+&lt;li&gt;Exfiltrate stored output to C2&lt;/li&gt;
+&lt;li&gt;Stop the shooter modules from running&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The other modules run at a constant interval between each run, as defined by
+one of the configuration parameters. The C2 is able to control this interval
+via downloading new parameters through ShooterPing.&lt;/p&gt;
+&lt;h4&gt;ShooterFile&lt;span class="hx:absolute hx:-mt-20" id="shooterfile"&gt;&lt;/span&gt;
+&lt;a href="#shooterfile" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;The ShooterFile module uses a filter list to scan the filesystem, while
+ignoring specific files and folders as shown in the following illustration:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig17.png" title="Figure 15: File scanning filter" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 15: File scanning filter&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;We can see from the &lt;code&gt;filter_accepted_files&lt;/code&gt; list that the agent&amp;rsquo;s purpose is to
+steal document related files. However, the list is not used by the malware and
+further indicates that this is a work in progress.&lt;/p&gt;
+&lt;h4&gt;ShooterAudio&lt;span class="hx:absolute hx:-mt-20" id="shooteraudio"&gt;&lt;/span&gt;
+&lt;a href="#shooteraudio" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig18.png" title="Figure 16: Capturing audio with PulseAudio" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 16: Capturing audio with PulseAudio&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The ShooterAudio module uses PulseAudio to capture audio from the user&amp;rsquo;s
+microphone.&lt;/p&gt;
+&lt;p&gt;Using default configuration from &lt;code&gt;rtp.dat&lt;/code&gt;, the module records only a size of
+80,000 bytes of audio per iteration. Consequently, the module only records
+audio for a brief moment, making this module non-functional until a larger
+recording size is set by the C2.&lt;/p&gt;
+&lt;h4&gt;ShooterImage&lt;span class="hx:absolute hx:-mt-20" id="shooterimage"&gt;&lt;/span&gt;
+&lt;a href="#shooterimage" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;This module opens a connection to the XOrg Display Server, which is the backend
+to the Gnome desktop. It uses the Cairo open source library to take screenshots
+of the user&amp;rsquo;s desktop.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig19.png" title="Figure 17: Screenshot capturing using XOrg Server" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 17: Screenshot capturing using XOrg Server&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Prevention and Response&lt;span class="hx:absolute hx:-mt-20" id="prevention-and-response"&gt;&lt;/span&gt;
+&lt;a href="#prevention-and-response" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We recommend to Linux users who want to check whether they are infected to
+check the &lt;code&gt;~/.cache/gnome-software/gnome-shell-extensions&lt;/code&gt; directory for the
+&lt;code&gt;gnome-shell-ext&lt;/code&gt; executable. We have also created a custom
+&lt;a href="https://github.com/intezer/yara-rules/blob/master/EvilGnome.yar"target="_blank" rel="noopener"&gt;YARA rule&lt;/a&gt;,
+based on code reuse technology, for detecting future variants of EvilGnome.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;span class="hx:absolute hx:-mt-20" id="conclusion"&gt;&lt;/span&gt;
+&lt;a href="#conclusion" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;EvilGnome is a rare type of malware due to its appetite for Linux desktop
+users. Throughout this post, we have presented detailed infrastructure-related
+evidence to connect EvilGnome to the actors behind the Gamaredon Group. We
+believe this is a premature test version. We anticipate newer versions to be
+discovered and reviewed in the future, which could potentially shed more light
+into the group&amp;rsquo;s operations.&lt;/p&gt;
+&lt;h2&gt;Genetic Analysis&lt;span class="hx:absolute hx:-mt-20" id="genetic-analysis"&gt;&lt;/span&gt;
+&lt;a href="#genetic-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The EvilGnome malware variant is now indexed in Intezer&amp;rsquo;s genetic database. If
+you have a suspicious file that you suspect to be EvilGnome, you can upload it
+to Intezer Analyze in order to detect code reuse to this threat family and many
+others. You are welcome to
+&lt;a href="https://analyze.intezer.com/#/"target="_blank" rel="noopener"&gt;try it for free in our community edition&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2019/07/evilgnome-rare-malware-spying-on-linux-desktop-users/images/fig20.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Figure 18:
+&lt;a href="https://analyze.intezer.com/#/analyses/eeec2273-82ac-4190-b434-8ffb304deeef"target="_blank" rel="noopener"&gt;Intezer Analyze report of the Spy Agent sample&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;EvilGnome&lt;span class="hx:absolute hx:-mt-20" id="evilgnome"&gt;&lt;/span&gt;
+&lt;a href="#evilgnome" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;a21acbe7ee77c721f1adc76e7a7799c936e74348d32b4c38f3bf6357ed7e8032
+82b69954410c83315dfe769eed4b6cfc7d11f0f62e26ff546542e35dcd7106b7
+7ffab36b2fa68d0708c82f01a70c8d10614ca742d838b69007f5104337a4b869
+195.62.52[.]101&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;Gamaredon Group&lt;span class="hx:absolute hx:-mt-20" id="gamaredon-group"&gt;&lt;/span&gt;
+&lt;a href="#gamaredon-group" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;185.158.115[.]44
+185.158.115[.]154
+clsass.ddns[.]net
+kotl[.]space&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>NotPetya Returns as Bad Rabbit</title><link>https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/</link><pubDate>Wed, 25 Oct 2017 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2017/10/notpetya-returns-bad-rabbit/</guid><description>
 &lt;p&gt;Large scale cyber attacks seem to be happening once a month these days.
 Originally discovered by

