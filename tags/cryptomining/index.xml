@@ -339,9 +339,9 @@ the same techniques were used in the earlier campaigns.&lt;/p&gt;
 &lt;img src="https://research.intezer.com/blog/2022/02/teamtnt-cryptomining-explosion/images/fig25.png" title="Figure 24: Screenshot of init.sh" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 24: Screenshot of init.sh&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;The init.sh script removes previous cronjobs named &amp;ldquo;COVID19&amp;rdquo; and &amp;ldquo;SARScov2&amp;rdquo; and then verifies that *curl *and *bash *are installed. If not, the script installs them. Next, the script downloads and executes scripts that include other functionalities for the attack.&lt;/p&gt;
-&lt;p&gt;The container is created with &lt;em&gt;/bin/sh&lt;/em&gt; shell (as set in &lt;code&gt;mxutzh.sh&lt;/code&gt;) but it
-seems that the group decided to use *bash *for some scripts and &lt;em&gt;sh&lt;/em&gt; shell for
+&lt;p&gt;The init.sh script removes previous cronjobs named &amp;ldquo;COVID19&amp;rdquo; and &amp;ldquo;SARScov2&amp;rdquo; and then verifies that &lt;code&gt;curl&lt;/code&gt; and &lt;code&gt;bash&lt;/code&gt; are installed. If not, the script installs them. Next, the script downloads and executes scripts that include other functionalities for the attack.&lt;/p&gt;
+&lt;p&gt;The container is created with &lt;code&gt;/bin/sh&lt;/code&gt; shell (as set in &lt;code&gt;mxutzh.sh&lt;/code&gt;) but it
+seems that the group decided to use &lt;code&gt;bash&lt;/code&gt; for some scripts and &lt;code&gt;sh&lt;/code&gt; shell for
 other scripts.&lt;/p&gt;
 &lt;p&gt;When we examined the Uniform Resource Locator (URL)
 http://45.9.148[.]123/COVID19/init.sh in VirusTotal we discovered another
@@ -373,7 +373,7 @@ released their report. At the time of the report the file had four detections.&l
 &lt;img src="https://research.intezer.com/blog/2022/02/teamtnt-cryptomining-explosion/images/fig30.png" title="Figure 29: Screenshot of dns script." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 29: Screenshot of dns script.&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;The init.sh script executes another script named &lt;strong&gt;dns&lt;/strong&gt;. Based on the architecture of the victim system, a tool called **dns3 **(&lt;a href="https://analyze.intezer.com/files/07377cac8687a4cde6e29bc00314c265c7ad71a6919de91f689b58efe07770b0"target="_blank" rel="noopener"&gt;link to analysis&lt;/a&gt;) is downloaded and masqueraded as part of systemd. Based on the code relation this is Tsunami. It has 32-bit and 64-bit versions, both versions which were submitted to VirusTotal on April 19, 2020. For more information check the Tools section.&lt;/p&gt;
+&lt;p&gt;The init.sh script executes another script named &lt;strong&gt;dns&lt;/strong&gt;. Based on the architecture of the victim system, a tool called &lt;strong&gt;dns3&lt;/strong&gt;(&lt;a href="https://analyze.intezer.com/files/07377cac8687a4cde6e29bc00314c265c7ad71a6919de91f689b58efe07770b0"target="_blank" rel="noopener"&gt;link to analysis&lt;/a&gt;) is downloaded and masqueraded as part of systemd. Based on the code relation this is Tsunami. It has 32-bit and 64-bit versions, both versions which were submitted to VirusTotal on April 19, 2020. For more information check the Tools section.&lt;/p&gt;
 &lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2022/02/teamtnt-cryptomining-explosion/images/fig31.png" title="Figure 30: Screenshot of dns3 in Intezer Analyze." alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 30: Screenshot of dns3 in Intezer Analyze.&lt;/figcaption&gt;
@@ -400,7 +400,7 @@ later.&lt;/p&gt;
 &lt;img src="https://research.intezer.com/blog/2022/02/teamtnt-cryptomining-explosion/images/fig35.png" title="Figure 33: Screenshot showing minion_worker.sh" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 33: Screenshot showing minion_worker.sh&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;minion-setup.sh&lt;/code&gt;script targets Redis and uses the URL **http://45.9.148[.]123/MoneroOcean/sh/init.sh **to download the init.sh script that will be executed on the exposed Redis instance.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;minion-setup.sh&lt;/code&gt;script targets Redis and uses the URL &lt;code&gt;http://45.9.148[.]123/MoneroOcean/sh/init.sh&lt;/code&gt; to download the init.sh script that will be executed on the exposed Redis instance.&lt;/p&gt;
 &lt;p&gt;Both scripts (minion_worker.sh and lan.redis.pwn.sh) target Redis and they use
 the tools mentioned in the first captain (bioset and pnscan). Based on
 similarities in the functionality and behavior of the scripts we can conclude
@@ -581,8 +581,7 @@ operations on the pods accordingly. The default configuration of standard
 Kubernetes deployments allow anonymous access to kubelet. TeamTNT used this
 misconfiguration to gain access to exposed Kubernetes instances and run
 cryptomining malware in the containers.&lt;/p&gt;
-&lt;p&gt;This campaign was reported by &lt;a href="https://unit42.paloaltonetworks.com/hildegard-malware-teamtnt/"target="_blank" rel="noopener"&gt;Palo Alto Networks&lt;/a&gt; who described a new malware called **Hildegard
-**that was first seen in this campaign&lt;code&gt;.&lt;/code&gt;In this campaign there was no use of
+&lt;p&gt;This campaign was reported by &lt;a href="https://unit42.paloaltonetworks.com/hildegard-malware-teamtnt/"target="_blank" rel="noopener"&gt;Palo Alto Networks&lt;/a&gt; who described a new malware called &lt;strong&gt;Hildegard&lt;/strong&gt; that was first seen in this campaign&lt;code&gt;.&lt;/code&gt;In this campaign there was no use of
 container images. The malicious functionality was carried out using a reverse
 shell and abusing containers that were already running.&lt;/p&gt;
 &lt;p&gt;Finding containers and nodes that could be attacked was accomplished by two
