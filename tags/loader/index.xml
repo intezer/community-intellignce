@@ -576,7 +576,7 @@ actions the installer will execute:&lt;/p&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;❯ msiinfo export 90f1511223698f33a086337a6875db3b5d6fbcce06f3195cdd6a8efa90091750.sample CustomAction
 [...]
 SET_APPDIR 307 APPDIR [AppDataFolder][Manufacturer][ProductName]
-LaunchFile 1026 viewer.exe C:WindowsSystem32regsvr32.exe /S [LocalAppDataFolder]sharepointMenuEx.dll&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+LaunchFile 1026 viewer.exe C:\Windows\System32\regsvr32.exe /S [LocalAppDataFolder]sharepointMenuEx.dll&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="Copy code"
@@ -597,7 +597,7 @@ detection. This loader has not been reported or documented previously.&lt;/p&gt;
 &lt;p&gt;Analysis of its metadata reveals that the PhantomLoader attempts to disguise
 itself as a legitimate DLL named &lt;code&gt;MenuEx.dll&lt;/code&gt;, associated with 360 Total
 Security, a Chinese antivirus program. Additionally, we discovered a PDB path
-in the metadata: &lt;code&gt;C:vmagent_newbinjoblist500965outReleaseMenuEx.pdb&lt;/code&gt;. The
+in the metadata: &lt;code&gt;C:\vmagent_new\bin\joblist\500965\out\Release\MenuEx.pdb&lt;/code&gt;. The
 loader also shares code with the antivirus software and retains remnants of a
 digital signature, as shown by Intezer&amp;rsquo;s analysis.&lt;/p&gt;
 &lt;p&gt;SHA256:

@@ -1885,7 +1885,7 @@ codebase over the last year.&lt;/p&gt;
 &lt;h2&gt;Overview&lt;span class="hx:absolute hx:-mt-20" id="overview"&gt;&lt;/span&gt;
 &lt;a href="#overview" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The three samples we discovered seem to be a mix of the Ketrican and Okrum
 backdoors documented by researchers at
-&lt;a href="https://www.welivesecurity.com//srv/htdocs/wp-content/uploads/2019/07/ESET_Okrum_and_Ketrican.pdf"target="_blank" rel="noopener"&gt;ESET&lt;/a&gt;
+&lt;a href="https://www.welivesecurity.com/wp-content/uploads/2019/07/ESET_Okrum_and_Ketrican.pdf"target="_blank" rel="noopener"&gt;ESET&lt;/a&gt;
 in 2019. Features have been merged from these two malware families to create a
 different RAT class for the group. We&amp;rsquo;ve decided to call this umbrella of
 malware &amp;ldquo;Ketrum.&amp;rdquo;&lt;/p&gt;
@@ -1963,7 +1963,7 @@ in mid May.&lt;/p&gt;
 &lt;td style="text-align: left"&gt;✅&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td style="text-align: left"&gt;Special folder retrieval using registry key &lt;code&gt;[HKEY_CURRENT_USERSoftwareMicrosoftWindowsCurrentVersionExplorerShell Folders]&lt;/code&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Special folder retrieval using registry key &lt;code&gt;[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders]&lt;/code&gt;&lt;/td&gt;
 &lt;td style="text-align: left"&gt;✅&lt;/td&gt;
 &lt;td style="text-align: left"&gt;❌&lt;/td&gt;
 &lt;td style="text-align: left"&gt;✅&lt;/td&gt;
