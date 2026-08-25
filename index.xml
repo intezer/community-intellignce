@@ -216,8 +216,7 @@ This is not a new tendency in the SOC, as Sophos previously
 &lt;p&gt;The clearest example is the AI vendors&amp;rsquo; own software. The genuine Anthropic
 Claude Desktop installer, verified by its code signature, triggers major EDR
 rules such as &amp;ldquo;Ransomware Operations detected&amp;rdquo; and &amp;ldquo;Encoded PowerShell Download
-and Run&amp;rdquo; across several customers. The installer is legitimate. The
-&lt;a href="https://analyze.intezer.com/alerts/2489510804664064029?tenant_id=86d60203-3f07-4e1e-8c4c-819a0cd2ab26&amp;amp;environment=solis-mssp-test-s1"target="_blank" rel="noopener"&gt;detection&lt;/a&gt;
+and Run&amp;rdquo; across several customers. The installer is legitimate. The detection
 describes installer behavior in the ransomware vocabulary.&lt;/p&gt;
 &lt;p&gt;Underneath that sit the agent-behavior false positives, all confirmed on
 inspection to be developers using tools as intended:&lt;/p&gt;
