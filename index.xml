@@ -1,4 +1,362 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research –</title><link>https://research.intezer.com/</link><description>Recent content on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Two Trojan Families Trotting in Through Google Search Ads</title><link>https://research.intezer.com/blog/2026/07/two-trojan-families/</link><pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/07/two-trojan-families/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research –</title><link>https://research.intezer.com/</link><description>Recent content on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 25 Aug 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/index.xml" rel="self" type="application/rss+xml"/><item><title>When the Whole Company Adopts AI: What It Does to Your SOC</title><link>https://research.intezer.com/blog/2026/08/when-the-whole-company-adopts-ai/</link><pubDate>Tue, 25 Aug 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/08/when-the-whole-company-adopts-ai/</guid><description>
+&lt;p&gt;Over the past year, we watched a new class of alert appear in enterprise
+security operations centers and grow faster than anything else in the stream:
+alerts that were triggered by AI tools and agents. Not attacks against AI, but
+the ordinary, everyday footprint of an organization &lt;em&gt;using&lt;/em&gt; it, from developers
+running coding agents and non-technical staff signing consumer AI tools into
+corporate accounts.&lt;/p&gt;
+&lt;p&gt;We reviewed AI-related activity across numerous enterprise environments. Two
+numbers frame everything that follows. AI-related alerts still account for only
+0.43% of all SOC alerts. And that share is climbing every single month, up 685%
+between February and June 2026. AI is a small slice of the alert stream today
+and the fastest-growing slice at the same time.&lt;/p&gt;
+&lt;p&gt;What makes those alerts worth a security team&amp;rsquo;s attention is not their volume
+but their composition. We sort everything an AI agent triggers in a SOC into
+three buckets: real attacks, risks, and noise, with the split being 94.1%
+noise, 5.8% genuine risk, and 0.02% real attacks. Meaning that across the data
+we investigated, real attacks that use AI agents are a drop in the ocean. The
+cost of AI in the SOC, so far, is not breaches. It is a rising tide of alerts
+that look alarming and almost never are, and a small, quiet set of genuine
+exposures that those alarms tend to bury.&lt;/p&gt;
+&lt;p&gt;This post walks through each of the three categories with anonymized examples.
+All customer names, hostnames, usernames, and identifiers have been removed;
+indicators are defanged.&lt;/p&gt;
+&lt;h2&gt;The New Shape of the Alert Stream&lt;span class="hx:absolute hx:-mt-20" id="the-new-shape-of-the-alert-stream"&gt;&lt;/span&gt;
+&lt;a href="#the-new-shape-of-the-alert-stream" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;AI adoption inside an enterprise is not one behavior it is two very different
+ones arriving at the same time.&lt;/p&gt;
+&lt;p&gt;The first is technical. Developers install coding agents that spawn shells,
+read credential stores, open network tunnels, download packages, and run
+security tooling all as legitimate work, and all of it indistinguishable to a
+detection engine from the
+&lt;a href="https://cyberpress.org/agent-tunnels-mimic-c2/"target="_blank" rel="noopener"&gt;early stages of an intrusion&lt;/a&gt;.
+This is the loud half, and it dominates the data.&lt;/p&gt;
+&lt;p&gt;The second is when employees grant OAuth consent to third-party AI
+applications,
+&lt;a href="https://concentric.ai/is-chatgpt-secure-10-prompts-you-dont-want-your-employees-trying-with-chatgpt/#:~:text=an%20average%20of,and%20HR%20%286.9%25%29"target="_blank" rel="noopener"&gt;share information&lt;/a&gt;,
+and paste documents into generative-AI tools. This is the quiet half. It rarely
+trips an endpoint detection, but it is where data leaves the building.&lt;/p&gt;
+&lt;p&gt;Both halves land in the same place, the SOC, and both look, at first glance,
+like something to worry about. Sorting the signal from the noise is the entire
+job.&lt;/p&gt;
+&lt;h2&gt;By the Numbers&lt;span class="hx:absolute hx:-mt-20" id="by-the-numbers"&gt;&lt;/span&gt;
+&lt;a href="#by-the-numbers" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;AI accounts for a small share of the volume but is fast-growing**.** Of the
+roughly 16.9 million SOC alerts we reviewed, about 73,000 (0.43%) were
+AI-related. Read on its own, that is reassuringly small.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/08/when-the-whole-company-adopts-ai/images/fig1.png" title="Number of AI-related alerts per month as seen in our system." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Number of AI-related alerts per month as seen in our system.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The rise is monotonic. Every full month is higher than the one before, and
+growth accelerated sharply in May 2026. Over the window when reporting is
+stable across regions (February to June), volume grew by 685%. The 0.43% figure
+is best understood as today&amp;rsquo;s floor, not a ceiling. A team that sizes its
+AI-alert handling to current volume will be under-provisioned within a quarter.&lt;/p&gt;
+&lt;p&gt;The composition is as lopsided as the trend is steep. Nearly all of the
+AI-generated alerts are noise.&lt;/p&gt;
+&lt;p&gt;For this research, we investigated the AI-related population and sorted each
+alert by the underlying activity. A real attack is a confirmed compromise. A
+security risk is not a compromise but a genuine exposure (for example, a coding
+agent running with its permission safeguards disabled). Noise is legitimate
+activity that tripped a detection written before AI agents existed. By that
+measure, nearly all of the AI-related alerts are noise (94.1%), a small portion
+are genuine security risks (5.8%), and real attacks are a sliver (0.02%).&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/08/when-the-whole-company-adopts-ai/images/fig2.png" title="The breakdown of the AI-related alerts based on the final classification of each alert." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The breakdown of the AI-related alerts based on the final classification of each alert.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The second measurement is how those same alerts were handled in production
+without a human in the loop. When an alert reaches an automated triage
+platform, two separate decisions are made about it.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The verdict states how dangerous the activity looks: it can be benign,
+suspicious, or malicious.&lt;br&gt;
+79.8% received a benign verdict.&lt;/li&gt;
+&lt;li&gt;The response states what happens next: the alert can be suppressed (closed
+automatically, so no analyst ever sees it), flagged for follow-up, or
+escalated to a human.&lt;br&gt;
+81.7% were automatically suppressed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Of the AI-related population, only 5.4% were ever escalated to a human analyst;
+the remainder were flagged for follow-up.&lt;/p&gt;
+&lt;p&gt;A high-severity alert does not necessarily mean an actual threat. For example,
+a single detection at a single customer accounted for 55% of all &amp;ldquo;critical&amp;rdquo;
+verdict alerts flagging a Windows binary (&lt;code&gt;Expand.exe&lt;/code&gt;) as a
+lateral-tool-transfer. Upon inspection, it was found that a developer&amp;rsquo;s coding
+agent was setting up a shell environment, and the behavior was normal for this
+type of work.&lt;/p&gt;
+&lt;p&gt;The lesson for any SOC is the same: severity labels on AI activity have to be
+read with suspicion, not taken at face value.&lt;/p&gt;
+&lt;h2&gt;Category 1: Real Attacks&lt;span class="hx:absolute hx:-mt-20" id="category-1-real-attacks"&gt;&lt;/span&gt;
+&lt;a href="#category-1-real-attacks" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A real attack is an actual compromise or an attacker operation enabled by, or
+riding on, AI adoption. This is the category every executive asks about first,
+and it is the smallest, accounting for roughly 0.02% of AI-generated alerts.&lt;/p&gt;
+&lt;p&gt;When it comes to actual threats that were detected in this class of alerts,
+none was a compromise caused by an organization&amp;rsquo;s own AI agent. Every alert
+titled &amp;ldquo;AI agent running mimikatz,&amp;rdquo; &amp;ldquo;reverse shell from a coding tool,&amp;rdquo; or
+&amp;ldquo;credential theft&amp;rdquo; was resolved, on inspection, to a developer doing legitimate
+work or to a detection misfiring. We return to those in the Noise section.&lt;/p&gt;
+&lt;p&gt;What &lt;em&gt;was&lt;/em&gt; real is an attack that rides on AI rather than through it: a live
+phishing campaign that weaponizes AI brand names as lures. Across multiple
+customers, and as we expanded to new ones during the window we studied, we
+observed malicious emails with AI-themed subject lines featuring the biggest
+names in AI. The lure works precisely because AI adoption has made these brands
+familiar and their notifications routine. Employees now expect email from these
+products, which is exactly what the attacker is counting on.&lt;/p&gt;
+&lt;p&gt;Here are some examples of incidents where we spotted the execution of tools or
+commands that usually indicate real attacks (or penetration testing), only in
+these cases they were invoked by Claude, Codex, etc. So the investigator also
+needs to question why the agents were running these tools and whether it was
+part of a real attack that exploited the agent.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Anthropic is used as bait in the business context. In that alert, the email
+subject is &lt;code&gt;RE: Anthropic Engagement approval &amp;amp; payment&lt;/code&gt;, and the analysis
+says the sender references a supposed contract/invoice with Anthropic to make
+a large payment request appear legitimate. So Anthropic is not the sender or
+the threat source, it’s part of the pretext used to support the invoice fraud
+story.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;An email uses a fake Google/Gemini Ads invitation lure to appear legitimate
+and trustworthy. It presents itself as a business-related workspace
+invitation, encouraging the recipient to connect or join what looks like an
+official Gemini Ads environment, but the sender and reply-to infrastructure
+are not associated with Google and instead rely on the suspicious domain
+&lt;code&gt;gemini-advertisers[.]com&lt;/code&gt;, indicating a brand impersonation attempt designed
+to drive the user to a malicious site.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The email impersonates OpenAI (“OpenAI Partner Summit 2026”) but originates
+from &lt;a href="mailto:noreply-zoomevents@zoom.us"&gt;noreply-zoomevents@zoom.us&lt;/a&gt;. Although the URLs use legitimate zoom.us
+infrastructure, the content and registration flow are being used to lend
+credibility to a fraudulent invitation.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/08/when-the-whole-company-adopts-ai/images/fig3.png" title="Phishing email impersonating OpenAI" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Phishing email impersonating OpenAI&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/08/when-the-whole-company-adopts-ai/images/fig4.png" title="Device code phishing" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Device code phishing&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The AI IDE Cursor seems to have moved from normal coding activity into unsafe
+low-level system actions: while likely attempting to complete a debugging or
+troubleshooting task, the agent used a known credential-dumping technique
+(MiniDump via comsvcs.dll) that can expose secrets from process memory. The
+parent-child chain Cursor.exe → powershell.exe → rundll32.exe, the temp .ps1
+scripts, and the memory-dump commands show the IDE initiating an automated
+action sequence that may have been intended to help development, but did so
+in a way that created a serious credential-access risk on the endpoint.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The pattern across all three is worth stating plainly: the closer we looked,
+the more the &amp;ldquo;attack&amp;rdquo; dissolved into context. That is the defining
+characteristic of AI-era triage.&lt;/p&gt;
+&lt;h2&gt;Category 2: Unsafe Use&lt;span class="hx:absolute hx:-mt-20" id="category-2-unsafe-use"&gt;&lt;/span&gt;
+&lt;a href="#category-2-unsafe-use" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;About 5.8% of the AI-related alerts are the ones we think deserve the most
+attention. These alerts detect an unsafe use of AI tools, not necessarily a
+compromise (yet). It is the moment when an agent, behaving exactly as
+instructed and with no attacker involved, does something that materially
+exposes the organization or the user.&lt;/p&gt;
+&lt;p&gt;The main risk is agents running with a permission-bypass flag, the option that
+tells the agent to stop asking the user before it acts. Many users choose to
+trust the agent not to destroy their machines or execute dangerous commands,
+but as experience and, now, the data show us, in many cases, agents will
+attempt, and mostly succeed in executing commands that expose the organization
+and the user to great risks. It is worth noting that, especially when running
+the agent with the permission-bypass flag, it is recommended to use additional
+configurations, also known as harnesses, to programmatically prevent the agent
+from attempting to execute risky commands.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/08/when-the-whole-company-adopts-ai/images/fig5.png" title="The split of permission-bypass flags as seen in our system." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;The split of permission-bypass flags as seen in our system.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;On every sample we examined, the invocation was legitimate developer work. That
+is exactly why it matters. This is the same precondition abused in a publicly
+documented supply-chain attack, where an attacker&amp;rsquo;s malicious code executed
+freely because a coding agent had been launched with its permission prompts
+disabled. The exposure is not intent; it is that the rail is off, across many
+customers and at scale, waiting for the one time the code the agent is asked to
+run is not benign. Notably, these same permission-bypassed invocations are also
+the single largest source of false positives.&lt;/p&gt;
+&lt;p&gt;Other instances of unsafe use we surfaced:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;A reverse tunnel opened by an AI IDE**:** In one of the environments, an
+AI code editor spawned PowerShell, which launched &lt;code&gt;ngrok&lt;/code&gt; and opened a named
+reverse tunnel to the public internet using the user&amp;rsquo;s own auth token. While
+the intent is benign, it is a real risk and exposure.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;An agent dumping the entire macOS keychain to read one token: To retrieve its
+&lt;em&gt;own&lt;/em&gt; and cloud services’ stored credentials. An agent ran
+&lt;code&gt;security dump-keychain &amp;gt; /tmp/,&lt;/code&gt; which writes &lt;em&gt;every&lt;/em&gt; stored secret to a
+temp file, briefly exposing all of them.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Granting OAuth access to AI agents means that employees might share sensitive
+information with third-party service providers. But on top of that, it
+increases the risk of unauthorized data access via prompt injection or a
+compromised AI account. We observed multiple alerts for OAuth application
+consent granted to ChatGPT across tenants, &amp;ldquo;first sign-in to a new
+application: OpenAI&amp;rdquo; events, and, at one customer, a sizeable cluster of
+data-protection alerts for generative-AI uploads. Most are benign. But this
+is the surface where corporate data is sent to a third-party model, and it is
+almost invisible to endpoint tooling.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Category 3: Noise&lt;span class="hx:absolute hx:-mt-20" id="category-3-noise"&gt;&lt;/span&gt;
+&lt;a href="#category-3-noise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Noise is the largest category by an order of magnitude, 94.1% of the
+AI-generated, and it is the one that directly determines whether a SOC drowns.
+Noise here is not random. It is specific and diagnosable: detections written
+before AI agents existed, now firing at high severity on routine agent work.
+This is not a new tendency in the SOC, as Sophos previously
+&lt;a href="https://www.sophos.com/en-us/blog/2607_agents_vs_telemetry"target="_blank" rel="noopener"&gt;reported&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The clearest example is the AI vendors&amp;rsquo; own software. The genuine Anthropic
+Claude Desktop installer, verified by its code signature, triggers major EDR
+rules such as &amp;ldquo;Ransomware Operations detected&amp;rdquo; and &amp;ldquo;Encoded PowerShell Download
+and Run&amp;rdquo; across several customers. The installer is legitimate. The
+&lt;a href="https://analyze.intezer.com/alerts/2489510804664064029?tenant_id=86d60203-3f07-4e1e-8c4c-819a0cd2ab26&amp;amp;environment=solis-mssp-test-s1"target="_blank" rel="noopener"&gt;detection&lt;/a&gt;
+describes installer behavior in the ransomware vocabulary.&lt;/p&gt;
+&lt;p&gt;Underneath that sit the agent-behavior false positives, all confirmed on
+inspection to be developers using tools as intended:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The update of a coding agent and the developers&amp;rsquo; use of the agent triggered a
+“Ransomware Operations detected”. The binary that triggered the alert is a
+legitimate, signed software package. The behavior that looked
+“ransomware-like” came from normal Electron/Squirrel installer activity and
+developer tool usage.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Claude Setup.exe
+Path: \Device\HarddiskVolume3\Users\{REDACTED}\Downloads\Claude Setup.exe
+CMD: &amp;#34;C:\Users\{REDACTED}\Downloads\Claude Setup.exe&amp;#34;
+Update.exe
+Path: \Device\HarddiskVolume3\Users\{REDACTED}\AppData\Local\SquirrelTemp\Update.exe
+CMD :--install .
+Parent: Claude Setup.exe
+Parent Path: \Device\HarddiskVolume3\Users\{REDACTED}\Downloads\Claude Setup.exe
+Parent CMD: &amp;#34;C:\Users\{REDACTED}\Downloads\Claude Setup.exe&amp;#34;
+squirrel.exe
+Path: \Device\HarddiskVolume3\Users\{REDACTED}\AppData\Local\AnthropicClaude\app-1.1.1093\squirrel.exe
+CMD: --updateSelf=C:\Users\{REDACTED}\AppData\Local\SquirrelTemp\Update.exe
+Parent: Update.exe
+Parent Path: \Device\HarddiskVolume3\Users\{REDACTED}\AppData\Local\SquirrelTemp\Update.exe
+Parent CMD: --install .&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;A process originating from node.exe executing the OpenAI Codex CLI agent with
+&lt;code&gt;--yolo&lt;/code&gt; or &lt;code&gt;--dangerously-skip-permissions&lt;/code&gt; tripping &lt;em&gt;ClickFix&lt;/em&gt;,
+&lt;em&gt;DisableTools&lt;/em&gt;, and &lt;em&gt;DLL-injection&lt;/em&gt; detections.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Path: C:\Users\{REDACTED}\AppData\Roaming\...\bin\codex.exe
+CMD: codex.exe --yolo
+Parent: node.exe
+Parent Path: \...\Program Files\nodejs\node.exe
+Parent CMD: &amp;#34;node&amp;#34; &amp;#34;C:\Users\{REDACTED}\AppData\Roaming\...\codex\bin\codex.js&amp;#34; --yolo&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Standard developer automation triggered “PowerShell created possible reverse
+TCP shell” detections. The process tree is consistent with normal developer
+automation rather than a real reverse shell. The parent process shows a
+signed OpenAI Codex sandbox binary that spawned &lt;code&gt;powershell.exe&lt;/code&gt;, which in
+turn launched &lt;code&gt;cmd.exe&lt;/code&gt;, &lt;code&gt;python.exe&lt;/code&gt;, and &lt;code&gt;conhost.exe&lt;/code&gt;. The PowerShell
+command is in clear text and shows benign orchestration logic: it checks
+ports on localhost on &lt;code&gt;127.0.0.1&lt;/code&gt;, selects an available port, starts a Python
+script from the project directory, and writes stdout and stderr to local log
+files in the &lt;code&gt;artifacts directory&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The false-positive rates are the story. Across the noisiest AI activity
+detections, the benign share ranges from 77% to 99%. Several detections are
+wrong on the AI-generated more than four times out of five:&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/08/when-the-whole-company-adopts-ai/images/fig6.png" title="View of the detection that was triggered on benign AI-related behavior." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;View of the detection that was triggered on benign AI-related behavior.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The one exception proves the rule. The &lt;em&gt;ClickFix&lt;/em&gt; detection is the single
+cluster that leans genuinely severe, only 37% benign, and it does so precisely
+because it collides with the permission-bypass risk from the previous section:
+it fires on coding agents launched with &lt;code&gt;--yolo&lt;/code&gt;. Even the &amp;ldquo;real-looking&amp;rdquo; noise
+traces back to legitimate AI use.&lt;/p&gt;
+&lt;h2&gt;What Security Teams Should Do&lt;span class="hx:absolute hx:-mt-20" id="what-security-teams-should-do"&gt;&lt;/span&gt;
+&lt;a href="#what-security-teams-should-do" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;From our analysis, the first step for every SOC is clear: tune the noisiest
+legacy detections, the ones firing at high severity on routine agent work.
+Next, define policies on what information can be shared with third-party AI
+platforms (as with any third-party platform) and, based on those policies,
+proactively hunt for permission-bypass flags, unauthorized tunnels, and risky
+OAuth grants rather than waiting to be alerted.&lt;/p&gt;
+&lt;p&gt;The second step is harder, because it touches how triage itself works. AI tools
+execute commands on the user&amp;rsquo;s machine, with the user&amp;rsquo;s credentials,
+essentially acting on the user&amp;rsquo;s behalf. Alerts are therefore triggered by
+actions attributed to the user, and in many cases the user was not aware those
+actions took place. Before AI, suspicious activity executed on a user&amp;rsquo;s machine
+without their knowledge usually indicated a high probability that an attacker
+had taken over the machine. Now SOC teams face a new layer of complexity: first
+determine whether the action in question was executed by an AI agent or tool.&lt;/p&gt;
+&lt;p&gt;To separate the user&amp;rsquo;s context from the agent&amp;rsquo;s, and to keep the agent away
+from credentials and sensitive information it should not have, we suggest
+running AI tools in an isolated environment with restricted access, such as a
+Docker container or a virtual machine. Isolation limits what the agent can
+reach, and it makes the agent&amp;rsquo;s behavior easier to distinguish from the user&amp;rsquo;s
+own activity.&lt;/p&gt;
+&lt;h2&gt;What This Means for the SOC&lt;span class="hx:absolute hx:-mt-20" id="what-this-means-for-the-soc"&gt;&lt;/span&gt;
+&lt;a href="#what-this-means-for-the-soc" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Pulling the three categories together, the operational reality of enterprise AI
+adoption looks like this:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Real attacks (0.02%): none of the confirmed attacks we investigated were
+carried out by an organization&amp;rsquo;s own agents. The genuine attack activity we
+found rides on AI adoption from the outside, phishing lures built on brand
+names employees now trust, not on the agents themselves.&lt;/li&gt;
+&lt;li&gt;Security risks (5.8%): real, standing, and largely invisible to alerting.
+Agents run with their permission safeguards disabled, open tunnels to the
+public internet, over-expose stored secrets, and send corporate data to
+third-party models. None of this is an incident, and all of it is exposure.&lt;/li&gt;
+&lt;li&gt;Noise (94.1%): the dominant cost. The single highest-value action available
+to most SOCs today is not a new detection. It is tuning the legacy ones so
+that a developer running a coding agent does not generate a maximum-severity
+alert.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The uncomfortable synthesis is that AI adoption has not, so far, brought a wave
+of AI-enabled breaches. It has brought a wave of &lt;em&gt;alerts&lt;/em&gt;, small as a share of
+total volume today, that have grown 18-fold in six months and are
+overwhelmingly false, alongside a smaller, quieter set of genuine exposures
+that the alerts tend to bury. A SOC that treats every agent action as a
+potential intrusion will exhaust itself on false positives and, in doing so,
+will be less likely to notice the &lt;code&gt;ngrok&lt;/code&gt; tunnel or the keychain dump that
+actually matters.&lt;/p&gt;
+&lt;p&gt;The work ahead is therefore less about detecting AI attacks and more about
+teaching detection engines what normal AI behavior looks like before the volume
+that is doubling and tripling month over month makes that work unavoidable.
+Understanding this distinction is what separates a SOC that scales with AI
+adoption from one that is buried by it.&lt;/p&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Two Trojan Families Trotting in Through Google Search Ads</title><link>https://research.intezer.com/blog/2026/07/two-trojan-families/</link><pubDate>Mon, 27 Jul 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/07/two-trojan-families/</guid><description>
 &lt;details class="hx:last-of-type:mb-0 hx:rounded-lg hx:bg-neutral-50 hx:dark:bg-neutral-800 hx:p-2 hx:mt-4 hx:group" &gt;
 &lt;summary class="hx:flex hx:items-center hx:cursor-pointer hx:select-none hx:list-none hx:p-1 hx:rounded-sm hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800 hx:before:mr-1 hx:before:inline-block hx:before:transition-transform hx:before:content-[''] hx:dark:before:invert hx:rtl:before:rotate-180 hx:group-open:before:rotate-90"&gt;
 &lt;strong class="hx:text-lg"&gt;AI Generated Summary&lt;/strong&gt;
@@ -19918,215 +20276,6 @@ the scanner will classify all binary code residing in your machine&amp;rsquo;s m
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
-&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
-&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
-&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Wrapping Up a Year of Infamous Bazar Campaigns</title><link>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</link><pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/</guid><description>
-&lt;h2&gt;Bazar is the latest tool developed by the TrickBot gang&lt;span class="hx:absolute hx:-mt-20" id="bazar-is-the-latest-tool-developed-by-the-trickbot-gang"&gt;&lt;/span&gt;
-&lt;a href="#bazar-is-the-latest-tool-developed-by-the-trickbot-gang" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Common malware used for cybercrime such as Agent Tesla, Dridex and Formbook
-have been around for at least five years and are still distributed and active.
-About one year ago, a new malware named Bazar breathed some fresh air into this
-landscape. Since its
-&lt;a href="https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/"target="_blank" rel="noopener"&gt;first campaign&lt;/a&gt;,
-Bazar has been extremely active and has taken part in large-scale breaches
-including the
-&lt;a href="https://www.bleepingcomputer.com/news/security/uhs-hospitals-hit-by-reported-country-wide-ryuk-ransomware-attack/"target="_blank" rel="noopener"&gt;nationwide Ryuk ransomware attack on UHS hospitals&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;The name &amp;lsquo;Bazar&amp;rsquo; was given to the malware because of its use of
-&lt;a href="https://emercoin.com/en/emerdns"target="_blank" rel="noopener"&gt;EmerDNS&lt;/a&gt; (.bazar) domains for
-command-and-control networking. On top of serving as a backdoor, Bazar is
-designed to gain a foothold on the victim&amp;rsquo;s machine to deliver an additional
-payload as a next phase of the attack. The time between Bazar installation and
-payload delivery can vary between a
-&lt;a href="https://thedfirreport.com/2020/11/05/ryuk-speed-run-2-hours-to-ransom/"target="_blank" rel="noopener"&gt;few hours&lt;/a&gt;
-to &lt;a href="https://www.hhs.gov/sites/default/files/bazarloader.pdf"target="_blank" rel="noopener"&gt;days&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;In this post we will profile Bazar and highlight four prominent campaigns
-delivering this year-old malware.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig1.png" alt="" loading="lazy" /&gt;&lt;/p&gt;
-&lt;h2&gt;Key Profiling&lt;span class="hx:absolute hx:-mt-20" id="key-profiling"&gt;&lt;/span&gt;
-&lt;a href="#key-profiling" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Attribution&lt;span class="hx:absolute hx:-mt-20" id="attribution"&gt;&lt;/span&gt;
-&lt;a href="#attribution" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Based on code similarities, delivery, infrastructure and operation methods,
-researchers believe that Bazar was developed by the TrickBot gang (aka Team9).&lt;/p&gt;
-&lt;h3&gt;Targets&lt;span class="hx:absolute hx:-mt-20" id="targets"&gt;&lt;/span&gt;
-&lt;a href="#targets" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The operators behind the malware are mainly financially motivated, meaning they
-target organizations with high capital.&lt;/p&gt;
-&lt;h3&gt;Delivery Method&lt;span class="hx:absolute hx:-mt-20" id="delivery-method"&gt;&lt;/span&gt;
-&lt;a href="#delivery-method" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The malware delivery method is purely based on social engineering initiated
-with a phishing email. The email will usually contain a link to a website,
-hosting a malicious Microsoft Office document, delivering Bazar upon running
-the document on a victim&amp;rsquo;s machine, or it will host the malware itself
-masqueraded as a document.&lt;/p&gt;
-&lt;h3&gt;Stealth&lt;span class="hx:absolute hx:-mt-20" id="stealth"&gt;&lt;/span&gt;
-&lt;a href="#stealth" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Bazar implements the following evasion techniques to bypass detection:&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://attack.mitre.org/techniques/T1553/002/"target="_blank" rel="noopener"&gt;Signing malware with certificates&lt;/a&gt;:
-Antiviruses tend to rely on code signing certificates to increase the
-credibility of a file. Therefore, signed files are less likely to be detected
-as malicious by Antivirus vendors.&lt;/p&gt;
-&lt;p&gt;Fileless payload: Bazar uses a lightweight loader to inject its fileless
-payload into memory. Fileless malware challenges traditional Antivirus
-solutions as it resides only in memory and leaves no footprint on disk. The
-following is the genetic analysis of a Bazar sample
-(&lt;code&gt;3578e96b72cba790179d546f11e045ca&lt;/code&gt;) injecting fileless code into memory.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig2.png" title="Bazar sample (3578e96b72cba790179d546f11e045ca) injects fileless code" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Bazar sample (3578e96b72cba790179d546f11e045ca) injects fileless code&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;Use of decentralized C2C: For its C2C communication, Bazar uses
-&lt;a href="https://emercoin.com/en/emerdns"target="_blank" rel="noopener"&gt;EmerDNS&lt;/a&gt; which is a decentralized domain name
-system based on Emercoin blockchain technology. EmerDNS domains cannot be
-altered, revoked, or suspended, which allows Bazar&amp;rsquo;s operations to be nearly
-immune from a take down attempt by law enforcement.&lt;/p&gt;
-&lt;h2&gt;Timeline and Milestone Campaigns&lt;span class="hx:absolute hx:-mt-20" id="timeline-and-milestone-campaigns"&gt;&lt;/span&gt;
-&lt;a href="#timeline-and-milestone-campaigns" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;As Bazar evolves and takes part in different phishing campaigns, we are
-highlighting the top four milestones of this threat so far.&lt;/p&gt;
-&lt;h3&gt;Apr 2020 – Bazar Exposed to the Masses&lt;span class="hx:absolute hx:-mt-20" id="apr-2020--bazar-exposed-to-the-masses"&gt;&lt;/span&gt;
-&lt;a href="#apr-2020--bazar-exposed-to-the-masses" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;With the outburst of COVID-19, many threat actors leveraged the pandemic for
-phishing campaigns. This theme was used as part of the
-&lt;a href="https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/"target="_blank" rel="noopener"&gt;first documented campaign&lt;/a&gt;
-delivering Bazar.&lt;/p&gt;
-&lt;p&gt;Similar to other campaigns using Bazar, this one began with a phishing email
-containing a link to a page hosted on Google Docs. On this page, the victim was
-lured to click on a link preview to a doc report. By clicking on the link, the
-victim would download the Bazar malware executable masqueraded as a document.
-Because
-&lt;a href="https://www.bleepingcomputer.com/news/microsoft/hiding-windows-file-extensions-is-a-security-risk-enable-now/"target="_blank" rel="noopener"&gt;Windows does not present&lt;/a&gt;
-a file&amp;rsquo;s extension by default, threat actors are able to trick victims by
-masquerading a non-executable file type, so that the file has a word document
-icon but it is in fact an executable.&lt;/p&gt;
-&lt;p&gt;The next image shows a Google Docs page hosting the malware executable.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig3.png" title="COVID-19 themed phishing campaign (source: BleepingComputer)" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;COVID-19 themed phishing campaign (source: BleepingComputer)&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;Interestingly, one of these phishing emails was sent to a BleepingComputer
-domain.&lt;/p&gt;
-&lt;h3&gt;Sep 2020 – Healthcare, Ransomware and Bazar in Between&lt;span class="hx:absolute hx:-mt-20" id="sep-2020--healthcare-ransomware-and-bazar-in-between"&gt;&lt;/span&gt;
-&lt;a href="#sep-2020--healthcare-ransomware-and-bazar-in-between" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;a href="https://www.bleepingcomputer.com/news/security/uhs-hospitals-hit-by-reported-country-wide-ryuk-ransomware-attack/"target="_blank" rel="noopener"&gt;UHS hospitals&lt;/a&gt;
-were hit by a Ryuk ransomware attack in September 2020. This attack was part of
-a greater trend targeting hospitals and other healthcare-related organizations
-in the United States.&lt;/p&gt;
-&lt;p&gt;These ransomware attacks were initiated with phishing emails sent to employees
-delivering Bazar but also BuerLoader or TrickBot. After an employee was lured
-to install Bazar, a Cobalt Strike Beacon was delivered to the victim&amp;rsquo;s machine
-for lateral movement and persistence. Together with Cobalt Strike, other
-penetration testing tools were installed and ran on the victim&amp;rsquo;s machine for
-reconnaissance and privilege escalation purposes. Ryuk ransomware was delivered
-as the final step of the attack to run widely on the organization&amp;rsquo;s assets.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig4.png" title="CISA alert on the ransomware campaign" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;CISA alert on the ransomware campaign&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;This attack chain not only targeted the healthcare sector but also went after
-different organizations inside France after it became public that
-&lt;a href="https://www.lemagit.fr/actualites/252491402/Cyberattaque-Ryuk-chez-Sopra-Steria-ce-que-nous-apprennent-les-echantillons"target="_blank" rel="noopener"&gt;Sopra Steria&lt;/a&gt;,
-a French consulting organization, was hit by Ryuk.&lt;/p&gt;
-&lt;h3&gt;Jan 2021 – Hello, Who is This?&lt;span class="hx:absolute hx:-mt-20" id="jan-2021--hello-who-is-this"&gt;&lt;/span&gt;
-&lt;a href="#jan-2021--hello-who-is-this" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The BazarCall campaign may be the most interesting social engineering method
-used for delivering Bazar thus far.&lt;/p&gt;
-&lt;p&gt;As the first step, a personalized phishing email is sent claiming that a free
-trial for a [fake] product is about to expire, and the addressee will be
-charged via a &amp;ldquo;pre provided payment method.&amp;rdquo; The email also states that if the
-addressee wishes to drop the subscription, they can make a call to the
-&amp;ldquo;customer service center.&amp;rdquo; Once a victim calls the customer service center
-number, the &amp;ldquo;service provider&amp;rdquo; lures the user to browse a phishing website,
-insert a code, and click on &amp;ldquo;unsubscribe.&amp;rdquo; By clicking unsubscribe a malicious
-Microsoft Office document is downloaded delivering Bazar.&lt;/p&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig5.png" title="Example of a BazarCall phishing email (source: Sophos)" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Example of a BazarCall phishing email (source: Sophos)&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;The email has no indication of maliciousness as it does not contain any links
-or attachments but it is purely an attempt to exploit the innocence of the
-victims who are lured to make the phone call.&lt;/p&gt;
-&lt;p&gt;This &lt;a href="https://www.youtube.com/watch?v=uAkeXCYcl4Y"target="_blank" rel="noopener"&gt;YouTube video&lt;/a&gt; documents a
-phone call between a researcher posing as a victim and the &amp;ldquo;service provider.&amp;rdquo;&lt;/p&gt;
-&lt;p&gt;The campaign, which started by delivering BazarLoader, continues to deliver
-other loaders such as IceID.&lt;/p&gt;
-&lt;h3&gt;Feb 2021 – Nim What?&lt;span class="hx:absolute hx:-mt-20" id="feb-2021--nim-what"&gt;&lt;/span&gt;
-&lt;a href="#feb-2021--nim-what" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In the beginning of February, a new and unusual
-&lt;a href="https://www.bleepingcomputer.com/news/security/trickbots-bazarbackdoor-malware-is-now-coded-in-nim-to-evade-antivirus/"target="_blank" rel="noopener"&gt;version of Bazar&lt;/a&gt;
-was detected—an implementation of the backdoor written in
-&lt;a href="https://nim-lang.org/"target="_blank" rel="noopener"&gt;Nim&lt;/a&gt;, which is a statically-typed self-contained
-programming language.&lt;/p&gt;
-&lt;p&gt;Because Nim is not a common choice for malware development, it is believed that
-the use of this programming language is an attempt to bypass detection. This
-attempt can be considered successful as this version, also known as
-&amp;lsquo;&lt;a href="https://twitter.com/GossiTheDog/status/1357396209372168199"target="_blank" rel="noopener"&gt;BazarNimrod&lt;/a&gt;&amp;rsquo; and
-&amp;lsquo;&lt;a href="https://www.proofpoint.com/us/blog/threat-insight/nimzaloader-ta800s-new-initial-access-malware"target="_blank" rel="noopener"&gt;NimzaLoader&lt;/a&gt;,&amp;rsquo;
-had low detection rates in VirusTotal.&lt;/p&gt;
-&lt;p&gt;Bazar is not the first malware written in Nim. Sofacy (Russian APT) developed a
-&lt;a href="https://www.welivesecurity.com/2019/09/24/no-summer-vacations-zebrocy/"target="_blank" rel="noopener"&gt;downloader in Nim&lt;/a&gt;
-for their Zebrocy tool.&lt;/p&gt;
-&lt;h2&gt;Final Words&lt;span class="hx:absolute hx:-mt-20" id="final-words"&gt;&lt;/span&gt;
-&lt;a href="#final-words" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Threat actors are highly motivated and must keep reinventing themselves to stay
-effective. They put in the time and money to bypass Antivirus detection on the
-way to successful compromises. We assess that cybercriminals will continue to
-step up their game with social engineering creativity and different malware
-implementation.&lt;/p&gt;
-&lt;h2&gt;How to Protect Your Organization&lt;span class="hx:absolute hx:-mt-20" id="how-to-protect-your-organization"&gt;&lt;/span&gt;
-&lt;a href="#how-to-protect-your-organization" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Bazar and similar threats use social engineering as an entry point and keep a
-low profile once inside. Keep in mind that it takes only one employee to take
-down an entire organization.&lt;/p&gt;
-&lt;p&gt;Take the following steps to keep your organization clean from these type of
-attacks:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Enhance social engineering awareness inside your organization.&lt;/li&gt;
-&lt;li&gt;Perform proactive hunting on all endpoints inside your organization to make
-sure that no traces of malicious code or malware exist. Intezer&amp;rsquo;s live
-Endpoint Scanner collects all binaries running in memory, including fileless,
-and classifies them using genetic code analysis technology.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;figure&gt;
-&lt;img src="https://research.intezer.com/blog/2021/05/wrapping-up-a-year-of-infamous-bazar-campaigns/images/fig6.png" title="Endpoint scan on an infected machine" alt="" loading="lazy" /&gt;
-&lt;figcaption&gt;Endpoint scan on an infected machine&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-&lt;h2&gt;IOCs&lt;span class="hx:absolute hx:-mt-20" id="iocs"&gt;&lt;/span&gt;
-&lt;a href="#iocs" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Files&lt;span class="hx:absolute hx:-mt-20" id="files"&gt;&lt;/span&gt;
-&lt;a href="#files" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;3d483689f373a12f6f9607079b9cebb9 signed BazarBackdoor
-bcda9eed7688400b654b88e4f0bdb3f0 signed BazarBackdoor
-52a8527e0d7cd86b1d04ccc80eb6595e signed BazarBackdoor
-06118d290e54e106d0571234946c2e0d signed BazarBackdoor
-3578e96b72cba790179d546f11e045ca Bazar loader injecting a fileless payload
-1d528a2e1d0a097421e57f86ba04e79f BazarLoader written in Nim&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h3&gt;Network&lt;span class="hx:absolute hx:-mt-20" id="network"&gt;&lt;/span&gt;
-&lt;a href="#network" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;pre&gt;&lt;code&gt;ds45x1[.]com
-x57gc[.]com
-x55gc[.]com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="Copy code"
-aria-label="Copy code"
-data-copied-label="Copied!"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h2&gt;References&lt;span class="hx:absolute hx:-mt-20" id="references"&gt;&lt;/span&gt;
-&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/"target="_blank" rel="noopener"&gt;https://www.bleepingcomputer.com/news/security/bazarbackdoor-trickbot-gang-s-new-stealthy-network-hacking-malware/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.bleepingcomputer.com/news/security/bazarcall-malware-uses-malicious-call-centers-to-infect-victims/"target="_blank" rel="noopener"&gt;https://www.bleepingcomputer.com/news/security/bazarcall-malware-uses-malicious-call-centers-to-infect-victims/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon"target="_blank" rel="noopener"&gt;https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://threatpost.com/bazarloader-malware-slack-basecamp/165455/"target="_blank" rel="noopener"&gt;https://threatpost.com/bazarloader-malware-slack-basecamp/165455/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://news.sophos.com/en-us/2021/04/15/bazarloader/"target="_blank" rel="noopener"&gt;https://news.sophos.com/en-us/2021/04/15/bazarloader/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.cybereason.com/blog/a-bazar-of-tricks-following-team9s-development-cycles#trickbot-connection"target="_blank" rel="noopener"&gt;https://www.cybereason.com/blog/a-bazar-of-tricks-following-team9s-development-cycles#trickbot-connection&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon"target="_blank" rel="noopener"&gt;https://www.advanced-intel.com/post/front-door-into-bazarbackdoor-stealthy-cybercrime-weapon&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 &lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
 &lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
