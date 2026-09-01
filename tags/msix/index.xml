@@ -1,0 +1,1091 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Intezer Research – Msix</title><link>https://research.intezer.com/tags/msix/</link><description>Recent content in Msix on Intezer Research</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 01 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://research.intezer.com/tags/msix/index.xml" rel="self" type="application/rss+xml"/><item><title>Rubber Ducky in the Sky</title><link>https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/</link><pubDate>Tue, 01 Sep 2026 00:00:00 +0000</pubDate><guid>https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/</guid><description>
+&lt;details class="hx:last-of-type:mb-0 hx:rounded-lg hx:bg-neutral-50 hx:dark:bg-neutral-800 hx:p-2 hx:mt-4 hx:group" &gt;
+&lt;summary class="hx:flex hx:items-center hx:cursor-pointer hx:select-none hx:list-none hx:p-1 hx:rounded-sm hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800 hx:before:mr-1 hx:before:inline-block hx:before:transition-transform hx:before:content-[''] hx:dark:before:invert hx:rtl:before:rotate-180 hx:group-open:before:rotate-90"&gt;
+&lt;strong class="hx:text-lg"&gt;AI Generated Summary&lt;/strong&gt;
+&lt;/summary&gt;
+&lt;div class="hx:p-2 hx:overflow-hidden"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Initial discovery&lt;/strong&gt;: A file in an employee&amp;rsquo;s downloads folder was too large
+for the endpoint tooling to inspect. Nothing flagged it as bad; it simply
+went unexamined.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;How it arrived&lt;/strong&gt;: The employee bought a new mouse, followed the setup URL
+printed on the box, and mistyped a single letter. &lt;code&gt;.con&lt;/code&gt; isn&amp;rsquo;t a valid TLD,
+so the browser ran a Google search instead. The top hit was a paid ad on a
+lookalike domain, which passed through a traffic broker to a landing page for
+a &amp;ldquo;privacy browser&amp;rdquo;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Delivery&lt;/strong&gt;: The landing page uses a Google reCAPTCHA gate, then serves an
+MSIX single-click installer. VirusTotal detection sits between zero and two
+depending on the day.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The application&lt;/strong&gt;: A functional web browser with no privacy-focused
+improvements found during analysis. It splits into a GUI and an engine — the
+engine being NW.js with custom extensions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GUI is never on disk&lt;/strong&gt;: The interface is always fetched from a remote
+server rather than bundled locally, so the malicious instructions never touch
+the victim&amp;rsquo;s filesystem and can be changed without updating the installed
+application.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Remote execution&lt;/strong&gt;: The NW.js engine carries a hidden synthetic input
+injection capability. It can launch an application and inject mouse and
+keyboard input into it — effectively a USB Rubber Ducky operated over the
+internet.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Evasion&lt;/strong&gt;: Waits at least seven minutes of machine idle time before acting,
+moves the browser window off-screen during injection, then restores it to its
+previous state.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Geolocation gating&lt;/strong&gt;: Countries fall into Tier 1 (US, CA, GB, DE, FR, IT,
+ES, SE, NL, AU — search hijack plus extensions), blocked (nothing happens,
+likely to avoid local law enforcement attention), or other (extensions only).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Observed vs. possible&lt;/strong&gt;: Only search engine hijacking and browser extension
+installs have been seen. The injection engine is generic enough to drive any
+application, including spawning PowerShell to download and execute further
+payloads.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Why MSIX&lt;/strong&gt;: Clean install experience through Microsoft&amp;rsquo;s App Installer,
+publisher branding, and — for Store-distributed packages — a signature from
+Microsoft&amp;rsquo;s own infrastructure. Packages contain hundreds to thousands of
+files, giving plenty of room to blend in.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The operators&amp;rsquo; mistake&lt;/strong&gt;: MSIX packages built with the MSIX Packaging Tool
+capture the build environment. The documentation calls for a clean machine;
+they didn&amp;rsquo;t use one.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;What leaked&lt;/strong&gt;: Registry hives in the package exposed the build machine —
+the user account name, Start menu cache, and UserAssist entries. Development
+tooling (nvm/Node, VS Code, TortoiseGit, Paint.NET, MSIX Packaging Tool) sat
+alongside Telegram, AdsPower, GeoEdge&amp;rsquo;s GeoVPN, and Studio 3T.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Not a disposable build box&lt;/strong&gt;: iCloud, Netflix, WhatsApp, and Spotify were
+installed too — the packaging process leaked the developer&amp;rsquo;s day-to-day
+environment as well as the operation&amp;rsquo;s.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The pivot&lt;/strong&gt;: File paths throughout the registry data led to an earlier
+iteration of the same activity, using a very similar infection chain.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The older campaign&lt;/strong&gt;: Fake companion apps for WhatsApp, Instagram, Facebook
+Messenger, Tinder, and Wikipedia, distributed via free software hosting
+sites. NSIS installers dropped an NW.js application with a registry run key
+for persistence.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Host profiling&lt;/strong&gt;: A compiled NW.js module (&lt;code&gt;report.bin&lt;/code&gt;) profiled the host
+and reported back, including a &lt;code&gt;driverquery&lt;/code&gt; check for the &lt;code&gt;npf.sys&lt;/code&gt; packet
+capture driver — an anti-analysis test for machines running network
+monitoring.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Two paths to change behaviour&lt;/strong&gt;: JavaScript retrieved from the server and
+executed inside the running NW.js process, or &lt;code&gt;AutoUpdate.exe&lt;/code&gt; replacing the
+application binaries on disk.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Weak update mechanism&lt;/strong&gt;: The updater performs no hash or signature
+verification on downloaded files before placing them in the application
+directory and executing them.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Timeline&lt;/strong&gt;: Network activity from scripts submitted to VirusTotal in
+January 2016 puts this activity at ten years and counting.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;h2&gt;Introduction&lt;span class="hx:absolute hx:-mt-20" id="introduction"&gt;&lt;/span&gt;
+&lt;a href="#introduction" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;An alert that says nothing was found is not usually the start of an
+investigation. This one was. A file had landed in an employee&amp;rsquo;s downloads
+folder. The EDR said it was fine but our custom detections identified something
+strange with the file. It is not in our nature to leave something unclassified.&lt;/p&gt;
+&lt;p&gt;The employee had bought a new mouse, followed the setup instructions printed on
+the box, mistyped a single letter of the address, and downloaded what a search
+advert offered instead. It called itself a privacy browser. We found nothing in
+it that protected anyone&amp;rsquo;s privacy. On VirusTotal the detection count hovers
+between zero and two, depending on the day.&lt;/p&gt;
+&lt;p&gt;Inside it was a remote control engine, delivered through channels people are
+told they can rely on and signed off by institutions each trusting the one
+before them. The build machine was somebody&amp;rsquo;s everyday computer, put together
+without following the documentation. Following the threads presented. We found
+a campaign that goes back at least a decade.&lt;/p&gt;
+&lt;h2&gt;Squeak Squeak&lt;span class="hx:absolute hx:-mt-20" id="squeak-squeak"&gt;&lt;/span&gt;
+&lt;a href="#squeak-squeak" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Earlier this year, we got a true infection case sent to us from our internal
+security team. An employee had bought a new mouse for their computer and,
+during the setup of it, inadvertently downloaded something malicious. The
+installer and the application were not flagged by the EDR in any way; as of
+this writing, the malicious part of the application is undetected on
+VirusTotal. The installer is submitted daily to VirusTotal and is detected by
+zero to two engines depending on the day. Even though this &amp;ldquo;application&amp;rdquo; could
+be classified as a potentially unwanted application (PUA), antivirus engines
+are good at detecting known PUA software. We decided to take a deeper dive.&lt;/p&gt;
+&lt;p&gt;The infection started with a simple mistyped letter on the keyboard. The
+employee followed the instructions to install a companion application. The
+instructions are shown in the figure below.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/images/fig1.png" title="Figure 1: Photo of the instructions included with the mouse to download a companion application." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 1: Photo of the instructions included with the mouse to download a companion application.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;During the entering of the domain in the instructions, the &amp;ldquo;m&amp;rdquo; in the domain
+name was mistyped with an &amp;ldquo;n&amp;rdquo;. Since &amp;ldquo;.con&amp;rdquo; is not a valid top-level domain,
+the browser performed a Google search instead. The top hit was an ad with a
+similar-looking domain, which, when clicked, eventually sent the user to a
+landing page for a &amp;ldquo;privacy browser&amp;rdquo;. The chain is shown in the snippet below.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;Google search: &amp;#34;www.mxsetup.logi.con&amp;#34;
+└── Ad linking click: www.mxsetuplogi.com
+└── Traffic broker: https://autrossn.com/xfc/fdci?s=&amp;lt;tracking blob&amp;gt;
+├── Landing page: https://lpic.prvbrws.com/?clickid=...&amp;amp;tag=dm&amp;amp;dkw=mxsetuplogi.com
+├── Payload download: blob:https://lpic.prvbrws.com/...
+└── Post instal page: https://lpic.prvbrws.com/thank-you&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;A screenshot of the landing page is shown in Figure 2. It uses Google Recapcha
+to ensure the user is human. Once the user passes the CAPTCHA, an MSIX
+installer is downloaded, which is a single-click installer.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/images/fig2.png" title="Figure 2: Screenshot of the landing page serving the PUA." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 2: Screenshot of the landing page serving the PUA.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;PrivacyBrowse With a Twist&lt;span class="hx:absolute hx:-mt-20" id="privacybrowse-with-a-twist"&gt;&lt;/span&gt;
+&lt;a href="#privacybrowse-with-a-twist" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The application was a web browser. From the name, we assume it’s marked as a
+privacy-focused browser. It is a functional application; Figure 3 shows a
+screenshot of the application. Through our analysis, we did not discover any
+privacy-focused improvements.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/images/fig3.png" title="Figure 3: Screenshot of the Private Browser application." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 3: Screenshot of the Private Browser application.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The application consists of two parts: a GUI part and an engine. The &amp;ldquo;engine&amp;rdquo;
+is &lt;a href="https://nwjs.io/"target="_blank" rel="noopener"&gt;NW.js&lt;/a&gt; with some custom extensions to support the
+nefarious functionality. NW.js allows the use of web technologies to build
+native looking applications. It makes it easier to target multiple operating
+systems. These technologies essentially are web browsers that are restricted to
+one site. Most applications include the web resources and access them from
+within the application folder. This PUA does it differently. It always fetches
+the content from a web server. In this version of the application. The domain
+used to host the GUI has appeared on and off Umbrella’s Top Million Domain list
+since December 2025. We have only seen this application hosted on this domain,
+so our assumption is that the traffic represents usage of the application.&lt;/p&gt;
+&lt;p&gt;The NW.js engine has been extended to include a hidden remote execution
+functionality. The functionality is implemented via a synthetic input injection
+engine. The engine can start an application and inject mouse and keyboard
+inputs to the application, allowing the operator of the PUA to perform anything
+on the machine that a user can. Essentially, the functionality is similar to
+what can be achieved with a
+&lt;a href="https://shop.hak5.org/products/usb-rubber-ducky"target="_blank" rel="noopener"&gt;USB Rubber Ducky&lt;/a&gt; but over
+the internet. The inputs are sent by the GUI, and since that part of the
+application is never on the disk of the machine, it’s hard to identify the
+nefarious functionality.&lt;/p&gt;
+&lt;p&gt;The remote execution instruction is coded into the GUI part of the application.
+Since it’s hosted on the operator’s infrastructure, it can be changed without
+having to update the installed PUA. The functionality we have observed is to
+hijack the user’s default search engine in the web browser or to install
+browser extensions. The PUA takes many precautions not to get detected by the
+user. First, it waits at least 7 minutes after the machine has been idle before
+starting. The browser window is moved off-screen, so if someone is watching the
+screen, they won’t see the effects of keystroke injections. Once it’s done, it
+restores the window to its previous state.&lt;/p&gt;
+&lt;p&gt;The PUA is using geolocation to determine what to perform. All countries are
+part of one of three groups: Tier 1, blocked, or other. The tier one countries
+are: US, CA, GB, DE, FR, IT, ES, SE, NL, AU. Users in these countries have both
+the search engine changed and browser extensions installed. The blocked country
+list is likely used to prevent bringing attention to local authorities; if the
+user is in a country on this list, nothing nefarious is performed. Users in
+other countries just have the extension installed.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/images/fig4.png" title="Figure 4: List of the Tier 1 countries: United States, Canada, United Kingdom, Germany, France, Italy, Spain, Sweden, Netherlands, and Australia." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 4: List of the Tier 1 countries: United States, Canada, United Kingdom, Germany, France, Italy, Spain, Sweden, Netherlands, and Australia.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The GUI tracks all the campaigns that have been executed on the machine. It’s
+stored in localStorage, and there is some code to migrate from an old format to
+the current one. This migration code, shown in the snippet below, identifies
+three historical campaigns.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cm"&gt;/*
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cm"&gt;* Normalize a localStorage data structure for Emu history as a JSON Object with the following:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cm"&gt;* emuHistory =
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cm"&gt;* {
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cm"&gt; [
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cm"&gt; emuType: &amp;lt;TYPE&amp;gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cm"&gt; emuTS: &amp;lt;TS&amp;gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cm"&gt; emuItem: &amp;lt;itemID&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cm"&gt; ]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cm"&gt;* }
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cm"&gt;*/&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="nx"&gt;localStorage&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;emuHistory&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;localStorage&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;emuTS&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nx"&gt;localStorage&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;emuType&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;emuType&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;parseInt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;localStorage&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;emuType&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;emuTS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;parseInt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;localStorage&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;emuTS&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;emuId&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;localStorage&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;emuType&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;emuId&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;lionstab&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;localStorage&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;emuType&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;emuId&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;topnotch&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;localStorage&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;emuType&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;emuId&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;streamio&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;logEmu&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;emuType&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;emuTS&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;emuId&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;While the PUA &amp;ldquo;only&amp;rdquo; installs extensions and modifies the browser&amp;rsquo;s default
+search engine, a threat like this should still be taken seriously. A browser
+extension can be granted very powerful access to the content a user is viewing
+in a web browser, which can lead to unauthorized access to enterprises’ private
+data. Currently, we have only observed the injection engine used to control a
+browser window; the implementation is generic enough to control any application
+on the machine. For example, the operators could spawn a PowerShell terminal
+and inject code to download and execute malware.&lt;/p&gt;
+&lt;h2&gt;Pretty Little Bow&lt;span class="hx:absolute hx:-mt-20" id="pretty-little-bow"&gt;&lt;/span&gt;
+&lt;a href="#pretty-little-bow" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Using MSIX as a delivery mechanism is not new, but it is still a very effective
+way to bypass defenses. The VirusTotal detection rates of these files are often
+0.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/images/fig5.png" title="Figure 5: Screenshot showing the clean detection in VirusTotal." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 5: Screenshot showing the clean detection in VirusTotal.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;There are a few reasons MSIX is an attractive delivery mechanism for malware
+developers. From the victim&amp;rsquo;s point of view, it provides a much cleaner
+installation experience than being asked to run an unfamiliar executable. The
+package is
+&lt;a href="https://learn.microsoft.com/en-us/windows/msix/app-installer/app-installer-root"target="_blank" rel="noopener"&gt;opened through Microsoft&amp;rsquo;s App Installer&lt;/a&gt;,
+which gives the process
+&lt;a href="https://learn.microsoft.com/en-us/windows/msix/app-installer/app-installer-ui-dialog"target="_blank" rel="noopener"&gt;a polished Windows interface with application branding and publisher information&lt;/a&gt;.
+In a campaign that already relies on convincing the victim that they are
+installing legitimate software, this helps the installer feel like a normal
+part of Windows rather than something obviously suspicious.&lt;/p&gt;
+&lt;p&gt;MSIX can also benefit from
+&lt;a href="https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/app-package-requirements#code-signing-for-microsoft-store-submissions"target="_blank" rel="noopener"&gt;Microsoft&amp;rsquo;s signing infrastructure&lt;/a&gt;
+when packages are distributed through the Microsoft Store. Once accepted, the
+package distributed to users is signed by Microsoft, which removes much of the
+friction normally associated with an unknown publisher.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;MSIX signing chain
+└─ 9A1AB723-7EB8-4FA1-A268-BC4765499F15
+[leaf / package signer] expires Oct 17 10:08:01 2024 GMT
+⤷ the developer&amp;#39;s Store publisher identity (the actor)
+└─ Microsoft Marketplace CA G 023
+[intermediate CA] expires Apr 11 17:45:41 2029 GMT
+└─ Microsoft MarketPlace PCA 2011
+[intermediate CA] expires Mar 28 21:19:39 2031 GMT
+└─ Microsoft Root Certificate Authority 2011
+[root CA — not embedded in package, trusted by Windows]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The format itself gives the attacker plenty of room to blend in. An MSIX
+package is essentially a
+&lt;a href="https://learn.microsoft.com/en-us/windows/msix/overview#inside-an-msix-package"target="_blank" rel="noopener"&gt;structured archive containing a manifest&lt;/a&gt;
+and the files required by the application. These archives can contain hundreds
+to thousands of files. In these samples there was very little obviously
+malicious content in the package itself.&lt;/p&gt;
+&lt;p&gt;The downside for the malware developers is that MSIX can preserve much more of
+the build environment than they probably intended. The packages contained
+registry hive files used by the application&amp;rsquo;s virtualised environment, and
+these turned out to be particularly valuable. When packages are built using the
+MSIX Packaging Tool, the tool monitors an installer running on a real system
+and records the changes it makes; to quote the
+&lt;a href="https://learn.microsoft.com/en-us/windows/msix/packaging-tool/create-app-package"target="_blank" rel="noopener"&gt;official documentation&lt;/a&gt;
+for the MSIX Packaging Tool:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A clean machine for conversion is important because during the installation
+step of the MSIX Packaging Tool, we will be listening to everything in the
+environment to capture what the installer is doing. A clean machine means that
+there aren&amp;rsquo;t extraneous apps or services running on your machine that could get
+captured in your package.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Failing to follow this process, as the malware authors did, can capture more
+than the application actually needs, leaving fragments of the builder&amp;rsquo;s own
+registry inside the finished package.&lt;/p&gt;
+&lt;p&gt;In the case that we have encountered during this research, these hives gave us
+a surprisingly detailed view of the machine used to build the samples. The name
+of the user account, and artifacts such as the Start menu cache and UserAssist
+entries allowed us to recover a good portion of the installed software and
+recently used applications. The machine contained the expected development
+tooling, including Node through nvm, VS Code, TortoiseGit, Paint.NET and the
+MSIX Packaging Tool, alongside Telegram. More interestingly, AdsPower and
+GeoEdge&amp;rsquo;s GeoVPN were also installed, which fit well with an operation centred
+around advertising traffic.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/images/fig6.png" title="Figure 6: Registry data showing some of the installed applications on the build machine." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 6: Registry data showing some of the installed applications on the build machine.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;It was also clearly not a clean or disposable build machine. Personal
+applications such as iCloud, WhatsApp and Spotify were present alongside the
+development tooling, which meant the packaging process leaked traces of both
+the operation and the developer&amp;rsquo;s day-to-day environment. The strongest leads
+come through file paths left throughout the registry data, uncovering a
+previous iteration of this activity.&lt;/p&gt;
+&lt;h2&gt;Time…&lt;span class="hx:absolute hx:-mt-20" id="time"&gt;&lt;/span&gt;
+&lt;a href="#time" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Analysing the keys in the registry hives, allows for interesting metadata
+pivots. This uncovers a previous campaign from the same actor. A campaign that
+is at least 10 years old, using a very similar infection chain to NinjaMare.&lt;/p&gt;
+&lt;p&gt;The infection chain starts by getting the user to download an application
+related to a current application that they may currently use. Most prominently
+WhatsApp, but also Instagram, Facebook Messenger, Tinder, Wikipedia to name a
+few. The files are distributed via a number of free file software hosting
+sites.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/images/fig7.png" title="Figure 7: Installer for application from previous campaign being served on free software hosting sites." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 7: Installer for application from previous campaign being served on free software hosting sites.&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;This application is an NSIS installer. During the installation of the file, the
+NSIS installer unpacks a number of files and creates a persistence registry run
+key for a NW.js application. The persistence triggers the NW.js application to
+run silently in the background. The app points to a HTML page that imports a
+JavaScript file.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/images/fig8.png" title="Figure 8: NW.js Package configuration." alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 8: NW.js Package configuration.&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/images/fig9.png" title="Figure 9: HTML importing malicious JavaScript file" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 9: HTML importing malicious JavaScript file&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The JavaScript file is a NodeJS application. The script will execute a compiled
+JavaScript binary called &lt;code&gt;report.bin&lt;/code&gt;. The &lt;code&gt;report.bin&lt;/code&gt; file is a compiled
+NW.js module used to profile the host and report information back to a remote
+server. One of its more interesting checks involves running &lt;code&gt;driverquery&lt;/code&gt; and
+looking for the &lt;code&gt;npf.sys&lt;/code&gt; packet capture driver, which is commonly associated
+with tools such as WinPcap/Npcap. In context, this appears to act as a basic
+anti-analysis or anti-sandbox check, allowing the malware to identify systems
+that may be running network monitoring software. Machines matching this
+condition are then assigned a crude internal label, as a classification logic.
+The module also builds its reporting URL from several smaller string fragments
+and appears to retrieve JavaScript from the remote server. That JavaScript can
+then be handed back to the main script for execution, effectively giving the
+server a way to change or extend the malware&amp;rsquo;s behaviour without shipping a new
+copy of the application.&lt;/p&gt;
+&lt;p&gt;The remainder of &lt;code&gt;main.js&lt;/code&gt; acts as the controller for the application. In
+addition to handling the local storage, reporting and execution of JavaScript
+received from the remote server, it is also responsible for launching the
+separate AutoUpdate.exe component when the application needs to update itself.
+This gives the operators two different ways of changing the malware after
+installation: they can supply JavaScript for immediate execution inside the
+running NW.js process, or have main.js invoke the updater to replace the
+application files on disk.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/images/fig10.png" title="Figure 10: JavaScript snippit running backdoor .NET application" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 10: JavaScript snippit running backdoor .NET application&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;AutoUpdate.exe is a small .NET updater which reads AutoUpdater.config,
+retrieves a remote XML manifest, compares the advertised file versions against
+those installed locally and downloads replacements into a temporary directory.
+If an update requires a restart, it terminates the running application,
+replaces the existing files and launches the updated executable, with a basic
+rollback mechanism available if the process fails. Notably, the updater
+performs no hash or signature verification on the files it downloads before
+placing them into the application directory. The recovered configuration has
+this mechanism enabled and points it back to the same
+&lt;code&gt;whatsapptime.herokuapp[.]com&lt;/code&gt; infrastructure, where it requests a remote
+update manifest for the malware and tracks the versions of the main executable
+and several supporting NW.js files.&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;
+&lt;img src="https://research.intezer.com/blog/2026/09/rubber-ducky-in-the-sky/images/fig11.png" title="Figure 11: Configuration file for Autoupdater binary" alt="" loading="lazy" /&gt;
+&lt;figcaption&gt;Figure 11: Configuration file for Autoupdater binary&lt;/figcaption&gt;
+&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;The main risk is that the application gives its operators several ways to
+change what runs on an infected system after the initial installation.
+JavaScript can be retrieved from the remote server and executed directly inside
+the NW.js process, while &lt;code&gt;main.js&lt;/code&gt; can also launch the updater to replace the
+application binaries themselves. The update process is particularly weak
+because downloaded files are not verified with a hash or digital signature
+before being copied into place and executed. This means that compromise of the
+update infrastructure, local configuration, or network path could be used to
+deliver arbitrary code, while the existing reporting and host-profiling logic
+gives the operators a way to tailor that behaviour to individual systems.&lt;/p&gt;
+&lt;p&gt;Based on the network activity of
+&lt;a href="https://www.virustotal.com/gui/file/c41e9559f18a18c058e38014f6c68b1c7953374db5b26ddee0b7700c82fbebcb"target="_blank" rel="noopener"&gt;scripts&lt;/a&gt;
+submitted to VirusTotal in January of 2016, this activity has been occurring
+for at least 10 years.&lt;/p&gt;
+&lt;h2&gt;Indicators of Compromise&lt;span class="hx:absolute hx:-mt-20" id="indicators-of-compromise"&gt;&lt;/span&gt;
+&lt;a href="#indicators-of-compromise" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;NinjaMare Wave&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;SHA256&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Package URL&lt;/th&gt;
+&lt;th style="text-align: left"&gt;App Name&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;06a044644b0b896c72800c9dfc1ec1770b46001a8f8a21fb3ba28949e52120ef&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://pdfcdn[.]pdfplus[.]app/pdfplus/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;PDFPlus&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;0a0b6d419aa7520ff29ac5cec8d1a4a89096319774cf481127a92048566eeb91&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://pgcdn[.]privacyguard[.]app/privacy/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;PrivacyGuard Browser&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;122cc8665410ccbbef1ca08e07baa824bce89378f0d2590ad6c8e69018a8dd3a&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]safe-scan[.]info/safescan/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SafeScan&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;1624e398132a247c73177d7f2c30699b59c8c6b1c4db7cfc9db4be8b9ac82a22&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]stealth-guard[.]app/stealthguard/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;StealthGuard&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;1a1aa66e1ba32b2574e17547f0d30202ca4c52c1a57c2c9da3e0f9a053989be0&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]privacy-keeper[.]app/privacykeeper/src/browser[.]wv[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;PrivacyKeeper&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;24ec63f3976d04f5e7a7f229ae76301bd1ca6099016d65a727d1c33459853847&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]net-guard[.]app/netguard/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;NetGuard&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;2632787e4b1661cb73e313e8d93e6d8981bb6cafe6daada5d6ffa44d850999af&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]hush-browse[.]app/hushbrowse/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;HushBrowse&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;3316a4a24270ec8b268ea07635c66de2dd0c24776b834f60529f2d9b1104479f&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]safe-mail[.]app/safemail/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SafeMailApp&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;38fd1fa146c18d865083228ce5d909e1c071edf45ab281016be696d858909e9a&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]guard-mate[.]app/guardmate/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;GuardMate&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;53f6bf07f9591064da3dd9a640d9352aac2212e721a5b2f6a75f15353a2079ac&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]safedomain-guardian[.]app/safedomainguardian/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SafeDomainGuardian&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;63f043de4e769f46838e4891e2fc96b247ebeee2806240874867ca5d343d5e33&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]leakmonitor-live[.]app/leakmonitorlive/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;LeakMonitor Live&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;65c9f218db83f0d8f8a8aef8541a1fdab9b5bc8851dccb113fed7adf5d15e290&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]securi-guard[.]app/securiguard/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SecuriGuard&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;666d5988daba77d91ee1383327d78670feb10a554f2b20af9d62d5a592a2ec75&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]stealth-browse[.]app/stealthbrowse/src/browser[.]v2[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;StealthBrowse&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;6ba8fe022212713ffaec8940c3bd023e75528c4d2d00d1f69accb766ba241f15&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://pbcdn[.]privacybrowse[.]app/privacybrowse/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;PrivacyBrowse&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;6d4fca33a47009ec718f30f2e66d1122d7b1d40e1b42249725ca3342be9c1778&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]privacy-keeper[.]app/privacykeeper/src/browser[.]wv[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;PK&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;6f89cbe7c4310c337603f11ec0218e64a10d3c09bb60d6047caeed298514340e&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://pdfcdn[.]pdfapps[.]online/brightpdf/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;BrightPDF&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;7a8ac6b50ce1dfb8916e79e184ad17fa9c3284a0134a0eac76bb1f300e33be8c&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]safe-browse[.]app/safebrowse/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SafeBrowse&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;803b58b51899fda3ae78ea1afdaf7cb27cf2bbd15e24f2f4206d56814483610f&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://gptcdn[.]gpt-browser[.]com/gpt/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;GPTBrowser&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;851bfa0eae13c38a7580bd542d8b5b283d811719699129be1a34c09e185efee9&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]privacy-keeper[.]app/privacykeeper/src/browser[.]wv[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;PrivacyKeeper&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;871f83a2cbcbcf5edf16d532acbec3ff7d5e15fdbb308d47f46bcf7fdeb30159&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]private-browsing[.]app/privatebrowsing/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;PrivateBrowsing&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;8ed91cb0478f21a23bbf6ca23b9577c90fe9eedff6cb3fe4effbf90a52564b9c&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]securepass[.]info/securepass/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SecurePassApp&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;961b50c8419d220d479a7e029f0cf4aeb1233ed3b21ff9f8b3bca8f23adfd434&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]safe-net-check[.]app/safenet/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SafeNetApp&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;abb9c26f58962a19ea1362c859dca5b7dd59216858e38ec6c15258d1489cda38&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]cool-pdf[.]app/coolpdf/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;CoolPDF&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;af1a553afa5ca2c138665e7ea1821c08cb7ef5931660c7d85eaed856164bf132&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://tencdn[.]ten-browser[.]com/ten/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;TenBrowser&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;afa2250fb08d3c47b09ee5dca817fd686f4196e22d834993dc8a9ac36630c22e&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]safedomain-guardian[.]app/safedomainguardian/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SafeDomain Guardian&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;bebd647687d3f57b4f1077eba829ae0353546179f2d7170faab769fae7e61c15&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]stealth-browse[.]app/stealthbrowse/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;StealthBrowse&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;c054e260401d7b203382752666b03f334312eb019a1483fc04d348e5acbcdb5b&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]securi-guard[.]app/securiguard/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SecuriGuard&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;c78bab0006476441720a40dfc201d1134a97906b74c544e2e2c22812de576e59&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]guard-glider[.]app/guardglider/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;GuardGlider&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;c96fcb15d8fbcf555fa2f1e7502610348caa3220dd9c29fdab4d05625f0fa5e9&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]call-guard[.]app/callguard/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;CallGuard&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;d36c8f2dc20938345bb5969995472ddb02b47590fb0a32613659026912447b1e&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]privacy-shield[.]app/privacyshield/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;PrivacyShield Browser&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;d47515fd5abbef216a3e855ab5275702b6f461d07d8ee911eb5c605541b7365f&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]quick-pdf[.]app/quickpdf/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Quick PDF&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;d4fd6ea43624344dd7f4715402141cc3ddb0a17c76e34a08e5dd672075040b4e&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]stealth-guard[.]app/stealthguard/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;StealthGuard&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;d66895d8da6d5eb1d8658647c80f66dce40236c06bb600f1c62a44a657f923b3&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]safe-watch[.]app/safewatch/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SafeWatch&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;e2e0c160d7f9550f3bc61ee28a714567b649c6e32634a8e7b4b8c8885d821bae&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]privacy-keeper[.]app/privacykeeper/src/browser[.]wv[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;PrivacyKeeper&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;e9cfdcb18bb4c54802b7214a226d983c0015bb37e41a39a4d293d4e674fa94c8&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]leak-guard[.]app/leakguard/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;LeakGuard&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;ea2d72cb87c93f447be6502690328f441fdf2fa665d12938bb294bbd18855aeb&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]watchitonline[.]app/watchthisonline/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;WatchThisOnline&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;f0762b9c85027acb99ca26177ebf58bdf84d2d5e4401296c7ce95788280ece10&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]safe-guard[.]app/safeguard/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SafeGuard Browser&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;f7da16d3260ebee5b30cc23613aad6dd9e28aaee31aeb00075acd9fa5aee9855&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]safe-mail[.]app/safemail/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SafeMailApp&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;fc577d03d84db5fd5f973afcf3e595d4471244d7bb71566b1dcf490e161aad2b&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]stealth-guard[.]app/stealthguard/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;StealthGuard&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;ff5b9aa8094e962b1803d011730c9278afbfb42aa3dac9f71ebe78449218728a&lt;/td&gt;
+&lt;td style="text-align: left"&gt;https://cdn[.]safe-drop[.]app/safedrop/src/browser[.]html&lt;/td&gt;
+&lt;td style="text-align: left"&gt;SafeDrop&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Whatsapptime Wave&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;SHA256&lt;/th&gt;
+&lt;th style="text-align: left"&gt;App Name&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;0a5b182b941c555fb719cbbfde83e27effc774bde30d567ebf48012475ee0bba&lt;/td&gt;
+&lt;td style="text-align: left"&gt;whatsappTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;114383bc58403c902da99a407855ce5693997f112db435e813ba93f3f4c2234b&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;1a6c3066f276e1ab72d433d02f89c9aeea027fa7a596b1bd4072624a04532573&lt;/td&gt;
+&lt;td style="text-align: left"&gt;BibleTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;22569d4409ca2b31536d2a3891bf6c95e0d499286fca99218498f5309071f22b&lt;/td&gt;
+&lt;td style="text-align: left"&gt;DailyWiki&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;22b0cd0eb7116ef53818bdd71fcb70eda428f3496d93ab5aefebdccddcc9049d&lt;/td&gt;
+&lt;td style="text-align: left"&gt;BibleTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;2974015293d0ea9eef1f1e5c4a35c1c0864ec1c5bfb01c6a66bebc323cbebc85&lt;/td&gt;
+&lt;td style="text-align: left"&gt;BibleTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;2c3949e0a5773bc32fd195689ce2bf81367fb8b5078039de5b66022eca34e5e3&lt;/td&gt;
+&lt;td style="text-align: left"&gt;BibleTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;32ea46c5c6fbe5430976c309138a6a5c98008e157fe6b07814d748c8b23aeabd&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;391cde45f897ce8dd122ab5953d9ec8125e11d59a36f7947af5a7c564fcb75fe&lt;/td&gt;
+&lt;td style="text-align: left"&gt;whatsappTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;45cec7399fd13ae5a332aee512357a7f2824d56964cd14eeb4faa79b091f9500&lt;/td&gt;
+&lt;td style="text-align: left"&gt;FacebookTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;48aef01a7b7d829e4338f2ca4a02a27449fbbb603615ef7fc3fd912f2e3fe590&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;49438046e77fd6713cb61de1a4c0daf2644661894511c42e2bfdee5bdcf8a317&lt;/td&gt;
+&lt;td style="text-align: left"&gt;BibleTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;50e1c5b515ff630a4b2932a775381aeab7a47763b72e6517c5cd505f8a101990&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;5159d6a02087baf420e5eb87faf7e0e36c93e406037b66d2ed01422defbd89c3&lt;/td&gt;
+&lt;td style="text-align: left"&gt;WikiZ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;5485f53768d47d871979a6508b1df83ce36e2df959828076865ffa59d2510e37&lt;/td&gt;
+&lt;td style="text-align: left"&gt;TinderTop&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;5a78817f3677c46ca8a53b327a66bc78947937722c234274ea776f5456c4c807&lt;/td&gt;
+&lt;td style="text-align: left"&gt;DailyBee&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;5edc6f867109ccb74164bb86b802c326ed9eef52e1c97465066646351d57af20&lt;/td&gt;
+&lt;td style="text-align: left"&gt;BibleTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;6082907ec2e9e33ac37c3238fa1dc70969c656047f14874bca7a424c895f6bac&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;6439cf936a93d8295addd87c4fcc38b7c039fd810056aabe8d9965e5b8d6626e&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;71946e214a84f78b592085a3cc70a7c4c0483ebdd2a2ea3e08a8b7b3ea80a2a3&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;72108633a3b28f71e1f6c3391014beb1bde81d0a8fcc98c6ae2ae0083e9dc6db&lt;/td&gt;
+&lt;td style="text-align: left"&gt;WikiTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;7309fe2138b9ecf7938f23d2a56c411b64007e95a8744f00aeb7c9a611b63f23&lt;/td&gt;
+&lt;td style="text-align: left"&gt;WikiZ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;7bc2ad2081f91ee2f0aa7ced3639522972595920b03bd8b63b66949f487931b7&lt;/td&gt;
+&lt;td style="text-align: left"&gt;whatsappTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;7d237db2480d985daad65900f8178163f6b7488f0b4d44457b31e9d98e026d73&lt;/td&gt;
+&lt;td style="text-align: left"&gt;whatsappTimeBeta&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;85e2061fe5233491da99acfe71700e21a3a51bb254380003a7dbd989fafdc7f3&lt;/td&gt;
+&lt;td style="text-align: left"&gt;DailyWiki&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;8b618342de180aad482b77d449fd65c10fa05be4d9a464c42d8f3cb0ebc0311b&lt;/td&gt;
+&lt;td style="text-align: left"&gt;TrailerTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;8fe6c09588eb1579ff219b290ccbed0c3af7b96753f91f14bda7d5f6679504ba&lt;/td&gt;
+&lt;td style="text-align: left"&gt;whatsappTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;9b48386c2605b27a9c6da7c8bc3e9e0e2f13243199975cb7c8546f3dd319b423&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;9cf1af42f8ddfee3c847e4b1dde826b9306480e2d7c9f058c85a49862edd0f8e&lt;/td&gt;
+&lt;td style="text-align: left"&gt;MessengerTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;a2ff2df4198eaf6902d3dd6559953c77537bf748fca7e2cd40372174afca6656&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;ae2cb3f9563c7545797ad60ba441df9e2390ccdfecc8a6e07dcf566753baa2f4&lt;/td&gt;
+&lt;td style="text-align: left"&gt;DailyBee&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;afea5c375c5fc30078ca56a589b9e86afae8a095635d07a5e72e7a22d15fc023&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;b0067e66c12bc72f2ebd0e31a886533cbae392b7b14ce06d04ee7a164749a9c6&lt;/td&gt;
+&lt;td style="text-align: left"&gt;BibleTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;c8e55a7ad6a33a2cb2a0d9508f94ff868a758de031ad0e1df51df16533fe6dd8&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;c986ba426f073c511af8142a8dcbbc545807a82f950971275bf4ae3129e29f6a&lt;/td&gt;
+&lt;td style="text-align: left"&gt;whatsappTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;d292886ddfaf1d976872c342c74ec6744226f844777a01a85d103bedb128b6c7&lt;/td&gt;
+&lt;td style="text-align: left"&gt;WhiteSmoke&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;d2f522280d5d9cb5b244240b44118974771d184e5a7a7605b5032cb78805f643&lt;/td&gt;
+&lt;td style="text-align: left"&gt;BibleTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;dd7ce55cb5422a51d9bfc8034628d3ad63c142df1b21cec1fa3ec66ec9137240&lt;/td&gt;
+&lt;td style="text-align: left"&gt;MessengerTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;e0755ca4e83f9f0a7397ebd63c4ed2dfa67ce497f3c7e8021997bc63a1f2fef7&lt;/td&gt;
+&lt;td style="text-align: left"&gt;UnitConverter&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;e7e30fbc9dbbbd28402b977f8460756e04fd98b6d5c1e5957c76fe57225a0a06&lt;/td&gt;
+&lt;td style="text-align: left"&gt;whatsappTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;e7f5f7eee0f9224b00e7bcde9e22ab4a1f5cb2b1a8c16b2596c4951da74e8101&lt;/td&gt;
+&lt;td style="text-align: left"&gt;whatsappTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;e98ccaf92814c77fac6c6dc28abe78e90a107488934cde19b48f10becaa4e428&lt;/td&gt;
+&lt;td style="text-align: left"&gt;WhatsappTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;f1be8ef3534496c7a053d38fd74de44f191f87727d4c28a328c5efceca40b583&lt;/td&gt;
+&lt;td style="text-align: left"&gt;InstaTime&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;Appendix A - NinjaMare Technical Analysis&lt;span class="hx:absolute hx:-mt-20" id="appendix-a---ninjamare-technical-analysis"&gt;&lt;/span&gt;
+&lt;a href="#appendix-a---ninjamare-technical-analysis" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;details class="hx:last-of-type:mb-0 hx:rounded-lg hx:bg-neutral-50 hx:dark:bg-neutral-800 hx:p-2 hx:mt-4 hx:group" &gt;
+&lt;summary class="hx:flex hx:items-center hx:cursor-pointer hx:select-none hx:list-none hx:p-1 hx:rounded-sm hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800 hx:before:mr-1 hx:before:inline-block hx:before:transition-transform hx:before:content-[''] hx:dark:before:invert hx:rtl:before:rotate-180 hx:group-open:before:rotate-90"&gt;
+&lt;strong class="hx:text-lg"&gt;NinjaMare Technical Analysis&lt;/strong&gt;
+&lt;/summary&gt;
+&lt;div class="hx:p-2 hx:overflow-hidden"&gt;
+&lt;p&gt;NinjaMare is a PUA that installs browser extensions and hijacks the default
+search engine without the user&amp;rsquo;s knowledge. It consists of two parts:
+JavaScript that defines the logic and a modified NW.js engine that allows for
+input injection into any application on the machine. The JavaScript is fetched
+from a server every time the application runs and is never written to the disk.
+The &lt;code&gt;package.json&lt;/code&gt; file in the installation directory tells NW.js where the
+main entry point is located. The &lt;code&gt;package.json&lt;/code&gt; for a NinjaMare sample is shown
+below. It also has set
+&lt;a href="https://docs.nwjs.io/References/Manifest%20Format/#node-remote"target="_blank" rel="noopener"&gt;node-remote&lt;/a&gt;
+to accept loading resources from any location. This is a specific field for
+NW.js to enable remote loading of the web resources.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;PrivacyBrowse&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;version&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;1.12.78&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;description&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;Protect your privacy with a simple browser that lets you focus on what matters most.&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;main&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://pbcdn.privacybrowse.app/privacybrowse/src/browser.html&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;nodejs&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;node-remote&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;*://*&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;dependencies&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;axios&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;^1.3.4&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;cheerio&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;^1.0.0-rc.12&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;font-awesome&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;^4.7.0&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;tar&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;^6.1.13&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;universal-analytics&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;^0.5.3&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;window&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;icon&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;./images/icon256.png&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;width&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1180&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;height&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;720&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;show&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;frame&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;show_in_taskbar&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;webview&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;partitions&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;trusted&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;accessible_resources&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;&amp;lt;all_urls&amp;gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;webkit&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;plugin&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;icons&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;256&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;./images/icon256.png&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;chromium-args&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;--ppapi-flash-path=pepflashplayer.dll --ppapi-flash-version=23.0.0.162 --enable-widevine-cdm --register-pepper-plugins=widevinecdmadapter.dll;application/x-ppapi-widevine-cdm --widevine-cdm-path=widevinecdmadapter.dll --widevine-cdm-version=1.4.8.903&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nt"&gt;&amp;#34;js-flags&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;--expose-gc&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The HTML file loads JavaScript, CSS files, and other resources used to display
+the application to the user. The file of interest is the JavaScript file called
+&lt;code&gt;start.js&lt;/code&gt;; it holds most of the application logic and the input injection
+logic.&lt;/p&gt;
+&lt;h3&gt;JavaScript Orchestrator&lt;span class="hx:absolute hx:-mt-20" id="javascript-orchestrator"&gt;&lt;/span&gt;
+&lt;a href="#javascript-orchestrator" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;When the application is started for the first time, it records the time as its
+&amp;ldquo;birthday&amp;rdquo;. This timestamp is used as a hard gate; nothing nefarious is
+performed until at least 12 hours after the initial startup. After this time
+limit, it uses a soft limit of 30 seconds. Once this is met, it waits for the
+machine to become idle for more than seven minutes before performing its
+actions. The logic is shown in the diagram below.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;setTimeout(emuTerms, 30000) ← 30s after app start
+└── emuTerms()
+├── getVariant(type, history) ← select next untried variant
+│ └── popUID(variants) ← substitute %USERID%, %BDTS%, %TAG% tokens
+├── getActivity(secondaryLogic) ← C2: /checkActivity/&amp;lt;uid&amp;gt;
+└── manageBrowser(variant, type)
+└── eHandler(initFn, variant) ← 7-min idle gate
+└── initEdge/initChCs/initFF/initCh/initSuite(variant)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;NinjaMare targets Chrome, Edge, and Firefox. The logic is similar for each
+browser. It creates a JSON payload to send to the engine. The payload contains
+a command to run if the browser isn’t running, a regex used to find the window
+of the browser, and a list of actions to the engine. The code snippet below
+shows the payload used for Google Chrome.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;emuSettings&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;cmd&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;chrome&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;cmdParams&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;--profile-directory=Default&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;appRegex&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;.* (-|–) Google Chrome&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;actions&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;focus&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="p"&gt;[]},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;resize&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;660&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;660&lt;/span&gt;&lt;span class="p"&gt;]},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;movewindow&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;parseInt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;screen&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;availLeft&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;650&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="nb"&gt;parseInt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;screen&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;availTop&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)]},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;shortcut&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;VK_LCONTROL&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;VK_T&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3000&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;shortcut&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;VK_MENU&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;VK_D&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;]},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;chrome://settings/searchEngines&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;key&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;VK_DELETE&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;key&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;VK_RETURN&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3000&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;key&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;VK_TAB&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;default-search&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;key&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;VK_TAB&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;key&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;VK_TAB&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;key&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;VK_TAB&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;key&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;VK_TAB&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;key&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;VK_TAB&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;sleep&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The actions will instruct the injection engine to gain focus of the browser
+window, resize it, and move it off the screen. Once that is done, it navigates
+to the settings page for search engines. On the page, it uses keyboard inputs
+to navigate around on the page, add a new entry to the search engine list, and
+make it the default search engine. Once the search engine has been changed, it
+navigates to a website to signal that the actions have been completed
+successfully before the page is closed. The logic for Edge and Firefox uses the
+same logic. For Chrome extension installation, the browser navigates to the
+extension’s page on the Chrome Web Store. It installs the extension as if the
+user had installed it from the Web Store.&lt;/p&gt;
+&lt;h3&gt;Input Injection Engine&lt;span class="hx:absolute hx:-mt-20" id="input-injection-engine"&gt;&lt;/span&gt;
+&lt;a href="#input-injection-engine" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The engine file is over 160 MB in size and contains a lot of benign code. The
+entry point of the nefarious activity is via the function call
+&lt;code&gt;nw.App.secSettings(emuSettings)&lt;/code&gt;. The &lt;code&gt;secSettings&lt;/code&gt; function has been added as
+a native function and can be called from JavaScript code. Since the logic is
+implemented in C++ and it’s bound to a sandbox provided by a web browser, this
+function is only restricted to the user’s permissions on what it can do to the
+machine. It’s a neat port-hole into the machine for the operator.&lt;/p&gt;
+&lt;p&gt;The engine&amp;rsquo;s actions can be divided into four phases: parsing the argument
+passed to the function, converting the action list into an internal
+representation, locating the application window, performing the actions, and
+cleaning up. While the logic is being used to manipulate a web browser, it can
+be used to perform actions on any application on the machine. It even supports
+additional input functionality currently not used in the campaigns we have
+seen. The supported commands are: move, click, rightclick, scroll, key,
+shortcut, text, sleep, focus, minimize, restore, maximize, movewindow, resize,
+block, unblock, lock, hide, and show.&lt;/p&gt;
+&lt;p&gt;The first four commands, move, click, rightclick, and scroll, are mouse inputs.
+Key, shortcut, and text are keyboard inputs. Key uses &lt;code&gt;SendInput&lt;/code&gt; to send a
+single keyboard key event to the window, while the shortcut is used to send a
+key combination between a key and a modifier. For example, &lt;code&gt;Alt + F4&lt;/code&gt;. Text
+sends a string of characters as keyboard key events to the windows with a
+10-millisecond delay between each event to simulate typing. Sleep allows the
+operator to inject await into the action list. The block and unblock commands
+allow the operator to disable or enable keyboard and mouse input from the user;
+this can be used to prevent user intervention. The lock command will just lock
+the machine. The remaining commands are window events. The code snippet below
+shows some of the handling for these commands.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-asm" data-lang="asm"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;; case 15 == JS &amp;#34;block&amp;#34; -&amp;gt; BlockInput(TRUE)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;TRUE&lt;/span&gt; &lt;span class="c1"&gt;; 17f37211 6a 01
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;JMP&lt;/span&gt; &lt;span class="no"&gt;BLOCKINPUT&lt;/span&gt; &lt;span class="c1"&gt;; 17f37213 eb 02
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;; case 16 == JS &amp;#34;unblock&amp;#34; -&amp;gt; BlockInput(FALSE)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;FALSE&lt;/span&gt; &lt;span class="c1"&gt;; 17f37215 6a 00
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nl"&gt;BLOCKINPUT:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nf"&gt;CALL&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[-&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;USER32.DLL&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="no"&gt;BlockInput&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; 17f37217 ff 15 4c
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;JMP&lt;/span&gt; &lt;span class="no"&gt;LAB_17f37234&lt;/span&gt; &lt;span class="c1"&gt;; 17f3721d eb 15
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;; case 17 == JS &amp;#34;lock&amp;#34; -&amp;gt; LockWorkStation()
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;CALL&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[-&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;USER32.DLL&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="no"&gt;LockWorkStation&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; 17f3721f ff 15 70
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;JMP&lt;/span&gt; &lt;span class="no"&gt;LAB_17f37234&lt;/span&gt; &lt;span class="c1"&gt;; 17f37225 eb 0d
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;; case 18 == JS &amp;#34;hide&amp;#34; -&amp;gt; ShowWindow(hWnd, 0 = SW_HIDE)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;SW_HIDE&lt;/span&gt; &lt;span class="c1"&gt;; 17f37227 6a 00
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;JMP&lt;/span&gt; &lt;span class="no"&gt;SHOWWINDOW&lt;/span&gt; &lt;span class="c1"&gt;; 17f37229 eb 02
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;; case 19 == JS &amp;#34;show&amp;#34; -&amp;gt; ShowWindow(hWnd, 5 = SW_SHOW)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;SW_SHOW&lt;/span&gt; &lt;span class="c1"&gt;; 17f3722b 6a 05
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt;&lt;span class="nl"&gt;SHOWWINDOW:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;EDI&lt;/span&gt;&lt;span class="err"&gt;=&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;DAT_fffffff8&lt;/span&gt; &lt;span class="c1"&gt;; 17f3722d 57
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;CALL&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[-&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;USER32.DLL&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ShowWindow&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="err"&gt;;&lt;/span&gt; &lt;span class="mi"&gt;17&lt;/span&gt;&lt;span class="no"&gt;f3722e&lt;/span&gt; &lt;span class="no"&gt;ff&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt; &lt;span class="mi"&gt;78&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Before any actions are taken, the engine first checks if a browser window is
+open. It checks the title of all windows against the regex provided by the
+JavaScript caller. If it finds a matching window, it records its placement and
+size. This data is saved so the state of the window can be restored. The code
+snippet below shows this logic.&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-asm" data-lang="asm"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nf"&gt;LEA&lt;/span&gt; &lt;span class="no"&gt;eax&lt;/span&gt;&lt;span class="err"&gt;=&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;local_6c&lt;/span&gt;&lt;span class="p"&gt;,[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;0x68&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; 17f363fd 8d 45 98
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;eax&lt;/span&gt; &lt;span class="c1"&gt;; 17f36400 50
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;EBX&lt;/span&gt; &lt;span class="c1"&gt;; 17f36401 53
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;CALL&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[-&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;USER32.DLL&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="no"&gt;GetWindowPlacement&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; 17f36402 ff 15 10
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOV&lt;/span&gt; &lt;span class="no"&gt;eax&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="no"&gt;local_50&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="c1"&gt;; 17f36408 8b 45 b4
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOV&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="no"&gt;local_15c&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="no"&gt;eax&lt;/span&gt; &lt;span class="c1"&gt;; 17f3640b 89 85 a8
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOV&lt;/span&gt; &lt;span class="no"&gt;eax&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="no"&gt;local_50&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="c1"&gt;; 17f36411 8b 45 b8
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOV&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="no"&gt;local_158&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="no"&gt;eax&lt;/span&gt; &lt;span class="c1"&gt;; 17f36414 89 85 ac
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOV&lt;/span&gt; &lt;span class="no"&gt;eax&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="no"&gt;local_50&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="c1"&gt;; 17f3641a 8b 45 bc
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOV&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="no"&gt;local_154&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="no"&gt;eax&lt;/span&gt; &lt;span class="c1"&gt;; 17f3641d 89 85 b0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOV&lt;/span&gt; &lt;span class="no"&gt;eax&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="no"&gt;local_50&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="c1"&gt;; 17f36423 8b 45 c0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOV&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="no"&gt;local_150&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="no"&gt;eax&lt;/span&gt; &lt;span class="c1"&gt;; 17f36426 89 85 b4
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOV&lt;/span&gt; &lt;span class="no"&gt;ESI&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="no"&gt;local_140&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; 17f3642c 8b b5 c4
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOV&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;ESI&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;0x14&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="no"&gt;EBX&lt;/span&gt; &lt;span class="c1"&gt;; 17f36432 89 5e 14
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;EBX&lt;/span&gt; &lt;span class="c1"&gt;; 17f36435 53
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;CALL&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[-&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;USER32.DLL&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="no"&gt;GetDpiForWindow&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; 17f36436 ff 15 74
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOVD&lt;/span&gt; &lt;span class="no"&gt;XMM0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;eax&lt;/span&gt; &lt;span class="c1"&gt;; 17f3643c 66 0f 6e c0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;POR&lt;/span&gt; &lt;span class="no"&gt;XMM0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;xmmword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;DAT_1865e280&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; 17f36440 66 0f eb
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;SUBSD&lt;/span&gt; &lt;span class="no"&gt;XMM0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;qword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;DAT_1865e270&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; = 4330000000000000h ; 17f36448 f2 0f 5c
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;CVTSD2SS&lt;/span&gt; &lt;span class="no"&gt;XMM0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;XMM0&lt;/span&gt; &lt;span class="c1"&gt;; 17f36450 f2 0f 5a c0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;DIVSS&lt;/span&gt; &lt;span class="no"&gt;XMM0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;DAT_18d899dc&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; 17f36454 f3 0f 5e
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOVSS&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;ESI&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;0x10&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;&lt;span class="no"&gt;XMM0&lt;/span&gt; &lt;span class="c1"&gt;; 17f3645c f3 0f 11
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;SW_SHOWNORMAL&lt;/span&gt; &lt;span class="c1"&gt;; 17f36461 6a 01
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;EBX&lt;/span&gt;&lt;span class="err"&gt;=&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;DAT_fffffff8&lt;/span&gt; &lt;span class="c1"&gt;; 17f36463 53
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;CALL&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[-&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;USER32.DLL&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ShowWindow&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; 17f36464 ff 15 78
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PCMPEQD&lt;/span&gt; &lt;span class="no"&gt;XMM0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="no"&gt;XMM0&lt;/span&gt; &lt;span class="c1"&gt;; 17f3646a 66 0f 76 c0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;MOVDQU&lt;/span&gt; &lt;span class="no"&gt;xmmword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="no"&gt;local_7c&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]],&lt;/span&gt;&lt;span class="no"&gt;XMM0&lt;/span&gt; &lt;span class="c1"&gt;; 17f3646e f3 0f 7f
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;LEA&lt;/span&gt; &lt;span class="no"&gt;eax&lt;/span&gt;&lt;span class="err"&gt;=&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;local_7c&lt;/span&gt;&lt;span class="p"&gt;,[&lt;/span&gt;&lt;span class="no"&gt;EBP&lt;/span&gt; &lt;span class="err"&gt;+&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;0x78&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;; 17f36473 8d 45 88
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;eax&lt;/span&gt; &lt;span class="c1"&gt;; 17f36476 50
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;PUSH&lt;/span&gt; &lt;span class="no"&gt;EBX&lt;/span&gt;&lt;span class="err"&gt;=&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;DAT_fffffff8&lt;/span&gt; &lt;span class="c1"&gt;; 17f36477 53
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;&lt;/span&gt; &lt;span class="nf"&gt;CALL&lt;/span&gt; &lt;span class="no"&gt;dword&lt;/span&gt; &lt;span class="no"&gt;ptr&lt;/span&gt; &lt;span class="p"&gt;[-&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt;&lt;span class="no"&gt;USER32.DLL&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="no"&gt;GetWindowRect&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="err"&gt;;&lt;/span&gt; &lt;span class="mi"&gt;17&lt;/span&gt;&lt;span class="no"&gt;f36478&lt;/span&gt; &lt;span class="no"&gt;ff&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt; &lt;span class="mi"&gt;14&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="Copy code"
+aria-label="Copy code"
+data-copied-label="Copied!"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;If no window is found, it starts a new browser instance using the command
+provided by the caller. After the actions have been executed, the window is
+restored or closed. This way, the computer user should be unaware of what has
+happened.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Learn more about &lt;a href="https://intezer.com/?utm=research"target="_blank" rel="noopener"&gt;Intezer&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>
